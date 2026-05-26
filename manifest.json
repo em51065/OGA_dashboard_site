@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-05-26 06:49:41",
-  "sourceFile": "Total_20260513.xlsx",
+  "generatedAt": "2026-05-26 07:24:50",
+  "sourceFile": "Total_20260507.xls",
   "charts": [
     {
       "id": "general-recycle",
       "title": "一般回收",
       "path": "charts/general-recycle/",
-      "dataVersion": "20260513"
+      "dataVersion": "20260507"
     }
   ]
 }
