@@ -1,36 +1,13 @@
 {
-  "dataVersion": "20260507",
-  "generatedAt": "2026-05-26 07:24:50",
-  "sourceFile": "Total_20260507.xls",
+  "dataVersion": "20260513",
+  "generatedAt": "2026-05-26 07:32:57",
+  "sourceFile": "Total_20260513.xlsx",
   "sheet": "一般回收",
   "metric": "一般回收",
   "valueLabel": "一般廢棄物回收量(公噸)",
   "unit": "公噸",
   "defaultYear": 2026,
   "records": [
-    {
-      "year": 2021,
-      "value": 358.7,
-      "months": 12,
-      "monthsList": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12
-      ],
-      "maxMonth": 12,
-      "hasDecember": true,
-      "start": "2021-01",
-      "end": "2021-12"
-    },
     {
       "year": 2022,
       "value": 360.2,
@@ -125,80 +102,21 @@
     },
     {
       "year": 2026,
-      "value": 93.69,
-      "months": 3,
+      "value": 126.71,
+      "months": 4,
       "monthsList": [
         1,
         2,
-        3
+        3,
+        4
       ],
-      "maxMonth": 3,
+      "maxMonth": 4,
       "hasDecember": false,
       "start": "2026-01",
-      "end": "2026-03"
+      "end": "2026-04"
     }
   ],
   "monthly": [
-    {
-      "year": 2021,
-      "month": 1,
-      "value": 30.03
-    },
-    {
-      "year": 2021,
-      "month": 2,
-      "value": 22.31
-    },
-    {
-      "year": 2021,
-      "month": 3,
-      "value": 34.39
-    },
-    {
-      "year": 2021,
-      "month": 4,
-      "value": 29.4
-    },
-    {
-      "year": 2021,
-      "month": 5,
-      "value": 30.89
-    },
-    {
-      "year": 2021,
-      "month": 6,
-      "value": 28.54
-    },
-    {
-      "year": 2021,
-      "month": 7,
-      "value": 27.37
-    },
-    {
-      "year": 2021,
-      "month": 8,
-      "value": 29.25
-    },
-    {
-      "year": 2021,
-      "month": 9,
-      "value": 27.74
-    },
-    {
-      "year": 2021,
-      "month": 10,
-      "value": 30.83
-    },
-    {
-      "year": 2021,
-      "month": 11,
-      "value": 33.73
-    },
-    {
-      "year": 2021,
-      "month": 12,
-      "value": 34.22
-    },
     {
       "year": 2022,
       "month": 1,
@@ -453,6 +371,11 @@
       "year": 2026,
       "month": 3,
       "value": 38.24
+    },
+    {
+      "year": 2026,
+      "month": 4,
+      "value": 33.02
     }
   ]
 }
