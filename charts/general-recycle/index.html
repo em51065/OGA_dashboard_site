@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>一般回收</title>
+<style>
+  :root {
+    --ink: #101827;
+    --muted: #607086;
+    --line: #d9e1ec;
+    --paper: #f5f7fb;
+    --blue: #2563eb;
+    --red: #d43f55;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: transparent;
+    color: var(--ink);
+    font-family: "Noto Sans TC", "Microsoft JhengHei", Arial, sans-serif;
+  }
+  .ga-widget {
+    width: min(1180px, 100%);
+    margin: 0 auto;
+    padding: 18px;
+    background:
+      radial-gradient(circle at 12% 0%, rgba(37, 99, 235, 0.10), transparent 28%),
+      radial-gradient(circle at 92% 12%, rgba(212, 63, 85, 0.12), transparent 30%),
+      var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+  }
+  .ga-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 16px;
+    align-items: end;
+    margin-bottom: 14px;
+  }
+  h1 {
+    margin: 0 0 6px;
+    font-size: clamp(24px, 3vw, 36px);
+    line-height: 1.1;
+    letter-spacing: 0;
+  }
+  .ga-sub {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .ga-control {
+    min-width: 180px;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.86);
+  }
+  .ga-control label {
+    display: block;
+    margin-bottom: 6px;
+    color: #334155;
+    font-size: 12px;
+    font-weight: 900;
+  }
+  select {
+    width: 100%;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 9px 10px;
+    background: #fff;
+    color: var(--ink);
+    font-size: 15px;
+    font-weight: 900;
+  }
+  .ga-grid {
+    display: grid;
+    grid-template-columns: minmax(300px, 0.92fr) minmax(0, 1.45fr);
+    gap: 14px;
+  }
+  .ga-card {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.94);
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+  }
+  .ga-pr-card { padding: 18px; }
+  .ga-card-title {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .ga-card-title h2 {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.2;
+  }
+  .ga-coverage {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    border: 1px solid #dbeafe;
+    border-radius: 999px;
+    background: #eef6ff;
+    color: #1d4ed8;
+    font-size: 12px;
+    font-weight: 950;
+    white-space: nowrap;
+  }
+  .ga-pr-score {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 10px;
+    margin: 4px 0 12px;
+    transform: translateX(-8%);
+  }
+  .ga-pr-score strong {
+    font-size: clamp(54px, 8vw, 86px);
+    line-height: 0.9;
+    font-weight: 950;
+  }
+  .ga-pr-score span {
+    margin-bottom: 8px;
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 900;
+  }
+  .ga-value-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 14px 0;
+  }
+  .ga-mini {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 11px 12px;
+    background: #f8fafc;
+  }
+  .ga-mini-label {
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 900;
+  }
+  .ga-mini-value {
+    margin-top: 4px;
+    font-size: 22px;
+    font-weight: 950;
+  }
+  .ga-pr-track {
+    position: relative;
+    height: 32px;
+    margin: 18px 0 9px;
+    border-radius: 999px;
+    background: #e9eef6;
+    overflow: hidden;
+  }
+  .ga-pr-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #2563eb 0%, #b8c7d9 52%, #d43f55 100%);
+    transition: width 260ms ease;
+  }
+  .ga-pr-pin {
+    position: absolute;
+    top: -5px;
+    left: 0%;
+    width: 4px;
+    height: 42px;
+    border-radius: 999px;
+    background: #111827;
+    box-shadow: 0 0 0 4px rgba(255,255,255,0.78);
+    transform: translateX(-2px);
+    transition: left 260ms ease;
+  }
+  .ga-axis {
+    display: flex;
+    justify-content: space-between;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 900;
+  }
+  .ga-hint {
+    margin-top: 12px;
+    color: #475569;
+    font-size: 12px;
+    line-height: 1.45;
+  }
+  .ga-overview-wrap {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px dashed #cbd5e1;
+  }
+  #overviewChart { height: 260px; }
+  .ga-chart-card { padding: 10px 12px 6px; }
+  #trendChart { height: 520px; }
+  .ga-error {
+    padding: 18px;
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    background: #fff1f2;
+    color: #9f1239;
+    font-weight: 900;
+  }
+  @media (max-width: 860px) {
+    .ga-head,
+    .ga-grid,
+    .ga-value-row { grid-template-columns: 1fr; }
+    .ga-control { min-width: 0; }
+    #trendChart { height: 440px; }
+  }
+</style>
+</head>
+<body>
+<div class="ga-widget" id="gaWidget">
+  <div class="ga-head">
+    <div>
+      <h1>一般回收</h1>
+      <div class="ga-sub">用年度排名呈現一般回收量的歷史位置；完整年只比完整年，未滿年只比同期累積。</div>
+    </div>
+    <div class="ga-control">
+      <label for="yearSelect">選擇年份</label>
+      <select id="yearSelect"></select>
+    </div>
+  </div>
+  <div class="ga-grid">
+    <section class="ga-card ga-pr-card">
+      <div class="ga-card-title">
+        <h2>回收量歷史排名</h2>
+        <div class="ga-coverage" id="yearMonthsTop">--</div>
+      </div>
+      <div class="ga-pr-score">
+        <strong id="rankNumber">--</strong>
+        <span id="rankTotal">/ -- 年</span>
+      </div>
+      <div class="ga-value-row">
+        <div class="ga-mini">
+          <div class="ga-mini-label">年度回收量</div>
+          <div class="ga-mini-value" id="yearValue">--</div>
+        </div>
+        <div class="ga-mini">
+          <div class="ga-mini-label">相對均值</div>
+          <div class="ga-mini-value" id="meanDiff">--</div>
+        </div>
+      </div>
+      <div class="ga-pr-track">
+        <div class="ga-pr-fill" id="rankFill"></div>
+        <div class="ga-pr-pin" id="rankPin"></div>
+      </div>
+      <div class="ga-axis"><span>低</span><span>歷史中位</span><span>高</span></div>
+      <div class="ga-hint" id="rankHint">長條圖顯示所選年度與所有比較年度的回收量。</div>
+      <div class="ga-overview-wrap">
+        <div id="overviewChart"></div>
+      </div>
+    </section>
+    <section class="ga-card ga-chart-card">
+      <div id="trendChart"></div>
+    </section>
+  </div>
+</div>
+
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<script>
+let GA_DATA = null;
+let selectedYear = null;
+const fmt = new Intl.NumberFormat("zh-TW", { maximumFractionDigits: 2 });
+const pctFmt = new Intl.NumberFormat("zh-TW", { maximumFractionDigits: 1 });
+const yearSelect = document.getElementById("yearSelect");
+
+function recordForYear(year) {
+  return GA_DATA.records.find((item) => String(item.year) === String(year)) || GA_DATA.records[GA_DATA.records.length - 1];
+}
+
+function mixColor(a, b, t) {
+  const rgb = a.map((value, idx) => Math.round(value + (b[idx] - value) * t));
+  return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+}
+
+function colorForPosition(position) {
+  const p = Math.max(1, Math.min(100, Number(position))) / 100;
+  const mid = [184, 199, 217];
+  if (p < 0.5) return mixColor([37, 99, 235], mid, p / 0.5);
+  return mixColor(mid, [212, 63, 85], (p - 0.5) / 0.5);
+}
+
+function textColorForPosition(position) {
+  const p = Math.max(0, Math.min(100, Number(position)));
+  if (p < 35) return "#1d4ed8";
+  if (p > 65) return "#be123c";
+  return "#475569";
+}
+
+function formatMonths(months) {
+  const list = [...months].sort((a, b) => a - b);
+  if (!list.length) return "無資料";
+  const isConsecutiveFromOne = list.every((month, idx) => month === idx + 1);
+  if (isConsecutiveFromOne) return `1-${list[list.length - 1]}月`;
+  return `${list.join("、")}月`;
+}
+
+function valuesForYearUntil(year, cutoffMonth) {
+  const rows = GA_DATA.monthly
+    .filter((item) => Number(item.year) === Number(year) && Number(item.month) <= Number(cutoffMonth))
+    .sort((a, b) => a.month - b.month);
+  return {
+    value: rows.reduce((sum, item) => sum + Number(item.value || 0), 0),
+    months: rows.map((item) => Number(item.month)),
+  };
+}
+
+function averageRank(value, values) {
+  const less = values.filter((item) => item < value - 1e-9).length;
+  const equal = values.filter((item) => Math.abs(item - value) <= 1e-9).length;
+  return less + 1 + (equal - 1) / 2;
+}
+
+function comparisonForYear(year) {
+  const selectedRecord = recordForYear(year);
+  const cutoffMonth = selectedRecord.hasDecember ? 12 : Number(selectedRecord.maxMonth || 12);
+  const shortBasisLabel = selectedRecord.hasDecember ? "全年累積" : `1-${cutoffMonth}月同期累積`;
+  let rows = GA_DATA.records.map((record) => {
+    const part = valuesForYearUntil(record.year, cutoffMonth);
+    return { ...record, value: part.value, comparisonMonths: part.months };
+  }).filter((row) => row.comparisonMonths.includes(cutoffMonth));
+
+  const values = rows.map((row) => row.value);
+  rows = rows.map((row) => {
+    const rank = averageRank(row.value, values);
+    const pr = rows.length === 1 ? 100 : 1 + (rank - 1) * 99 / (rows.length - 1);
+    const higher = values.filter((item) => item > row.value + 1e-9).length;
+    const lower = values.filter((item) => item < row.value - 1e-9).length;
+    const rankHigh = higher + 1;
+    const relativePosition = rows.length === 1 ? 100 : (lower / (rows.length - 1)) * 100;
+    return { ...row, rank, pr, rankHigh, relativePosition };
+  });
+
+  const selected = rows.find((row) => String(row.year) === String(year)) || rows[rows.length - 1];
+  const mean = values.reduce((sum, value) => sum + value, 0) / values.length;
+  return { selected, selectedRecord, cutoffMonth, shortBasisLabel, rows, values, mean };
+}
+
+function updateDom() {
+  const comparison = comparisonForYear(selectedYear);
+  const row = comparison.selected;
+  const raw = comparison.selectedRecord;
+  const position = Math.round(row.relativePosition);
+  const width = Math.max(5, Math.min(100, row.relativePosition));
+  const diffPct = comparison.mean === 0 ? 0 : ((row.value - comparison.mean) / comparison.mean) * 100;
+  const direction = diffPct >= 0 ? "高於" : "低於";
+
+  document.getElementById("rankNumber").textContent = row.rankHigh;
+  document.getElementById("rankNumber").style.color = textColorForPosition(position);
+  document.getElementById("rankTotal").textContent = `/ 共 ${comparison.rows.length} 年`;
+  document.getElementById("yearValue").textContent = `${fmt.format(row.value)} ${GA_DATA.unit}`;
+  document.getElementById("yearMonthsTop").textContent = `資料涵蓋 ${formatMonths(raw.monthsList)}`;
+  document.getElementById("meanDiff").textContent = `${direction} ${pctFmt.format(Math.abs(diffPct))}%`;
+  document.getElementById("meanDiff").style.color = diffPct >= 0 ? "#d43f55" : "#2563eb";
+  document.getElementById("rankFill").style.width = `${width}%`;
+  document.getElementById("rankPin").style.left = `${width}%`;
+  document.getElementById("rankHint").textContent =
+    `${fmt.format(row.value)} ${GA_DATA.unit}｜第 ${row.rankHigh} / 共 ${comparison.rows.length} 年`;
+}
+
+function renderTrend() {
+  const comparison = comparisonForYear(selectedYear);
+  const years = comparison.rows.map((item) => item.year);
+  const values = comparison.rows.map((item) => item.value);
+  const selected = comparison.selected;
+  const colors = comparison.rows.map((item) => String(item.year) === String(selectedYear) ? "#d43f55" : "#2563eb");
+  const sizes = comparison.rows.map((item) => String(item.year) === String(selectedYear) ? 14 : 8);
+
+  Plotly.react("trendChart", [{
+    type: "scatter",
+    mode: "lines+markers",
+    x: years,
+    y: values,
+    line: { color: "#1f3b57", width: 3 },
+    marker: { color: colors, size: sizes, line: { color: "#ffffff", width: 2 } },
+    customdata: comparison.rows.map((item) => [item.rankHigh, comparison.rows.length, item.comparisonMonths.join("、"), comparison.shortBasisLabel]),
+    hovertemplate: "%{x} 年<br>回收量：%{y:,.2f} " + GA_DATA.unit + "<br>第 %{customdata[0]} / 共 %{customdata[1]} 年<br>比較基準：%{customdata[3]}<br>納入月份：%{customdata[2]}月<extra></extra>",
+  }], {
+    title: {
+      text: `回收量歷史趨勢<br><sup>${comparison.shortBasisLabel}，每一點代表該比較基準下的累積量</sup>`,
+      x: 0,
+      xanchor: "left",
+      font: { size: 19, color: "#101827" },
+    },
+    shapes: [
+      {
+        type: "line",
+        x0: selected.year,
+        x1: selected.year,
+        y0: 0,
+        y1: 1,
+        xref: "x",
+        yref: "paper",
+        line: { color: "#d43f55", width: 2, dash: "dot" },
+      },
+      {
+        type: "line",
+        x0: Math.min(...years),
+        x1: Math.max(...years),
+        y0: comparison.mean,
+        y1: comparison.mean,
+        xref: "x",
+        yref: "y",
+        line: { color: "#64748b", width: 2, dash: "dash" },
+      },
+    ],
+    annotations: [
+      {
+        x: selected.year,
+        y: selected.value,
+        text: `${selected.year}｜${fmt.format(selected.value)} ${GA_DATA.unit}`,
+        showarrow: true,
+        arrowhead: 2,
+        ax: 36,
+        ay: -42,
+        bgcolor: "rgba(255,255,255,0.9)",
+        bordercolor: "#d9e1ec",
+        borderpad: 6,
+        font: { size: 12, color: "#101827" },
+      },
+      {
+        x: Math.max(...years),
+        y: comparison.mean,
+        text: `均值 ${fmt.format(comparison.mean)}`,
+        showarrow: false,
+        xanchor: "left",
+        xshift: 10,
+        yshift: 2,
+        font: { size: 12, color: "#475569" },
+      },
+    ],
+    margin: { l: 70, r: 92, t: 78, b: 62 },
+    paper_bgcolor: "rgba(0,0,0,0)",
+    plot_bgcolor: "#ffffff",
+    xaxis: { tickmode: "array", tickvals: years, title: "", showgrid: false, zeroline: false },
+    yaxis: { title: GA_DATA.unit, rangemode: "tozero", gridcolor: "#e8eef6", zeroline: false },
+    showlegend: false,
+  }, { displayModeBar: false, responsive: true });
+}
+
+function renderOverview() {
+  const comparison = comparisonForYear(selectedYear);
+  const selectedBars = comparison.rows.filter((item) => String(item.year) === String(selectedYear));
+  const otherBars = comparison.rows
+    .filter((item) => String(item.year) !== String(selectedYear))
+    .sort((a, b) => b.year - a.year);
+  const bars = [...selectedBars, ...otherBars];
+  const labels = bars.map((item) => `${item.year} 年`);
+  const values = bars.map((item) => item.value);
+  const yPositions = bars.map((_, idx) => idx === 0 ? 0 : idx + 0.42);
+  const maxValue = Math.max(...values, 1);
+  const colors = bars.map((item) => colorForPosition(Math.round(item.relativePosition)));
+
+  Plotly.react("overviewChart", [{
+    type: "bar",
+    orientation: "h",
+    x: values,
+    y: yPositions,
+    width: bars.map(() => 0.58),
+    text: bars.map((item) => `${fmt.format(item.value)} ${GA_DATA.unit}`),
+    textposition: "outside",
+    textfont: { color: "#253047", size: 12 },
+    cliponaxis: false,
+    marker: { color: colors, line: { color: "#ffffff", width: 1 } },
+    customdata: bars.map((item) => [
+      item.rankHigh,
+      comparison.rows.length,
+      formatMonths(item.comparisonMonths),
+      comparison.shortBasisLabel,
+      `${item.year} 年`,
+    ]),
+    hovertemplate:
+      "%{customdata[4]}<br>回收量：%{x:,.2f} " + GA_DATA.unit +
+      "<br>第 %{customdata[0]} / 共 %{customdata[1]} 年" +
+      "<br>資料涵蓋：%{customdata[2]}" +
+      "<br>比較基準：%{customdata[3]}<extra></extra>",
+  }], {
+    title: {
+      text: `年度總覽｜${comparison.shortBasisLabel}`,
+      x: 0,
+      xanchor: "left",
+      font: { size: 15, color: "#101827" },
+    },
+    margin: { l: 64, r: 86, t: 52, b: 42 },
+    paper_bgcolor: "rgba(0,0,0,0)",
+    plot_bgcolor: "#ffffff",
+    xaxis: {
+      title: GA_DATA.unit,
+      gridcolor: "#edf2f7",
+      zeroline: false,
+      range: [0, maxValue * 1.18],
+    },
+    yaxis: {
+      title: "",
+      tickmode: "array",
+      tickvals: yPositions,
+      ticktext: labels,
+      range: [Math.max(...yPositions) + 0.72, -0.56],
+      automargin: true,
+      showgrid: false,
+      zeroline: false,
+    },
+    showlegend: false,
+  }, { displayModeBar: false, responsive: true });
+}
+
+function updateAll() {
+  updateDom();
+  renderTrend();
+  renderOverview();
+}
+
+function initSelect() {
+  yearSelect.innerHTML = "";
+  [...GA_DATA.records].sort((a, b) => b.year - a.year).forEach((row) => {
+    const opt = document.createElement("option");
+    opt.value = String(row.year);
+    opt.textContent = `${row.year} 年`;
+    yearSelect.appendChild(opt);
+  });
+  selectedYear = String(GA_DATA.defaultYear);
+  yearSelect.value = selectedYear;
+  yearSelect.addEventListener("change", (event) => {
+    selectedYear = event.target.value;
+    updateAll();
+  });
+}
+
+function showError(error) {
+  document.getElementById("gaWidget").innerHTML = `<div class="ga-error">資料載入失敗：${error.message}</div>`;
+}
+
+fetch(`./data.json?t=${Date.now()}`)
+  .then((response) => {
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return response.json();
+  })
+  .then((data) => {
+    GA_DATA = data;
+    initSelect();
+    updateAll();
+  })
+  .catch(showError);
+
+window.addEventListener("resize", () => {
+  Plotly.Plots.resize(document.getElementById("trendChart"));
+  Plotly.Plots.resize(document.getElementById("overviewChart"));
+});
+</script>
+</body>
+</html>
