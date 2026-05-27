@@ -229,6 +229,18 @@
     margin-top: 4px;
     font-size: 22px;
     font-weight: 950;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .ga-value-number,
+  .ga-value-unit {
+    display: inline-block;
+    vertical-align: baseline;
+  }
+  .ga-value-unit {
+    margin-left: 4px;
+    font-size: 0.76em;
+    line-height: 1;
   }
   .ga-pr-track {
     position: relative;
@@ -384,8 +396,12 @@
       <div class="ga-sub">用年度排名呈現ECOCO的歷史位置；完整年只比完整年，未滿年只比同期累積。</div>
     </div>
     <div class="ga-controls">
+      <div class="ga-control" id="locationControl" hidden>
+        <label for="locationSelect" id="locationLabel">選擇地點</label>
+        <select id="locationSelect"></select>
+      </div>
       <div class="ga-control" id="categoryControl" hidden>
-        <label for="categorySelect">選擇類別</label>
+        <label for="categorySelect" id="categoryLabel">選擇類別</label>
         <select id="categorySelect"></select>
       </div>
       <div class="ga-control">
@@ -462,6 +478,7 @@
 let GA_DATA = null;
 let selectedYear = null;
 let selectedCategory = null;
+let selectedLocation = null;
 let visibleTrendCategories = new Set();
 let overviewMode = "bar";
 let customMonthRange = null;
@@ -470,6 +487,10 @@ const pctFmt = new Intl.NumberFormat("zh-TW", { maximumFractionDigits: 1 });
 const yearSelect = document.getElementById("yearSelect");
 const categorySelect = document.getElementById("categorySelect");
 const categoryControl = document.getElementById("categoryControl");
+const categoryLabel = document.getElementById("categoryLabel");
+const locationSelect = document.getElementById("locationSelect");
+const locationControl = document.getElementById("locationControl");
+const locationLabel = document.getElementById("locationLabel");
 const trendToggles = document.getElementById("trendToggles");
 const overviewModeSwitch = document.getElementById("overviewModeSwitch");
 const overviewTitle = document.getElementById("overviewTitle");
@@ -484,13 +505,50 @@ function isEcocoChart() {
   return GA_DATA.chartType === "ecoco";
 }
 
+function isSolarChart() {
+  return GA_DATA.chartType === "solar";
+}
+
+function isUtilityChart() {
+  return GA_DATA.chartType === "utility";
+}
+
+function hasCategoryControl() {
+  return Array.isArray(GA_DATA.categories) && GA_DATA.categories.length > 0;
+}
+
+function hasTrendToggles() {
+  return isEcocoChart() || isSolarChart();
+}
+
+function activeMeta(category = selectedCategory) {
+  return (GA_DATA.categoryMeta && GA_DATA.categoryMeta[category]) || {
+    unit: GA_DATA.unit,
+    valueNoun: GA_DATA.valueNoun,
+    agg: "sum",
+  };
+}
+
+function activeUnit(category = selectedCategory) {
+  return activeMeta(category).unit || GA_DATA.unit;
+}
+
+function activeValueNoun(category = selectedCategory) {
+  return activeMeta(category).valueNoun || GA_DATA.valueNoun;
+}
+
 function currentSeries(category = selectedCategory) {
-  if (!isEcocoChart()) return GA_DATA;
+  if (isUtilityChart() && GA_DATA.locationSeries) {
+    const location = selectedLocation || GA_DATA.defaultLocation;
+    return (GA_DATA.locationSeries[location] && GA_DATA.locationSeries[location][category]) || { defaultYear: null, records: [], monthly: [] };
+  }
+  if (!hasCategoryControl()) return GA_DATA;
   return GA_DATA.series[category] || GA_DATA.series[GA_DATA.defaultCategory];
 }
 
 function recordForYear(year, category = selectedCategory) {
   const series = currentSeries(category);
+  if (!series.records || !series.records.length) return null;
   return series.records.find((item) => String(item.year) === String(year)) || series.records[series.records.length - 1];
 }
 
@@ -504,6 +562,16 @@ function colorForPosition(position) {
   const mid = [184, 199, 217];
   if (p < 0.5) return mixColor([37, 99, 235], mid, p / 0.5);
   return mixColor(mid, [212, 63, 85], (p - 0.5) / 0.5);
+}
+
+function visibleBarValues(values) {
+  const maxValue = Math.max(...values.map((value) => Math.abs(Number(value) || 0)), 1);
+  const minVisible = maxValue * 0.018;
+  return values.map((value) => {
+    const numeric = Number(value) || 0;
+    if (numeric === 0) return 0;
+    return Math.max(numeric, minVisible);
+  });
 }
 
 function formatMonths(months) {
@@ -526,9 +594,19 @@ function valuesForYearUntil(year, cutoffMonth, category = selectedCategory) {
     .filter((item) => Number(item.year) === Number(year) && Number(item.month) <= Number(cutoffMonth))
     .sort((a, b) => a.month - b.month);
   return {
-    value: rows.reduce((sum, item) => sum + Number(item.value || 0), 0),
+    value: aggregateRows(rows, category),
     months: rows.map((item) => Number(item.month)),
   };
+}
+
+function aggregateRows(rows, category = selectedCategory) {
+  const meta = activeMeta(category);
+  if (meta.agg === "ratio") {
+    const numerator = rows.reduce((sum, item) => sum + Number(item.numerator || 0), 0);
+    const denominator = rows.reduce((sum, item) => sum + Number(item.denominator || 0), 0);
+    return denominator > 0 ? numerator / denominator : 0;
+  }
+  return rows.reduce((sum, item) => sum + Number(item.value || 0), 0);
 }
 
 function valuesForYearRange(year, startMonth, endMonth, category = selectedCategory) {
@@ -541,12 +619,13 @@ function valuesForYearRange(year, startMonth, endMonth, category = selectedCateg
     )
     .sort((a, b) => a.month - b.month);
   return {
-    value: rows.reduce((sum, item) => sum + Number(item.value || 0), 0),
+    value: aggregateRows(rows, category),
     months: rows.map((item) => Number(item.month)),
   };
 }
 
 function defaultRangeForRecord(record) {
+  if (!record) return { start: 1, end: 12 };
   const months = [...new Set((record.monthsList || []).map(Number).filter(Number.isFinite))]
     .sort((a, b) => a - b);
   if (months.length) {
@@ -576,6 +655,20 @@ function averageRank(value, values) {
 function comparisonForYear(year, category = selectedCategory) {
   const series = currentSeries(category);
   const selectedRecord = recordForYear(year, category);
+  if (!selectedRecord) {
+    return {
+      selected: null,
+      selectedRecord: null,
+      selectedDisplayMonths: [],
+      startMonth: 1,
+      cutoffMonth: 12,
+      shortBasisLabel: "無資料",
+      rows: [],
+      values: [],
+      mean: 0,
+      category,
+    };
+  }
   const range = activeMonthRangeForYear(year, category);
   const cutoffMonth = range.end;
   const selectedDisplayMonths = range.isCustom
@@ -626,6 +719,18 @@ function comparisonForYear(year, category = selectedCategory) {
 function updateDom() {
   const comparison = comparisonForYear(selectedYear);
   const row = comparison.selected;
+  if (!row) {
+    document.getElementById("rankNumber").textContent = "--";
+    document.getElementById("rankTotal").textContent = "/ 共 0 年";
+    document.getElementById("valueMiniLabel").textContent = activeValueNoun();
+    document.getElementById("yearValue").textContent = "--";
+    yearMonthsTop.textContent = "資料涵蓋 無資料";
+    document.getElementById("meanDiff").textContent = "--";
+    document.getElementById("rankFill").style.width = "0%";
+    document.getElementById("rankPin").style.left = "0%";
+    document.getElementById("rankHint").textContent = "目前篩選條件沒有可比較資料。";
+    return;
+  }
   const position = Math.round(row.relativePosition);
   const width = Math.max(5, Math.min(100, row.relativePosition));
   const diffPct = comparison.mean === 0 ? 0 : ((row.value - comparison.mean) / comparison.mean) * 100;
@@ -635,8 +740,8 @@ function updateDom() {
   document.getElementById("rankNumber").textContent = row.rankHigh;
   document.getElementById("rankNumber").style.color = selectedColor;
   document.getElementById("rankTotal").textContent = `/ 共 ${comparison.rows.length} 年`;
-  document.getElementById("valueMiniLabel").textContent = GA_DATA.valueNoun;
-  document.getElementById("yearValue").textContent = `${fmt.format(row.value)} ${GA_DATA.unit}`;
+  document.getElementById("valueMiniLabel").textContent = activeValueNoun();
+  setMiniValue(row.value, activeUnit());
   yearMonthsTop.textContent = `資料涵蓋 ${formatMonths(comparison.selectedDisplayMonths)}`;
   document.getElementById("meanDiff").textContent = `${direction} ${pctFmt.format(Math.abs(diffPct))}%`;
   document.getElementById("meanDiff").style.color = selectedColor;
@@ -644,7 +749,30 @@ function updateDom() {
   document.getElementById("rankFill").style.backgroundSize = `${10000 / width}% 100%`;
   document.getElementById("rankPin").style.left = `${width}%`;
   document.getElementById("rankHint").textContent =
-    `${fmt.format(row.value)} ${GA_DATA.unit}｜第 ${row.rankHigh} / 共 ${comparison.rows.length} 年`;
+    `${fmt.format(row.value)} ${activeUnit()}｜第 ${row.rankHigh} / 共 ${comparison.rows.length} 年`;
+}
+
+function setMiniValue(value, unit) {
+  const container = document.getElementById("yearValue");
+  container.innerHTML = "";
+  const number = document.createElement("span");
+  number.className = "ga-value-number";
+  number.textContent = fmt.format(value);
+  const unitEl = document.createElement("span");
+  unitEl.className = "ga-value-unit";
+  unitEl.textContent = unit;
+  container.appendChild(number);
+  container.appendChild(unitEl);
+  requestAnimationFrame(() => fitMiniValueUnit(container, unitEl));
+}
+
+function fitMiniValueUnit(container, unitEl) {
+  unitEl.style.fontSize = "";
+  let size = parseFloat(getComputedStyle(unitEl).fontSize);
+  while (container.scrollWidth > container.clientWidth && size > 9) {
+    size -= 1;
+    unitEl.style.fontSize = `${size}px`;
+  }
 }
 
 const CATEGORY_COLORS = ["#d43f55", "#2563eb", "#0f766e", "#b45309", "#7c3aed", "#0891b2", "#475569"];
@@ -660,7 +788,7 @@ const CATEGORY_COLOR_MAP = {
 
 function categoryColor(category) {
   if (CATEGORY_COLOR_MAP[category]) return CATEGORY_COLOR_MAP[category];
-  const list = isEcocoChart() ? GA_DATA.categories : [GA_DATA.metric];
+  const list = hasCategoryControl() ? GA_DATA.categories : [GA_DATA.metric];
   const idx = Math.max(0, list.indexOf(category));
   return CATEGORY_COLORS[idx % CATEGORY_COLORS.length];
 }
@@ -670,7 +798,7 @@ function categoryIcon(category) {
 }
 
 function renderTrendToggles() {
-  if (!isEcocoChart()) {
+  if (!hasTrendToggles()) {
     trendToggles.hidden = true;
     return;
   }
@@ -698,13 +826,13 @@ function renderTrendToggles() {
 
 function renderTrend() {
   const baseComparison = comparisonForYear(selectedYear, selectedCategory);
-  const activeCategories = isEcocoChart() ? [...visibleTrendCategories] : [selectedCategory];
+  const activeCategories = hasTrendToggles() ? [...visibleTrendCategories] : [selectedCategory];
   const traces = activeCategories.map((category) => {
     const comparison = comparisonForYear(selectedYear, category);
     if (!comparison.rows.length) return null;
     const years = comparison.rows.map((item) => item.year);
     const values = comparison.rows.map((item) => item.value);
-    const color = isEcocoChart() ? categoryColor(category) : "#1f3b57";
+    const color = hasTrendToggles() ? categoryColor(category) : "#1f3b57";
     return {
       type: "scatter",
       mode: "lines+markers",
@@ -717,16 +845,42 @@ function renderTrend() {
         size: comparison.rows.map((item) => String(item.year) === String(selectedYear) ? 13 : 8),
         line: { color, width: 2 },
       },
-      customdata: comparison.rows.map((item) => [item.rankHigh, comparison.rows.length, formatMonths(item.comparisonMonths), comparison.shortBasisLabel, category]),
-      hovertemplate: "%{customdata[4]}<br>%{x} 年<br>" + GA_DATA.valueNoun + "：%{y:,.2f} " + GA_DATA.unit + "<br>第 %{customdata[0]} / 共 %{customdata[1]} 年<br>比較基準：%{customdata[3]}<br>納入月份：%{customdata[2]}<extra></extra>",
+      customdata: comparison.rows.map((item) => [item.rankHigh, comparison.rows.length, formatMonths(item.comparisonMonths), comparison.shortBasisLabel, category, activeValueNoun(category), activeUnit(category)]),
+      hovertemplate: "%{customdata[4]}<br>%{x} 年<br>%{customdata[5]}：%{y:,.2f} %{customdata[6]}<br>第 %{customdata[0]} / 共 %{customdata[1]} 年<br>比較基準：%{customdata[3]}<br>納入月份：%{customdata[2]}<extra></extra>",
     };
   }).filter(Boolean);
   const years = baseComparison.rows.map((item) => item.year);
   const selected = baseComparison.selected;
+  if (!traces.length || !years.length || !selected) {
+    Plotly.react("trendChart", [], {
+      title: {
+        text: `${activeValueNoun()}歷史趨勢<br><sup>目前篩選條件沒有資料</sup>`,
+        x: 0,
+        xanchor: "left",
+        font: { size: 19, color: "#101827" },
+      },
+      margin: { l: 70, r: 92, t: 78, b: 62 },
+      paper_bgcolor: "rgba(0,0,0,0)",
+      plot_bgcolor: "#ffffff",
+      xaxis: { visible: false },
+      yaxis: { visible: false },
+      annotations: [{
+        text: "目前沒有可繪製的趨勢資料",
+        x: 0.5,
+        y: 0.5,
+        xref: "paper",
+        yref: "paper",
+        showarrow: false,
+        font: { size: 14, color: "#64748b" },
+      }],
+      showlegend: false,
+    }, { displayModeBar: false, responsive: true });
+    return;
+  }
 
   Plotly.react("trendChart", traces, {
     title: {
-      text: `${GA_DATA.valueNoun}歷史趨勢<br><sup>${baseComparison.shortBasisLabel}，每一點代表該比較基準下的累積量</sup>`,
+      text: `${activeValueNoun()}歷史趨勢<br><sup>${baseComparison.shortBasisLabel}，每一點代表該比較基準下的累積量</sup>`,
       x: 0,
       xanchor: "left",
       font: { size: 19, color: "#101827" },
@@ -757,7 +911,7 @@ function renderTrend() {
       {
         x: selected.year,
         y: selected.value,
-        text: `${selected.year}｜${fmt.format(selected.value)} ${GA_DATA.unit}`,
+        text: `${selected.year}｜${fmt.format(selected.value)} ${activeUnit()}`,
         showarrow: true,
         arrowhead: 2,
         ax: 36,
@@ -782,20 +936,112 @@ function renderTrend() {
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "#ffffff",
     xaxis: { tickmode: "array", tickvals: years, title: "", showgrid: false, zeroline: false },
-    yaxis: { title: GA_DATA.unit, rangemode: "tozero", gridcolor: "#e8eef6", zeroline: false },
+    yaxis: { title: activeUnit(), rangemode: "tozero", gridcolor: "#e8eef6", zeroline: false },
+    showlegend: false,
+  }, { displayModeBar: false, responsive: true });
+}
+
+function renderSolarLocationOverview(comparison) {
+  const rows = GA_DATA.rawCategories.map((category) => {
+    const part = valuesForYearRange(selectedYear, comparison.startMonth, comparison.cutoffMonth, category);
+    return {
+      category,
+      value: part.value,
+      months: part.months,
+    };
+  }).filter((row) => row.months.length);
+  if (!rows.length) {
+    overviewTitle.textContent = `地點總覽｜${selectedYear || "--"} 年`;
+    Plotly.react("overviewChart", [], {
+      margin: { l: 64, r: 86, t: 18, b: 42 },
+      paper_bgcolor: "rgba(0,0,0,0)",
+      plot_bgcolor: "#ffffff",
+      annotations: [{
+        text: "目前沒有可比較的地點資料",
+        x: 0.5,
+        y: 0.5,
+        xref: "paper",
+        yref: "paper",
+        showarrow: false,
+        font: { size: 13, color: "#64748b" },
+      }],
+      xaxis: { visible: false },
+      yaxis: { visible: false },
+      showlegend: false,
+    }, { displayModeBar: false, responsive: true });
+    return;
+  }
+
+  const maxValue = Math.max(...rows.map((row) => row.value), 1);
+  const ranked = rows.map((row) => {
+    const lower = rows.filter((item) => item.value < row.value - 1e-9).length;
+    const relativePosition = rows.length === 1 ? 100 : (lower / (rows.length - 1)) * 100;
+    return { ...row, relativePosition };
+  });
+  const sorted = selectedCategory === GA_DATA.defaultCategory
+    ? [...ranked].sort((a, b) => b.value - a.value)
+    : [
+        ...ranked.filter((row) => row.category === selectedCategory),
+        ...ranked.filter((row) => row.category !== selectedCategory).sort((a, b) => b.value - a.value),
+      ];
+  const yPositions = sorted.map((_, idx) => idx === 0 ? 0 : idx + 0.42);
+  const actualValues = sorted.map((row) => row.value);
+  const displayValues = visibleBarValues(actualValues);
+  overviewTitle.textContent = `地點總覽｜${selectedYear} 年 ${comparison.shortBasisLabel}`;
+
+  Plotly.react("overviewChart", [{
+    type: "bar",
+    orientation: "h",
+    x: displayValues,
+    y: yPositions,
+    width: sorted.map(() => 0.58),
+    text: sorted.map((row) => `${fmt.format(row.value)} ${activeUnit(row.category)}`),
+    textposition: "outside",
+    textfont: { color: "#253047", size: 12 },
+    cliponaxis: false,
+    marker: { color: sorted.map((row) => colorForPosition(Math.round(row.relativePosition))), line: { color: "#ffffff", width: 1 } },
+    customdata: sorted.map((row) => [row.category, formatMonths(row.months), row.value]),
+    hovertemplate:
+      "%{customdata[0]}<br>" + activeValueNoun() + "：%{customdata[2]:,.2f} " + activeUnit() +
+      "<br>資料涵蓋：%{customdata[1]}<extra></extra>",
+  }], {
+    margin: { l: 86, r: 86, t: 18, b: 42 },
+    paper_bgcolor: "rgba(0,0,0,0)",
+    plot_bgcolor: "#ffffff",
+    xaxis: {
+      title: activeUnit(),
+      gridcolor: "#edf2f7",
+      zeroline: false,
+      range: [0, Math.max(...displayValues, maxValue) * 1.18],
+    },
+    yaxis: {
+      title: "",
+      tickmode: "array",
+      tickvals: yPositions,
+      ticktext: sorted.map((row) => row.category),
+      range: [Math.max(...yPositions) + 0.72, -0.56],
+      automargin: true,
+      showgrid: false,
+      zeroline: false,
+    },
     showlegend: false,
   }, { displayModeBar: false, responsive: true });
 }
 
 function renderOverview() {
   const comparison = comparisonForYear(selectedYear, selectedCategory);
-  const showPieMode = isEcocoChart() && selectedCategory === "ECOCO";
-  overviewModeSwitch.hidden = !showPieMode;
+  const showEcocoPieMode = isEcocoChart() && selectedCategory === "ECOCO";
+  const showSolarLocationMode = isSolarChart();
+  overviewModeSwitch.hidden = !(showEcocoPieMode || showSolarLocationMode);
   overviewModeSwitch.querySelectorAll("button").forEach((button) => {
     button.classList.toggle("active", button.dataset.overviewMode === overviewMode);
   });
-  if (!showPieMode) overviewMode = "bar";
-  if (showPieMode && overviewMode === "pie") {
+  if (!(showEcocoPieMode || showSolarLocationMode)) overviewMode = "bar";
+  if (showSolarLocationMode && overviewMode === "location") {
+    renderSolarLocationOverview(comparison);
+    return;
+  }
+  if (showEcocoPieMode && overviewMode === "pie") {
     const totals = new Map();
     GA_DATA.categoryMonthly
       .filter((item) =>
@@ -819,10 +1065,10 @@ function renderOverview() {
       marker: { colors: rows.map((row) => categoryColor(row.category)), line: { color: "#ffffff", width: 2 } },
       textinfo: "label+percent",
       textposition: "outside",
-      hovertemplate: "%{label}<br>" + GA_DATA.valueNoun + "：%{value:,.2f} " + GA_DATA.unit + "<br>佔比：%{percent}<extra></extra>",
+      hovertemplate: "%{label}<br>" + activeValueNoun() + "：%{value:,.2f} " + activeUnit() + "<br>佔比：%{percent}<extra></extra>",
     }], {
       annotations: [{
-        text: `${fmt.format(total)}<br>${GA_DATA.unit}`,
+        text: `${fmt.format(total)}<br>${activeUnit()}`,
         x: 0.5,
         y: 0.5,
         showarrow: false,
@@ -835,6 +1081,27 @@ function renderOverview() {
     }, { displayModeBar: false, responsive: true });
     return;
   }
+  if (!comparison.rows.length) {
+    overviewTitle.textContent = "年度總覽｜無資料";
+    Plotly.react("overviewChart", [], {
+      margin: { l: 64, r: 86, t: 18, b: 42 },
+      paper_bgcolor: "rgba(0,0,0,0)",
+      plot_bgcolor: "#ffffff",
+      annotations: [{
+        text: "目前沒有可比較的年度資料",
+        x: 0.5,
+        y: 0.5,
+        xref: "paper",
+        yref: "paper",
+        showarrow: false,
+        font: { size: 13, color: "#64748b" },
+      }],
+      xaxis: { visible: false },
+      yaxis: { visible: false },
+      showlegend: false,
+    }, { displayModeBar: false, responsive: true });
+    return;
+  }
   const selectedBars = comparison.rows.filter((item) => String(item.year) === String(selectedYear));
   const otherBars = comparison.rows
     .filter((item) => String(item.year) !== String(selectedYear))
@@ -842,6 +1109,7 @@ function renderOverview() {
   const bars = [...selectedBars, ...otherBars];
   const labels = bars.map((item) => `${item.year} 年`);
   const values = bars.map((item) => item.value);
+  const displayValues = visibleBarValues(values);
   const yPositions = bars.map((_, idx) => idx === 0 ? 0 : idx + 0.42);
   const maxValue = Math.max(...values, 1);
   const colors = bars.map((item) => colorForPosition(Math.round(item.relativePosition)));
@@ -850,10 +1118,10 @@ function renderOverview() {
   Plotly.react("overviewChart", [{
     type: "bar",
     orientation: "h",
-    x: values,
+    x: displayValues,
     y: yPositions,
     width: bars.map(() => 0.58),
-    text: bars.map((item) => `${fmt.format(item.value)} ${GA_DATA.unit}`),
+    text: bars.map((item) => `${fmt.format(item.value)} ${activeUnit()}`),
     textposition: "outside",
     textfont: { color: "#253047", size: 12 },
     cliponaxis: false,
@@ -864,9 +1132,10 @@ function renderOverview() {
       formatMonths(item.comparisonMonths),
       comparison.shortBasisLabel,
       `${item.year} 年`,
+      item.value,
     ]),
     hovertemplate:
-      "%{customdata[4]}<br>" + GA_DATA.valueNoun + "：%{x:,.2f} " + GA_DATA.unit +
+      "%{customdata[4]}<br>" + activeValueNoun() + "：%{customdata[5]:,.2f} " + activeUnit() +
       "<br>第 %{customdata[0]} / 共 %{customdata[1]} 年" +
       "<br>資料涵蓋：%{customdata[2]}" +
       "<br>比較基準：%{customdata[3]}<extra></extra>",
@@ -875,10 +1144,10 @@ function renderOverview() {
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "#ffffff",
     xaxis: {
-      title: GA_DATA.unit,
+      title: activeUnit(),
       gridcolor: "#edf2f7",
       zeroline: false,
-      range: [0, maxValue * 1.18],
+      range: [0, Math.max(...displayValues, maxValue) * 1.18],
     },
     yaxis: {
       title: "",
@@ -895,7 +1164,8 @@ function renderOverview() {
 }
 
 function availableMonthsForSelection() {
-  return [...new Set(recordForYear(selectedYear, selectedCategory).monthsList || [])]
+  const record = recordForYear(selectedYear, selectedCategory);
+  return [...new Set((record ? record.monthsList : []) || [])]
     .map(Number)
     .filter(Number.isFinite)
     .sort((a, b) => a - b);
@@ -951,6 +1221,15 @@ function updateAll() {
 function populateYearSelect() {
   const series = currentSeries();
   yearSelect.innerHTML = "";
+  if (!series.records || !series.records.length) {
+    const opt = document.createElement("option");
+    opt.value = "";
+    opt.textContent = "無可用年份";
+    yearSelect.appendChild(opt);
+    selectedYear = "";
+    yearSelect.value = "";
+    return;
+  }
   [...series.records].sort((a, b) => b.year - a.year).forEach((row) => {
     const opt = document.createElement("option");
     opt.value = String(row.year);
@@ -962,8 +1241,32 @@ function populateYearSelect() {
 }
 
 function initSelect() {
-  if (isEcocoChart()) {
+  if (GA_DATA.locations && GA_DATA.locations.length) {
+    locationControl.hidden = false;
+    locationLabel.textContent = GA_DATA.locationLabel || "選擇地點";
+    locationSelect.innerHTML = "";
+    GA_DATA.locations.forEach((location) => {
+      const opt = document.createElement("option");
+      opt.value = location;
+      opt.textContent = location;
+      locationSelect.appendChild(opt);
+    });
+    selectedLocation = GA_DATA.defaultLocation || GA_DATA.locations[0];
+    locationSelect.value = selectedLocation;
+    locationSelect.disabled = GA_DATA.locations.length <= 1;
+    locationSelect.addEventListener("change", (event) => {
+      selectedLocation = event.target.value;
+      resetMonthRange();
+      populateYearSelect();
+      updateAll();
+    });
+  } else {
+    locationControl.hidden = true;
+  }
+
+  if (hasCategoryControl()) {
     categoryControl.hidden = false;
+    categoryLabel.textContent = GA_DATA.categoryLabel || "選擇類別";
     categorySelect.innerHTML = "";
     GA_DATA.categories.forEach((category) => {
       const opt = document.createElement("option");
@@ -992,6 +1295,18 @@ function initSelect() {
     categoryControl.hidden = true;
     selectedCategory = GA_DATA.metric;
     visibleTrendCategories = new Set([selectedCategory]);
+  }
+  const modeButtons = overviewModeSwitch.querySelectorAll("button");
+  if (isSolarChart()) {
+    modeButtons[0].textContent = "年度";
+    modeButtons[0].dataset.overviewMode = "bar";
+    modeButtons[1].textContent = "地點";
+    modeButtons[1].dataset.overviewMode = "location";
+  } else {
+    modeButtons[0].textContent = "長條";
+    modeButtons[0].dataset.overviewMode = "bar";
+    modeButtons[1].textContent = "圓餅";
+    modeButtons[1].dataset.overviewMode = "pie";
   }
   populateYearSelect();
   yearSelect.addEventListener("change", (event) => {
