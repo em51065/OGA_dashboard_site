@@ -1,0 +1,1884 @@
+{
+  "dataVersion": "20260513",
+  "generatedAt": "2026-05-27 03:14:38",
+  "sourceFile": "Total_20260513.xlsx",
+  "chartId": "ecoco",
+  "chartType": "ecoco",
+  "sheet": "ECOCO (2)",
+  "metric": "ECOCO",
+  "valueLabel": "數量",
+  "valueNoun": "數量",
+  "unit": "件",
+  "defaultCategory": "ECOCO",
+  "defaultYear": 2026,
+  "categories": [
+    "ECOCO",
+    "寶特瓶",
+    "鋁罐",
+    "PP杯",
+    "電池",
+    "牛奶瓶",
+    "機台數"
+  ],
+  "rawCategories": [
+    "寶特瓶",
+    "鋁罐",
+    "PP杯",
+    "電池",
+    "牛奶瓶",
+    "機台數"
+  ],
+  "categoryIcons": {
+    "ECOCO": "♻",
+    "寶特瓶": "瓶",
+    "鋁罐": "罐",
+    "PP杯": "杯",
+    "電池": "電",
+    "牛奶瓶": "奶",
+    "機台數": "機"
+  },
+  "series": {
+    "ECOCO": {
+      "defaultYear": 2026,
+      "records": [
+        {
+          "year": 2024,
+          "value": 36996.0,
+          "months": 4,
+          "monthsList": [
+            9,
+            10,
+            11,
+            12
+          ],
+          "maxMonth": 12,
+          "hasDecember": true,
+          "start": "2024-09",
+          "end": "2024-12"
+        },
+        {
+          "year": 2025,
+          "value": 91035.0,
+          "months": 12,
+          "monthsList": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "maxMonth": 12,
+          "hasDecember": true,
+          "start": "2025-01",
+          "end": "2025-12"
+        },
+        {
+          "year": 2026,
+          "value": 21374.0,
+          "months": 4,
+          "monthsList": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "maxMonth": 4,
+          "hasDecember": false,
+          "start": "2026-01",
+          "end": "2026-04"
+        }
+      ],
+      "monthly": [
+        {
+          "year": 2024,
+          "month": 9,
+          "value": 5.0
+        },
+        {
+          "year": 2024,
+          "month": 10,
+          "value": 12330.333
+        },
+        {
+          "year": 2024,
+          "month": 11,
+          "value": 12330.333
+        },
+        {
+          "year": 2024,
+          "month": 12,
+          "value": 12330.333
+        },
+        {
+          "year": 2025,
+          "month": 1,
+          "value": 3213.0
+        },
+        {
+          "year": 2025,
+          "month": 2,
+          "value": 4649.0
+        },
+        {
+          "year": 2025,
+          "month": 3,
+          "value": 5028.0
+        },
+        {
+          "year": 2025,
+          "month": 4,
+          "value": 6288.0
+        },
+        {
+          "year": 2025,
+          "month": 5,
+          "value": 8933.0
+        },
+        {
+          "year": 2025,
+          "month": 6,
+          "value": 7276.0
+        },
+        {
+          "year": 2025,
+          "month": 7,
+          "value": 7538.0
+        },
+        {
+          "year": 2025,
+          "month": 8,
+          "value": 8608.0
+        },
+        {
+          "year": 2025,
+          "month": 9,
+          "value": 9567.0
+        },
+        {
+          "year": 2025,
+          "month": 10,
+          "value": 10493.0
+        },
+        {
+          "year": 2025,
+          "month": 11,
+          "value": 11122.0
+        },
+        {
+          "year": 2025,
+          "month": 12,
+          "value": 8320.0
+        },
+        {
+          "year": 2026,
+          "month": 1,
+          "value": 5016.0
+        },
+        {
+          "year": 2026,
+          "month": 2,
+          "value": 4710.0
+        },
+        {
+          "year": 2026,
+          "month": 3,
+          "value": 6411.0
+        },
+        {
+          "year": 2026,
+          "month": 4,
+          "value": 5237.0
+        }
+      ]
+    },
+    "寶特瓶": {
+      "defaultYear": 2026,
+      "records": [
+        {
+          "year": 2024,
+          "value": 31414.0,
+          "months": 4,
+          "monthsList": [
+            9,
+            10,
+            11,
+            12
+          ],
+          "maxMonth": 12,
+          "hasDecember": true,
+          "start": "2024-09",
+          "end": "2024-12"
+        },
+        {
+          "year": 2025,
+          "value": 66166.0,
+          "months": 12,
+          "monthsList": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "maxMonth": 12,
+          "hasDecember": true,
+          "start": "2025-01",
+          "end": "2025-12"
+        },
+        {
+          "year": 2026,
+          "value": 14458.0,
+          "months": 4,
+          "monthsList": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "maxMonth": 4,
+          "hasDecember": false,
+          "start": "2026-01",
+          "end": "2026-04"
+        }
+      ],
+      "monthly": [
+        {
+          "year": 2024,
+          "month": 9,
+          "value": 0.0
+        },
+        {
+          "year": 2024,
+          "month": 10,
+          "value": 10471.333
+        },
+        {
+          "year": 2024,
+          "month": 11,
+          "value": 10471.333
+        },
+        {
+          "year": 2024,
+          "month": 12,
+          "value": 10471.333
+        },
+        {
+          "year": 2025,
+          "month": 1,
+          "value": 2735.0
+        },
+        {
+          "year": 2025,
+          "month": 2,
+          "value": 3962.0
+        },
+        {
+          "year": 2025,
+          "month": 3,
+          "value": 4081.0
+        },
+        {
+          "year": 2025,
+          "month": 4,
+          "value": 4624.0
+        },
+        {
+          "year": 2025,
+          "month": 5,
+          "value": 5373.0
+        },
+        {
+          "year": 2025,
+          "month": 6,
+          "value": 4833.0
+        },
+        {
+          "year": 2025,
+          "month": 7,
+          "value": 5887.0
+        },
+        {
+          "year": 2025,
+          "month": 8,
+          "value": 6234.0
+        },
+        {
+          "year": 2025,
+          "month": 9,
+          "value": 6854.0
+        },
+        {
+          "year": 2025,
+          "month": 10,
+          "value": 7728.0
+        },
+        {
+          "year": 2025,
+          "month": 11,
+          "value": 7823.0
+        },
+        {
+          "year": 2025,
+          "month": 12,
+          "value": 6032.0
+        },
+        {
+          "year": 2026,
+          "month": 1,
+          "value": 3422.0
+        },
+        {
+          "year": 2026,
+          "month": 2,
+          "value": 2863.0
+        },
+        {
+          "year": 2026,
+          "month": 3,
+          "value": 4402.0
+        },
+        {
+          "year": 2026,
+          "month": 4,
+          "value": 3771.0
+        }
+      ]
+    },
+    "鋁罐": {
+      "defaultYear": 2026,
+      "records": [
+        {
+          "year": 2024,
+          "value": 3287.0,
+          "months": 4,
+          "monthsList": [
+            9,
+            10,
+            11,
+            12
+          ],
+          "maxMonth": 12,
+          "hasDecember": true,
+          "start": "2024-09",
+          "end": "2024-12"
+        },
+        {
+          "year": 2025,
+          "value": 6789.0,
+          "months": 12,
+          "monthsList": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "maxMonth": 12,
+          "hasDecember": true,
+          "start": "2025-01",
+          "end": "2025-12"
+        },
+        {
+          "year": 2026,
+          "value": 2417.0,
+          "months": 4,
+          "monthsList": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "maxMonth": 4,
+          "hasDecember": false,
+          "start": "2026-01",
+          "end": "2026-04"
+        }
+      ],
+      "monthly": [
+        {
+          "year": 2024,
+          "month": 9,
+          "value": 0.0
+        },
+        {
+          "year": 2024,
+          "month": 10,
+          "value": 1095.667
+        },
+        {
+          "year": 2024,
+          "month": 11,
+          "value": 1095.667
+        },
+        {
+          "year": 2024,
+          "month": 12,
+          "value": 1095.667
+        },
+        {
+          "year": 2025,
+          "month": 1,
+          "value": 370.0
+        },
+        {
+          "year": 2025,
+          "month": 2,
+          "value": 517.0
+        },
+        {
+          "year": 2025,
+          "month": 3,
+          "value": 194.0
+        },
+        {
+          "year": 2025,
+          "month": 4,
+          "value": 761.0
+        },
+        {
+          "year": 2025,
+          "month": 5,
+          "value": 755.0
+        },
+        {
+          "year": 2025,
+          "month": 6,
+          "value": 117.0
+        },
+        {
+          "year": 2025,
+          "month": 7,
+          "value": 251.0
+        },
+        {
+          "year": 2025,
+          "month": 8,
+          "value": 387.0
+        },
+        {
+          "year": 2025,
+          "month": 9,
+          "value": 1266.0
+        },
+        {
+          "year": 2025,
+          "month": 10,
+          "value": 424.0
+        },
+        {
+          "year": 2025,
+          "month": 11,
+          "value": 709.0
+        },
+        {
+          "year": 2025,
+          "month": 12,
+          "value": 1038.0
+        },
+        {
+          "year": 2026,
+          "month": 1,
+          "value": 580.0
+        },
+        {
+          "year": 2026,
+          "month": 2,
+          "value": 485.0
+        },
+        {
+          "year": 2026,
+          "month": 3,
+          "value": 667.0
+        },
+        {
+          "year": 2026,
+          "month": 4,
+          "value": 685.0
+        }
+      ]
+    },
+    "PP杯": {
+      "defaultYear": 2026,
+      "records": [
+        {
+          "year": 2024,
+          "value": 2290.0,
+          "months": 4,
+          "monthsList": [
+            9,
+            10,
+            11,
+            12
+          ],
+          "maxMonth": 12,
+          "hasDecember": true,
+          "start": "2024-09",
+          "end": "2024-12"
+        },
+        {
+          "year": 2025,
+          "value": 7454.0,
+          "months": 12,
+          "monthsList": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "maxMonth": 12,
+          "hasDecember": true,
+          "start": "2025-01",
+          "end": "2025-12"
+        },
+        {
+          "year": 2026,
+          "value": 733.0,
+          "months": 4,
+          "monthsList": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "maxMonth": 4,
+          "hasDecember": false,
+          "start": "2026-01",
+          "end": "2026-04"
+        }
+      ],
+      "monthly": [
+        {
+          "year": 2024,
+          "month": 9,
+          "value": 0.0
+        },
+        {
+          "year": 2024,
+          "month": 10,
+          "value": 763.333
+        },
+        {
+          "year": 2024,
+          "month": 11,
+          "value": 763.333
+        },
+        {
+          "year": 2024,
+          "month": 12,
+          "value": 763.333
+        },
+        {
+          "year": 2025,
+          "month": 1,
+          "value": 108.0
+        },
+        {
+          "year": 2025,
+          "month": 2,
+          "value": 170.0
+        },
+        {
+          "year": 2025,
+          "month": 3,
+          "value": 753.0
+        },
+        {
+          "year": 2025,
+          "month": 4,
+          "value": 261.0
+        },
+        {
+          "year": 2025,
+          "month": 5,
+          "value": 332.0
+        },
+        {
+          "year": 2025,
+          "month": 6,
+          "value": 858.0
+        },
+        {
+          "year": 2025,
+          "month": 7,
+          "value": 713.0
+        },
+        {
+          "year": 2025,
+          "month": 8,
+          "value": 971.0
+        },
+        {
+          "year": 2025,
+          "month": 9,
+          "value": 427.0
+        },
+        {
+          "year": 2025,
+          "month": 10,
+          "value": 1392.0
+        },
+        {
+          "year": 2025,
+          "month": 11,
+          "value": 1077.0
+        },
+        {
+          "year": 2025,
+          "month": 12,
+          "value": 392.0
+        },
+        {
+          "year": 2026,
+          "month": 1,
+          "value": 212.0
+        },
+        {
+          "year": 2026,
+          "month": 2,
+          "value": 103.0
+        },
+        {
+          "year": 2026,
+          "month": 3,
+          "value": 232.0
+        },
+        {
+          "year": 2026,
+          "month": 4,
+          "value": 186.0
+        }
+      ]
+    },
+    "電池": {
+      "defaultYear": 2026,
+      "records": [
+        {
+          "year": 2024,
+          "value": 0.0,
+          "months": 4,
+          "monthsList": [
+            9,
+            10,
+            11,
+            12
+          ],
+          "maxMonth": 12,
+          "hasDecember": true,
+          "start": "2024-09",
+          "end": "2024-12"
+        },
+        {
+          "year": 2025,
+          "value": 8085.0,
+          "months": 12,
+          "monthsList": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "maxMonth": 12,
+          "hasDecember": true,
+          "start": "2025-01",
+          "end": "2025-12"
+        },
+        {
+          "year": 2026,
+          "value": 2565.0,
+          "months": 4,
+          "monthsList": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "maxMonth": 4,
+          "hasDecember": false,
+          "start": "2026-01",
+          "end": "2026-04"
+        }
+      ],
+      "monthly": [
+        {
+          "year": 2024,
+          "month": 9,
+          "value": 0.0
+        },
+        {
+          "year": 2024,
+          "month": 10,
+          "value": 0.0
+        },
+        {
+          "year": 2024,
+          "month": 11,
+          "value": 0.0
+        },
+        {
+          "year": 2024,
+          "month": 12,
+          "value": 0.0
+        },
+        {
+          "year": 2025,
+          "month": 1,
+          "value": 0.0
+        },
+        {
+          "year": 2025,
+          "month": 2,
+          "value": 0.0
+        },
+        {
+          "year": 2025,
+          "month": 3,
+          "value": 0.0
+        },
+        {
+          "year": 2025,
+          "month": 4,
+          "value": 642.0
+        },
+        {
+          "year": 2025,
+          "month": 5,
+          "value": 2465.0
+        },
+        {
+          "year": 2025,
+          "month": 6,
+          "value": 1278.0
+        },
+        {
+          "year": 2025,
+          "month": 7,
+          "value": 210.0
+        },
+        {
+          "year": 2025,
+          "month": 8,
+          "value": 773.0
+        },
+        {
+          "year": 2025,
+          "month": 9,
+          "value": 640.0
+        },
+        {
+          "year": 2025,
+          "month": 10,
+          "value": 561.0
+        },
+        {
+          "year": 2025,
+          "month": 11,
+          "value": 1134.0
+        },
+        {
+          "year": 2025,
+          "month": 12,
+          "value": 382.0
+        },
+        {
+          "year": 2026,
+          "month": 1,
+          "value": 523.0
+        },
+        {
+          "year": 2026,
+          "month": 2,
+          "value": 1052.0
+        },
+        {
+          "year": 2026,
+          "month": 3,
+          "value": 770.0
+        },
+        {
+          "year": 2026,
+          "month": 4,
+          "value": 220.0
+        }
+      ]
+    },
+    "牛奶瓶": {
+      "defaultYear": 2026,
+      "records": [
+        {
+          "year": 2024,
+          "value": 0.0,
+          "months": 4,
+          "monthsList": [
+            9,
+            10,
+            11,
+            12
+          ],
+          "maxMonth": 12,
+          "hasDecember": true,
+          "start": "2024-09",
+          "end": "2024-12"
+        },
+        {
+          "year": 2025,
+          "value": 2541.0,
+          "months": 12,
+          "monthsList": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "maxMonth": 12,
+          "hasDecember": true,
+          "start": "2025-01",
+          "end": "2025-12"
+        },
+        {
+          "year": 2026,
+          "value": 1201.0,
+          "months": 4,
+          "monthsList": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "maxMonth": 4,
+          "hasDecember": false,
+          "start": "2026-01",
+          "end": "2026-04"
+        }
+      ],
+      "monthly": [
+        {
+          "year": 2024,
+          "month": 9,
+          "value": 0.0
+        },
+        {
+          "year": 2024,
+          "month": 10,
+          "value": 0.0
+        },
+        {
+          "year": 2024,
+          "month": 11,
+          "value": 0.0
+        },
+        {
+          "year": 2024,
+          "month": 12,
+          "value": 0.0
+        },
+        {
+          "year": 2025,
+          "month": 1,
+          "value": 0.0
+        },
+        {
+          "year": 2025,
+          "month": 2,
+          "value": 0.0
+        },
+        {
+          "year": 2025,
+          "month": 3,
+          "value": 0.0
+        },
+        {
+          "year": 2025,
+          "month": 4,
+          "value": 0.0
+        },
+        {
+          "year": 2025,
+          "month": 5,
+          "value": 8.0
+        },
+        {
+          "year": 2025,
+          "month": 6,
+          "value": 190.0
+        },
+        {
+          "year": 2025,
+          "month": 7,
+          "value": 477.0
+        },
+        {
+          "year": 2025,
+          "month": 8,
+          "value": 243.0
+        },
+        {
+          "year": 2025,
+          "month": 9,
+          "value": 380.0
+        },
+        {
+          "year": 2025,
+          "month": 10,
+          "value": 388.0
+        },
+        {
+          "year": 2025,
+          "month": 11,
+          "value": 379.0
+        },
+        {
+          "year": 2025,
+          "month": 12,
+          "value": 476.0
+        },
+        {
+          "year": 2026,
+          "month": 1,
+          "value": 279.0
+        },
+        {
+          "year": 2026,
+          "month": 2,
+          "value": 207.0
+        },
+        {
+          "year": 2026,
+          "month": 3,
+          "value": 340.0
+        },
+        {
+          "year": 2026,
+          "month": 4,
+          "value": 375.0
+        }
+      ]
+    },
+    "機台數": {
+      "defaultYear": 2026,
+      "records": [
+        {
+          "year": 2024,
+          "value": 5.0,
+          "months": 4,
+          "monthsList": [
+            9,
+            10,
+            11,
+            12
+          ],
+          "maxMonth": 12,
+          "hasDecember": true,
+          "start": "2024-09",
+          "end": "2024-12"
+        },
+        {
+          "year": 2025,
+          "value": 0.0,
+          "months": 12,
+          "monthsList": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "maxMonth": 12,
+          "hasDecember": true,
+          "start": "2025-01",
+          "end": "2025-12"
+        },
+        {
+          "year": 2026,
+          "value": 0.0,
+          "months": 4,
+          "monthsList": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "maxMonth": 4,
+          "hasDecember": false,
+          "start": "2026-01",
+          "end": "2026-04"
+        }
+      ],
+      "monthly": [
+        {
+          "year": 2024,
+          "month": 9,
+          "value": 5.0
+        },
+        {
+          "year": 2024,
+          "month": 10,
+          "value": 0.0
+        },
+        {
+          "year": 2024,
+          "month": 11,
+          "value": 0.0
+        },
+        {
+          "year": 2024,
+          "month": 12,
+          "value": 0.0
+        },
+        {
+          "year": 2025,
+          "month": 1,
+          "value": 0.0
+        },
+        {
+          "year": 2025,
+          "month": 2,
+          "value": 0.0
+        },
+        {
+          "year": 2025,
+          "month": 3,
+          "value": 0.0
+        },
+        {
+          "year": 2025,
+          "month": 4,
+          "value": 0.0
+        },
+        {
+          "year": 2025,
+          "month": 5,
+          "value": 0.0
+        },
+        {
+          "year": 2025,
+          "month": 6,
+          "value": 0.0
+        },
+        {
+          "year": 2025,
+          "month": 7,
+          "value": 0.0
+        },
+        {
+          "year": 2025,
+          "month": 8,
+          "value": 0.0
+        },
+        {
+          "year": 2025,
+          "month": 9,
+          "value": 0.0
+        },
+        {
+          "year": 2025,
+          "month": 10,
+          "value": 0.0
+        },
+        {
+          "year": 2025,
+          "month": 11,
+          "value": 0.0
+        },
+        {
+          "year": 2025,
+          "month": 12,
+          "value": 0.0
+        },
+        {
+          "year": 2026,
+          "month": 1,
+          "value": 0.0
+        },
+        {
+          "year": 2026,
+          "month": 2,
+          "value": 0.0
+        },
+        {
+          "year": 2026,
+          "month": 3,
+          "value": 0.0
+        },
+        {
+          "year": 2026,
+          "month": 4,
+          "value": 0.0
+        }
+      ]
+    }
+  },
+  "categoryMonthly": [
+    {
+      "category": "PP杯",
+      "year": 2024,
+      "month": 9,
+      "value": 0.0
+    },
+    {
+      "category": "PP杯",
+      "year": 2024,
+      "month": 10,
+      "value": 763.333
+    },
+    {
+      "category": "PP杯",
+      "year": 2024,
+      "month": 11,
+      "value": 763.333
+    },
+    {
+      "category": "PP杯",
+      "year": 2024,
+      "month": 12,
+      "value": 763.333
+    },
+    {
+      "category": "PP杯",
+      "year": 2025,
+      "month": 1,
+      "value": 108.0
+    },
+    {
+      "category": "PP杯",
+      "year": 2025,
+      "month": 2,
+      "value": 170.0
+    },
+    {
+      "category": "PP杯",
+      "year": 2025,
+      "month": 3,
+      "value": 753.0
+    },
+    {
+      "category": "PP杯",
+      "year": 2025,
+      "month": 4,
+      "value": 261.0
+    },
+    {
+      "category": "PP杯",
+      "year": 2025,
+      "month": 5,
+      "value": 332.0
+    },
+    {
+      "category": "PP杯",
+      "year": 2025,
+      "month": 6,
+      "value": 858.0
+    },
+    {
+      "category": "PP杯",
+      "year": 2025,
+      "month": 7,
+      "value": 713.0
+    },
+    {
+      "category": "PP杯",
+      "year": 2025,
+      "month": 8,
+      "value": 971.0
+    },
+    {
+      "category": "PP杯",
+      "year": 2025,
+      "month": 9,
+      "value": 427.0
+    },
+    {
+      "category": "PP杯",
+      "year": 2025,
+      "month": 10,
+      "value": 1392.0
+    },
+    {
+      "category": "PP杯",
+      "year": 2025,
+      "month": 11,
+      "value": 1077.0
+    },
+    {
+      "category": "PP杯",
+      "year": 2025,
+      "month": 12,
+      "value": 392.0
+    },
+    {
+      "category": "PP杯",
+      "year": 2026,
+      "month": 1,
+      "value": 212.0
+    },
+    {
+      "category": "PP杯",
+      "year": 2026,
+      "month": 2,
+      "value": 103.0
+    },
+    {
+      "category": "PP杯",
+      "year": 2026,
+      "month": 3,
+      "value": 232.0
+    },
+    {
+      "category": "PP杯",
+      "year": 2026,
+      "month": 4,
+      "value": 186.0
+    },
+    {
+      "category": "寶特瓶",
+      "year": 2024,
+      "month": 9,
+      "value": 0.0
+    },
+    {
+      "category": "寶特瓶",
+      "year": 2024,
+      "month": 10,
+      "value": 10471.333
+    },
+    {
+      "category": "寶特瓶",
+      "year": 2024,
+      "month": 11,
+      "value": 10471.333
+    },
+    {
+      "category": "寶特瓶",
+      "year": 2024,
+      "month": 12,
+      "value": 10471.333
+    },
+    {
+      "category": "寶特瓶",
+      "year": 2025,
+      "month": 1,
+      "value": 2735.0
+    },
+    {
+      "category": "寶特瓶",
+      "year": 2025,
+      "month": 2,
+      "value": 3962.0
+    },
+    {
+      "category": "寶特瓶",
+      "year": 2025,
+      "month": 3,
+      "value": 4081.0
+    },
+    {
+      "category": "寶特瓶",
+      "year": 2025,
+      "month": 4,
+      "value": 4624.0
+    },
+    {
+      "category": "寶特瓶",
+      "year": 2025,
+      "month": 5,
+      "value": 5373.0
+    },
+    {
+      "category": "寶特瓶",
+      "year": 2025,
+      "month": 6,
+      "value": 4833.0
+    },
+    {
+      "category": "寶特瓶",
+      "year": 2025,
+      "month": 7,
+      "value": 5887.0
+    },
+    {
+      "category": "寶特瓶",
+      "year": 2025,
+      "month": 8,
+      "value": 6234.0
+    },
+    {
+      "category": "寶特瓶",
+      "year": 2025,
+      "month": 9,
+      "value": 6854.0
+    },
+    {
+      "category": "寶特瓶",
+      "year": 2025,
+      "month": 10,
+      "value": 7728.0
+    },
+    {
+      "category": "寶特瓶",
+      "year": 2025,
+      "month": 11,
+      "value": 7823.0
+    },
+    {
+      "category": "寶特瓶",
+      "year": 2025,
+      "month": 12,
+      "value": 6032.0
+    },
+    {
+      "category": "寶特瓶",
+      "year": 2026,
+      "month": 1,
+      "value": 3422.0
+    },
+    {
+      "category": "寶特瓶",
+      "year": 2026,
+      "month": 2,
+      "value": 2863.0
+    },
+    {
+      "category": "寶特瓶",
+      "year": 2026,
+      "month": 3,
+      "value": 4402.0
+    },
+    {
+      "category": "寶特瓶",
+      "year": 2026,
+      "month": 4,
+      "value": 3771.0
+    },
+    {
+      "category": "機台數",
+      "year": 2024,
+      "month": 9,
+      "value": 5.0
+    },
+    {
+      "category": "機台數",
+      "year": 2024,
+      "month": 10,
+      "value": 0.0
+    },
+    {
+      "category": "機台數",
+      "year": 2024,
+      "month": 11,
+      "value": 0.0
+    },
+    {
+      "category": "機台數",
+      "year": 2024,
+      "month": 12,
+      "value": 0.0
+    },
+    {
+      "category": "機台數",
+      "year": 2025,
+      "month": 1,
+      "value": 0.0
+    },
+    {
+      "category": "機台數",
+      "year": 2025,
+      "month": 2,
+      "value": 0.0
+    },
+    {
+      "category": "機台數",
+      "year": 2025,
+      "month": 3,
+      "value": 0.0
+    },
+    {
+      "category": "機台數",
+      "year": 2025,
+      "month": 4,
+      "value": 0.0
+    },
+    {
+      "category": "機台數",
+      "year": 2025,
+      "month": 5,
+      "value": 0.0
+    },
+    {
+      "category": "機台數",
+      "year": 2025,
+      "month": 6,
+      "value": 0.0
+    },
+    {
+      "category": "機台數",
+      "year": 2025,
+      "month": 7,
+      "value": 0.0
+    },
+    {
+      "category": "機台數",
+      "year": 2025,
+      "month": 8,
+      "value": 0.0
+    },
+    {
+      "category": "機台數",
+      "year": 2025,
+      "month": 9,
+      "value": 0.0
+    },
+    {
+      "category": "機台數",
+      "year": 2025,
+      "month": 10,
+      "value": 0.0
+    },
+    {
+      "category": "機台數",
+      "year": 2025,
+      "month": 11,
+      "value": 0.0
+    },
+    {
+      "category": "機台數",
+      "year": 2025,
+      "month": 12,
+      "value": 0.0
+    },
+    {
+      "category": "機台數",
+      "year": 2026,
+      "month": 1,
+      "value": 0.0
+    },
+    {
+      "category": "機台數",
+      "year": 2026,
+      "month": 2,
+      "value": 0.0
+    },
+    {
+      "category": "機台數",
+      "year": 2026,
+      "month": 3,
+      "value": 0.0
+    },
+    {
+      "category": "機台數",
+      "year": 2026,
+      "month": 4,
+      "value": 0.0
+    },
+    {
+      "category": "牛奶瓶",
+      "year": 2024,
+      "month": 9,
+      "value": 0.0
+    },
+    {
+      "category": "牛奶瓶",
+      "year": 2024,
+      "month": 10,
+      "value": 0.0
+    },
+    {
+      "category": "牛奶瓶",
+      "year": 2024,
+      "month": 11,
+      "value": 0.0
+    },
+    {
+      "category": "牛奶瓶",
+      "year": 2024,
+      "month": 12,
+      "value": 0.0
+    },
+    {
+      "category": "牛奶瓶",
+      "year": 2025,
+      "month": 1,
+      "value": 0.0
+    },
+    {
+      "category": "牛奶瓶",
+      "year": 2025,
+      "month": 2,
+      "value": 0.0
+    },
+    {
+      "category": "牛奶瓶",
+      "year": 2025,
+      "month": 3,
+      "value": 0.0
+    },
+    {
+      "category": "牛奶瓶",
+      "year": 2025,
+      "month": 4,
+      "value": 0.0
+    },
+    {
+      "category": "牛奶瓶",
+      "year": 2025,
+      "month": 5,
+      "value": 8.0
+    },
+    {
+      "category": "牛奶瓶",
+      "year": 2025,
+      "month": 6,
+      "value": 190.0
+    },
+    {
+      "category": "牛奶瓶",
+      "year": 2025,
+      "month": 7,
+      "value": 477.0
+    },
+    {
+      "category": "牛奶瓶",
+      "year": 2025,
+      "month": 8,
+      "value": 243.0
+    },
+    {
+      "category": "牛奶瓶",
+      "year": 2025,
+      "month": 9,
+      "value": 380.0
+    },
+    {
+      "category": "牛奶瓶",
+      "year": 2025,
+      "month": 10,
+      "value": 388.0
+    },
+    {
+      "category": "牛奶瓶",
+      "year": 2025,
+      "month": 11,
+      "value": 379.0
+    },
+    {
+      "category": "牛奶瓶",
+      "year": 2025,
+      "month": 12,
+      "value": 476.0
+    },
+    {
+      "category": "牛奶瓶",
+      "year": 2026,
+      "month": 1,
+      "value": 279.0
+    },
+    {
+      "category": "牛奶瓶",
+      "year": 2026,
+      "month": 2,
+      "value": 207.0
+    },
+    {
+      "category": "牛奶瓶",
+      "year": 2026,
+      "month": 3,
+      "value": 340.0
+    },
+    {
+      "category": "牛奶瓶",
+      "year": 2026,
+      "month": 4,
+      "value": 375.0
+    },
+    {
+      "category": "鋁罐",
+      "year": 2024,
+      "month": 9,
+      "value": 0.0
+    },
+    {
+      "category": "鋁罐",
+      "year": 2024,
+      "month": 10,
+      "value": 1095.667
+    },
+    {
+      "category": "鋁罐",
+      "year": 2024,
+      "month": 11,
+      "value": 1095.667
+    },
+    {
+      "category": "鋁罐",
+      "year": 2024,
+      "month": 12,
+      "value": 1095.667
+    },
+    {
+      "category": "鋁罐",
+      "year": 2025,
+      "month": 1,
+      "value": 370.0
+    },
+    {
+      "category": "鋁罐",
+      "year": 2025,
+      "month": 2,
+      "value": 517.0
+    },
+    {
+      "category": "鋁罐",
+      "year": 2025,
+      "month": 3,
+      "value": 194.0
+    },
+    {
+      "category": "鋁罐",
+      "year": 2025,
+      "month": 4,
+      "value": 761.0
+    },
+    {
+      "category": "鋁罐",
+      "year": 2025,
+      "month": 5,
+      "value": 755.0
+    },
+    {
+      "category": "鋁罐",
+      "year": 2025,
+      "month": 6,
+      "value": 117.0
+    },
+    {
+      "category": "鋁罐",
+      "year": 2025,
+      "month": 7,
+      "value": 251.0
+    },
+    {
+      "category": "鋁罐",
+      "year": 2025,
+      "month": 8,
+      "value": 387.0
+    },
+    {
+      "category": "鋁罐",
+      "year": 2025,
+      "month": 9,
+      "value": 1266.0
+    },
+    {
+      "category": "鋁罐",
+      "year": 2025,
+      "month": 10,
+      "value": 424.0
+    },
+    {
+      "category": "鋁罐",
+      "year": 2025,
+      "month": 11,
+      "value": 709.0
+    },
+    {
+      "category": "鋁罐",
+      "year": 2025,
+      "month": 12,
+      "value": 1038.0
+    },
+    {
+      "category": "鋁罐",
+      "year": 2026,
+      "month": 1,
+      "value": 580.0
+    },
+    {
+      "category": "鋁罐",
+      "year": 2026,
+      "month": 2,
+      "value": 485.0
+    },
+    {
+      "category": "鋁罐",
+      "year": 2026,
+      "month": 3,
+      "value": 667.0
+    },
+    {
+      "category": "鋁罐",
+      "year": 2026,
+      "month": 4,
+      "value": 685.0
+    },
+    {
+      "category": "電池",
+      "year": 2024,
+      "month": 9,
+      "value": 0.0
+    },
+    {
+      "category": "電池",
+      "year": 2024,
+      "month": 10,
+      "value": 0.0
+    },
+    {
+      "category": "電池",
+      "year": 2024,
+      "month": 11,
+      "value": 0.0
+    },
+    {
+      "category": "電池",
+      "year": 2024,
+      "month": 12,
+      "value": 0.0
+    },
+    {
+      "category": "電池",
+      "year": 2025,
+      "month": 1,
+      "value": 0.0
+    },
+    {
+      "category": "電池",
+      "year": 2025,
+      "month": 2,
+      "value": 0.0
+    },
+    {
+      "category": "電池",
+      "year": 2025,
+      "month": 3,
+      "value": 0.0
+    },
+    {
+      "category": "電池",
+      "year": 2025,
+      "month": 4,
+      "value": 642.0
+    },
+    {
+      "category": "電池",
+      "year": 2025,
+      "month": 5,
+      "value": 2465.0
+    },
+    {
+      "category": "電池",
+      "year": 2025,
+      "month": 6,
+      "value": 1278.0
+    },
+    {
+      "category": "電池",
+      "year": 2025,
+      "month": 7,
+      "value": 210.0
+    },
+    {
+      "category": "電池",
+      "year": 2025,
+      "month": 8,
+      "value": 773.0
+    },
+    {
+      "category": "電池",
+      "year": 2025,
+      "month": 9,
+      "value": 640.0
+    },
+    {
+      "category": "電池",
+      "year": 2025,
+      "month": 10,
+      "value": 561.0
+    },
+    {
+      "category": "電池",
+      "year": 2025,
+      "month": 11,
+      "value": 1134.0
+    },
+    {
+      "category": "電池",
+      "year": 2025,
+      "month": 12,
+      "value": 382.0
+    },
+    {
+      "category": "電池",
+      "year": 2026,
+      "month": 1,
+      "value": 523.0
+    },
+    {
+      "category": "電池",
+      "year": 2026,
+      "month": 2,
+      "value": 1052.0
+    },
+    {
+      "category": "電池",
+      "year": 2026,
+      "month": 3,
+      "value": 770.0
+    },
+    {
+      "category": "電池",
+      "year": 2026,
+      "month": 4,
+      "value": 220.0
+    }
+  ]
+}

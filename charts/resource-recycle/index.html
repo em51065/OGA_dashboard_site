@@ -56,6 +56,15 @@
     border-radius: 10px;
     background: rgba(255,255,255,0.86);
   }
+  .ga-controls {
+    display: flex;
+    gap: 10px;
+    align-items: stretch;
+    justify-content: flex-end;
+  }
+  .ga-control[hidden] {
+    display: none;
+  }
   .ga-control label {
     display: block;
     margin-bottom: 6px;
@@ -97,6 +106,10 @@
     font-size: 18px;
     line-height: 1.2;
   }
+  .ga-coverage-wrap {
+    position: relative;
+    flex: 0 0 auto;
+  }
   .ga-coverage {
     display: inline-flex;
     align-items: center;
@@ -106,9 +119,75 @@
     border-radius: 999px;
     background: #eef6ff;
     color: #1d4ed8;
+    font-family: inherit;
     font-size: 12px;
     font-weight: 950;
     white-space: nowrap;
+    cursor: pointer;
+  }
+  .ga-coverage:hover,
+  .ga-coverage[aria-expanded="true"] {
+    border-color: #93c5fd;
+    background: #dbeafe;
+  }
+  .ga-month-popover {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 30;
+    width: 252px;
+    padding: 12px;
+    border: 1px solid #dbe4ef;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 18px 38px rgba(15, 23, 42, 0.16);
+  }
+  .ga-month-popover[hidden] {
+    display: none;
+  }
+  .ga-month-title {
+    margin-bottom: 9px;
+    color: #101827;
+    font-size: 13px;
+    font-weight: 950;
+  }
+  .ga-month-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .ga-month-fields label {
+    color: #475569;
+    font-size: 11px;
+    font-weight: 900;
+  }
+  .ga-month-fields select {
+    margin-top: 4px;
+    padding: 7px 8px;
+    font-size: 13px;
+  }
+  .ga-month-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .ga-month-actions button {
+    border: 0;
+    border-radius: 999px;
+    padding: 7px 11px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 950;
+    cursor: pointer;
+  }
+  .ga-month-reset {
+    background: #edf2f7;
+    color: #475569;
+  }
+  .ga-month-apply {
+    background: #101827;
+    color: #ffffff;
   }
   .ga-pr-score {
     display: flex;
@@ -196,9 +275,88 @@
     padding-top: 12px;
     border-top: 1px dashed #cbd5e1;
   }
+  .ga-overview-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 36px;
+    margin-bottom: 2px;
+  }
+  .ga-overview-head h3 {
+    margin: 0;
+    color: #101827;
+    font-size: 15px;
+    line-height: 1.25;
+    font-weight: 950;
+  }
+  .ga-mode-switch {
+    display: inline-flex;
+    gap: 4px;
+    padding: 4px;
+    border: 1px solid #dbe4ef;
+    border-radius: 999px;
+    background: #f8fafc;
+    flex: 0 0 auto;
+  }
+  .ga-mode-switch[hidden] {
+    display: none;
+  }
+  .ga-mode-switch button {
+    border: 0;
+    border-radius: 999px;
+    padding: 6px 12px;
+    background: transparent;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 950;
+    cursor: pointer;
+  }
+  .ga-mode-switch button.active {
+    background: #101827;
+    color: #ffffff;
+  }
   #overviewChart { height: 260px; }
   .ga-chart-card { padding: 10px 12px 6px; }
   #trendChart { height: 520px; }
+  .ga-toggle-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0 8px 10px 56px;
+  }
+  .ga-toggle-bar[hidden] {
+    display: none;
+  }
+  .ga-icon-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid #dbe4ef;
+    border-radius: 999px;
+    padding: 6px 9px;
+    background: #ffffff;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 950;
+    cursor: pointer;
+    opacity: 0.42;
+    transition: opacity 160ms ease, transform 160ms ease, border-color 160ms ease;
+  }
+  .ga-icon-toggle.active {
+    border-color: currentColor;
+    opacity: 1;
+    transform: translateY(-1px);
+  }
+  .ga-icon-symbol {
+    display: inline-grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.08);
+    font-size: 12px;
+  }
   .ga-error {
     padding: 18px;
     border: 1px solid #fecaca;
@@ -211,7 +369,9 @@
     .ga-head,
     .ga-grid,
     .ga-value-row { grid-template-columns: 1fr; }
+    .ga-controls { justify-content: stretch; flex-direction: column; }
     .ga-control { min-width: 0; }
+    .ga-toggle-bar { padding-left: 8px; }
     #trendChart { height: 440px; }
   }
 </style>
@@ -223,16 +383,41 @@
       <h1>資源回收</h1>
       <div class="ga-sub">用年度排名呈現資源回收的歷史位置；完整年只比完整年，未滿年只比同期累積。</div>
     </div>
-    <div class="ga-control">
-      <label for="yearSelect">選擇年份</label>
-      <select id="yearSelect"></select>
+    <div class="ga-controls">
+      <div class="ga-control" id="categoryControl" hidden>
+        <label for="categorySelect">選擇類別</label>
+        <select id="categorySelect"></select>
+      </div>
+      <div class="ga-control">
+        <label for="yearSelect">選擇年份</label>
+        <select id="yearSelect"></select>
+      </div>
     </div>
   </div>
   <div class="ga-grid">
     <section class="ga-card ga-pr-card">
       <div class="ga-card-title">
         <h2>回收量歷史排名</h2>
-        <div class="ga-coverage" id="yearMonthsTop">--</div>
+        <div class="ga-coverage-wrap">
+          <button type="button" class="ga-coverage" id="yearMonthsTop" aria-expanded="false">--</button>
+          <div class="ga-month-popover" id="monthPopover" hidden>
+            <div class="ga-month-title">選擇資料涵蓋範圍</div>
+            <div class="ga-month-fields">
+              <label>
+                起月
+                <select id="monthStartSelect"></select>
+              </label>
+              <label>
+                迄月
+                <select id="monthEndSelect"></select>
+              </label>
+            </div>
+            <div class="ga-month-actions">
+              <button type="button" class="ga-month-reset" id="monthResetBtn">預設</button>
+              <button type="button" class="ga-month-apply" id="monthApplyBtn">套用</button>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="ga-pr-score">
         <strong id="rankNumber">--</strong>
@@ -240,7 +425,7 @@
       </div>
       <div class="ga-value-row">
         <div class="ga-mini">
-          <div class="ga-mini-label">年度回收量</div>
+          <div class="ga-mini-label" id="valueMiniLabel">回收量</div>
           <div class="ga-mini-value" id="yearValue">--</div>
         </div>
         <div class="ga-mini">
@@ -255,11 +440,19 @@
       <div class="ga-axis"><span>低</span><span>中</span><span>高</span></div>
       <div class="ga-hint" id="rankHint">長條圖顯示所選年度與所有比較年度的回收量。</div>
       <div class="ga-overview-wrap">
+        <div class="ga-overview-head">
+          <h3 id="overviewTitle">年度總覽</h3>
+          <div class="ga-mode-switch" id="overviewModeSwitch" hidden>
+            <button type="button" data-overview-mode="bar" class="active">長條</button>
+            <button type="button" data-overview-mode="pie">圓餅</button>
+          </div>
+        </div>
         <div id="overviewChart"></div>
       </div>
     </section>
     <section class="ga-card ga-chart-card">
       <div id="trendChart"></div>
+      <div class="ga-toggle-bar" id="trendToggles" hidden></div>
     </section>
   </div>
 </div>
@@ -268,12 +461,37 @@
 <script>
 let GA_DATA = null;
 let selectedYear = null;
+let selectedCategory = null;
+let visibleTrendCategories = new Set();
+let overviewMode = "bar";
+let customMonthRange = null;
 const fmt = new Intl.NumberFormat("zh-TW", { maximumFractionDigits: 2 });
 const pctFmt = new Intl.NumberFormat("zh-TW", { maximumFractionDigits: 1 });
 const yearSelect = document.getElementById("yearSelect");
+const categorySelect = document.getElementById("categorySelect");
+const categoryControl = document.getElementById("categoryControl");
+const trendToggles = document.getElementById("trendToggles");
+const overviewModeSwitch = document.getElementById("overviewModeSwitch");
+const overviewTitle = document.getElementById("overviewTitle");
+const yearMonthsTop = document.getElementById("yearMonthsTop");
+const monthPopover = document.getElementById("monthPopover");
+const monthStartSelect = document.getElementById("monthStartSelect");
+const monthEndSelect = document.getElementById("monthEndSelect");
+const monthApplyBtn = document.getElementById("monthApplyBtn");
+const monthResetBtn = document.getElementById("monthResetBtn");
 
-function recordForYear(year) {
-  return GA_DATA.records.find((item) => String(item.year) === String(year)) || GA_DATA.records[GA_DATA.records.length - 1];
+function isEcocoChart() {
+  return GA_DATA.chartType === "ecoco";
+}
+
+function currentSeries(category = selectedCategory) {
+  if (!isEcocoChart()) return GA_DATA;
+  return GA_DATA.series[category] || GA_DATA.series[GA_DATA.defaultCategory];
+}
+
+function recordForYear(year, category = selectedCategory) {
+  const series = currentSeries(category);
+  return series.records.find((item) => String(item.year) === String(year)) || series.records[series.records.length - 1];
 }
 
 function mixColor(a, b, t) {
@@ -289,15 +507,22 @@ function colorForPosition(position) {
 }
 
 function formatMonths(months) {
-  const list = [...months].sort((a, b) => a - b);
+  const list = [...new Set((months || []).map(Number).filter(Number.isFinite))].sort((a, b) => a - b);
   if (!list.length) return "無資料";
-  const isConsecutiveFromOne = list.every((month, idx) => month === idx + 1);
-  if (isConsecutiveFromOne) return `1-${list[list.length - 1]}月`;
+  if (list.length === 1) return `${list[0]}月`;
+  const isConsecutive = list.every((month, idx) => idx === 0 || month === list[idx - 1] + 1);
+  if (isConsecutive) return `${list[0]}-${list[list.length - 1]}月`;
   return `${list.join("、")}月`;
 }
 
-function valuesForYearUntil(year, cutoffMonth) {
-  const rows = GA_DATA.monthly
+function monthsInRange(months, startMonth, endMonth) {
+  return [...new Set((months || []).map(Number).filter((month) => month >= startMonth && month <= endMonth))]
+    .sort((a, b) => a - b);
+}
+
+function valuesForYearUntil(year, cutoffMonth, category = selectedCategory) {
+  const series = currentSeries(category);
+  const rows = series.monthly
     .filter((item) => Number(item.year) === Number(year) && Number(item.month) <= Number(cutoffMonth))
     .sort((a, b) => a.month - b.month);
   return {
@@ -306,20 +531,79 @@ function valuesForYearUntil(year, cutoffMonth) {
   };
 }
 
+function valuesForYearRange(year, startMonth, endMonth, category = selectedCategory) {
+  const series = currentSeries(category);
+  const rows = series.monthly
+    .filter((item) =>
+      Number(item.year) === Number(year) &&
+      Number(item.month) >= Number(startMonth) &&
+      Number(item.month) <= Number(endMonth)
+    )
+    .sort((a, b) => a.month - b.month);
+  return {
+    value: rows.reduce((sum, item) => sum + Number(item.value || 0), 0),
+    months: rows.map((item) => Number(item.month)),
+  };
+}
+
+function defaultRangeForRecord(record) {
+  return {
+    start: 1,
+    end: record.hasDecember ? 12 : Number(record.maxMonth || 12),
+  };
+}
+
+function activeMonthRangeForYear(year, category = selectedCategory) {
+  const record = recordForYear(year, category);
+  if (customMonthRange) return { ...customMonthRange, isCustom: true };
+  return { ...defaultRangeForRecord(record), isCustom: false };
+}
+
 function averageRank(value, values) {
   const less = values.filter((item) => item < value - 1e-9).length;
   const equal = values.filter((item) => Math.abs(item - value) <= 1e-9).length;
   return less + 1 + (equal - 1) / 2;
 }
 
-function comparisonForYear(year) {
-  const selectedRecord = recordForYear(year);
-  const cutoffMonth = selectedRecord.hasDecember ? 12 : Number(selectedRecord.maxMonth || 12);
-  const shortBasisLabel = selectedRecord.hasDecember ? "全年累積" : `1-${cutoffMonth}月同期累積`;
-  let rows = GA_DATA.records.map((record) => {
-    const part = valuesForYearUntil(record.year, cutoffMonth);
+function comparisonForYear(year, category = selectedCategory) {
+  const series = currentSeries(category);
+  const selectedRecord = recordForYear(year, category);
+  const range = activeMonthRangeForYear(year, category);
+  const cutoffMonth = range.end;
+  const selectedDisplayMonths = range.isCustom
+    ? monthsInRange(selectedRecord.monthsList, range.start, range.end)
+    : selectedRecord.monthsList;
+  const shortBasisLabel = range.isCustom
+    ? `${formatMonths(selectedDisplayMonths)}累積`
+    : selectedRecord.hasDecember ? "全年累積" : `1-${cutoffMonth}月同期累積`;
+  let rows = series.records.map((record) => {
+    const part = range.isCustom
+      ? valuesForYearRange(record.year, range.start, range.end, category)
+      : valuesForYearUntil(record.year, cutoffMonth, category);
     return { ...record, value: part.value, comparisonMonths: part.months };
-  }).filter((row) => row.comparisonMonths.includes(cutoffMonth));
+  }).filter((row) => {
+    if (range.isCustom) {
+      if (!row.comparisonMonths.length) return false;
+      if (range.start === range.end) return row.comparisonMonths.includes(range.start);
+      return row.comparisonMonths.includes(range.start) && row.comparisonMonths.includes(range.end);
+    }
+    return row.comparisonMonths.includes(cutoffMonth);
+  });
+
+  if (!rows.length) {
+    return {
+      selected: { ...selectedRecord, value: 0, rankHigh: 1, relativePosition: 100, comparisonMonths: [] },
+      selectedRecord,
+      selectedDisplayMonths,
+      startMonth: range.start,
+      cutoffMonth,
+      shortBasisLabel,
+      rows: [],
+      values: [],
+      mean: 0,
+      category,
+    };
+  }
 
   const values = rows.map((row) => row.value);
   rows = rows.map((row) => {
@@ -334,13 +618,12 @@ function comparisonForYear(year) {
 
   const selected = rows.find((row) => String(row.year) === String(year)) || rows[rows.length - 1];
   const mean = values.reduce((sum, value) => sum + value, 0) / values.length;
-  return { selected, selectedRecord, cutoffMonth, shortBasisLabel, rows, values, mean };
+  return { selected, selectedRecord, selectedDisplayMonths, startMonth: range.start, cutoffMonth, shortBasisLabel, rows, values, mean, category };
 }
 
 function updateDom() {
   const comparison = comparisonForYear(selectedYear);
   const row = comparison.selected;
-  const raw = comparison.selectedRecord;
   const position = Math.round(row.relativePosition);
   const width = Math.max(5, Math.min(100, row.relativePosition));
   const diffPct = comparison.mean === 0 ? 0 : ((row.value - comparison.mean) / comparison.mean) * 100;
@@ -350,8 +633,9 @@ function updateDom() {
   document.getElementById("rankNumber").textContent = row.rankHigh;
   document.getElementById("rankNumber").style.color = selectedColor;
   document.getElementById("rankTotal").textContent = `/ 共 ${comparison.rows.length} 年`;
+  document.getElementById("valueMiniLabel").textContent = GA_DATA.valueNoun;
   document.getElementById("yearValue").textContent = `${fmt.format(row.value)} ${GA_DATA.unit}`;
-  document.getElementById("yearMonthsTop").textContent = `資料涵蓋 ${formatMonths(raw.monthsList)}`;
+  yearMonthsTop.textContent = `資料涵蓋 ${formatMonths(comparison.selectedDisplayMonths)}`;
   document.getElementById("meanDiff").textContent = `${direction} ${pctFmt.format(Math.abs(diffPct))}%`;
   document.getElementById("meanDiff").style.color = selectedColor;
   document.getElementById("rankFill").style.width = `${width}%`;
@@ -361,26 +645,86 @@ function updateDom() {
     `${fmt.format(row.value)} ${GA_DATA.unit}｜第 ${row.rankHigh} / 共 ${comparison.rows.length} 年`;
 }
 
-function renderTrend() {
-  const comparison = comparisonForYear(selectedYear);
-  const years = comparison.rows.map((item) => item.year);
-  const values = comparison.rows.map((item) => item.value);
-  const selected = comparison.selected;
-  const colors = comparison.rows.map((item) => String(item.year) === String(selectedYear) ? "#d43f55" : "#2563eb");
-  const sizes = comparison.rows.map((item) => String(item.year) === String(selectedYear) ? 14 : 8);
+const CATEGORY_COLORS = ["#d43f55", "#2563eb", "#0f766e", "#b45309", "#7c3aed", "#0891b2", "#475569"];
+const CATEGORY_COLOR_MAP = {
+  "ECOCO": "#d43f55",
+  "寶特瓶": "#2563eb",
+  "鋁罐": "#0f766e",
+  "PP杯": "#b45309",
+  "電池": "#7c3aed",
+  "牛奶瓶": "#0891b2",
+  "機台數": "#475569",
+};
 
-  Plotly.react("trendChart", [{
-    type: "scatter",
-    mode: "lines+markers",
-    x: years,
-    y: values,
-    line: { color: "#1f3b57", width: 3 },
-    marker: { color: colors, size: sizes, line: { color: "#ffffff", width: 2 } },
-    customdata: comparison.rows.map((item) => [item.rankHigh, comparison.rows.length, item.comparisonMonths.join("、"), comparison.shortBasisLabel]),
-    hovertemplate: "%{x} 年<br>" + GA_DATA.valueNoun + "：%{y:,.2f} " + GA_DATA.unit + "<br>第 %{customdata[0]} / 共 %{customdata[1]} 年<br>比較基準：%{customdata[3]}<br>納入月份：%{customdata[2]}月<extra></extra>",
-  }], {
+function categoryColor(category) {
+  if (CATEGORY_COLOR_MAP[category]) return CATEGORY_COLOR_MAP[category];
+  const list = isEcocoChart() ? GA_DATA.categories : [GA_DATA.metric];
+  const idx = Math.max(0, list.indexOf(category));
+  return CATEGORY_COLORS[idx % CATEGORY_COLORS.length];
+}
+
+function categoryIcon(category) {
+  return (GA_DATA.categoryIcons && GA_DATA.categoryIcons[category]) || category.slice(0, 1);
+}
+
+function renderTrendToggles() {
+  if (!isEcocoChart()) {
+    trendToggles.hidden = true;
+    return;
+  }
+  trendToggles.hidden = false;
+  trendToggles.innerHTML = "";
+  GA_DATA.categories.forEach((category) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = `ga-icon-toggle${visibleTrendCategories.has(category) ? " active" : ""}`;
+    btn.style.color = categoryColor(category);
+    btn.innerHTML = `<span>${category}</span>`;
+    btn.addEventListener("click", () => {
+      if (visibleTrendCategories.has(category)) {
+        visibleTrendCategories.delete(category);
+      } else {
+        visibleTrendCategories.add(category);
+      }
+      if (visibleTrendCategories.size === 0) visibleTrendCategories.add(selectedCategory);
+      renderTrendToggles();
+      renderTrend();
+    });
+    trendToggles.appendChild(btn);
+  });
+}
+
+function renderTrend() {
+  const baseComparison = comparisonForYear(selectedYear, selectedCategory);
+  const activeCategories = isEcocoChart() ? [...visibleTrendCategories] : [selectedCategory];
+  const traces = activeCategories.map((category) => {
+    const comparison = comparisonForYear(selectedYear, category);
+    if (!comparison.rows.length) return null;
+    const years = comparison.rows.map((item) => item.year);
+    const values = comparison.rows.map((item) => item.value);
+    const color = isEcocoChart() ? categoryColor(category) : "#1f3b57";
+    return {
+      type: "scatter",
+      mode: "lines+markers",
+      name: category || GA_DATA.metric,
+      x: years,
+      y: values,
+      line: { color, width: category === selectedCategory ? 3.4 : 2.4 },
+      marker: {
+        color: comparison.rows.map((item) => String(item.year) === String(selectedYear) ? color : "#ffffff"),
+        size: comparison.rows.map((item) => String(item.year) === String(selectedYear) ? 13 : 8),
+        line: { color, width: 2 },
+      },
+      customdata: comparison.rows.map((item) => [item.rankHigh, comparison.rows.length, formatMonths(item.comparisonMonths), comparison.shortBasisLabel, category]),
+      hovertemplate: "%{customdata[4]}<br>%{x} 年<br>" + GA_DATA.valueNoun + "：%{y:,.2f} " + GA_DATA.unit + "<br>第 %{customdata[0]} / 共 %{customdata[1]} 年<br>比較基準：%{customdata[3]}<br>納入月份：%{customdata[2]}<extra></extra>",
+    };
+  }).filter(Boolean);
+  const years = baseComparison.rows.map((item) => item.year);
+  const selected = baseComparison.selected;
+
+  Plotly.react("trendChart", traces, {
     title: {
-      text: `${GA_DATA.valueNoun}歷史趨勢<br><sup>${comparison.shortBasisLabel}，每一點代表該比較基準下的累積量</sup>`,
+      text: `${GA_DATA.valueNoun}歷史趨勢<br><sup>${baseComparison.shortBasisLabel}，每一點代表該比較基準下的累積量</sup>`,
       x: 0,
       xanchor: "left",
       font: { size: 19, color: "#101827" },
@@ -400,8 +744,8 @@ function renderTrend() {
         type: "line",
         x0: Math.min(...years),
         x1: Math.max(...years),
-        y0: comparison.mean,
-        y1: comparison.mean,
+        y0: baseComparison.mean,
+        y1: baseComparison.mean,
         xref: "x",
         yref: "y",
         line: { color: "#64748b", width: 2, dash: "dash" },
@@ -423,8 +767,8 @@ function renderTrend() {
       },
       {
         x: Math.max(...years),
-        y: comparison.mean,
-        text: `均值 ${fmt.format(comparison.mean)}`,
+        y: baseComparison.mean,
+        text: `均值 ${fmt.format(baseComparison.mean)}`,
         showarrow: false,
         xanchor: "left",
         xshift: 10,
@@ -442,7 +786,53 @@ function renderTrend() {
 }
 
 function renderOverview() {
-  const comparison = comparisonForYear(selectedYear);
+  const comparison = comparisonForYear(selectedYear, selectedCategory);
+  const showPieMode = isEcocoChart() && selectedCategory === "ECOCO";
+  overviewModeSwitch.hidden = !showPieMode;
+  overviewModeSwitch.querySelectorAll("button").forEach((button) => {
+    button.classList.toggle("active", button.dataset.overviewMode === overviewMode);
+  });
+  if (!showPieMode) overviewMode = "bar";
+  if (showPieMode && overviewMode === "pie") {
+    const totals = new Map();
+    GA_DATA.categoryMonthly
+      .filter((item) =>
+        Number(item.year) === Number(selectedYear) &&
+        Number(item.month) >= Number(comparison.startMonth) &&
+        Number(item.month) <= Number(comparison.cutoffMonth)
+      )
+      .forEach((item) => totals.set(item.category, (totals.get(item.category) || 0) + Number(item.value || 0)));
+    const rows = GA_DATA.rawCategories
+      .map((category) => ({ category, value: totals.get(category) || 0 }))
+      .filter((row) => row.value > 0)
+      .sort((a, b) => b.value - a.value);
+    const total = rows.reduce((sum, row) => sum + row.value, 0);
+    overviewTitle.textContent = `類別佔比｜${selectedYear} 年 ${comparison.shortBasisLabel}`;
+    Plotly.react("overviewChart", [{
+      type: "pie",
+      labels: rows.map((row) => row.category),
+      values: rows.map((row) => row.value),
+      hole: 0.42,
+      sort: false,
+      marker: { colors: rows.map((row) => categoryColor(row.category)), line: { color: "#ffffff", width: 2 } },
+      textinfo: "label+percent",
+      textposition: "outside",
+      hovertemplate: "%{label}<br>" + GA_DATA.valueNoun + "：%{value:,.2f} " + GA_DATA.unit + "<br>佔比：%{percent}<extra></extra>",
+    }], {
+      annotations: [{
+        text: `${fmt.format(total)}<br>${GA_DATA.unit}`,
+        x: 0.5,
+        y: 0.5,
+        showarrow: false,
+        font: { size: 14, color: "#101827" },
+      }],
+      margin: { l: 24, r: 24, t: 18, b: 24 },
+      paper_bgcolor: "rgba(0,0,0,0)",
+      plot_bgcolor: "#ffffff",
+      showlegend: false,
+    }, { displayModeBar: false, responsive: true });
+    return;
+  }
   const selectedBars = comparison.rows.filter((item) => String(item.year) === String(selectedYear));
   const otherBars = comparison.rows
     .filter((item) => String(item.year) !== String(selectedYear))
@@ -453,6 +843,7 @@ function renderOverview() {
   const yPositions = bars.map((_, idx) => idx === 0 ? 0 : idx + 0.42);
   const maxValue = Math.max(...values, 1);
   const colors = bars.map((item) => colorForPosition(Math.round(item.relativePosition)));
+  overviewTitle.textContent = `年度總覽｜${comparison.shortBasisLabel}`;
 
   Plotly.react("overviewChart", [{
     type: "bar",
@@ -478,13 +869,7 @@ function renderOverview() {
       "<br>資料涵蓋：%{customdata[2]}" +
       "<br>比較基準：%{customdata[3]}<extra></extra>",
   }], {
-    title: {
-      text: `年度總覽｜${comparison.shortBasisLabel}`,
-      x: 0,
-      xanchor: "left",
-      font: { size: 15, color: "#101827" },
-    },
-    margin: { l: 64, r: 86, t: 52, b: 42 },
+    margin: { l: 64, r: 86, t: 18, b: 42 },
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "#ffffff",
     xaxis: {
@@ -507,26 +892,138 @@ function renderOverview() {
   }, { displayModeBar: false, responsive: true });
 }
 
+function availableMonthsForSelection() {
+  return [...new Set(recordForYear(selectedYear, selectedCategory).monthsList || [])]
+    .map(Number)
+    .filter(Number.isFinite)
+    .sort((a, b) => a - b);
+}
+
+function fillMonthSelect(select, months, selectedValue) {
+  select.innerHTML = "";
+  months.forEach((month) => {
+    const opt = document.createElement("option");
+    opt.value = String(month);
+    opt.textContent = `${month}月`;
+    select.appendChild(opt);
+  });
+  select.value = String(selectedValue);
+}
+
+function syncMonthRangeControls() {
+  const months = availableMonthsForSelection();
+  if (!months.length) return;
+  const fallbackStart = customMonthRange ? customMonthRange.start : months[0];
+  const fallbackEnd = customMonthRange ? customMonthRange.end : months[months.length - 1];
+  const start = months.includes(Number(fallbackStart)) ? Number(fallbackStart) : months[0];
+  const endCandidates = months.filter((month) => month >= start);
+  const end = endCandidates.includes(Number(fallbackEnd)) ? Number(fallbackEnd) : endCandidates[endCandidates.length - 1];
+  fillMonthSelect(monthStartSelect, months, start);
+  fillMonthSelect(monthEndSelect, endCandidates, end);
+}
+
+function closeMonthPopover() {
+  monthPopover.hidden = true;
+  yearMonthsTop.setAttribute("aria-expanded", "false");
+}
+
+function openMonthPopover() {
+  syncMonthRangeControls();
+  monthPopover.hidden = false;
+  yearMonthsTop.setAttribute("aria-expanded", "true");
+}
+
+function resetMonthRange() {
+  customMonthRange = null;
+  closeMonthPopover();
+}
+
 function updateAll() {
   updateDom();
+  if (!monthPopover.hidden) syncMonthRangeControls();
+  renderTrendToggles();
   renderTrend();
   renderOverview();
 }
 
-function initSelect() {
+function populateYearSelect() {
+  const series = currentSeries();
   yearSelect.innerHTML = "";
-  [...GA_DATA.records].sort((a, b) => b.year - a.year).forEach((row) => {
+  [...series.records].sort((a, b) => b.year - a.year).forEach((row) => {
     const opt = document.createElement("option");
     opt.value = String(row.year);
     opt.textContent = `${row.year} 年`;
     yearSelect.appendChild(opt);
   });
-  selectedYear = String(GA_DATA.defaultYear);
+  selectedYear = String(series.defaultYear || GA_DATA.defaultYear);
   yearSelect.value = selectedYear;
+}
+
+function initSelect() {
+  if (isEcocoChart()) {
+    categoryControl.hidden = false;
+    categorySelect.innerHTML = "";
+    GA_DATA.categories.forEach((category) => {
+      const opt = document.createElement("option");
+      opt.value = category;
+      opt.textContent = category;
+      categorySelect.appendChild(opt);
+    });
+    selectedCategory = GA_DATA.defaultCategory;
+    categorySelect.value = selectedCategory;
+    visibleTrendCategories = new Set([selectedCategory]);
+    categorySelect.addEventListener("change", (event) => {
+      selectedCategory = event.target.value;
+      visibleTrendCategories = new Set([selectedCategory]);
+      overviewMode = "bar";
+      resetMonthRange();
+      populateYearSelect();
+      updateAll();
+    });
+    overviewModeSwitch.querySelectorAll("button").forEach((button) => {
+      button.addEventListener("click", () => {
+        overviewMode = button.dataset.overviewMode;
+        renderOverview();
+      });
+    });
+  } else {
+    categoryControl.hidden = true;
+    selectedCategory = GA_DATA.metric;
+    visibleTrendCategories = new Set([selectedCategory]);
+  }
+  populateYearSelect();
   yearSelect.addEventListener("change", (event) => {
     selectedYear = event.target.value;
+    resetMonthRange();
     updateAll();
   });
+  yearMonthsTop.addEventListener("click", (event) => {
+    event.stopPropagation();
+    if (monthPopover.hidden) openMonthPopover();
+    else closeMonthPopover();
+  });
+  monthPopover.addEventListener("click", (event) => {
+    event.stopPropagation();
+  });
+  monthStartSelect.addEventListener("change", () => {
+    const start = Number(monthStartSelect.value);
+    const months = availableMonthsForSelection().filter((month) => month >= start);
+    const currentEnd = Number(monthEndSelect.value);
+    const end = months.includes(currentEnd) ? currentEnd : months[months.length - 1];
+    fillMonthSelect(monthEndSelect, months, end);
+  });
+  monthApplyBtn.addEventListener("click", () => {
+    const start = Number(monthStartSelect.value);
+    const end = Number(monthEndSelect.value);
+    customMonthRange = { start: Math.min(start, end), end: Math.max(start, end) };
+    closeMonthPopover();
+    updateAll();
+  });
+  monthResetBtn.addEventListener("click", () => {
+    resetMonthRange();
+    updateAll();
+  });
+  document.addEventListener("click", closeMonthPopover);
 }
 
 function showError(error) {
