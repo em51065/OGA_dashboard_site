@@ -330,7 +330,7 @@
   }
   #overviewChart { height: 260px; }
   .ga-chart-card { padding: 10px 12px 6px; }
-  #trendChart { height: 520px; }
+  #trendChart { height: 586px; }
   .ga-toggle-bar {
     display: flex;
     flex-wrap: wrap;
@@ -384,7 +384,7 @@
     .ga-controls { justify-content: stretch; flex-direction: column; }
     .ga-control { min-width: 0; }
     .ga-toggle-bar { padding-left: 8px; }
-    #trendChart { height: 440px; }
+    #trendChart { height: 506px; }
   }
 </style>
 </head>
@@ -482,6 +482,7 @@ let selectedLocation = null;
 let visibleTrendCategories = new Set();
 let overviewMode = "bar";
 let customMonthRange = null;
+let trendDialogState = null;
 const fmt = new Intl.NumberFormat("zh-TW", { maximumFractionDigits: 2 });
 const pctFmt = new Intl.NumberFormat("zh-TW", { maximumFractionDigits: 1 });
 const yearSelect = document.getElementById("yearSelect");
@@ -491,6 +492,7 @@ const categoryLabel = document.getElementById("categoryLabel");
 const locationSelect = document.getElementById("locationSelect");
 const locationControl = document.getElementById("locationControl");
 const locationLabel = document.getElementById("locationLabel");
+const trendChart = document.getElementById("trendChart");
 const trendToggles = document.getElementById("trendToggles");
 const overviewModeSwitch = document.getElementById("overviewModeSwitch");
 const overviewTitle = document.getElementById("overviewTitle");
@@ -824,11 +826,42 @@ function renderTrendToggles() {
   });
 }
 
+function trendDialogScope() {
+  const range = customMonthRange ? `${customMonthRange.start}-${customMonthRange.end}` : "default";
+  const categories = hasTrendToggles() ? [...visibleTrendCategories].sort().join("|") : selectedCategory;
+  return [selectedYear, selectedCategory, selectedLocation || "", range, categories].join("::");
+}
+
+function bindTrendClick(scope) {
+  if (!trendChart || !trendChart.on) return;
+  if (trendChart.removeAllListeners) {
+    trendChart.removeAllListeners("plotly_click");
+  }
+  trendChart.on("plotly_click", (event) => {
+    const point = event.points && event.points[0];
+    if (!point) return;
+    const data = point.customdata || [];
+    const category = data[4] || selectedCategory;
+    const year = String(point.x);
+    const samePoint = trendDialogState
+      && trendDialogState.scope === scope
+      && trendDialogState.visible
+      && String(trendDialogState.year) === year
+      && trendDialogState.category === category;
+    trendDialogState = samePoint
+      ? { scope, year, category, visible: false }
+      : { scope, year, category, visible: true };
+    renderTrend();
+  });
+}
+
 function renderTrend() {
   const baseComparison = comparisonForYear(selectedYear, selectedCategory);
   const activeCategories = hasTrendToggles() ? [...visibleTrendCategories] : [selectedCategory];
+  const comparisonByCategory = new Map();
   const traces = activeCategories.map((category) => {
     const comparison = comparisonForYear(selectedYear, category);
+    comparisonByCategory.set(category, comparison);
     if (!comparison.rows.length) return null;
     const years = comparison.rows.map((item) => item.year);
     const values = comparison.rows.map((item) => item.value);
@@ -846,7 +879,7 @@ function renderTrend() {
         line: { color, width: 2 },
       },
       customdata: comparison.rows.map((item) => [item.rankHigh, comparison.rows.length, formatMonths(item.comparisonMonths), comparison.shortBasisLabel, category, activeValueNoun(category), activeUnit(category)]),
-      hovertemplate: "%{customdata[4]}<br>%{x} 年<br>%{customdata[5]}：%{y:,.2f} %{customdata[6]}<br>第 %{customdata[0]} / 共 %{customdata[1]} 年<br>比較基準：%{customdata[3]}<br>納入月份：%{customdata[2]}<extra></extra>",
+      hoverinfo: "none",
     };
   }).filter(Boolean);
   const years = baseComparison.rows.map((item) => item.year);
@@ -857,6 +890,9 @@ function renderTrend() {
         text: `${activeValueNoun()}歷史趨勢<br><sup>目前篩選條件沒有資料</sup>`,
         x: 0,
         xanchor: "left",
+        y: 0.965,
+        yanchor: "top",
+        pad: { t: 3, b: 0 },
         font: { size: 19, color: "#101827" },
       },
       margin: { l: 70, r: 92, t: 78, b: 62 },
@@ -878,11 +914,115 @@ function renderTrend() {
     return;
   }
 
+  const minYear = Math.min(...years);
+  const maxYear = Math.max(...years);
+  const scope = trendDialogScope();
+  const defaultDialogCategory = activeCategories.includes(selectedCategory) ? selectedCategory : activeCategories[0];
+  const currentDialogState = trendDialogState && trendDialogState.scope === scope
+    ? trendDialogState
+    : { scope, year: selectedYear, category: defaultDialogCategory, visible: true };
+  const dialogComparison = comparisonByCategory.get(currentDialogState.category) || comparisonForYear(selectedYear, currentDialogState.category);
+  const dialogRow = currentDialogState.visible
+    ? dialogComparison.rows.find((item) => String(item.year) === String(currentDialogState.year))
+    : null;
+  const dialogYears = dialogComparison.rows.map((item) => item.year);
+  const dialogIndex = dialogRow ? dialogYears.findIndex((year) => String(year) === String(dialogRow.year)) : -1;
+  const dialogRows = dialogComparison.rows;
+  const previousDialogRow = dialogIndex > 0 ? dialogRows[dialogIndex - 1] : null;
+  const nextDialogRow = dialogIndex >= 0 && dialogIndex < dialogRows.length - 1 ? dialogRows[dialogIndex + 1] : null;
+  let dialogSide = "center";
+  let dialogVertical = "below";
+  if (dialogRow && dialogRows.length > 1) {
+    if (!previousDialogRow && nextDialogRow) {
+      dialogSide = "right";
+      dialogVertical = nextDialogRow.value < dialogRow.value ? "above" : "below";
+    } else if (previousDialogRow && !nextDialogRow) {
+      dialogSide = "left";
+      dialogVertical = previousDialogRow.value < dialogRow.value ? "above" : "below";
+    } else if (previousDialogRow && nextDialogRow) {
+      const values = dialogRows.map((item) => item.value);
+      const minValue = Math.min(...values);
+      const maxValue = Math.max(...values);
+      const yPosition = maxValue === minValue ? 0.5 : (dialogRow.value - minValue) / (maxValue - minValue);
+      const candidates = [
+        { side: "left", vertical: "above", neighbor: previousDialogRow },
+        { side: "left", vertical: "below", neighbor: previousDialogRow },
+        { side: "right", vertical: "above", neighbor: nextDialogRow },
+        { side: "right", vertical: "below", neighbor: nextDialogRow },
+      ].map((candidate) => {
+        let score = 0;
+        const neighborIsHigher = candidate.neighbor.value > dialogRow.value;
+        const neighborIsLower = candidate.neighbor.value < dialogRow.value;
+        if (candidate.vertical === "above") {
+          score += 0.8;
+          if (neighborIsHigher) score += 8;
+          if (yPosition > 0.62) score += 6 + ((yPosition - 0.62) * 12);
+        } else {
+          if (neighborIsLower) score += 8;
+          if (yPosition < 0.16) score += 3 + ((0.16 - yPosition) * 8);
+        }
+        if (candidate.side === "left" && dialogIndex <= 1) score += 1.6;
+        if (candidate.side === "right" && dialogIndex >= dialogRows.length - 2) score += 1.6;
+        return { ...candidate, score };
+      }).sort((a, b) => a.score - b.score);
+      dialogSide = candidates[0].side;
+      dialogVertical = candidates[0].vertical;
+    }
+  }
+  const dialogAx = dialogSide === "left" ? -40 : dialogSide === "right" ? 40 : 0;
+  const dialogAy = dialogVertical === "above" ? -54 : 54;
+  const dialogXAnchor = "center";
+  const dialogYAnchor = dialogVertical === "above" ? "bottom" : "top";
+  const dialogText = dialogRow
+    ? `${fmt.format(dialogRow.value)} ${activeUnit(currentDialogState.category)}`
+    : null;
+  const annotations = [
+    {
+      x: maxYear,
+      y: baseComparison.mean,
+      xref: "x",
+      yref: "y",
+      text: `均值 ${fmt.format(baseComparison.mean)} ${activeUnit()}`,
+      showarrow: false,
+      xanchor: "left",
+      yanchor: "middle",
+      xshift: 8,
+      yshift: 0,
+      bgcolor: "rgba(0,0,0,0)",
+      bordercolor: "rgba(0,0,0,0)",
+      borderpad: 0,
+      font: { size: 12, color: "#475569" },
+    },
+  ];
+  if (dialogRow && dialogText) {
+    annotations.push({
+      x: dialogRow.year,
+      y: dialogRow.value,
+      xref: "x",
+      yref: "y",
+      text: dialogText,
+      showarrow: true,
+      arrowhead: 2,
+      arrowcolor: "#cbd5e1",
+      ax: dialogAx,
+      ay: dialogAy,
+      xanchor: dialogXAnchor,
+      yanchor: dialogYAnchor,
+      bgcolor: "rgba(255,255,255,0.94)",
+      bordercolor: "#d9e1ec",
+      borderpad: 6,
+      font: { size: 12, color: "#101827" },
+    });
+  }
+
   Plotly.react("trendChart", traces, {
     title: {
       text: `${activeValueNoun()}歷史趨勢<br><sup>${baseComparison.shortBasisLabel}，每一點代表該比較基準下的累積量</sup>`,
       x: 0,
       xanchor: "left",
+      y: 0.965,
+      yanchor: "top",
+      pad: { t: 3, b: 0 },
       font: { size: 19, color: "#101827" },
     },
     shapes: [
@@ -898,8 +1038,8 @@ function renderTrend() {
       },
       {
         type: "line",
-        x0: Math.min(...years),
-        x1: Math.max(...years),
+        x0: minYear,
+        x1: maxYear,
         y0: baseComparison.mean,
         y1: baseComparison.mean,
         xref: "x",
@@ -907,38 +1047,14 @@ function renderTrend() {
         line: { color: "#64748b", width: 2, dash: "dash" },
       },
     ],
-    annotations: [
-      {
-        x: selected.year,
-        y: selected.value,
-        text: `${selected.year}｜${fmt.format(selected.value)} ${activeUnit()}`,
-        showarrow: true,
-        arrowhead: 2,
-        ax: 36,
-        ay: -42,
-        bgcolor: "rgba(255,255,255,0.9)",
-        bordercolor: "#d9e1ec",
-        borderpad: 6,
-        font: { size: 12, color: "#101827" },
-      },
-      {
-        x: Math.max(...years),
-        y: baseComparison.mean,
-        text: `均值 ${fmt.format(baseComparison.mean)}`,
-        showarrow: false,
-        xanchor: "left",
-        xshift: 10,
-        yshift: 2,
-        font: { size: 12, color: "#475569" },
-      },
-    ],
-    margin: { l: 70, r: 92, t: 78, b: 62 },
+    annotations,
+    margin: { l: 58, r: 92, t: 128, b: 78 },
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "#ffffff",
     xaxis: { tickmode: "array", tickvals: years, title: "", showgrid: false, zeroline: false },
     yaxis: { title: activeUnit(), rangemode: "tozero", gridcolor: "#e8eef6", zeroline: false },
     showlegend: false,
-  }, { displayModeBar: false, responsive: true });
+  }, { displayModeBar: false, responsive: true }).then(() => bindTrendClick(scope));
 }
 
 function renderSolarLocationOverview(comparison) {
