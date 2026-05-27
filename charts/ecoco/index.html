@@ -547,6 +547,14 @@ function valuesForYearRange(year, startMonth, endMonth, category = selectedCateg
 }
 
 function defaultRangeForRecord(record) {
+  const months = [...new Set((record.monthsList || []).map(Number).filter(Number.isFinite))]
+    .sort((a, b) => a - b);
+  if (months.length) {
+    return {
+      start: months[0],
+      end: months[months.length - 1],
+    };
+  }
   return {
     start: 1,
     end: record.hasDecember ? 12 : Number(record.maxMonth || 12),
@@ -573,21 +581,15 @@ function comparisonForYear(year, category = selectedCategory) {
   const selectedDisplayMonths = range.isCustom
     ? monthsInRange(selectedRecord.monthsList, range.start, range.end)
     : selectedRecord.monthsList;
-  const shortBasisLabel = range.isCustom
-    ? `${formatMonths(selectedDisplayMonths)}累積`
-    : selectedRecord.hasDecember ? "全年累積" : `1-${cutoffMonth}月同期累積`;
+  const isFullYearRange = !range.isCustom && range.start === 1 && range.end === 12;
+  const shortBasisLabel = isFullYearRange ? "全年累積" : `${formatMonths(selectedDisplayMonths)}累積`;
   let rows = series.records.map((record) => {
-    const part = range.isCustom
-      ? valuesForYearRange(record.year, range.start, range.end, category)
-      : valuesForYearUntil(record.year, cutoffMonth, category);
+    const part = valuesForYearRange(record.year, range.start, range.end, category);
     return { ...record, value: part.value, comparisonMonths: part.months };
   }).filter((row) => {
-    if (range.isCustom) {
-      if (!row.comparisonMonths.length) return false;
-      if (range.start === range.end) return row.comparisonMonths.includes(range.start);
-      return row.comparisonMonths.includes(range.start) && row.comparisonMonths.includes(range.end);
-    }
-    return row.comparisonMonths.includes(cutoffMonth);
+    if (!row.comparisonMonths.length) return false;
+    if (range.start === range.end) return row.comparisonMonths.includes(range.start);
+    return row.comparisonMonths.includes(range.start) && row.comparisonMonths.includes(range.end);
   });
 
   if (!rows.length) {
