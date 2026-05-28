@@ -1,6 +1,6 @@
 {
   "dataVersion": "20260513",
-  "generatedAt": "2026-05-27 09:04:50",
+  "generatedAt": "2026-05-28 06:22:34",
   "sourceFile": "Total_20260513.xlsx",
   "chartId": "water-use",
   "chartType": "utility",
@@ -9,7 +9,7 @@
   "valueLabel": "用水量(度)",
   "valueNoun": "用水量",
   "unit": "度",
-  "categoryLabel": "選擇類別",
+  "categoryLabel": "選擇指標",
   "defaultCategory": "用水量",
   "categories": [
     "用水量",

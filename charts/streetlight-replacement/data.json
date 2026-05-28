@@ -1,0 +1,2031 @@
+{
+  "dataVersion": "20260513",
+  "generatedAt": "2026-05-28 06:22:37",
+  "sourceFile": "Total_20260513.xlsx",
+  "chartId": "streetlight-replacement",
+  "chartType": "streetlight",
+  "sheet": "路燈汰換 (2)",
+  "metric": "路燈汰換",
+  "valueLabel": "路燈汰換永續指標",
+  "valueNoun": "節電量",
+  "unit": "瓦",
+  "categoryLabel": "選擇指標",
+  "locationLabel": "選擇校區",
+  "defaultCategory": "節電量",
+  "categories": [
+    "節電量",
+    "汰換數量",
+    "非LED原燈汰換數量",
+    "平均節省瓦數",
+    "節能改善率"
+  ],
+  "categoryMeta": {
+    "節電量": {
+      "unit": "瓦",
+      "valueNoun": "節電量",
+      "agg": "sum",
+      "formulaHtml": "<span class=\"ga-formula-math\"><span>每盞平均節省瓦數</span><span class=\"ga-formula-times\">×</span><span>汰換數量</span></span>",
+      "trendSubtitle": "每一點代表該年度路燈汰換後少掉的總瓦數，數值越高表示節能汰換規模越大。"
+    },
+    "汰換數量": {
+      "unit": "顆/隻/片",
+      "valueNoun": "汰換數量",
+      "agg": "sum",
+      "trendSubtitle": "每一點代表該年度完成的路燈汰換數量，反映實際執行規模。"
+    },
+    "非LED原燈汰換數量": {
+      "unit": "顆/隻/片",
+      "valueNoun": "非LED原燈汰換數量",
+      "agg": "sum",
+      "trendSubtitle": "每一點代表該年度將非LED原燈汰換為較節能燈具的數量。"
+    },
+    "平均節省瓦數": {
+      "unit": "瓦",
+      "valueNoun": "平均節省瓦數",
+      "agg": "ratio",
+      "formulaHtml": "<span class=\"ga-formula-math\"><span class=\"ga-fraction\"><span class=\"ga-frac-top\">所有節省掉的瓦數</span><span class=\"ga-frac-bottom\">汰換數量</span></span></span>",
+      "trendSubtitle": "每一點代表該年度每盞汰換平均節省的瓦數，反映汰換品質。"
+    },
+    "節能改善率": {
+      "unit": "%",
+      "valueNoun": "節能改善率",
+      "agg": "ratio",
+      "formulaHtml": "<span class=\"ga-formula-math\"><span class=\"ga-fraction\"><span class=\"ga-frac-top\">所有節省掉的瓦數</span><span class=\"ga-frac-bottom\">原本所有瓦數</span></span><span class=\"ga-formula-times\">× 100%</span></span>",
+      "trendSubtitle": "每一點代表該年度相對原本耗能的瓦數改善比例，適合跨年度或校區比較。"
+    }
+  },
+  "disableMonthRange": true,
+  "locations": [
+    "全校區",
+    "光復校區",
+    "力行校區",
+    "勝利校區",
+    "安南校區",
+    "成功校區",
+    "成杏校區",
+    "敬業校區",
+    "自強校區"
+  ],
+  "defaultLocation": "全校區",
+  "locationSeries": {
+    "全校區": {
+      "節電量": {
+        "defaultYear": 2026,
+        "records": [
+          {
+            "year": 2025,
+            "value": 26887.0,
+            "months": 7,
+            "monthsList": [
+              1,
+              3,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-09"
+          },
+          {
+            "year": 2026,
+            "value": 250.0,
+            "months": 1,
+            "monthsList": [
+              3
+            ],
+            "maxMonth": 3,
+            "hasDecember": false,
+            "start": "2026-03",
+            "end": "2026-03"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 4595.0
+          },
+          {
+            "year": 2025,
+            "month": 3,
+            "value": 0.0
+          },
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 2255.0
+          },
+          {
+            "year": 2025,
+            "month": 6,
+            "value": 2450.0
+          },
+          {
+            "year": 2025,
+            "month": 7,
+            "value": 5246.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 8324.0
+          },
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 4017.0
+          },
+          {
+            "year": 2026,
+            "month": 3,
+            "value": 250.0
+          }
+        ]
+      },
+      "汰換數量": {
+        "defaultYear": 2026,
+        "records": [
+          {
+            "year": 2025,
+            "value": 460.0,
+            "months": 7,
+            "monthsList": [
+              1,
+              3,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-09"
+          },
+          {
+            "year": 2026,
+            "value": 11.0,
+            "months": 1,
+            "monthsList": [
+              3
+            ],
+            "maxMonth": 3,
+            "hasDecember": false,
+            "start": "2026-03",
+            "end": "2026-03"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 76.0
+          },
+          {
+            "year": 2025,
+            "month": 3,
+            "value": 20.0
+          },
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 39.0
+          },
+          {
+            "year": 2025,
+            "month": 6,
+            "value": 48.0
+          },
+          {
+            "year": 2025,
+            "month": 7,
+            "value": 57.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 156.0
+          },
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 64.0
+          },
+          {
+            "year": 2026,
+            "month": 3,
+            "value": 11.0
+          }
+        ]
+      },
+      "非LED原燈汰換數量": {
+        "defaultYear": 2026,
+        "records": [
+          {
+            "year": 2025,
+            "value": 188.0,
+            "months": 7,
+            "monthsList": [
+              1,
+              3,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-09"
+          },
+          {
+            "year": 2026,
+            "value": 0.0,
+            "months": 1,
+            "monthsList": [
+              3
+            ],
+            "maxMonth": 3,
+            "hasDecember": false,
+            "start": "2026-03",
+            "end": "2026-03"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 33.0
+          },
+          {
+            "year": 2025,
+            "month": 3,
+            "value": 0.0
+          },
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 17.0
+          },
+          {
+            "year": 2025,
+            "month": 6,
+            "value": 13.0
+          },
+          {
+            "year": 2025,
+            "month": 7,
+            "value": 33.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 51.0
+          },
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 41.0
+          },
+          {
+            "year": 2026,
+            "month": 3,
+            "value": 0.0
+          }
+        ]
+      },
+      "平均節省瓦數": {
+        "defaultYear": 2026,
+        "records": [
+          {
+            "year": 2025,
+            "value": 58.45,
+            "months": 7,
+            "monthsList": [
+              1,
+              3,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-09"
+          },
+          {
+            "year": 2026,
+            "value": 22.727,
+            "months": 1,
+            "monthsList": [
+              3
+            ],
+            "maxMonth": 3,
+            "hasDecember": false,
+            "start": "2026-03",
+            "end": "2026-03"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 60.461,
+            "numerator": 4595.0,
+            "denominator": 76.0
+          },
+          {
+            "year": 2025,
+            "month": 3,
+            "value": 0.0,
+            "numerator": 0.0,
+            "denominator": 20.0
+          },
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 57.821,
+            "numerator": 2255.0,
+            "denominator": 39.0
+          },
+          {
+            "year": 2025,
+            "month": 6,
+            "value": 51.042,
+            "numerator": 2450.0,
+            "denominator": 48.0
+          },
+          {
+            "year": 2025,
+            "month": 7,
+            "value": 92.035,
+            "numerator": 5246.0,
+            "denominator": 57.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 53.359,
+            "numerator": 8324.0,
+            "denominator": 156.0
+          },
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 62.766,
+            "numerator": 4017.0,
+            "denominator": 64.0
+          },
+          {
+            "year": 2026,
+            "month": 3,
+            "value": 22.727,
+            "numerator": 250.0,
+            "denominator": 11.0
+          }
+        ]
+      },
+      "節能改善率": {
+        "defaultYear": 2026,
+        "records": [
+          {
+            "year": 2025,
+            "value": 44.927,
+            "months": 7,
+            "monthsList": [
+              1,
+              3,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-09"
+          },
+          {
+            "year": 2026,
+            "value": 32.68,
+            "months": 1,
+            "monthsList": [
+              3
+            ],
+            "maxMonth": 3,
+            "hasDecember": false,
+            "start": "2026-03",
+            "end": "2026-03"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 44.525,
+            "numerator": 459500.0,
+            "denominator": 10320.0
+          },
+          {
+            "year": 2025,
+            "month": 3,
+            "value": 0.0,
+            "numerator": 0.0,
+            "denominator": 320.0
+          },
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 32.724,
+            "numerator": 225500.0,
+            "denominator": 6891.0
+          },
+          {
+            "year": 2025,
+            "month": 6,
+            "value": 52.962,
+            "numerator": 245000.0,
+            "denominator": 4626.0
+          },
+          {
+            "year": 2025,
+            "month": 7,
+            "value": 59.15,
+            "numerator": 524600.0,
+            "denominator": 8869.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 51.049,
+            "numerator": 832400.0,
+            "denominator": 16306.0
+          },
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 32.1,
+            "numerator": 401700.0,
+            "denominator": 12514.0
+          },
+          {
+            "year": 2026,
+            "month": 3,
+            "value": 32.68,
+            "numerator": 25000.0,
+            "denominator": 765.0
+          }
+        ]
+      }
+    },
+    "光復校區": {
+      "節電量": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 4182.0,
+            "months": 5,
+            "monthsList": [
+              1,
+              3,
+              7,
+              8,
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-09"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 0.0
+          },
+          {
+            "year": 2025,
+            "month": 3,
+            "value": 0.0
+          },
+          {
+            "year": 2025,
+            "month": 7,
+            "value": 471.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 2113.0
+          },
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 1598.0
+          }
+        ]
+      },
+      "汰換數量": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 138.0,
+            "months": 5,
+            "monthsList": [
+              1,
+              3,
+              7,
+              8,
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-09"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 2.0
+          },
+          {
+            "year": 2025,
+            "month": 3,
+            "value": 20.0
+          },
+          {
+            "year": 2025,
+            "month": 7,
+            "value": 17.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 64.0
+          },
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 35.0
+          }
+        ]
+      },
+      "非LED原燈汰換數量": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 33.0,
+            "months": 5,
+            "monthsList": [
+              1,
+              3,
+              7,
+              8,
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-09"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 0.0
+          },
+          {
+            "year": 2025,
+            "month": 3,
+            "value": 0.0
+          },
+          {
+            "year": 2025,
+            "month": 7,
+            "value": 4.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 17.0
+          },
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 12.0
+          }
+        ]
+      },
+      "平均節省瓦數": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 30.304,
+            "months": 5,
+            "monthsList": [
+              1,
+              3,
+              7,
+              8,
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-09"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 0.0,
+            "numerator": 0.0,
+            "denominator": 2.0
+          },
+          {
+            "year": 2025,
+            "month": 3,
+            "value": 0.0,
+            "numerator": 0.0,
+            "denominator": 20.0
+          },
+          {
+            "year": 2025,
+            "month": 7,
+            "value": 27.706,
+            "numerator": 471.0,
+            "denominator": 17.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 33.016,
+            "numerator": 2113.0,
+            "denominator": 64.0
+          },
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 45.657,
+            "numerator": 1598.0,
+            "denominator": 35.0
+          }
+        ]
+      },
+      "節能改善率": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 38.074,
+            "months": 5,
+            "monthsList": [
+              1,
+              3,
+              7,
+              8,
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-09"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 0.0,
+            "numerator": 0.0,
+            "denominator": 800.0
+          },
+          {
+            "year": 2025,
+            "month": 3,
+            "value": 0.0,
+            "numerator": 0.0,
+            "denominator": 320.0
+          },
+          {
+            "year": 2025,
+            "month": 7,
+            "value": 44.518,
+            "numerator": 47100.0,
+            "denominator": 1058.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 42.584,
+            "numerator": 211300.0,
+            "denominator": 4962.0
+          },
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 41.571,
+            "numerator": 159800.0,
+            "denominator": 3844.0
+          }
+        ]
+      }
+    },
+    "力行校區": {
+      "節電量": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 1400.0,
+            "months": 1,
+            "monthsList": [
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-09",
+            "end": "2025-09"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 1400.0
+          }
+        ]
+      },
+      "汰換數量": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 12.0,
+            "months": 1,
+            "monthsList": [
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-09",
+            "end": "2025-09"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 12.0
+          }
+        ]
+      },
+      "非LED原燈汰換數量": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 12.0,
+            "months": 1,
+            "monthsList": [
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-09",
+            "end": "2025-09"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 12.0
+          }
+        ]
+      },
+      "平均節省瓦數": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 116.667,
+            "months": 1,
+            "monthsList": [
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-09",
+            "end": "2025-09"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 116.667,
+            "numerator": 1400.0,
+            "denominator": 12.0
+          }
+        ]
+      },
+      "節能改善率": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 29.167,
+            "months": 1,
+            "monthsList": [
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-09",
+            "end": "2025-09"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 29.167,
+            "numerator": 140000.0,
+            "denominator": 4800.0
+          }
+        ]
+      }
+    },
+    "勝利校區": {
+      "節電量": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 1800.0,
+            "months": 1,
+            "monthsList": [
+              5
+            ],
+            "maxMonth": 5,
+            "hasDecember": false,
+            "start": "2025-05",
+            "end": "2025-05"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 1800.0
+          }
+        ]
+      },
+      "汰換數量": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 23.0,
+            "months": 1,
+            "monthsList": [
+              5
+            ],
+            "maxMonth": 5,
+            "hasDecember": false,
+            "start": "2025-05",
+            "end": "2025-05"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 23.0
+          }
+        ]
+      },
+      "非LED原燈汰換數量": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 14.0,
+            "months": 1,
+            "monthsList": [
+              5
+            ],
+            "maxMonth": 5,
+            "hasDecember": false,
+            "start": "2025-05",
+            "end": "2025-05"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 14.0
+          }
+        ]
+      },
+      "平均節省瓦數": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 78.261,
+            "months": 1,
+            "monthsList": [
+              5
+            ],
+            "maxMonth": 5,
+            "hasDecember": false,
+            "start": "2025-05",
+            "end": "2025-05"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 78.261,
+            "numerator": 1800.0,
+            "denominator": 23.0
+          }
+        ]
+      },
+      "節能改善率": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 30.252,
+            "months": 1,
+            "monthsList": [
+              5
+            ],
+            "maxMonth": 5,
+            "hasDecember": false,
+            "start": "2025-05",
+            "end": "2025-05"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 30.252,
+            "numerator": 180000.0,
+            "denominator": 5950.0
+          }
+        ]
+      }
+    },
+    "安南校區": {
+      "節電量": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 1350.0,
+            "months": 1,
+            "monthsList": [
+              1
+            ],
+            "maxMonth": 1,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-01"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 1350.0
+          }
+        ]
+      },
+      "汰換數量": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 9.0,
+            "months": 1,
+            "monthsList": [
+              1
+            ],
+            "maxMonth": 1,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-01"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 9.0
+          }
+        ]
+      },
+      "非LED原燈汰換數量": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 9.0,
+            "months": 1,
+            "monthsList": [
+              1
+            ],
+            "maxMonth": 1,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-01"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 9.0
+          }
+        ]
+      },
+      "平均節省瓦數": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 150.0,
+            "months": 1,
+            "monthsList": [
+              1
+            ],
+            "maxMonth": 1,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-01"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 150.0,
+            "numerator": 1350.0,
+            "denominator": 9.0
+          }
+        ]
+      },
+      "節能改善率": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 60.0,
+            "months": 1,
+            "monthsList": [
+              1
+            ],
+            "maxMonth": 1,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-01"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 60.0,
+            "numerator": 135000.0,
+            "denominator": 2250.0
+          }
+        ]
+      }
+    },
+    "成功校區": {
+      "節電量": {
+        "defaultYear": 2026,
+        "records": [
+          {
+            "year": 2025,
+            "value": 9197.0,
+            "months": 6,
+            "monthsList": [
+              1,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-09"
+          },
+          {
+            "year": 2026,
+            "value": 250.0,
+            "months": 1,
+            "monthsList": [
+              3
+            ],
+            "maxMonth": 3,
+            "hasDecember": false,
+            "start": "2026-03",
+            "end": "2026-03"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 155.0
+          },
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 430.0
+          },
+          {
+            "year": 2025,
+            "month": 6,
+            "value": 2450.0
+          },
+          {
+            "year": 2025,
+            "month": 7,
+            "value": 4775.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 867.0
+          },
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 520.0
+          },
+          {
+            "year": 2026,
+            "month": 3,
+            "value": 250.0
+          }
+        ]
+      },
+      "汰換數量": {
+        "defaultYear": 2026,
+        "records": [
+          {
+            "year": 2025,
+            "value": 176.0,
+            "months": 6,
+            "monthsList": [
+              1,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-09"
+          },
+          {
+            "year": 2026,
+            "value": 11.0,
+            "months": 1,
+            "monthsList": [
+              3
+            ],
+            "maxMonth": 3,
+            "hasDecember": false,
+            "start": "2026-03",
+            "end": "2026-03"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 11.0
+          },
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 12.0
+          },
+          {
+            "year": 2025,
+            "month": 6,
+            "value": 48.0
+          },
+          {
+            "year": 2025,
+            "month": 7,
+            "value": 40.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 56.0
+          },
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 9.0
+          },
+          {
+            "year": 2026,
+            "month": 3,
+            "value": 11.0
+          }
+        ]
+      },
+      "非LED原燈汰換數量": {
+        "defaultYear": 2026,
+        "records": [
+          {
+            "year": 2025,
+            "value": 57.0,
+            "months": 6,
+            "monthsList": [
+              1,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-09"
+          },
+          {
+            "year": 2026,
+            "value": 0.0,
+            "months": 1,
+            "monthsList": [
+              3
+            ],
+            "maxMonth": 3,
+            "hasDecember": false,
+            "start": "2026-03",
+            "end": "2026-03"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 1.0
+          },
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 3.0
+          },
+          {
+            "year": 2025,
+            "month": 6,
+            "value": 13.0
+          },
+          {
+            "year": 2025,
+            "month": 7,
+            "value": 29.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 2.0
+          },
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 9.0
+          },
+          {
+            "year": 2026,
+            "month": 3,
+            "value": 0.0
+          }
+        ]
+      },
+      "平均節省瓦數": {
+        "defaultYear": 2026,
+        "records": [
+          {
+            "year": 2025,
+            "value": 52.256,
+            "months": 6,
+            "monthsList": [
+              1,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-09"
+          },
+          {
+            "year": 2026,
+            "value": 22.727,
+            "months": 1,
+            "monthsList": [
+              3
+            ],
+            "maxMonth": 3,
+            "hasDecember": false,
+            "start": "2026-03",
+            "end": "2026-03"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 14.091,
+            "numerator": 155.0,
+            "denominator": 11.0
+          },
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 35.833,
+            "numerator": 430.0,
+            "denominator": 12.0
+          },
+          {
+            "year": 2025,
+            "month": 6,
+            "value": 51.042,
+            "numerator": 2450.0,
+            "denominator": 48.0
+          },
+          {
+            "year": 2025,
+            "month": 7,
+            "value": 119.375,
+            "numerator": 4775.0,
+            "denominator": 40.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 15.482,
+            "numerator": 867.0,
+            "denominator": 56.0
+          },
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 57.778,
+            "numerator": 520.0,
+            "denominator": 9.0
+          },
+          {
+            "year": 2026,
+            "month": 3,
+            "value": 22.727,
+            "numerator": 250.0,
+            "denominator": 11.0
+          }
+        ]
+      },
+      "節能改善率": {
+        "defaultYear": 2026,
+        "records": [
+          {
+            "year": 2025,
+            "value": 50.525,
+            "months": 6,
+            "monthsList": [
+              1,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-09"
+          },
+          {
+            "year": 2026,
+            "value": 32.68,
+            "months": 1,
+            "monthsList": [
+              3
+            ],
+            "maxMonth": 3,
+            "hasDecember": false,
+            "start": "2026-03",
+            "end": "2026-03"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 23.846,
+            "numerator": 15500.0,
+            "denominator": 650.0
+          },
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 52.696,
+            "numerator": 43000.0,
+            "denominator": 816.0
+          },
+          {
+            "year": 2025,
+            "month": 6,
+            "value": 52.962,
+            "numerator": 245000.0,
+            "denominator": 4626.0
+          },
+          {
+            "year": 2025,
+            "month": 7,
+            "value": 61.132,
+            "numerator": 477500.0,
+            "denominator": 7811.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 27.264,
+            "numerator": 86700.0,
+            "denominator": 3180.0
+          },
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 46.429,
+            "numerator": 52000.0,
+            "denominator": 1120.0
+          },
+          {
+            "year": 2026,
+            "month": 3,
+            "value": 32.68,
+            "numerator": 25000.0,
+            "denominator": 765.0
+          }
+        ]
+      }
+    },
+    "成杏校區": {
+      "節電量": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 3095.0,
+            "months": 2,
+            "monthsList": [
+              1,
+              5
+            ],
+            "maxMonth": 5,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-05"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 3070.0
+          },
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 25.0
+          }
+        ]
+      },
+      "汰換數量": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 54.0,
+            "months": 2,
+            "monthsList": [
+              1,
+              5
+            ],
+            "maxMonth": 5,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-05"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 53.0
+          },
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 1.0
+          }
+        ]
+      },
+      "非LED原燈汰換數量": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 22.0,
+            "months": 2,
+            "monthsList": [
+              1,
+              5
+            ],
+            "maxMonth": 5,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-05"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 22.0
+          },
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 0.0
+          }
+        ]
+      },
+      "平均節省瓦數": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 57.315,
+            "months": 2,
+            "monthsList": [
+              1,
+              5
+            ],
+            "maxMonth": 5,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-05"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 57.925,
+            "numerator": 3070.0,
+            "denominator": 53.0
+          },
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 25.0,
+            "numerator": 25.0,
+            "denominator": 1.0
+          }
+        ]
+      },
+      "節能改善率": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 46.894,
+            "months": 2,
+            "monthsList": [
+              1,
+              5
+            ],
+            "maxMonth": 5,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-05"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 46.87,
+            "numerator": 307000.0,
+            "denominator": 6550.0
+          },
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 50.0,
+            "numerator": 2500.0,
+            "denominator": 50.0
+          }
+        ]
+      }
+    },
+    "敬業校區": {
+      "節電量": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 1690.0,
+            "months": 2,
+            "monthsList": [
+              1,
+              8
+            ],
+            "maxMonth": 8,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-08"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 20.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 1670.0
+          }
+        ]
+      },
+      "汰換數量": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 12.0,
+            "months": 2,
+            "monthsList": [
+              1,
+              8
+            ],
+            "maxMonth": 8,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-08"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 1.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 11.0
+          }
+        ]
+      },
+      "非LED原燈汰換數量": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 11.0,
+            "months": 2,
+            "monthsList": [
+              1,
+              8
+            ],
+            "maxMonth": 8,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-08"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 1.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 10.0
+          }
+        ]
+      },
+      "平均節省瓦數": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 140.833,
+            "months": 2,
+            "monthsList": [
+              1,
+              8
+            ],
+            "maxMonth": 8,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-08"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 20.0,
+            "numerator": 20.0,
+            "denominator": 1.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 151.818,
+            "numerator": 1670.0,
+            "denominator": 11.0
+          }
+        ]
+      },
+      "節能改善率": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 64.726,
+            "months": 2,
+            "monthsList": [
+              1,
+              8
+            ],
+            "maxMonth": 8,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-08"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 28.571,
+            "numerator": 2000.0,
+            "denominator": 70.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 65.722,
+            "numerator": 167000.0,
+            "denominator": 2541.0
+          }
+        ]
+      }
+    },
+    "自強校區": {
+      "節電量": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 4173.0,
+            "months": 3,
+            "monthsList": [
+              5,
+              8,
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-05",
+            "end": "2025-09"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 0.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 3674.0
+          },
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 499.0
+          }
+        ]
+      },
+      "汰換數量": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 36.0,
+            "months": 3,
+            "monthsList": [
+              5,
+              8,
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-05",
+            "end": "2025-09"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 3.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 25.0
+          },
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 8.0
+          }
+        ]
+      },
+      "非LED原燈汰換數量": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 30.0,
+            "months": 3,
+            "monthsList": [
+              5,
+              8,
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-05",
+            "end": "2025-09"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 0.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 22.0
+          },
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 8.0
+          }
+        ]
+      },
+      "平均節省瓦數": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 115.917,
+            "months": 3,
+            "monthsList": [
+              5,
+              8,
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-05",
+            "end": "2025-09"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 0.0,
+            "numerator": 0.0,
+            "denominator": 3.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 146.96,
+            "numerator": 3674.0,
+            "denominator": 25.0
+          },
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 62.375,
+            "numerator": 499.0,
+            "denominator": 8.0
+          }
+        ]
+      },
+      "節能改善率": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 49.396,
+            "months": 3,
+            "monthsList": [
+              5,
+              8,
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-05",
+            "end": "2025-09"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 0.0,
+            "numerator": 0.0,
+            "denominator": 75.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 65.339,
+            "numerator": 367400.0,
+            "denominator": 5623.0
+          },
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 18.145,
+            "numerator": 49900.0,
+            "denominator": 2750.0
+          }
+        ]
+      }
+    }
+  },
+  "defaultYear": 2026
+}

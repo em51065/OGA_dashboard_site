@@ -1,0 +1,1157 @@
+{
+  "dataVersion": "20260513",
+  "generatedAt": "2026-05-28 06:22:34",
+  "sourceFile": "Total_20260513.xlsx",
+  "chartId": "led-replacement",
+  "chartType": "led_replacement",
+  "sheet": "LED汰換 (2)",
+  "metric": "LED汰換",
+  "valueLabel": "LED汰換永續指標",
+  "valueNoun": "節電量",
+  "unit": "瓦",
+  "categoryLabel": "選擇指標",
+  "defaultCategory": "節電量",
+  "categories": [
+    "節電量",
+    "汰換數量",
+    "非LED原舊燈具汰換數量",
+    "平均節省瓦數",
+    "節能改善率"
+  ],
+  "categoryMeta": {
+    "節電量": {
+      "unit": "瓦",
+      "valueNoun": "節電量",
+      "agg": "sum",
+      "formulaHtml": "<span class=\"ga-formula-math\"><span>每盞平均節省瓦數</span><span class=\"ga-formula-times\">×</span><span>汰換數量</span></span>",
+      "trendSubtitle": "每一點代表該年度LED汰換後少掉的總瓦數，數值越高表示節能汰換規模越大。"
+    },
+    "汰換數量": {
+      "unit": "顆/隻/片",
+      "valueNoun": "汰換數量",
+      "agg": "sum",
+      "trendSubtitle": "每一點代表該年度完成的LED汰換數量，反映實際執行規模。"
+    },
+    "平均節省瓦數": {
+      "unit": "瓦",
+      "valueNoun": "平均節省瓦數",
+      "agg": "ratio",
+      "formulaHtml": "<span class=\"ga-formula-math\"><span class=\"ga-fraction\"><span class=\"ga-frac-top\">所有節省掉的瓦數</span><span class=\"ga-frac-bottom\">汰換數量</span></span></span>",
+      "trendSubtitle": "每一點代表該年度每盞汰換平均節省的瓦數，反映汰換品質。"
+    },
+    "節能改善率": {
+      "unit": "%",
+      "valueNoun": "節能改善率",
+      "agg": "ratio",
+      "formulaHtml": "<span class=\"ga-formula-math\"><span class=\"ga-fraction\"><span class=\"ga-frac-top\">所有節省掉的瓦數</span><span class=\"ga-frac-bottom\">原本所有瓦數</span></span><span class=\"ga-formula-times\">× 100%</span></span>",
+      "trendSubtitle": "每一點代表該年度相對原本耗能的瓦數改善比例，適合跨年度比較。"
+    },
+    "非LED原舊燈具汰換數量": {
+      "unit": "顆/隻/片",
+      "valueNoun": "非LED原舊燈具汰換數量",
+      "agg": "sum",
+      "trendSubtitle": "每一點代表該年度將非LED原舊燈具汰換為較節能燈具的數量。"
+    }
+  },
+  "disableMonthRange": true,
+  "series": {
+    "節電量": {
+      "defaultYear": 2026,
+      "records": [
+        {
+          "year": 2019,
+          "value": 13920.0,
+          "months": 3,
+          "monthsList": [
+            6,
+            7,
+            8
+          ],
+          "maxMonth": 8,
+          "hasDecember": false,
+          "start": "2019-06",
+          "end": "2019-08"
+        },
+        {
+          "year": 2024,
+          "value": 794.0,
+          "months": 6,
+          "monthsList": [
+            3,
+            5,
+            6,
+            9,
+            10,
+            12
+          ],
+          "maxMonth": 12,
+          "hasDecember": true,
+          "start": "2024-03",
+          "end": "2024-12"
+        },
+        {
+          "year": 2025,
+          "value": 42793.0,
+          "months": 11,
+          "monthsList": [
+            1,
+            2,
+            3,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "maxMonth": 12,
+          "hasDecember": true,
+          "start": "2025-01",
+          "end": "2025-12"
+        },
+        {
+          "year": 2026,
+          "value": 29074.9,
+          "months": 5,
+          "monthsList": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "maxMonth": 5,
+          "hasDecember": false,
+          "start": "2026-01",
+          "end": "2026-05"
+        }
+      ],
+      "monthly": [
+        {
+          "year": 2019,
+          "month": 6,
+          "value": 7200.0
+        },
+        {
+          "year": 2019,
+          "month": 7,
+          "value": 5760.0
+        },
+        {
+          "year": 2019,
+          "month": 8,
+          "value": 960.0
+        },
+        {
+          "year": 2024,
+          "month": 3,
+          "value": 0.0
+        },
+        {
+          "year": 2024,
+          "month": 5,
+          "value": 432.0
+        },
+        {
+          "year": 2024,
+          "month": 6,
+          "value": 0.0
+        },
+        {
+          "year": 2024,
+          "month": 9,
+          "value": 330.0
+        },
+        {
+          "year": 2024,
+          "month": 10,
+          "value": 0.0
+        },
+        {
+          "year": 2024,
+          "month": 12,
+          "value": 32.0
+        },
+        {
+          "year": 2025,
+          "month": 1,
+          "value": 1152.0
+        },
+        {
+          "year": 2025,
+          "month": 2,
+          "value": 0.0
+        },
+        {
+          "year": 2025,
+          "month": 3,
+          "value": 2036.0
+        },
+        {
+          "year": 2025,
+          "month": 5,
+          "value": 447.0
+        },
+        {
+          "year": 2025,
+          "month": 6,
+          "value": 627.0
+        },
+        {
+          "year": 2025,
+          "month": 7,
+          "value": 384.0
+        },
+        {
+          "year": 2025,
+          "month": 8,
+          "value": 6264.0
+        },
+        {
+          "year": 2025,
+          "month": 9,
+          "value": 2090.0
+        },
+        {
+          "year": 2025,
+          "month": 10,
+          "value": 890.0
+        },
+        {
+          "year": 2025,
+          "month": 11,
+          "value": 27550.0
+        },
+        {
+          "year": 2025,
+          "month": 12,
+          "value": 1353.0
+        },
+        {
+          "year": 2026,
+          "month": 1,
+          "value": 1660.0
+        },
+        {
+          "year": 2026,
+          "month": 2,
+          "value": 10774.0
+        },
+        {
+          "year": 2026,
+          "month": 3,
+          "value": 656.0
+        },
+        {
+          "year": 2026,
+          "month": 4,
+          "value": 15384.3
+        },
+        {
+          "year": 2026,
+          "month": 5,
+          "value": 600.6
+        }
+      ]
+    },
+    "汰換數量": {
+      "defaultYear": 2026,
+      "records": [
+        {
+          "year": 2019,
+          "value": 290.0,
+          "months": 3,
+          "monthsList": [
+            6,
+            7,
+            8
+          ],
+          "maxMonth": 8,
+          "hasDecember": false,
+          "start": "2019-06",
+          "end": "2019-08"
+        },
+        {
+          "year": 2024,
+          "value": 223.0,
+          "months": 6,
+          "monthsList": [
+            3,
+            5,
+            6,
+            9,
+            10,
+            12
+          ],
+          "maxMonth": 12,
+          "hasDecember": true,
+          "start": "2024-03",
+          "end": "2024-12"
+        },
+        {
+          "year": 2025,
+          "value": 2287.0,
+          "months": 11,
+          "monthsList": [
+            1,
+            2,
+            3,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "maxMonth": 12,
+          "hasDecember": true,
+          "start": "2025-01",
+          "end": "2025-12"
+        },
+        {
+          "year": 2026,
+          "value": 2840.0,
+          "months": 5,
+          "monthsList": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "maxMonth": 5,
+          "hasDecember": false,
+          "start": "2026-01",
+          "end": "2026-05"
+        }
+      ],
+      "monthly": [
+        {
+          "year": 2019,
+          "month": 6,
+          "value": 150.0
+        },
+        {
+          "year": 2019,
+          "month": 7,
+          "value": 120.0
+        },
+        {
+          "year": 2019,
+          "month": 8,
+          "value": 20.0
+        },
+        {
+          "year": 2024,
+          "month": 3,
+          "value": 81.0
+        },
+        {
+          "year": 2024,
+          "month": 5,
+          "value": 54.0
+        },
+        {
+          "year": 2024,
+          "month": 6,
+          "value": 39.0
+        },
+        {
+          "year": 2024,
+          "month": 9,
+          "value": 33.0
+        },
+        {
+          "year": 2024,
+          "month": 10,
+          "value": 10.0
+        },
+        {
+          "year": 2024,
+          "month": 12,
+          "value": 6.0
+        },
+        {
+          "year": 2025,
+          "month": 1,
+          "value": 32.0
+        },
+        {
+          "year": 2025,
+          "month": 2,
+          "value": 85.0
+        },
+        {
+          "year": 2025,
+          "month": 3,
+          "value": 58.0
+        },
+        {
+          "year": 2025,
+          "month": 5,
+          "value": 29.0
+        },
+        {
+          "year": 2025,
+          "month": 6,
+          "value": 57.0
+        },
+        {
+          "year": 2025,
+          "month": 7,
+          "value": 58.0
+        },
+        {
+          "year": 2025,
+          "month": 8,
+          "value": 817.0
+        },
+        {
+          "year": 2025,
+          "month": 9,
+          "value": 33.0
+        },
+        {
+          "year": 2025,
+          "month": 10,
+          "value": 112.0
+        },
+        {
+          "year": 2025,
+          "month": 11,
+          "value": 897.0
+        },
+        {
+          "year": 2025,
+          "month": 12,
+          "value": 109.0
+        },
+        {
+          "year": 2026,
+          "month": 1,
+          "value": 172.0
+        },
+        {
+          "year": 2026,
+          "month": 2,
+          "value": 518.0
+        },
+        {
+          "year": 2026,
+          "month": 3,
+          "value": 32.0
+        },
+        {
+          "year": 2026,
+          "month": 4,
+          "value": 2040.0
+        },
+        {
+          "year": 2026,
+          "month": 5,
+          "value": 78.0
+        }
+      ]
+    },
+    "非LED原舊燈具汰換數量": {
+      "defaultYear": 2026,
+      "records": [
+        {
+          "year": 2019,
+          "value": 290.0,
+          "months": 3,
+          "monthsList": [
+            6,
+            7,
+            8
+          ],
+          "maxMonth": 8,
+          "hasDecember": false,
+          "start": "2019-06",
+          "end": "2019-08"
+        },
+        {
+          "year": 2024,
+          "value": 184.0,
+          "months": 6,
+          "monthsList": [
+            3,
+            5,
+            6,
+            9,
+            10,
+            12
+          ],
+          "maxMonth": 12,
+          "hasDecember": true,
+          "start": "2024-03",
+          "end": "2024-12"
+        },
+        {
+          "year": 2025,
+          "value": 2166.0,
+          "months": 11,
+          "monthsList": [
+            1,
+            2,
+            3,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "maxMonth": 12,
+          "hasDecember": true,
+          "start": "2025-01",
+          "end": "2025-12"
+        },
+        {
+          "year": 2026,
+          "value": 2759.0,
+          "months": 5,
+          "monthsList": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "maxMonth": 5,
+          "hasDecember": false,
+          "start": "2026-01",
+          "end": "2026-05"
+        }
+      ],
+      "monthly": [
+        {
+          "year": 2019,
+          "month": 6,
+          "value": 150.0
+        },
+        {
+          "year": 2019,
+          "month": 7,
+          "value": 120.0
+        },
+        {
+          "year": 2019,
+          "month": 8,
+          "value": 20.0
+        },
+        {
+          "year": 2024,
+          "month": 3,
+          "value": 81.0
+        },
+        {
+          "year": 2024,
+          "month": 5,
+          "value": 54.0
+        },
+        {
+          "year": 2024,
+          "month": 6,
+          "value": 0.0
+        },
+        {
+          "year": 2024,
+          "month": 9,
+          "value": 33.0
+        },
+        {
+          "year": 2024,
+          "month": 10,
+          "value": 10.0
+        },
+        {
+          "year": 2024,
+          "month": 12,
+          "value": 6.0
+        },
+        {
+          "year": 2025,
+          "month": 1,
+          "value": 32.0
+        },
+        {
+          "year": 2025,
+          "month": 2,
+          "value": 45.0
+        },
+        {
+          "year": 2025,
+          "month": 3,
+          "value": 55.0
+        },
+        {
+          "year": 2025,
+          "month": 5,
+          "value": 26.0
+        },
+        {
+          "year": 2025,
+          "month": 6,
+          "value": 32.0
+        },
+        {
+          "year": 2025,
+          "month": 7,
+          "value": 57.0
+        },
+        {
+          "year": 2025,
+          "month": 8,
+          "value": 789.0
+        },
+        {
+          "year": 2025,
+          "month": 9,
+          "value": 33.0
+        },
+        {
+          "year": 2025,
+          "month": 10,
+          "value": 105.0
+        },
+        {
+          "year": 2025,
+          "month": 11,
+          "value": 885.0
+        },
+        {
+          "year": 2025,
+          "month": 12,
+          "value": 107.0
+        },
+        {
+          "year": 2026,
+          "month": 1,
+          "value": 172.0
+        },
+        {
+          "year": 2026,
+          "month": 2,
+          "value": 518.0
+        },
+        {
+          "year": 2026,
+          "month": 3,
+          "value": 32.0
+        },
+        {
+          "year": 2026,
+          "month": 4,
+          "value": 1959.0
+        },
+        {
+          "year": 2026,
+          "month": 5,
+          "value": 78.0
+        }
+      ]
+    },
+    "平均節省瓦數": {
+      "defaultYear": 2026,
+      "records": [
+        {
+          "year": 2019,
+          "value": 48.0,
+          "months": 3,
+          "monthsList": [
+            6,
+            7,
+            8
+          ],
+          "maxMonth": 8,
+          "hasDecember": false,
+          "start": "2019-06",
+          "end": "2019-08"
+        },
+        {
+          "year": 2024,
+          "value": 3.561,
+          "months": 6,
+          "monthsList": [
+            3,
+            5,
+            6,
+            9,
+            10,
+            12
+          ],
+          "maxMonth": 12,
+          "hasDecember": true,
+          "start": "2024-03",
+          "end": "2024-12"
+        },
+        {
+          "year": 2025,
+          "value": 19.522,
+          "months": 11,
+          "monthsList": [
+            1,
+            2,
+            3,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "maxMonth": 12,
+          "hasDecember": true,
+          "start": "2025-01",
+          "end": "2025-12"
+        },
+        {
+          "year": 2026,
+          "value": 10.238,
+          "months": 5,
+          "monthsList": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "maxMonth": 5,
+          "hasDecember": false,
+          "start": "2026-01",
+          "end": "2026-05"
+        }
+      ],
+      "monthly": [
+        {
+          "year": 2019,
+          "month": 6,
+          "value": 48.0,
+          "numerator": 7200.0,
+          "denominator": 150.0
+        },
+        {
+          "year": 2019,
+          "month": 7,
+          "value": 48.0,
+          "numerator": 5760.0,
+          "denominator": 120.0
+        },
+        {
+          "year": 2019,
+          "month": 8,
+          "value": 48.0,
+          "numerator": 960.0,
+          "denominator": 20.0
+        },
+        {
+          "year": 2024,
+          "month": 3,
+          "value": 0.0,
+          "numerator": 0.0,
+          "denominator": 81.0
+        },
+        {
+          "year": 2024,
+          "month": 5,
+          "value": 8.0,
+          "numerator": 432.0,
+          "denominator": 54.0
+        },
+        {
+          "year": 2024,
+          "month": 6,
+          "value": 0.0,
+          "numerator": 0.0,
+          "denominator": 39.0
+        },
+        {
+          "year": 2024,
+          "month": 9,
+          "value": 10.0,
+          "numerator": 330.0,
+          "denominator": 33.0
+        },
+        {
+          "year": 2024,
+          "month": 10,
+          "value": 0.0,
+          "numerator": 0.0,
+          "denominator": 10.0
+        },
+        {
+          "year": 2024,
+          "month": 12,
+          "value": 5.333,
+          "numerator": 32.0,
+          "denominator": 6.0
+        },
+        {
+          "year": 2025,
+          "month": 1,
+          "value": 36.0,
+          "numerator": 1152.0,
+          "denominator": 32.0
+        },
+        {
+          "year": 2025,
+          "month": 2,
+          "value": 0.0,
+          "numerator": 0.0,
+          "denominator": 85.0
+        },
+        {
+          "year": 2025,
+          "month": 3,
+          "value": 35.103,
+          "numerator": 2036.0,
+          "denominator": 58.0
+        },
+        {
+          "year": 2025,
+          "month": 5,
+          "value": 17.192,
+          "numerator": 447.0,
+          "denominator": 26.0
+        },
+        {
+          "year": 2025,
+          "month": 6,
+          "value": 11.0,
+          "numerator": 627.0,
+          "denominator": 57.0
+        },
+        {
+          "year": 2025,
+          "month": 7,
+          "value": 7.68,
+          "numerator": 384.0,
+          "denominator": 50.0
+        },
+        {
+          "year": 2025,
+          "month": 8,
+          "value": 7.724,
+          "numerator": 6264.0,
+          "denominator": 811.0
+        },
+        {
+          "year": 2025,
+          "month": 9,
+          "value": 77.407,
+          "numerator": 2090.0,
+          "denominator": 27.0
+        },
+        {
+          "year": 2025,
+          "month": 10,
+          "value": 8.318,
+          "numerator": 890.0,
+          "denominator": 107.0
+        },
+        {
+          "year": 2025,
+          "month": 11,
+          "value": 31.378,
+          "numerator": 27550.0,
+          "denominator": 878.0
+        },
+        {
+          "year": 2025,
+          "month": 12,
+          "value": 22.18,
+          "numerator": 1353.0,
+          "denominator": 61.0
+        },
+        {
+          "year": 2026,
+          "month": 1,
+          "value": 9.651,
+          "numerator": 1660.0,
+          "denominator": 172.0
+        },
+        {
+          "year": 2026,
+          "month": 2,
+          "value": 20.799,
+          "numerator": 10774.0,
+          "denominator": 518.0
+        },
+        {
+          "year": 2026,
+          "month": 3,
+          "value": 20.5,
+          "numerator": 656.0,
+          "denominator": 32.0
+        },
+        {
+          "year": 2026,
+          "month": 4,
+          "value": 7.541,
+          "numerator": 15384.3,
+          "denominator": 2040.0
+        },
+        {
+          "year": 2026,
+          "month": 5,
+          "value": 7.7,
+          "numerator": 600.6,
+          "denominator": 78.0
+        }
+      ]
+    },
+    "節能改善率": {
+      "defaultYear": 2026,
+      "records": [
+        {
+          "year": 2019,
+          "value": 40.0,
+          "months": 3,
+          "monthsList": [
+            6,
+            7,
+            8
+          ],
+          "maxMonth": 8,
+          "hasDecember": false,
+          "start": "2019-06",
+          "end": "2019-08"
+        },
+        {
+          "year": 2024,
+          "value": 19.688,
+          "months": 5,
+          "monthsList": [
+            3,
+            5,
+            9,
+            10,
+            12
+          ],
+          "maxMonth": 12,
+          "hasDecember": true,
+          "start": "2024-03",
+          "end": "2024-12"
+        },
+        {
+          "year": 2025,
+          "value": 42.619,
+          "months": 11,
+          "monthsList": [
+            1,
+            2,
+            3,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "maxMonth": 12,
+          "hasDecember": true,
+          "start": "2025-01",
+          "end": "2025-12"
+        },
+        {
+          "year": 2026,
+          "value": 48.391,
+          "months": 5,
+          "monthsList": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "maxMonth": 5,
+          "hasDecember": false,
+          "start": "2026-01",
+          "end": "2026-05"
+        }
+      ],
+      "monthly": [
+        {
+          "year": 2019,
+          "month": 6,
+          "value": 40.0,
+          "numerator": 720000.0,
+          "denominator": 18000.0
+        },
+        {
+          "year": 2019,
+          "month": 7,
+          "value": 40.0,
+          "numerator": 576000.0,
+          "denominator": 14400.0
+        },
+        {
+          "year": 2019,
+          "month": 8,
+          "value": 40.0,
+          "numerator": 96000.0,
+          "denominator": 2400.0
+        },
+        {
+          "year": 2024,
+          "month": 3,
+          "value": 0.0,
+          "numerator": 0.0,
+          "denominator": 2187.0
+        },
+        {
+          "year": 2024,
+          "month": 5,
+          "value": 57.143,
+          "numerator": 43200.0,
+          "denominator": 756.0
+        },
+        {
+          "year": 2024,
+          "month": 9,
+          "value": 38.462,
+          "numerator": 33000.0,
+          "denominator": 858.0
+        },
+        {
+          "year": 2024,
+          "month": 10,
+          "value": 0.0,
+          "numerator": 0.0,
+          "denominator": 120.0
+        },
+        {
+          "year": 2024,
+          "month": 12,
+          "value": 28.571,
+          "numerator": 3200.0,
+          "denominator": 112.0
+        },
+        {
+          "year": 2025,
+          "month": 1,
+          "value": 64.286,
+          "numerator": 115200.0,
+          "denominator": 1792.0
+        },
+        {
+          "year": 2025,
+          "month": 2,
+          "value": 0.0,
+          "numerator": 0.0,
+          "denominator": 1090.0
+        },
+        {
+          "year": 2025,
+          "month": 3,
+          "value": 42.188,
+          "numerator": 203600.0,
+          "denominator": 4826.0
+        },
+        {
+          "year": 2025,
+          "month": 5,
+          "value": 42.612,
+          "numerator": 44700.0,
+          "denominator": 1049.0
+        },
+        {
+          "year": 2025,
+          "month": 6,
+          "value": 35.89,
+          "numerator": 62700.0,
+          "denominator": 1747.0
+        },
+        {
+          "year": 2025,
+          "month": 7,
+          "value": 28.7,
+          "numerator": 38400.0,
+          "denominator": 1338.0
+        },
+        {
+          "year": 2025,
+          "month": 8,
+          "value": 28.178,
+          "numerator": 626400.0,
+          "denominator": 22230.0
+        },
+        {
+          "year": 2025,
+          "month": 9,
+          "value": 46.882,
+          "numerator": 209000.0,
+          "denominator": 4458.0
+        },
+        {
+          "year": 2025,
+          "month": 10,
+          "value": 30.417,
+          "numerator": 89000.0,
+          "denominator": 2926.0
+        },
+        {
+          "year": 2025,
+          "month": 11,
+          "value": 48.851,
+          "numerator": 2755000.0,
+          "denominator": 56396.0
+        },
+        {
+          "year": 2025,
+          "month": 12,
+          "value": 52.934,
+          "numerator": 135300.0,
+          "denominator": 2556.0
+        },
+        {
+          "year": 2026,
+          "month": 1,
+          "value": 32.034,
+          "numerator": 166000.0,
+          "denominator": 5182.0
+        },
+        {
+          "year": 2026,
+          "month": 2,
+          "value": 45.491,
+          "numerator": 1077400.0,
+          "denominator": 23684.0
+        },
+        {
+          "year": 2026,
+          "month": 3,
+          "value": 38.14,
+          "numerator": 65600.0,
+          "denominator": 1720.0
+        },
+        {
+          "year": 2026,
+          "month": 4,
+          "value": 54.161,
+          "numerator": 1538430.0,
+          "denominator": 28405.0
+        },
+        {
+          "year": 2026,
+          "month": 5,
+          "value": 55.0,
+          "numerator": 60060.0,
+          "denominator": 1092.0
+        }
+      ]
+    }
+  },
+  "defaultYear": 2026
+}

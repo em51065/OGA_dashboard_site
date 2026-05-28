@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-27 09:04:50",
+  "generatedAt": "2026-05-28 06:22:37",
   "sourceFile": "Total_20260513.xlsx",
   "charts": [
     {
@@ -56,6 +56,20 @@
       "title": "用電量",
       "path": "charts/electricity-use/",
       "sheet": "用電量",
+      "dataVersion": "20260513"
+    },
+    {
+      "id": "led-replacement",
+      "title": "LED汰換",
+      "path": "charts/led-replacement/",
+      "sheet": "LED汰換 (2)",
+      "dataVersion": "20260513"
+    },
+    {
+      "id": "streetlight-replacement",
+      "title": "路燈汰換",
+      "path": "charts/streetlight-replacement/",
+      "sheet": "路燈汰換 (2)",
       "dataVersion": "20260513"
     }
   ]
