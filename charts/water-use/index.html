@@ -329,8 +329,36 @@
     color: #ffffff;
   }
   #overviewChart { height: 260px; }
-  .ga-chart-card { padding: 10px 12px 6px; }
-  #trendChart { height: 586px; }
+  .ga-chart-card { padding: 10px 12px 6px; position: relative; }
+  #trendChart { height: 586px; margin-top: 2px; }
+  .ga-trend-hover-tip {
+    position: absolute;
+    z-index: 8;
+    display: none;
+    min-width: 178px;
+    max-width: 250px;
+    padding: 9px 11px;
+    border: 1px solid #d9e1ec;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.96);
+    box-shadow: 0 14px 30px rgba(15,23,42,0.14);
+    color: #101827;
+    font-size: 12px;
+    line-height: 1.42;
+    pointer-events: none;
+  }
+  .ga-trend-hover-tip strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #101827;
+    font-size: 13px;
+    font-weight: 950;
+  }
+  .ga-trend-hover-tip span {
+    display: block;
+    color: #475569;
+    font-weight: 800;
+  }
   .ga-toggle-bar {
     display: flex;
     flex-wrap: wrap;
@@ -468,6 +496,7 @@
     </section>
     <section class="ga-card ga-chart-card">
       <div id="trendChart"></div>
+      <div class="ga-trend-hover-tip" id="trendHoverTip"></div>
       <div class="ga-toggle-bar" id="trendToggles" hidden></div>
     </section>
   </div>
@@ -493,6 +522,7 @@ const locationSelect = document.getElementById("locationSelect");
 const locationControl = document.getElementById("locationControl");
 const locationLabel = document.getElementById("locationLabel");
 const trendChart = document.getElementById("trendChart");
+const trendHoverTip = document.getElementById("trendHoverTip");
 const trendToggles = document.getElementById("trendToggles");
 const overviewModeSwitch = document.getElementById("overviewModeSwitch");
 const overviewTitle = document.getElementById("overviewTitle");
@@ -832,11 +862,55 @@ function trendDialogScope() {
   return [selectedYear, selectedCategory, selectedLocation || "", range, categories].join("::");
 }
 
+function hideTrendHoverTip() {
+  if (!trendHoverTip) return;
+  trendHoverTip.style.display = "none";
+}
+
+function showTrendHoverTip(point) {
+  if (!trendHoverTip || !point) return;
+  const data = point.customdata || [];
+  const category = data[4] || selectedCategory;
+  const valueName = data[5] || activeValueNoun(category);
+  const unit = data[6] || activeUnit(category);
+  const categoryLine = hasTrendToggles() || hasCategoryControl()
+    ? `<span>類別：${category}</span>`
+    : "";
+  trendHoverTip.innerHTML = `
+    <strong>${fmt.format(point.y)} ${unit}</strong>
+    ${categoryLine}
+    <span>${point.x} 年｜${valueName}</span>
+    <span>排名：${data[0]} / ${data[1]} 年</span>
+    <span>比較基準：${data[3]}</span>
+    <span>納入月份：${data[2]}</span>
+  `;
+  trendHoverTip.style.display = "block";
+
+  const cardRect = trendHoverTip.offsetParent.getBoundingClientRect();
+  const chartRect = trendChart.getBoundingClientRect();
+  const fullLayout = trendChart._fullLayout || {};
+  const margin = fullLayout.margin || { l: 0, t: 0 };
+  let pointX = (chartRect.left - cardRect.left) + margin.l + (point.xaxis && point.xaxis.l2p ? point.xaxis.l2p(point.x) : 0);
+  let pointY = (chartRect.top - cardRect.top) + margin.t + (point.yaxis && point.yaxis.l2p ? point.yaxis.l2p(point.y) : 0);
+  if (!Number.isFinite(pointX) || !Number.isFinite(pointY)) {
+    pointX = (point.event ? point.event.clientX : chartRect.left) - cardRect.left;
+    pointY = (point.event ? point.event.clientY : chartRect.top) - cardRect.top;
+  }
+  const left = Math.min(pointX + 14, cardRect.width - trendHoverTip.offsetWidth - 8);
+  const top = Math.max(8, Math.min(pointY - (trendHoverTip.offsetHeight / 2), cardRect.height - trendHoverTip.offsetHeight - 8));
+  trendHoverTip.style.left = `${Math.max(8, left)}px`;
+  trendHoverTip.style.top = `${top}px`;
+}
+
 function bindTrendClick(scope) {
   if (!trendChart || !trendChart.on) return;
   if (trendChart.removeAllListeners) {
     trendChart.removeAllListeners("plotly_click");
+    trendChart.removeAllListeners("plotly_hover");
+    trendChart.removeAllListeners("plotly_unhover");
   }
+  trendChart.on("plotly_hover", (event) => showTrendHoverTip(event.points && event.points[0]));
+  trendChart.on("plotly_unhover", hideTrendHoverTip);
   trendChart.on("plotly_click", (event) => {
     const point = event.points && event.points[0];
     if (!point) return;
@@ -1048,7 +1122,7 @@ function renderTrend() {
       },
     ],
     annotations,
-    margin: { l: 58, r: 92, t: 128, b: 78 },
+    margin: { l: 54, r: 80, t: 128, b: 78 },
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "#ffffff",
     xaxis: { tickmode: "array", tickvals: years, title: "", showgrid: false, zeroline: false },
