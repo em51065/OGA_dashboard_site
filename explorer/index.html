@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>NCKU永續數據儀表板</title>
+  <link rel="stylesheet" href="../assets/explorer.css">
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+  <main class="oga-portal" id="ogaPortal">
+    <header class="oga-header">
+      <div class="oga-brand">
+        <span class="oga-brand-mark" aria-hidden="true"><i data-lucide="chart-no-axes-combined"></i></span>
+        <div>
+          <span class="oga-eyebrow">NCKU SUSTAINABILITY DASHBOARD</span>
+          <h1>NCKU永續數據儀表板</h1>
+          <p>選擇主題，即時檢視歷史位置、年度趨勢與各指標的完整互動分析。</p>
+        </div>
+      </div>
+    </header>
+
+    <nav class="oga-chart-nav" aria-label="選擇圖表">
+      <div class="oga-nav-group" data-group="circularity">
+        <button type="button" class="oga-nav-group-trigger" aria-haspopup="true" aria-expanded="false">
+          <span class="oga-custom-icon oga-circularity-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M12 3.4a8.6 8.6 0 0 1 7.45 4.3"></path>
+              <path d="M19.7 4.7 20.15 8.8 16.15 7.75"></path>
+              <path d="M19.45 13.1a8.6 8.6 0 0 1-7.45 7.5"></path>
+              <path d="M15.35 20.35 11.55 21.65 12.45 17.65"></path>
+              <path d="M8.05 19.65a8.6 8.6 0 0 1-.05-15.3"></path>
+              <path d="M4.35 7.25 6.9 4.05 8.35 7.9"></path>
+            </svg>
+          </span>
+          <span><small>CIRCULARITY</small>減廢與循環</span>
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+        <div class="oga-nav-menu" role="menu">
+          <button type="button" class="oga-nav-choice" data-chart="ecoco" role="menuitem">
+            <i data-lucide="recycle" aria-hidden="true"></i><span>ECOCO</span>
+          </button>
+          <button type="button" class="oga-nav-choice" data-chart="general-recycle" role="menuitem">
+            <i data-lucide="trash-2" aria-hidden="true"></i><span>一般回收</span>
+          </button>
+          <button type="button" class="oga-nav-choice" data-chart="resource-recycle" role="menuitem">
+            <i data-lucide="package-open" aria-hidden="true"></i><span>資源回收</span>
+          </button>
+          <button type="button" class="oga-nav-choice" data-chart="food-waste-recycle" role="menuitem">
+            <i data-lucide="apple" aria-hidden="true"></i><span>廚餘回收</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="oga-nav-group" data-group="energy-water">
+        <button type="button" class="oga-nav-group-trigger" aria-haspopup="true" aria-expanded="false">
+          <i data-lucide="waves" aria-hidden="true"></i>
+          <span><small>ENERGY & WATER</small>能源與水資源</span>
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+        <div class="oga-nav-menu" role="menu">
+          <button type="button" class="oga-nav-choice" data-chart="rainwater-reuse" role="menuitem">
+            <i data-lucide="cloud-rain" aria-hidden="true"></i><span>中軸雨水回收</span>
+          </button>
+          <button type="button" class="oga-nav-choice" data-chart="water-use" role="menuitem">
+            <i data-lucide="droplets" aria-hidden="true"></i><span>用水量</span>
+          </button>
+          <button type="button" class="oga-nav-choice" data-chart="electricity-use" role="menuitem">
+            <i data-lucide="zap" aria-hidden="true"></i><span>用電量</span>
+          </button>
+          <button type="button" class="oga-nav-choice" data-chart="solar-energy" role="menuitem">
+            <i data-lucide="sun" aria-hidden="true"></i><span>太陽能</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="oga-nav-group" data-group="replacement">
+        <button type="button" class="oga-nav-group-trigger" aria-haspopup="true" aria-expanded="false">
+          <i data-lucide="lightbulb" aria-hidden="true"></i>
+          <span><small>EFFICIENCY</small>節能汰換</span>
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+        <div class="oga-nav-menu" role="menu">
+          <button type="button" class="oga-nav-choice" data-chart="led-replacement" role="menuitem">
+            <i data-lucide="lamp-ceiling" aria-hidden="true"></i><span>LED汰換</span>
+          </button>
+          <button type="button" class="oga-nav-choice" data-chart="streetlight-replacement" role="menuitem">
+            <span class="oga-custom-icon oga-streetlight-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M9 21h6"></path>
+                <path d="M12 21V9.4"></path>
+                <path d="M12 9.4c0-3.1 2.3-5.4 5.3-5.4h2.2"></path>
+                <path d="M17.7 4v4.2"></path>
+                <path d="M15.4 8.2h4.8"></path>
+                <path d="M16.4 8.2 15.3 11h5l-1.1-2.8"></path>
+              </svg>
+            </span><span>路燈汰換</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <label class="oga-mobile-select">
+      <span>選擇圖表</span>
+      <select id="mobileChartSelect">
+        <optgroup label="減廢與循環">
+          <option value="ecoco">ECOCO</option>
+          <option value="general-recycle">一般回收</option>
+          <option value="resource-recycle">資源回收</option>
+          <option value="food-waste-recycle">廚餘回收</option>
+        </optgroup>
+        <optgroup label="水與能源">
+          <option value="rainwater-reuse">中軸雨水回收</option>
+          <option value="water-use">用水量</option>
+          <option value="electricity-use">用電量</option>
+          <option value="solar-energy">太陽能</option>
+        </optgroup>
+        <optgroup label="節能汰換">
+          <option value="led-replacement">LED汰換</option>
+          <option value="streetlight-replacement">路燈汰換</option>
+        </optgroup>
+      </select>
+    </label>
+
+    <section class="oga-stage" id="chartStage" aria-busy="true">
+      <div class="oga-stage-bar">
+        <div>
+          <span class="oga-stage-label">目前檢視</span>
+          <strong id="activeChartTitle">ECOCO</strong>
+        </div>
+        <a id="standaloneLink" href="../charts/ecoco/" target="_blank" rel="noopener">
+          在新視窗開啟
+          <i data-lucide="external-link" aria-hidden="true"></i>
+        </a>
+      </div>
+
+      <div class="oga-frame-wrap">
+        <div class="oga-loading" id="loadingState" role="status">
+          <span class="oga-loading-mark"><i data-lucide="loader-circle" aria-hidden="true"></i></span>
+          <strong>正在載入完整互動圖表</strong>
+        </div>
+        <iframe
+          id="chartFrame"
+          title="ECOCO互動圖表"
+          src="about:blank"
+          scrolling="no"
+          loading="eager"
+        ></iframe>
+      </div>
+    </section>
+
+    <footer class="oga-footer">
+      <span class="oga-footer-live"><span class="oga-live-dot" aria-hidden="true"></span>資料依最新總表自動更新</span>
+      <span id="sourceInfo">來源：總務處彙整資料</span>
+    </footer>
+  </main>
+  <script src="../assets/explorer.js"></script>
+</body>
+</html>

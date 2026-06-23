@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>總務處圖表嵌入測試</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #f3f5f8; color: #172033; font-family: Inter, "Noto Sans TC", sans-serif; }
+    .test-shell { max-width: 1380px; margin: 0 auto; padding: 24px; }
+    .test-toolbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .test-toolbar strong { margin-right: 8px; }
+    .test-toolbar button { border: 1px solid #cbd5e1; background: #fff; padding: 8px 12px; cursor: pointer; font: inherit; }
+    .test-toolbar button:hover, .test-toolbar button.is-active { border-color: #243b5a; color: #fff; background: #243b5a; }
+    .host-page { width: min(100%, 1220px); margin: 0 auto; transition: width 160ms ease; }
+    iframe { width: 100%; min-height: 720px; border: 0; display: block; }
+  </style>
+</head>
+<body>
+  <main class="test-shell">
+    <div class="test-toolbar" aria-label="嵌入寬度測試">
+      <strong>模擬外部網站內容寬度</strong>
+      <button type="button" data-width="1220" class="is-active">1220</button>
+      <button type="button" data-width="1024">1024</button>
+      <button type="button" data-width="900">900</button>
+      <button type="button" data-width="768">768</button>
+      <button type="button" data-width="430">430</button>
+      <button type="button" data-width="390">390</button>
+    </div>
+    <div class="host-page" id="hostPage">
+      <iframe
+        src="./explorer/?embed=1"
+        title="總務處永續數據探索"
+        loading="eager"
+        data-oga-autoheight
+      ></iframe>
+    </div>
+  </main>
+  <script src="./assets/oga-embed.js"></script>
+  <script>
+    const host = document.getElementById("hostPage");
+    document.querySelectorAll("[data-width]").forEach((button) => {
+      button.addEventListener("click", () => {
+        host.style.width = `${button.dataset.width}px`;
+        document.querySelectorAll("[data-width]").forEach((item) => item.classList.toggle("is-active", item === button));
+      });
+    });
+  </script>
+</body>
+</html>
