@@ -471,25 +471,6 @@ body { overflow-x: hidden; }
 }
 .oga-loading-mark svg { width: 19px; height: 19px; animation: oga-spin 900ms linear infinite; }
 
-.oga-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 12px 4px 0;
-  border-top: 1px solid var(--line);
-  color: #7a8798;
-  font-size: 10px;
-  line-height: 1.5;
-}
-
-.oga-footer-live {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: #52637a;
-  font-weight: 800;
-}
 
 .is-embedded body { background: transparent; }
 .is-embedded .oga-portal { padding-top: 14px; }
@@ -534,8 +515,6 @@ body { overflow-x: hidden; }
   .oga-stage { margin-top: 10px; }
   .oga-stage-bar { padding-inline: 2px; }
   .oga-frame-wrap, #chartFrame { min-height: 1080px; }
-  .oga-footer { display: block; }
-  .oga-footer span { display: block; }
 }
 
 @media (max-width: 460px) {
