@@ -1,57 +1,62 @@
 {
   "dataVersion": "20260513",
-  "generatedAt": "2026-06-24 05:08:24",
+  "generatedAt": "2026-06-27 07:03:15",
   "sourceFile": "Total_20260513.xlsx",
   "chartId": "streetlight-replacement",
   "chartType": "streetlight",
   "sheet": "路燈汰換 (2)",
   "metric": "路燈汰換",
   "valueLabel": "路燈汰換永續指標",
-  "valueNoun": "節電量",
+  "valueNoun": "累積節省瓦數",
   "unit": "瓦",
   "categoryLabel": "選擇指標",
   "locationLabel": "選擇校區",
-  "defaultCategory": "節電量",
+  "defaultCategory": "累積節省瓦數",
   "categories": [
-    "節電量",
-    "汰換數量",
-    "非LED原燈汰換數量",
+    "累積節省瓦數",
+    "年度汰換數量",
     "平均節省瓦數",
-    "節能改善率"
+    "節能改善率",
+    "非LED原舊燈具汰換量"
   ],
   "categoryMeta": {
-    "節電量": {
+    "累積節省瓦數": {
       "unit": "瓦",
-      "valueNoun": "節電量",
+      "valueNoun": "累積節省瓦數",
       "agg": "sum",
-      "formulaHtml": "<span class=\"ga-formula-math\"><span>每盞平均節省瓦數</span><span class=\"ga-formula-times\">×</span><span>汰換數量</span></span>",
-      "trendSubtitle": "每一點代表該年度路燈汰換後少掉的總瓦數，數值越高表示節能汰換規模越大。"
+      "view": "cumulative",
+      "formulaHtml": "<span class=\"ga-formula-math\"><span>每盞節省掉的平均瓦數</span><span class=\"ga-formula-times\">×</span><span>汰換數量</span></span>",
+      "trendSubtitle": "累積看路燈汰換到目前為止已削減多少用電負載；年度新增下降不一定代表退步，可能是可汰換存量已下降。"
     },
-    "汰換數量": {
+    "年度汰換數量": {
       "unit": "顆/隻/片",
-      "valueNoun": "汰換數量",
+      "valueNoun": "年度汰換數量",
       "agg": "sum",
-      "trendSubtitle": "每一點代表該年度完成的路燈汰換數量，反映實際執行規模。"
-    },
-    "非LED原燈汰換數量": {
-      "unit": "顆/隻/片",
-      "valueNoun": "非LED原燈汰換數量",
-      "agg": "sum",
-      "trendSubtitle": "每一點代表該年度將非LED原燈汰換為較節能燈具的數量。"
+      "view": "volume",
+      "trendSubtitle": "每一點代表該年度完成的路燈汰換數量，反映工程推進量，不直接代表永續績效好壞。"
     },
     "平均節省瓦數": {
       "unit": "瓦",
       "valueNoun": "平均節省瓦數",
       "agg": "ratio",
+      "view": "quality",
       "formulaHtml": "<span class=\"ga-formula-math\"><span class=\"ga-fraction\"><span class=\"ga-frac-top\">所有節省掉的瓦數</span><span class=\"ga-frac-bottom\">汰換數量</span></span></span>",
-      "trendSubtitle": "每一點代表該年度每盞汰換平均節省的瓦數，反映汰換品質。"
+      "trendSubtitle": "每一點代表該年度每盞汰換平均節省的瓦數，反映單次汰換品質。"
     },
     "節能改善率": {
       "unit": "%",
       "valueNoun": "節能改善率",
       "agg": "ratio",
+      "view": "rate",
       "formulaHtml": "<span class=\"ga-formula-math\"><span class=\"ga-fraction\"><span class=\"ga-frac-top\">所有節省掉的瓦數</span><span class=\"ga-frac-bottom\">原本所有瓦數</span></span><span class=\"ga-formula-times\">× 100%</span></span>",
       "trendSubtitle": "每一點代表該年度相對原本耗能的瓦數改善比例，適合跨年度或校區比較。"
+    },
+    "非LED原舊燈具汰換量": {
+      "unit": "顆/隻/片",
+      "valueNoun": "非LED原舊燈具汰換量",
+      "agg": "sum",
+      "view": "non_led",
+      "trendSubtitle": "每一點代表該年度將非LED原舊燈具汰換為較節能燈具的數量，反映LED化推進程度。"
     }
   },
   "disableMonthRange": true,
@@ -69,7 +74,7 @@
   "defaultLocation": "全校區",
   "locationSeries": {
     "全校區": {
-      "節電量": {
+      "累積節省瓦數": {
         "defaultYear": 2026,
         "records": [
           {
@@ -146,7 +151,7 @@
           }
         ]
       },
-      "汰換數量": {
+      "年度汰換數量": {
         "defaultYear": 2026,
         "records": [
           {
@@ -220,83 +225,6 @@
             "year": 2026,
             "month": 3,
             "value": 11.0
-          }
-        ]
-      },
-      "非LED原燈汰換數量": {
-        "defaultYear": 2026,
-        "records": [
-          {
-            "year": 2025,
-            "value": 188.0,
-            "months": 7,
-            "monthsList": [
-              1,
-              3,
-              5,
-              6,
-              7,
-              8,
-              9
-            ],
-            "maxMonth": 9,
-            "hasDecember": false,
-            "start": "2025-01",
-            "end": "2025-09"
-          },
-          {
-            "year": 2026,
-            "value": 0.0,
-            "months": 1,
-            "monthsList": [
-              3
-            ],
-            "maxMonth": 3,
-            "hasDecember": false,
-            "start": "2026-03",
-            "end": "2026-03"
-          }
-        ],
-        "monthly": [
-          {
-            "year": 2025,
-            "month": 1,
-            "value": 33.0
-          },
-          {
-            "year": 2025,
-            "month": 3,
-            "value": 0.0
-          },
-          {
-            "year": 2025,
-            "month": 5,
-            "value": 17.0
-          },
-          {
-            "year": 2025,
-            "month": 6,
-            "value": 13.0
-          },
-          {
-            "year": 2025,
-            "month": 7,
-            "value": 33.0
-          },
-          {
-            "year": 2025,
-            "month": 8,
-            "value": 51.0
-          },
-          {
-            "year": 2025,
-            "month": 9,
-            "value": 41.0
-          },
-          {
-            "year": 2026,
-            "month": 3,
-            "value": 0.0
           }
         ]
       },
@@ -485,10 +413,87 @@
             "denominator": 765.0
           }
         ]
+      },
+      "非LED原舊燈具汰換量": {
+        "defaultYear": 2026,
+        "records": [
+          {
+            "year": 2025,
+            "value": 188.0,
+            "months": 7,
+            "monthsList": [
+              1,
+              3,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-09"
+          },
+          {
+            "year": 2026,
+            "value": 0.0,
+            "months": 1,
+            "monthsList": [
+              3
+            ],
+            "maxMonth": 3,
+            "hasDecember": false,
+            "start": "2026-03",
+            "end": "2026-03"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 33.0
+          },
+          {
+            "year": 2025,
+            "month": 3,
+            "value": 0.0
+          },
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 17.0
+          },
+          {
+            "year": 2025,
+            "month": 6,
+            "value": 13.0
+          },
+          {
+            "year": 2025,
+            "month": 7,
+            "value": 33.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 51.0
+          },
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 41.0
+          },
+          {
+            "year": 2026,
+            "month": 3,
+            "value": 0.0
+          }
+        ]
       }
     },
     "光復校區": {
-      "節電量": {
+      "累積節省瓦數": {
         "defaultYear": 2025,
         "records": [
           {
@@ -536,7 +541,7 @@
           }
         ]
       },
-      "汰換數量": {
+      "年度汰換數量": {
         "defaultYear": 2025,
         "records": [
           {
@@ -581,54 +586,6 @@
             "year": 2025,
             "month": 9,
             "value": 35.0
-          }
-        ]
-      },
-      "非LED原燈汰換數量": {
-        "defaultYear": 2025,
-        "records": [
-          {
-            "year": 2025,
-            "value": 33.0,
-            "months": 5,
-            "monthsList": [
-              1,
-              3,
-              7,
-              8,
-              9
-            ],
-            "maxMonth": 9,
-            "hasDecember": false,
-            "start": "2025-01",
-            "end": "2025-09"
-          }
-        ],
-        "monthly": [
-          {
-            "year": 2025,
-            "month": 1,
-            "value": 0.0
-          },
-          {
-            "year": 2025,
-            "month": 3,
-            "value": 0.0
-          },
-          {
-            "year": 2025,
-            "month": 7,
-            "value": 4.0
-          },
-          {
-            "year": 2025,
-            "month": 8,
-            "value": 17.0
-          },
-          {
-            "year": 2025,
-            "month": 9,
-            "value": 12.0
           }
         ]
       },
@@ -747,10 +704,58 @@
             "denominator": 3844.0
           }
         ]
+      },
+      "非LED原舊燈具汰換量": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 33.0,
+            "months": 5,
+            "monthsList": [
+              1,
+              3,
+              7,
+              8,
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-09"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 0.0
+          },
+          {
+            "year": 2025,
+            "month": 3,
+            "value": 0.0
+          },
+          {
+            "year": 2025,
+            "month": 7,
+            "value": 4.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 17.0
+          },
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 12.0
+          }
+        ]
       }
     },
     "力行校區": {
-      "節電量": {
+      "累積節省瓦數": {
         "defaultYear": 2025,
         "records": [
           {
@@ -774,31 +779,7 @@
           }
         ]
       },
-      "汰換數量": {
-        "defaultYear": 2025,
-        "records": [
-          {
-            "year": 2025,
-            "value": 12.0,
-            "months": 1,
-            "monthsList": [
-              9
-            ],
-            "maxMonth": 9,
-            "hasDecember": false,
-            "start": "2025-09",
-            "end": "2025-09"
-          }
-        ],
-        "monthly": [
-          {
-            "year": 2025,
-            "month": 9,
-            "value": 12.0
-          }
-        ]
-      },
-      "非LED原燈汰換數量": {
+      "年度汰換數量": {
         "defaultYear": 2025,
         "records": [
           {
@@ -873,10 +854,34 @@
             "denominator": 4800.0
           }
         ]
+      },
+      "非LED原舊燈具汰換量": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 12.0,
+            "months": 1,
+            "monthsList": [
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-09",
+            "end": "2025-09"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 12.0
+          }
+        ]
       }
     },
     "勝利校區": {
-      "節電量": {
+      "累積節省瓦數": {
         "defaultYear": 2025,
         "records": [
           {
@@ -900,7 +905,7 @@
           }
         ]
       },
-      "汰換數量": {
+      "年度汰換數量": {
         "defaultYear": 2025,
         "records": [
           {
@@ -921,30 +926,6 @@
             "year": 2025,
             "month": 5,
             "value": 23.0
-          }
-        ]
-      },
-      "非LED原燈汰換數量": {
-        "defaultYear": 2025,
-        "records": [
-          {
-            "year": 2025,
-            "value": 14.0,
-            "months": 1,
-            "monthsList": [
-              5
-            ],
-            "maxMonth": 5,
-            "hasDecember": false,
-            "start": "2025-05",
-            "end": "2025-05"
-          }
-        ],
-        "monthly": [
-          {
-            "year": 2025,
-            "month": 5,
-            "value": 14.0
           }
         ]
       },
@@ -999,10 +980,34 @@
             "denominator": 5950.0
           }
         ]
+      },
+      "非LED原舊燈具汰換量": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 14.0,
+            "months": 1,
+            "monthsList": [
+              5
+            ],
+            "maxMonth": 5,
+            "hasDecember": false,
+            "start": "2025-05",
+            "end": "2025-05"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 14.0
+          }
+        ]
       }
     },
     "安南校區": {
-      "節電量": {
+      "累積節省瓦數": {
         "defaultYear": 2025,
         "records": [
           {
@@ -1026,31 +1031,7 @@
           }
         ]
       },
-      "汰換數量": {
-        "defaultYear": 2025,
-        "records": [
-          {
-            "year": 2025,
-            "value": 9.0,
-            "months": 1,
-            "monthsList": [
-              1
-            ],
-            "maxMonth": 1,
-            "hasDecember": false,
-            "start": "2025-01",
-            "end": "2025-01"
-          }
-        ],
-        "monthly": [
-          {
-            "year": 2025,
-            "month": 1,
-            "value": 9.0
-          }
-        ]
-      },
-      "非LED原燈汰換數量": {
+      "年度汰換數量": {
         "defaultYear": 2025,
         "records": [
           {
@@ -1125,10 +1106,34 @@
             "denominator": 2250.0
           }
         ]
+      },
+      "非LED原舊燈具汰換量": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 9.0,
+            "months": 1,
+            "monthsList": [
+              1
+            ],
+            "maxMonth": 1,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-01"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 9.0
+          }
+        ]
       }
     },
     "成功校區": {
-      "節電量": {
+      "累積節省瓦數": {
         "defaultYear": 2026,
         "records": [
           {
@@ -1199,7 +1204,7 @@
           }
         ]
       },
-      "汰換數量": {
+      "年度汰換數量": {
         "defaultYear": 2026,
         "records": [
           {
@@ -1267,77 +1272,6 @@
             "year": 2026,
             "month": 3,
             "value": 11.0
-          }
-        ]
-      },
-      "非LED原燈汰換數量": {
-        "defaultYear": 2026,
-        "records": [
-          {
-            "year": 2025,
-            "value": 57.0,
-            "months": 6,
-            "monthsList": [
-              1,
-              5,
-              6,
-              7,
-              8,
-              9
-            ],
-            "maxMonth": 9,
-            "hasDecember": false,
-            "start": "2025-01",
-            "end": "2025-09"
-          },
-          {
-            "year": 2026,
-            "value": 0.0,
-            "months": 1,
-            "monthsList": [
-              3
-            ],
-            "maxMonth": 3,
-            "hasDecember": false,
-            "start": "2026-03",
-            "end": "2026-03"
-          }
-        ],
-        "monthly": [
-          {
-            "year": 2025,
-            "month": 1,
-            "value": 1.0
-          },
-          {
-            "year": 2025,
-            "month": 5,
-            "value": 3.0
-          },
-          {
-            "year": 2025,
-            "month": 6,
-            "value": 13.0
-          },
-          {
-            "year": 2025,
-            "month": 7,
-            "value": 29.0
-          },
-          {
-            "year": 2025,
-            "month": 8,
-            "value": 2.0
-          },
-          {
-            "year": 2025,
-            "month": 9,
-            "value": 9.0
-          },
-          {
-            "year": 2026,
-            "month": 3,
-            "value": 0.0
           }
         ]
       },
@@ -1510,10 +1444,81 @@
             "denominator": 765.0
           }
         ]
+      },
+      "非LED原舊燈具汰換量": {
+        "defaultYear": 2026,
+        "records": [
+          {
+            "year": 2025,
+            "value": 57.0,
+            "months": 6,
+            "monthsList": [
+              1,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-09"
+          },
+          {
+            "year": 2026,
+            "value": 0.0,
+            "months": 1,
+            "monthsList": [
+              3
+            ],
+            "maxMonth": 3,
+            "hasDecember": false,
+            "start": "2026-03",
+            "end": "2026-03"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 1.0
+          },
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 3.0
+          },
+          {
+            "year": 2025,
+            "month": 6,
+            "value": 13.0
+          },
+          {
+            "year": 2025,
+            "month": 7,
+            "value": 29.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 2.0
+          },
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 9.0
+          },
+          {
+            "year": 2026,
+            "month": 3,
+            "value": 0.0
+          }
+        ]
       }
     },
     "成杏校區": {
-      "節電量": {
+      "累積節省瓦數": {
         "defaultYear": 2025,
         "records": [
           {
@@ -1543,7 +1548,7 @@
           }
         ]
       },
-      "汰換數量": {
+      "年度汰換數量": {
         "defaultYear": 2025,
         "records": [
           {
@@ -1570,36 +1575,6 @@
             "year": 2025,
             "month": 5,
             "value": 1.0
-          }
-        ]
-      },
-      "非LED原燈汰換數量": {
-        "defaultYear": 2025,
-        "records": [
-          {
-            "year": 2025,
-            "value": 22.0,
-            "months": 2,
-            "monthsList": [
-              1,
-              5
-            ],
-            "maxMonth": 5,
-            "hasDecember": false,
-            "start": "2025-01",
-            "end": "2025-05"
-          }
-        ],
-        "monthly": [
-          {
-            "year": 2025,
-            "month": 1,
-            "value": 22.0
-          },
-          {
-            "year": 2025,
-            "month": 5,
-            "value": 0.0
           }
         ]
       },
@@ -1670,10 +1645,40 @@
             "denominator": 50.0
           }
         ]
+      },
+      "非LED原舊燈具汰換量": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 22.0,
+            "months": 2,
+            "monthsList": [
+              1,
+              5
+            ],
+            "maxMonth": 5,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-05"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 22.0
+          },
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 0.0
+          }
+        ]
       }
     },
     "敬業校區": {
-      "節電量": {
+      "累積節省瓦數": {
         "defaultYear": 2025,
         "records": [
           {
@@ -1703,7 +1708,7 @@
           }
         ]
       },
-      "汰換數量": {
+      "年度汰換數量": {
         "defaultYear": 2025,
         "records": [
           {
@@ -1730,36 +1735,6 @@
             "year": 2025,
             "month": 8,
             "value": 11.0
-          }
-        ]
-      },
-      "非LED原燈汰換數量": {
-        "defaultYear": 2025,
-        "records": [
-          {
-            "year": 2025,
-            "value": 11.0,
-            "months": 2,
-            "monthsList": [
-              1,
-              8
-            ],
-            "maxMonth": 8,
-            "hasDecember": false,
-            "start": "2025-01",
-            "end": "2025-08"
-          }
-        ],
-        "monthly": [
-          {
-            "year": 2025,
-            "month": 1,
-            "value": 1.0
-          },
-          {
-            "year": 2025,
-            "month": 8,
-            "value": 10.0
           }
         ]
       },
@@ -1830,10 +1805,40 @@
             "denominator": 2541.0
           }
         ]
+      },
+      "非LED原舊燈具汰換量": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 11.0,
+            "months": 2,
+            "monthsList": [
+              1,
+              8
+            ],
+            "maxMonth": 8,
+            "hasDecember": false,
+            "start": "2025-01",
+            "end": "2025-08"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 1,
+            "value": 1.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 10.0
+          }
+        ]
       }
     },
     "自強校區": {
-      "節電量": {
+      "累積節省瓦數": {
         "defaultYear": 2025,
         "records": [
           {
@@ -1869,7 +1874,7 @@
           }
         ]
       },
-      "汰換數量": {
+      "年度汰換數量": {
         "defaultYear": 2025,
         "records": [
           {
@@ -1897,42 +1902,6 @@
             "year": 2025,
             "month": 8,
             "value": 25.0
-          },
-          {
-            "year": 2025,
-            "month": 9,
-            "value": 8.0
-          }
-        ]
-      },
-      "非LED原燈汰換數量": {
-        "defaultYear": 2025,
-        "records": [
-          {
-            "year": 2025,
-            "value": 30.0,
-            "months": 3,
-            "monthsList": [
-              5,
-              8,
-              9
-            ],
-            "maxMonth": 9,
-            "hasDecember": false,
-            "start": "2025-05",
-            "end": "2025-09"
-          }
-        ],
-        "monthly": [
-          {
-            "year": 2025,
-            "month": 5,
-            "value": 0.0
-          },
-          {
-            "year": 2025,
-            "month": 8,
-            "value": 22.0
           },
           {
             "year": 2025,
@@ -2022,6 +1991,42 @@
             "value": 18.145,
             "numerator": 49900.0,
             "denominator": 2750.0
+          }
+        ]
+      },
+      "非LED原舊燈具汰換量": {
+        "defaultYear": 2025,
+        "records": [
+          {
+            "year": 2025,
+            "value": 30.0,
+            "months": 3,
+            "monthsList": [
+              5,
+              8,
+              9
+            ],
+            "maxMonth": 9,
+            "hasDecember": false,
+            "start": "2025-05",
+            "end": "2025-09"
+          }
+        ],
+        "monthly": [
+          {
+            "year": 2025,
+            "month": 5,
+            "value": 0.0
+          },
+          {
+            "year": 2025,
+            "month": 8,
+            "value": 22.0
+          },
+          {
+            "year": 2025,
+            "month": 9,
+            "value": 8.0
           }
         ]
       }

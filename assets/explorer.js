@@ -120,6 +120,9 @@ function getHeadingPlainText(heading) {
 
 function resolveBlockKicker(text) {
   if (!text) return "DATA VIEW";
+  if (text.includes("\u6210\u679c\u7e3d\u89bd") || text.includes("\u7d2f\u7a4d\u7bc0\u7701\u74e6\u6578")) return "CUMULATIVE IMPACT";
+  if (text.includes("\u5e74\u5ea6\u63a8\u9032") || text.includes("\u975eLED\u6c70\u63db") || text.includes("\u6c70\u63db\u6578\u7e3d\u89bd") || text.includes("\u6c70\u63db\u91cf\u7e3d\u89bd")) return "REPLACEMENT MIX";
+  if (text.includes("\u6539\u5584\u54c1\u8cea") || text.includes("\u6c70\u63db\u54c1\u8cea\u6bd4\u8f03") || text.includes("\u6c70\u63db\u6548\u76ca\u7e3d\u89bd")) return "REPLACEMENT EFFICIENCY";
   if (text.includes("歷史排名")) return "HISTORICAL RANKING";
   if (text.includes("歷史趨勢")) return "HISTORICAL TREND";
   if (text.includes("年度總覽")) return "ANNUAL OVERVIEW";
@@ -207,7 +210,7 @@ function prepareChildFrame() {
         letter-spacing: 0.13em;
         line-height: 1.1;
         text-transform: uppercase;
-        content: "HISTORICAL TREND";
+        content: "${["led-replacement", "streetlight-replacement"].includes(currentChart) ? "REPLACEMENT EFFICIENCY" : "HISTORICAL TREND"}";
         pointer-events: none;
       }
     `;
@@ -232,6 +235,7 @@ function prepareChildFrame() {
 }
 
 async function updateSourceInfo(chartId) {
+  if (!sourceInfo) return;
   try {
     const response = await fetch(`../charts/${chartId}/data.json?t=${Date.now()}`);
     if (!response.ok) throw new Error(String(response.status));
@@ -253,10 +257,12 @@ function renderNavigation() {
     group.classList.toggle("is-active", Boolean(group.querySelector(`[data-chart="${currentChart}"]`)));
   });
   updateGroupExpandedState();
-  mobileSelect.value = currentChart;
-  activeTitle.textContent = CHARTS[currentChart].title;
-  standaloneLink.href = `../charts/${currentChart}/`;
-  standaloneLink.setAttribute("aria-label", `在新視窗開啟${CHARTS[currentChart].title}`);
+  if (mobileSelect) mobileSelect.value = currentChart;
+  if (activeTitle) activeTitle.textContent = CHARTS[currentChart].title;
+  if (standaloneLink) {
+    standaloneLink.href = `../charts/${currentChart}/`;
+    standaloneLink.setAttribute("aria-label", `在新視窗開啟${CHARTS[currentChart].title}`);
+  }
 }
 
 function switchChart(chartId, historyMode = "push") {
@@ -273,7 +279,7 @@ function switchChart(chartId, historyMode = "push") {
   stage.setAttribute("aria-busy", "true");
   loading.hidden = false;
   frame.title = `${CHARTS[chartId].title}互動圖表`;
-  frame.src = `../charts/${chartId}/?portal=1`;
+  frame.src = `../charts/${chartId}/?portal=1&t=${Date.now()}`;
   updateSourceInfo(chartId);
   reportOuterHeight();
 }
