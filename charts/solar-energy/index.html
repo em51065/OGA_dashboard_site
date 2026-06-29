@@ -400,6 +400,12 @@
     font-size: 12px;
     line-height: 1.45;
   }
+  .ga-replacement-chart .ga-hint {
+    white-space: nowrap;
+    font-size: clamp(8.6px, 0.72vw, 12px);
+    line-height: 1.32;
+    letter-spacing: -0.018em;
+  }
   .ga-overview-wrap {
     margin-top: 14px;
     padding-top: 12px;
@@ -461,16 +467,47 @@
     color: #ffffff;
   }
   #overviewChart { height: 260px; }
-  .ga-chart-card { padding: 10px 12px 6px; position: relative; }
+  .ga-chart-card { padding: 14px 16px 8px; position: relative; }
+  .ga-quality-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) clamp(228px, 31%, 300px);
+    gap: 12px;
+    align-items: start;
+    padding: 0 2px 2px;
+  }
+  .ga-quality-head[hidden] { display: none; }
+  .ga-quality-copy { min-width: 0; }
+  .ga-quality-kicker {
+    margin-bottom: 4px;
+    color: #7c8ca3;
+    font-size: 10.5px;
+    line-height: 1.1;
+    font-weight: 950;
+    letter-spacing: 0.18em;
+  }
+  .ga-quality-copy h2 {
+    margin: 0 0 3px;
+    color: #101827;
+    font-size: clamp(17px, 1.35vw, 19px);
+    line-height: 1.16;
+    font-weight: 950;
+  }
+  .ga-quality-copy p {
+    margin: 0;
+    color: #101827;
+    font-size: clamp(11.4px, 0.9vw, 13px);
+    line-height: 1.43;
+    font-weight: 400;
+  }
+  .ga-quality-copy p + p { margin-top: 1px; }
+  .ga-quality-copy strong { font-weight: 400; }
   .ga-quality-formula {
-    position: absolute;
-    top: 22px;
-    right: 6px;
-    z-index: 4;
-    max-width: 330px;
+    justify-self: end;
+    width: 100%;
+    max-width: 300px;
     display: grid;
     grid-template-columns: auto auto;
-    gap: 11px 12px;
+    gap: 10px 11px;
     align-items: center;
     padding: 7px 9px;
     border: 1px solid rgba(203,213,225,0.48);
@@ -478,7 +515,7 @@
     background: rgba(248,250,252,0.54);
     box-shadow: none;
     color: #253047;
-    font-size: 10.5px;
+    font-size: clamp(9px, 0.72vw, 10.5px);
     font-weight: 400;
     line-height: 1.15;
   }
@@ -487,7 +524,7 @@
   .ga-formula-frac {
     display: inline-grid;
     grid-template-rows: auto auto;
-    min-width: 76px;
+    min-width: clamp(66px, 7.2vw, 76px);
     text-align: center;
     line-height: 1.08;
     vertical-align: middle;
@@ -499,6 +536,11 @@
   .ga-formula-frac span:last-child { padding: 2px 4px 0; }
   .ga-formula-times { margin-left: 3px; }
   #trendChart { height: 586px; margin-top: 2px; }
+  .ga-replacement-chart #trendChart { height: 500px; margin-top: 0; }
+  @media (max-width: 860px) {
+    .ga-quality-head { grid-template-columns: 1fr; }
+    .ga-quality-formula { justify-self: start; width: min(100%, 300px); }
+  }
   .ga-trend-hover-tip {
     position: absolute;
     z-index: 8;
@@ -664,7 +706,14 @@
       </div>
     </section>
     <section class="ga-card ga-chart-card">
-      <div class="ga-quality-formula" id="qualityFormula" hidden></div>
+      <div class="ga-quality-head" id="qualityHead" hidden>
+        <div class="ga-quality-copy">
+          <h2>汰換效益總覽</h2>
+          <p><strong>平均節省瓦數：</strong>該年每盞完成汰換的燈具，平均降低的瓦數。</p>
+          <p><strong>改善率：</strong>該年汰換後，相對於原燈具總瓦數，整體用電瓦數降低的比例。</p>
+        </div>
+        <div class="ga-quality-formula" id="qualityFormula" hidden></div>
+      </div>
       <div id="trendChart"></div>
       <div class="ga-trend-hover-tip" id="trendHoverTip"></div>
       <div class="ga-toggle-bar" id="trendToggles" hidden></div>
@@ -696,6 +745,7 @@ const trendChart = document.getElementById("trendChart");
 const trendHoverTip = document.getElementById("trendHoverTip");
 const trendToggles = document.getElementById("trendToggles");
 const qualityFormula = document.getElementById("qualityFormula");
+const qualityHead = document.getElementById("qualityHead");
 const overviewModeSwitch = document.getElementById("overviewModeSwitch");
 const overviewTitle = document.getElementById("overviewTitle");
 const overviewNote = document.getElementById("overviewNote");
@@ -791,6 +841,10 @@ function activeFormulaHtml(category = selectedCategory) {
 
 function activeTrendSubtitle(category = selectedCategory, fallback = "") {
   return activeMeta(category).trendSubtitle || fallback;
+}
+
+function boldTitle(text) {
+  return `<b>${text}</b>`;
 }
 
 function currentSeries(category = selectedCategory) {
@@ -1178,6 +1232,19 @@ function setTextIfExists(id, value) {
   if (node) node.textContent = value;
 }
 
+function fitSingleLineText(node, maxSize = 12, minSize = 8.2) {
+  if (!node) return;
+  node.style.whiteSpace = "nowrap";
+  node.style.fontSize = `${maxSize}px`;
+  const available = node.clientWidth || node.parentElement?.clientWidth || 0;
+  if (!available) return;
+  let size = maxSize;
+  while (size > minSize && node.scrollWidth > available) {
+    size -= 0.2;
+    node.style.fontSize = `${size.toFixed(1)}px`;
+  }
+}
+
 function setSmallMetric(elementId, value, unit) {
   const node = document.getElementById(elementId);
   if (node) node.textContent = `${fmt.format(value)} ${unit}`;
@@ -1320,6 +1387,7 @@ function renderReplacementDom() {
     ? `${metrics.range.end} 年均節省`
     : `${metrics.range.start}-${metrics.range.end} 年均節省`;
   setTextIfExists("rankHint", `${hintPrefix} ${fmt.format(metrics.averageSaving)} 瓦。總計已累積節省 ${fmt.format(metrics.cumulativeSaving)} 瓦`);
+  fitSingleLineText(document.getElementById("rankHint"));
   renderCoverageBadge(`年度範圍 ${metrics.rangeLabel}`);
 }
 
@@ -1537,6 +1605,7 @@ function emptyTrendLayout(message) {
 }
 
 function renderReplacementQualityDashboard() {
+  if (qualityHead) qualityHead.hidden = false;
   if (qualityFormula) {
     qualityFormula.hidden = false;
     qualityFormula.innerHTML = `
@@ -1576,7 +1645,6 @@ function renderReplacementQualityDashboard() {
   const xMax = Math.max(maxValue * 1.72, 1);
   const valueX = Math.max(maxValue * 1.04, xMax * 0.58);
   const rateX = Math.max(maxValue * 1.34, xMax * 0.74);
-  const subtitle = `<span style="baseline-shift:-5px;">平均節省瓦數：該年每盞完成汰換的燈具，平均降低的瓦數。</span><br>改善率：該年汰換後，相對於原燈具總瓦數，整體用電瓦數降低的比例。`;
   const annotations = [
     {
       text: `均值 ${fmt.format(avgMean)} 瓦`,
@@ -1620,16 +1688,7 @@ function renderReplacementQualityDashboard() {
     ])),
   ];
   const layout = {
-    title: {
-      text: `汰換效益總覽<br><sup style="line-height:1.18;">${subtitle}</sup>`,
-      x: 0,
-      xanchor: "left",
-      y: 0.974,
-      yanchor: "top",
-      pad: { t: 3, b: 0 },
-      font: { size: 19, color: "#101827" },
-    },
-    margin: { l: 76, r: 26, t: 136, b: 48 },
+    margin: { l: 76, r: 26, t: 24, b: 48 },
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "#ffffff",
     xaxis: {
@@ -1909,7 +1968,7 @@ function renderLocationTrendBars() {
   if (!rows.length || !dataRows.length) {
     Plotly.react("trendChart", [], {
       title: {
-        text: `${axisName}比較-${activeValueNoun()}<br><sup>目前篩選條件沒有資料</sup>`,
+        text: `${boldTitle(`${axisName}比較-${activeValueNoun()}`)}<br><sup>目前篩選條件沒有資料</sup>`,
         x: 0,
         xanchor: "left",
         y: 0.974,
@@ -1971,7 +2030,7 @@ function renderLocationTrendBars() {
       : "%{customdata[0]}<br>" + activeValueNoun() + "：%{customdata[1]:,.2f} " + activeUnit() + "<extra></extra>",
   }], {
     title: {
-      text: `${axisName}比較-${activeValueNoun()}<br><sup>${selectedYear} 年各${axisName}比較，虛線為各${axisName}均值</sup>`,
+      text: `${boldTitle(`${axisName}比較-${activeValueNoun()}`)}<br><sup>${selectedYear} 年各${axisName}比較，虛線為各${axisName}均值</sup>`,
       x: 0,
       xanchor: "left",
       y: 0.974,
@@ -2064,7 +2123,7 @@ function renderTrend() {
   if (!traces.length || !years.length || !selected) {
     Plotly.react("trendChart", [], {
       title: {
-        text: `歷史趨勢-${activeValueNoun()}<br><sup>${activeTrendSubtitle(selectedCategory, "目前篩選條件沒有資料")}</sup>`,
+        text: `${boldTitle(`歷史趨勢-${activeValueNoun()}`)}<br><sup>${activeTrendSubtitle(selectedCategory, "目前篩選條件沒有資料")}</sup>`,
         x: 0,
         xanchor: "left",
         y: 0.974,
@@ -2194,7 +2253,7 @@ function renderTrend() {
 
   Plotly.react("trendChart", traces, {
     title: {
-      text: `歷史趨勢-${activeValueNoun()}<br><sup>${activeTrendSubtitle(selectedCategory, `${baseComparison.shortBasisLabel}，每一點代表該比較基準下的累積量`)}</sup>`,
+      text: `${boldTitle(`歷史趨勢-${activeValueNoun()}`)}<br><sup>${activeTrendSubtitle(selectedCategory, `${baseComparison.shortBasisLabel}，每一點代表該比較基準下的累積量`)}</sup>`,
       x: 0,
       xanchor: "left",
       y: 0.974,
@@ -2692,6 +2751,7 @@ fetch(`./data.json?t=${Date.now()}`)
   .catch(showError);
 
 window.addEventListener("resize", () => {
+  if (isReplacementChart()) fitSingleLineText(document.getElementById("rankHint"));
   Plotly.Plots.resize(document.getElementById("trendChart"));
   Plotly.Plots.resize(document.getElementById("overviewChart"));
 });
