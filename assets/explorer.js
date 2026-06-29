@@ -9,7 +9,7 @@ const CHARTS = {
   "water-use": { title: "用水量", theme: "能源與水資源" },
   "electricity-use": { title: "用電量", theme: "能源與水資源" },
   "solar-energy": { title: "太陽能", theme: "再生能源" },
-  "led-replacement": { title: "LED汰換", theme: "節能汰換" },
+  "led-replacement": { title: "LED燈具汰換", theme: "節能汰換" },
   "streetlight-replacement": { title: "路燈汰換", theme: "節能汰換" },
 };
 

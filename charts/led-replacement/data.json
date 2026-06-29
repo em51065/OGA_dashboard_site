@@ -1,12 +1,12 @@
 {
   "dataVersion": "20260513",
-  "generatedAt": "2026-06-29 07:40:35",
+  "generatedAt": "2026-06-29 07:55:22",
   "sourceFile": "Total_20260513.xlsx",
   "chartId": "led-replacement",
   "chartType": "led_replacement",
   "sheet": "LED汰換 (2)",
-  "metric": "LED汰換",
-  "valueLabel": "LED汰換永續指標",
+  "metric": "LED燈具汰換",
+  "valueLabel": "LED燈具汰換永續指標",
   "valueNoun": "累積節省瓦數",
   "unit": "瓦",
   "categoryLabel": "選擇指標",
@@ -25,14 +25,14 @@
       "agg": "sum",
       "view": "cumulative",
       "formulaHtml": "<span class=\"ga-formula-math\"><span>每盞節省掉的平均瓦數</span><span class=\"ga-formula-times\">×</span><span>汰換數量</span></span>",
-      "trendSubtitle": "累積看LED汰換到目前為止已削減多少用電負載；年度新增下降不一定代表退步，可能是可汰換存量已下降。"
+      "trendSubtitle": "累積看LED燈具汰換到目前為止已削減多少用電負載；年度新增下降不一定代表退步，可能是可汰換存量已下降。"
     },
     "年度汰換數量": {
       "unit": "顆/隻/片",
       "valueNoun": "年度汰換數量",
       "agg": "sum",
       "view": "volume",
-      "trendSubtitle": "每一點代表該年度完成的LED汰換數量，反映工程推進量，不直接代表永續績效好壞。"
+      "trendSubtitle": "每一點代表該年度完成的LED燈具汰換數量，反映工程推進量，不直接代表永續績效好壞。"
     },
     "平均節省瓦數": {
       "unit": "瓦",
