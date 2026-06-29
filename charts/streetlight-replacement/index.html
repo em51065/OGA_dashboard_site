@@ -494,13 +494,17 @@
   }
   .ga-quality-copy p {
     margin: 0;
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    column-gap: 0;
+    align-items: start;
     color: #101827;
-    font-size: clamp(11.4px, 0.9vw, 13px);
+    font-size: clamp(11.8px, 0.94vw, 13.6px);
     line-height: 1.43;
     font-weight: 400;
   }
   .ga-quality-copy p + p { margin-top: 1px; }
-  .ga-quality-copy strong { font-weight: 400; }
+  .ga-quality-copy strong { font-weight: 400; white-space: nowrap; }
   .ga-quality-formula {
     justify-self: end;
     width: 100%;
@@ -515,7 +519,7 @@
     background: rgba(248,250,252,0.54);
     box-shadow: none;
     color: #253047;
-    font-size: clamp(9px, 0.72vw, 10.5px);
+    font-size: clamp(9.9px, 0.82vw, 11.7px);
     font-weight: 400;
     line-height: 1.15;
   }
@@ -535,6 +539,7 @@
   }
   .ga-formula-frac span:last-child { padding: 2px 4px 0; }
   .ga-formula-times { margin-left: 3px; }
+  .ga-quality-formula .ga-formula-times { font-size: clamp(9.4px, 0.76vw, 11px); }
   #trendChart { height: 586px; margin-top: 2px; }
   .ga-replacement-chart #trendChart { height: 500px; margin-top: 0; }
   @media (max-width: 860px) {
