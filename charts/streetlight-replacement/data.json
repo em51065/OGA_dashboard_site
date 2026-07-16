@@ -1,7 +1,7 @@
 {
-  "dataVersion": "20260513",
-  "generatedAt": "2026-06-30 09:04:07",
-  "sourceFile": "Total_20260513.xlsx",
+  "dataVersion": "20260713",
+  "generatedAt": "2026-07-16 08:19:09",
+  "sourceFile": "Total_20260713.xlsx",
   "chartId": "streetlight-replacement",
   "chartType": "streetlight",
   "sheet": "路燈汰換 (2)",
@@ -75,7 +75,7 @@
   "locationSeries": {
     "全校區": {
       "累積節省瓦數": {
-        "defaultYear": 2026,
+        "defaultYear": 2025,
         "records": [
           {
             "year": 2025,
@@ -97,15 +97,16 @@
           },
           {
             "year": 2026,
-            "value": 250.0,
-            "months": 1,
+            "value": 330.0,
+            "months": 2,
             "monthsList": [
-              3
+              3,
+              4
             ],
-            "maxMonth": 3,
+            "maxMonth": 4,
             "hasDecember": false,
             "start": "2026-03",
-            "end": "2026-03"
+            "end": "2026-04"
           }
         ],
         "monthly": [
@@ -148,11 +149,16 @@
             "year": 2026,
             "month": 3,
             "value": 250.0
+          },
+          {
+            "year": 2026,
+            "month": 4,
+            "value": 80.0
           }
         ]
       },
       "年度汰換數量": {
-        "defaultYear": 2026,
+        "defaultYear": 2025,
         "records": [
           {
             "year": 2025,
@@ -174,15 +180,16 @@
           },
           {
             "year": 2026,
-            "value": 11.0,
-            "months": 1,
+            "value": 28.0,
+            "months": 2,
             "monthsList": [
-              3
+              3,
+              4
             ],
-            "maxMonth": 3,
+            "maxMonth": 4,
             "hasDecember": false,
             "start": "2026-03",
-            "end": "2026-03"
+            "end": "2026-04"
           }
         ],
         "monthly": [
@@ -225,11 +232,16 @@
             "year": 2026,
             "month": 3,
             "value": 11.0
+          },
+          {
+            "year": 2026,
+            "month": 4,
+            "value": 17.0
           }
         ]
       },
       "平均節省瓦數": {
-        "defaultYear": 2026,
+        "defaultYear": 2025,
         "records": [
           {
             "year": 2025,
@@ -251,15 +263,16 @@
           },
           {
             "year": 2026,
-            "value": 22.727,
-            "months": 1,
+            "value": 11.786,
+            "months": 2,
             "monthsList": [
-              3
+              3,
+              4
             ],
-            "maxMonth": 3,
+            "maxMonth": 4,
             "hasDecember": false,
             "start": "2026-03",
-            "end": "2026-03"
+            "end": "2026-04"
           }
         ],
         "monthly": [
@@ -318,11 +331,18 @@
             "value": 22.727,
             "numerator": 250.0,
             "denominator": 11.0
+          },
+          {
+            "year": 2026,
+            "month": 4,
+            "value": 4.706,
+            "numerator": 80.0,
+            "denominator": 17.0
           }
         ]
       },
       "節能改善率": {
-        "defaultYear": 2026,
+        "defaultYear": 2025,
         "records": [
           {
             "year": 2025,
@@ -344,15 +364,16 @@
           },
           {
             "year": 2026,
-            "value": 32.68,
-            "months": 1,
+            "value": 32.512,
+            "months": 2,
             "monthsList": [
-              3
+              3,
+              4
             ],
-            "maxMonth": 3,
+            "maxMonth": 4,
             "hasDecember": false,
             "start": "2026-03",
-            "end": "2026-03"
+            "end": "2026-04"
           }
         ],
         "monthly": [
@@ -411,11 +432,18 @@
             "value": 32.68,
             "numerator": 25000.0,
             "denominator": 765.0
+          },
+          {
+            "year": 2026,
+            "month": 4,
+            "value": 32.0,
+            "numerator": 8000.0,
+            "denominator": 250.0
           }
         ]
       },
       "非LED原舊燈具汰換量": {
-        "defaultYear": 2026,
+        "defaultYear": 2025,
         "records": [
           {
             "year": 2025,
@@ -438,14 +466,15 @@
           {
             "year": 2026,
             "value": 0.0,
-            "months": 1,
+            "months": 2,
             "monthsList": [
-              3
+              3,
+              4
             ],
-            "maxMonth": 3,
+            "maxMonth": 4,
             "hasDecember": false,
             "start": "2026-03",
-            "end": "2026-03"
+            "end": "2026-04"
           }
         ],
         "monthly": [
@@ -487,6 +516,11 @@
           {
             "year": 2026,
             "month": 3,
+            "value": 0.0
+          },
+          {
+            "year": 2026,
+            "month": 4,
             "value": 0.0
           }
         ]
@@ -1134,7 +1168,7 @@
     },
     "成功校區": {
       "累積節省瓦數": {
-        "defaultYear": 2026,
+        "defaultYear": 2025,
         "records": [
           {
             "year": 2025,
@@ -1155,15 +1189,16 @@
           },
           {
             "year": 2026,
-            "value": 250.0,
-            "months": 1,
+            "value": 330.0,
+            "months": 2,
             "monthsList": [
-              3
+              3,
+              4
             ],
-            "maxMonth": 3,
+            "maxMonth": 4,
             "hasDecember": false,
             "start": "2026-03",
-            "end": "2026-03"
+            "end": "2026-04"
           }
         ],
         "monthly": [
@@ -1201,11 +1236,16 @@
             "year": 2026,
             "month": 3,
             "value": 250.0
+          },
+          {
+            "year": 2026,
+            "month": 4,
+            "value": 80.0
           }
         ]
       },
       "年度汰換數量": {
-        "defaultYear": 2026,
+        "defaultYear": 2025,
         "records": [
           {
             "year": 2025,
@@ -1226,15 +1266,16 @@
           },
           {
             "year": 2026,
-            "value": 11.0,
-            "months": 1,
+            "value": 28.0,
+            "months": 2,
             "monthsList": [
-              3
+              3,
+              4
             ],
-            "maxMonth": 3,
+            "maxMonth": 4,
             "hasDecember": false,
             "start": "2026-03",
-            "end": "2026-03"
+            "end": "2026-04"
           }
         ],
         "monthly": [
@@ -1272,11 +1313,16 @@
             "year": 2026,
             "month": 3,
             "value": 11.0
+          },
+          {
+            "year": 2026,
+            "month": 4,
+            "value": 17.0
           }
         ]
       },
       "平均節省瓦數": {
-        "defaultYear": 2026,
+        "defaultYear": 2025,
         "records": [
           {
             "year": 2025,
@@ -1297,15 +1343,16 @@
           },
           {
             "year": 2026,
-            "value": 22.727,
-            "months": 1,
+            "value": 11.786,
+            "months": 2,
             "monthsList": [
-              3
+              3,
+              4
             ],
-            "maxMonth": 3,
+            "maxMonth": 4,
             "hasDecember": false,
             "start": "2026-03",
-            "end": "2026-03"
+            "end": "2026-04"
           }
         ],
         "monthly": [
@@ -1357,11 +1404,18 @@
             "value": 22.727,
             "numerator": 250.0,
             "denominator": 11.0
+          },
+          {
+            "year": 2026,
+            "month": 4,
+            "value": 4.706,
+            "numerator": 80.0,
+            "denominator": 17.0
           }
         ]
       },
       "節能改善率": {
-        "defaultYear": 2026,
+        "defaultYear": 2025,
         "records": [
           {
             "year": 2025,
@@ -1382,15 +1436,16 @@
           },
           {
             "year": 2026,
-            "value": 32.68,
-            "months": 1,
+            "value": 32.512,
+            "months": 2,
             "monthsList": [
-              3
+              3,
+              4
             ],
-            "maxMonth": 3,
+            "maxMonth": 4,
             "hasDecember": false,
             "start": "2026-03",
-            "end": "2026-03"
+            "end": "2026-04"
           }
         ],
         "monthly": [
@@ -1442,11 +1497,18 @@
             "value": 32.68,
             "numerator": 25000.0,
             "denominator": 765.0
+          },
+          {
+            "year": 2026,
+            "month": 4,
+            "value": 32.0,
+            "numerator": 8000.0,
+            "denominator": 250.0
           }
         ]
       },
       "非LED原舊燈具汰換量": {
-        "defaultYear": 2026,
+        "defaultYear": 2025,
         "records": [
           {
             "year": 2025,
@@ -1468,14 +1530,15 @@
           {
             "year": 2026,
             "value": 0.0,
-            "months": 1,
+            "months": 2,
             "monthsList": [
-              3
+              3,
+              4
             ],
-            "maxMonth": 3,
+            "maxMonth": 4,
             "hasDecember": false,
             "start": "2026-03",
-            "end": "2026-03"
+            "end": "2026-04"
           }
         ],
         "monthly": [
@@ -1512,6 +1575,11 @@
           {
             "year": 2026,
             "month": 3,
+            "value": 0.0
+          },
+          {
+            "year": 2026,
+            "month": 4,
             "value": 0.0
           }
         ]
@@ -2032,5 +2100,135 @@
       }
     }
   },
-  "defaultYear": 2026
+  "savingsAttributionByLocation": {
+    "全校區": [
+      {
+        "year": 2025,
+        "qty": 460.0,
+        "nonLedQty": 188.0,
+        "nonLedShare": 40.869565217391305,
+        "saving": 26887.0,
+        "nonLedSaving": 24974.0,
+        "ledOriginSaving": 1913.0,
+        "nonLedSavingShare": 92.88503737865884
+      },
+      {
+        "year": 2026,
+        "qty": 28.0,
+        "nonLedQty": 0.0,
+        "nonLedShare": 0.0,
+        "saving": 330.0,
+        "nonLedSaving": 0.0,
+        "ledOriginSaving": 330.0,
+        "nonLedSavingShare": 0.0
+      }
+    ],
+    "光復校區": [
+      {
+        "year": 2025,
+        "qty": 138.0,
+        "nonLedQty": 33.0,
+        "nonLedShare": 23.91304347826087,
+        "saving": 4182.0,
+        "nonLedSaving": 4099.0,
+        "ledOriginSaving": 83.0,
+        "nonLedSavingShare": 98.01530368244859
+      }
+    ],
+    "力行校區": [
+      {
+        "year": 2025,
+        "qty": 12.0,
+        "nonLedQty": 12.0,
+        "nonLedShare": 100.0,
+        "saving": 1400.0,
+        "nonLedSaving": 1400.0,
+        "ledOriginSaving": 0.0,
+        "nonLedSavingShare": 100.0
+      }
+    ],
+    "勝利校區": [
+      {
+        "year": 2025,
+        "qty": 23.0,
+        "nonLedQty": 14.0,
+        "nonLedShare": 60.86956521739131,
+        "saving": 1800.0,
+        "nonLedSaving": 1750.0,
+        "ledOriginSaving": 50.0,
+        "nonLedSavingShare": 97.22222222222221
+      }
+    ],
+    "安南校區": [
+      {
+        "year": 2025,
+        "qty": 9.0,
+        "nonLedQty": 9.0,
+        "nonLedShare": 100.0,
+        "saving": 1350.0,
+        "nonLedSaving": 1350.0,
+        "ledOriginSaving": 0.0,
+        "nonLedSavingShare": 100.0
+      }
+    ],
+    "成功校區": [
+      {
+        "year": 2025,
+        "qty": 176.0,
+        "nonLedQty": 57.0,
+        "nonLedShare": 32.38636363636363,
+        "saving": 9197.0,
+        "nonLedSaving": 7442.0,
+        "ledOriginSaving": 1755.0,
+        "nonLedSavingShare": 80.91769055126672
+      },
+      {
+        "year": 2026,
+        "qty": 28.0,
+        "nonLedQty": 0.0,
+        "nonLedShare": 0.0,
+        "saving": 330.0,
+        "nonLedSaving": 0.0,
+        "ledOriginSaving": 330.0,
+        "nonLedSavingShare": 0.0
+      }
+    ],
+    "成杏校區": [
+      {
+        "year": 2025,
+        "qty": 54.0,
+        "nonLedQty": 22.0,
+        "nonLedShare": 40.74074074074074,
+        "saving": 3095.0,
+        "nonLedSaving": 3070.0,
+        "ledOriginSaving": 25.0,
+        "nonLedSavingShare": 99.19224555735056
+      }
+    ],
+    "敬業校區": [
+      {
+        "year": 2025,
+        "qty": 12.0,
+        "nonLedQty": 11.0,
+        "nonLedShare": 91.66666666666666,
+        "saving": 1690.0,
+        "nonLedSaving": 1690.0,
+        "ledOriginSaving": 0.0,
+        "nonLedSavingShare": 100.0
+      }
+    ],
+    "自強校區": [
+      {
+        "year": 2025,
+        "qty": 36.0,
+        "nonLedQty": 30.0,
+        "nonLedShare": 83.33333333333334,
+        "saving": 4173.0,
+        "nonLedSaving": 4173.0,
+        "ledOriginSaving": 0.0,
+        "nonLedSavingShare": 100.0
+      }
+    ]
+  },
+  "defaultYear": 2025
 }

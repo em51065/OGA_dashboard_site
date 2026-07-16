@@ -1,7 +1,7 @@
 {
-  "dataVersion": "20260513",
-  "generatedAt": "2026-06-30 09:04:05",
-  "sourceFile": "Total_20260513.xlsx",
+  "dataVersion": "20260713",
+  "generatedAt": "2026-07-16 08:19:07",
+  "sourceFile": "Total_20260713.xlsx",
   "chartId": "electricity-use",
   "chartType": "utility",
   "sheet": "用電量",
@@ -13,8 +13,7 @@
   "defaultCategory": "用電量",
   "categories": [
     "用電量",
-    "金額",
-    "每度成本"
+    "金額"
   ],
   "categoryMeta": {
     "用電量": {
@@ -26,13 +25,12 @@
       "unit": "元",
       "valueNoun": "金額",
       "agg": "sum"
-    },
-    "每度成本": {
-      "unit": "元/度",
-      "valueNoun": "每度成本",
-      "agg": "ratio"
     }
   },
+  "supportsMonthGrain": true,
+  "usesCategoryChips": false,
+  "usesMetricSwitch": true,
+  "dualMetricTrend": true,
   "locations": [
     "校本部"
   ],
@@ -137,18 +135,20 @@
           },
           {
             "year": 2026,
-            "value": 19464016.0,
-            "months": 4,
+            "value": 32619263.0,
+            "months": 6,
             "monthsList": [
               1,
               2,
               3,
-              4
+              4,
+              5,
+              6
             ],
-            "maxMonth": 4,
+            "maxMonth": 6,
             "hasDecember": false,
             "start": "2026-01",
-            "end": "2026-04"
+            "end": "2026-06"
           }
         ],
         "monthly": [
@@ -411,6 +411,16 @@
             "year": 2026,
             "month": 4,
             "value": 5637839.0
+          },
+          {
+            "year": 2026,
+            "month": 5,
+            "value": 6063143.0
+          },
+          {
+            "year": 2026,
+            "month": 6,
+            "value": 7092104.0
           }
         ]
       },
@@ -442,18 +452,20 @@
           },
           {
             "year": 2026,
-            "value": 65551019.0,
-            "months": 4,
+            "value": 102992262.0,
+            "months": 6,
             "monthsList": [
               1,
               2,
               3,
-              4
+              4,
+              5,
+              6
             ],
-            "maxMonth": 4,
+            "maxMonth": 6,
             "hasDecember": false,
             "start": "2026-01",
-            "end": "2026-04"
+            "end": "2026-06"
           }
         ],
         "monthly": [
@@ -536,163 +548,16 @@
             "year": 2026,
             "month": 4,
             "value": 15148380.0
-          }
-        ]
-      },
-      "每度成本": {
-        "defaultYear": 2026,
-        "records": [
-          {
-            "year": 2025,
-            "value": 3.022,
-            "months": 12,
-            "monthsList": [
-              1,
-              2,
-              3,
-              4,
-              5,
-              6,
-              7,
-              8,
-              9,
-              10,
-              11,
-              12
-            ],
-            "maxMonth": 12,
-            "hasDecember": true,
-            "start": "2025-01",
-            "end": "2025-12"
           },
           {
             "year": 2026,
-            "value": 3.368,
-            "months": 4,
-            "monthsList": [
-              1,
-              2,
-              3,
-              4
-            ],
-            "maxMonth": 4,
-            "hasDecember": false,
-            "start": "2026-01",
-            "end": "2026-04"
-          }
-        ],
-        "monthly": [
-          {
-            "year": 2025,
-            "month": 1,
-            "value": 2.718,
-            "numerator": 14067582.0,
-            "denominator": 5175648.0
-          },
-          {
-            "year": 2025,
-            "month": 2,
-            "value": 2.682,
-            "numerator": 11577187.0,
-            "denominator": 4317152.0
-          },
-          {
-            "year": 2025,
-            "month": 3,
-            "value": 2.837,
-            "numerator": 11471277.0,
-            "denominator": 4044020.0
-          },
-          {
-            "year": 2025,
-            "month": 4,
-            "value": 2.701,
-            "numerator": 14636520.0,
-            "denominator": 5419751.0
-          },
-          {
-            "year": 2025,
             "month": 5,
-            "value": 2.681,
-            "numerator": 15636606.0,
-            "denominator": 5832060.0
+            "value": 16395697.0
           },
           {
-            "year": 2025,
+            "year": 2026,
             "month": 6,
-            "value": 2.984,
-            "numerator": 21520677.0,
-            "denominator": 7210958.0
-          },
-          {
-            "year": 2025,
-            "month": 7,
-            "value": 3.363,
-            "numerator": 24134917.0,
-            "denominator": 7176000.0
-          },
-          {
-            "year": 2025,
-            "month": 8,
-            "value": 3.464,
-            "numerator": 22562554.0,
-            "denominator": 6513047.0
-          },
-          {
-            "year": 2025,
-            "month": 9,
-            "value": 3.361,
-            "numerator": 22130119.0,
-            "denominator": 6584413.0
-          },
-          {
-            "year": 2025,
-            "month": 10,
-            "value": 3.445,
-            "numerator": 24263735.0,
-            "denominator": 7043097.0
-          },
-          {
-            "year": 2025,
-            "month": 11,
-            "value": 2.953,
-            "numerator": 21321085.0,
-            "denominator": 7219860.0
-          },
-          {
-            "year": 2025,
-            "month": 12,
-            "value": 2.631,
-            "numerator": 15014652.0,
-            "denominator": 5706538.0
-          },
-          {
-            "year": 2026,
-            "month": 1,
-            "value": 2.715,
-            "numerator": 14807105.0,
-            "denominator": 5453208.0
-          },
-          {
-            "year": 2026,
-            "month": 2,
-            "value": 4.134,
-            "numerator": 19035665.0,
-            "denominator": 4604819.0
-          },
-          {
-            "year": 2026,
-            "month": 3,
-            "value": 4.395,
-            "numerator": 16559869.0,
-            "denominator": 3768150.0
-          },
-          {
-            "year": 2026,
-            "month": 4,
-            "value": 2.687,
-            "numerator": 15148380.0,
-            "denominator": 5637839.0
+            "value": 21045546.0
           }
         ]
       }

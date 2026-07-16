@@ -1,7 +1,7 @@
 {
-  "dataVersion": "20260513",
-  "generatedAt": "2026-06-30 09:04:05",
-  "sourceFile": "Total_20260513.xlsx",
+  "dataVersion": "20260713",
+  "generatedAt": "2026-07-16 08:19:07",
+  "sourceFile": "Total_20260713.xlsx",
   "chartId": "water-use",
   "chartType": "utility",
   "sheet": "用水量",
@@ -13,8 +13,7 @@
   "defaultCategory": "用水量",
   "categories": [
     "用水量",
-    "金額",
-    "每度成本"
+    "金額"
   ],
   "categoryMeta": {
     "用水量": {
@@ -26,13 +25,12 @@
       "unit": "元",
       "valueNoun": "金額",
       "agg": "sum"
-    },
-    "每度成本": {
-      "unit": "元/度",
-      "valueNoun": "每度成本",
-      "agg": "ratio"
     }
   },
+  "supportsMonthGrain": true,
+  "usesCategoryChips": false,
+  "usesMetricSwitch": true,
+  "dualMetricTrend": true,
   "series": {
     "用水量": {
       "defaultYear": 2026,
@@ -131,18 +129,20 @@
         },
         {
           "year": 2026,
-          "value": 330748.0,
-          "months": 4,
+          "value": 402925.0,
+          "months": 6,
           "monthsList": [
             1,
             2,
             3,
-            4
+            4,
+            5,
+            6
           ],
-          "maxMonth": 4,
+          "maxMonth": 6,
           "hasDecember": false,
           "start": "2026-01",
-          "end": "2026-04"
+          "end": "2026-06"
         }
       ],
       "monthly": [
@@ -404,7 +404,17 @@
         {
           "year": 2026,
           "month": 4,
-          "value": 139706.0
+          "value": 69853.0
+        },
+        {
+          "year": 2026,
+          "month": 5,
+          "value": 72975.0
+        },
+        {
+          "year": 2026,
+          "month": 6,
+          "value": 69055.0
         }
       ]
     },
@@ -505,18 +515,20 @@
         },
         {
           "year": 2026,
-          "value": 4365453.0,
-          "months": 4,
+          "value": 5314605.0,
+          "months": 6,
           "monthsList": [
             1,
             2,
             3,
-            4
+            4,
+            5,
+            6
           ],
-          "maxMonth": 4,
+          "maxMonth": 6,
           "hasDecember": false,
           "start": "2026-01",
-          "end": "2026-04"
+          "end": "2026-06"
         }
       ],
       "monthly": [
@@ -778,485 +790,17 @@
         {
           "year": 2026,
           "month": 4,
-          "value": 1828524.0
-        }
-      ]
-    },
-    "每度成本": {
-      "defaultYear": 2026,
-      "records": [
-        {
-          "year": 2022,
-          "value": 13.458,
-          "months": 12,
-          "monthsList": [
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12
-          ],
-          "maxMonth": 12,
-          "hasDecember": true,
-          "start": "2022-01",
-          "end": "2022-12"
-        },
-        {
-          "year": 2023,
-          "value": 13.196,
-          "months": 12,
-          "monthsList": [
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12
-          ],
-          "maxMonth": 12,
-          "hasDecember": true,
-          "start": "2023-01",
-          "end": "2023-12"
-        },
-        {
-          "year": 2024,
-          "value": 13.226,
-          "months": 12,
-          "monthsList": [
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12
-          ],
-          "maxMonth": 12,
-          "hasDecember": true,
-          "start": "2024-01",
-          "end": "2024-12"
-        },
-        {
-          "year": 2025,
-          "value": 13.191,
-          "months": 12,
-          "monthsList": [
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12
-          ],
-          "maxMonth": 12,
-          "hasDecember": true,
-          "start": "2025-01",
-          "end": "2025-12"
+          "value": 914262.0
         },
         {
           "year": 2026,
-          "value": 13.199,
-          "months": 4,
-          "monthsList": [
-            1,
-            2,
-            3,
-            4
-          ],
-          "maxMonth": 4,
-          "hasDecember": false,
-          "start": "2026-01",
-          "end": "2026-04"
-        }
-      ],
-      "monthly": [
-        {
-          "year": 2022,
-          "month": 1,
-          "value": 13.171,
-          "numerator": 919113.0,
-          "denominator": 69784.0
-        },
-        {
-          "year": 2022,
-          "month": 2,
-          "value": 13.099,
-          "numerator": 869154.0,
-          "denominator": 66351.0
-        },
-        {
-          "year": 2022,
-          "month": 3,
-          "value": 13.376,
-          "numerator": 687961.0,
-          "denominator": 51431.0
-        },
-        {
-          "year": 2022,
-          "month": 4,
-          "value": 13.131,
-          "numerator": 813681.0,
-          "denominator": 61966.0
-        },
-        {
-          "year": 2022,
           "month": 5,
-          "value": 13.189,
-          "numerator": 940282.0,
-          "denominator": 71291.0
-        },
-        {
-          "year": 2022,
-          "month": 6,
-          "value": 13.121,
-          "numerator": 831239.0,
-          "denominator": 63354.0
-        },
-        {
-          "year": 2022,
-          "month": 7,
-          "value": 13.165,
-          "numerator": 956982.0,
-          "denominator": 72694.0
-        },
-        {
-          "year": 2022,
-          "month": 8,
-          "value": 13.244,
-          "numerator": 662058.0,
-          "denominator": 49989.0
-        },
-        {
-          "year": 2022,
-          "month": 9,
-          "value": 13.383,
-          "numerator": 678278.0,
-          "denominator": 50681.0
-        },
-        {
-          "year": 2022,
-          "month": 10,
-          "value": 13.119,
-          "numerator": 829987.0,
-          "denominator": 63264.0
-        },
-        {
-          "year": 2022,
-          "month": 11,
-          "value": 13.104,
-          "numerator": 1089649.0,
-          "denominator": 83153.0
-        },
-        {
-          "year": 2022,
-          "month": 12,
-          "value": 15.676,
-          "numerator": 1383949.0,
-          "denominator": 88286.0
-        },
-        {
-          "year": 2023,
-          "month": 1,
-          "value": 13.16,
-          "numerator": 958468.0,
-          "denominator": 72830.0
-        },
-        {
-          "year": 2023,
-          "month": 2,
-          "value": 13.115,
-          "numerator": 837754.0,
-          "denominator": 63878.0
-        },
-        {
-          "year": 2023,
-          "month": 3,
-          "value": 13.321,
-          "numerator": 786089.0,
-          "denominator": 59011.0
-        },
-        {
-          "year": 2023,
-          "month": 4,
-          "value": 13.084,
-          "numerator": 929992.0,
-          "denominator": 71080.0
-        },
-        {
-          "year": 2023,
-          "month": 5,
-          "value": 13.283,
-          "numerator": 844028.0,
-          "denominator": 63543.0
-        },
-        {
-          "year": 2023,
-          "month": 6,
-          "value": 13.122,
-          "numerator": 855051.0,
-          "denominator": 65161.0
-        },
-        {
-          "year": 2023,
-          "month": 7,
-          "value": 13.243,
-          "numerator": 849180.0,
-          "denominator": 64122.0
-        },
-        {
-          "year": 2023,
-          "month": 8,
-          "value": 13.309,
-          "numerator": 618395.0,
-          "denominator": 46463.0
-        },
-        {
-          "year": 2023,
-          "month": 9,
-          "value": 13.343,
-          "numerator": 726676.0,
-          "denominator": 54461.0
-        },
-        {
-          "year": 2023,
-          "month": 10,
-          "value": 13.205,
-          "numerator": 726489.0,
-          "denominator": 55015.0
-        },
-        {
-          "year": 2023,
-          "month": 11,
-          "value": 13.158,
-          "numerator": 972140.0,
-          "denominator": 73883.0
-        },
-        {
-          "year": 2023,
-          "month": 12,
-          "value": 13.102,
-          "numerator": 885873.0,
-          "denominator": 67615.0
-        },
-        {
-          "year": 2024,
-          "month": 1,
-          "value": 13.264,
-          "numerator": 878465.0,
-          "denominator": 66229.0
-        },
-        {
-          "year": 2024,
-          "month": 2,
-          "value": 13.273,
-          "numerator": 685494.0,
-          "denominator": 51647.0
-        },
-        {
-          "year": 2024,
-          "month": 3,
-          "value": 13.387,
-          "numerator": 724836.0,
-          "denominator": 54143.0
-        },
-        {
-          "year": 2024,
-          "month": 4,
-          "value": 13.201,
-          "numerator": 733082.0,
-          "denominator": 55532.0
-        },
-        {
-          "year": 2024,
-          "month": 5,
-          "value": 13.256,
-          "numerator": 876367.0,
-          "denominator": 66113.0
-        },
-        {
-          "year": 2024,
-          "month": 6,
-          "value": 13.113,
-          "numerator": 867891.0,
-          "denominator": 66187.0
-        },
-        {
-          "year": 2024,
-          "month": 7,
-          "value": 13.222,
-          "numerator": 903034.0,
-          "denominator": 68300.0
-        },
-        {
-          "year": 2024,
-          "month": 8,
-          "value": 13.354,
-          "numerator": 580973.0,
-          "denominator": 43506.0
-        },
-        {
-          "year": 2024,
-          "month": 9,
-          "value": 13.309,
-          "numerator": 798686.0,
-          "denominator": 60009.0
-        },
-        {
-          "year": 2024,
-          "month": 10,
-          "value": 13.246,
-          "numerator": 683785.0,
-          "denominator": 51623.0
-        },
-        {
-          "year": 2024,
-          "month": 11,
-          "value": 13.118,
-          "numerator": 1109097.0,
-          "denominator": 84548.0
-        },
-        {
-          "year": 2024,
-          "month": 12,
-          "value": 13.095,
-          "numerator": 901821.0,
-          "denominator": 68869.0
-        },
-        {
-          "year": 2025,
-          "month": 1,
-          "value": 13.195,
-          "numerator": 954271.0,
-          "denominator": 72318.0
-        },
-        {
-          "year": 2025,
-          "month": 2,
-          "value": 13.162,
-          "numerator": 787723.0,
-          "denominator": 59850.0
-        },
-        {
-          "year": 2025,
-          "month": 3,
-          "value": 13.344,
-          "numerator": 769020.0,
-          "denominator": 57629.0
-        },
-        {
-          "year": 2025,
-          "month": 4,
-          "value": 13.143,
-          "numerator": 816732.0,
-          "denominator": 62143.0
-        },
-        {
-          "year": 2025,
-          "month": 5,
-          "value": 13.176,
-          "numerator": 1020645.0,
-          "denominator": 77465.0
-        },
-        {
-          "year": 2025,
-          "month": 6,
-          "value": 13.111,
-          "numerator": 870707.0,
-          "denominator": 66410.0
-        },
-        {
-          "year": 2025,
-          "month": 7,
-          "value": 13.166,
-          "numerator": 1059142.0,
-          "denominator": 80447.0
-        },
-        {
-          "year": 2025,
-          "month": 8,
-          "value": 13.239,
-          "numerator": 688180.0,
-          "denominator": 51981.0
-        },
-        {
-          "year": 2025,
-          "month": 9,
-          "value": 13.411,
-          "numerator": 734480.0,
-          "denominator": 54766.0
-        },
-        {
-          "year": 2025,
-          "month": 10,
-          "value": 13.184,
-          "numerator": 755996.0,
-          "denominator": 57342.0
-        },
-        {
-          "year": 2025,
-          "month": 11,
-          "value": 13.166,
-          "numerator": 1112779.0,
-          "denominator": 84522.0
-        },
-        {
-          "year": 2025,
-          "month": 12,
-          "value": 13.081,
-          "numerator": 929276.0,
-          "denominator": 71040.0
+          "value": 959246.0
         },
         {
           "year": 2026,
-          "month": 1,
-          "value": 13.366,
-          "numerator": 972688.0,
-          "denominator": 72771.0
-        },
-        {
-          "year": 2026,
-          "month": 2,
-          "value": 13.115,
-          "numerator": 863749.0,
-          "denominator": 65860.0
-        },
-        {
-          "year": 2026,
-          "month": 3,
-          "value": 13.365,
-          "numerator": 700492.0,
-          "denominator": 52411.0
-        },
-        {
-          "year": 2026,
-          "month": 4,
-          "value": 13.088,
-          "numerator": 1828524.0,
-          "denominator": 139706.0
+          "month": 6,
+          "value": 904168.0
         }
       ]
     }

@@ -1,76 +1,76 @@
 {
-  "generatedAt": "2026-06-30 09:04:07",
-  "sourceFile": "Total_20260513.xlsx",
+  "generatedAt": "2026-07-16 08:19:09",
+  "sourceFile": "Total_20260713.xlsx",
   "charts": [
     {
       "id": "general-recycle",
       "title": "一般回收",
       "path": "charts/general-recycle/",
       "sheet": "一般回收",
-      "dataVersion": "20260513"
+      "dataVersion": "20260713"
     },
     {
       "id": "food-waste-recycle",
       "title": "廚餘回收",
       "path": "charts/food-waste-recycle/",
       "sheet": "廚餘回收",
-      "dataVersion": "20260513"
+      "dataVersion": "20260713"
     },
     {
       "id": "resource-recycle",
       "title": "資源回收",
       "path": "charts/resource-recycle/",
       "sheet": "資源回收",
-      "dataVersion": "20260513"
+      "dataVersion": "20260713"
     },
     {
       "id": "rainwater-reuse",
       "title": "中軸雨水回收",
       "path": "charts/rainwater-reuse/",
       "sheet": "中軸雨水回收",
-      "dataVersion": "20260513"
+      "dataVersion": "20260713"
     },
     {
       "id": "ecoco",
       "title": "ECOCO",
       "path": "charts/ecoco/",
       "sheet": "ECOCO (2)",
-      "dataVersion": "20260513"
+      "dataVersion": "20260713"
     },
     {
       "id": "solar-energy",
       "title": "太陽能",
       "path": "charts/solar-energy/",
       "sheet": "太陽能",
-      "dataVersion": "20260513"
+      "dataVersion": "20260713"
     },
     {
       "id": "water-use",
       "title": "用水量",
       "path": "charts/water-use/",
       "sheet": "用水量",
-      "dataVersion": "20260513"
+      "dataVersion": "20260713"
     },
     {
       "id": "electricity-use",
       "title": "用電量",
       "path": "charts/electricity-use/",
       "sheet": "用電量",
-      "dataVersion": "20260513"
+      "dataVersion": "20260713"
     },
     {
       "id": "led-replacement",
       "title": "LED燈具汰換",
       "path": "charts/led-replacement/",
       "sheet": "LED汰換 (2)",
-      "dataVersion": "20260513"
+      "dataVersion": "20260713"
     },
     {
       "id": "streetlight-replacement",
       "title": "路燈汰換",
       "path": "charts/streetlight-replacement/",
       "sheet": "路燈汰換 (2)",
-      "dataVersion": "20260513"
+      "dataVersion": "20260713"
     }
   ]
 }

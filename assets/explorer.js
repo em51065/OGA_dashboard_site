@@ -1,16 +1,16 @@
 "use strict";
 
 const CHARTS = {
-  ecoco: { title: "ECOCO", theme: "減廢與循環" },
-  "general-recycle": { title: "一般回收", theme: "減廢與循環" },
-  "resource-recycle": { title: "資源回收", theme: "減廢與循環" },
-  "food-waste-recycle": { title: "廚餘回收", theme: "減廢與循環" },
-  "rainwater-reuse": { title: "中軸雨水回收", theme: "水資源" },
-  "water-use": { title: "用水量", theme: "能源與水資源" },
-  "electricity-use": { title: "用電量", theme: "能源與水資源" },
-  "solar-energy": { title: "太陽能", theme: "再生能源" },
-  "led-replacement": { title: "LED燈具汰換", theme: "節能汰換" },
-  "streetlight-replacement": { title: "路燈汰換", theme: "節能汰換" },
+  ecoco: { title: "ECOCO" },
+  "general-recycle": { title: "一般回收" },
+  "resource-recycle": { title: "資源回收" },
+  "food-waste-recycle": { title: "廚餘回收" },
+  "rainwater-reuse": { title: "中軸雨水回收" },
+  "water-use": { title: "用水量" },
+  "electricity-use": { title: "用電量" },
+  "solar-energy": { title: "太陽能" },
+  "led-replacement": { title: "LED燈具汰換" },
+  "streetlight-replacement": { title: "路燈汰換" },
 };
 
 const frame = document.getElementById("chartFrame");
@@ -20,6 +20,7 @@ const activeTitle = document.getElementById("activeChartTitle");
 const mobileSelect = document.getElementById("mobileChartSelect");
 const standaloneLink = document.getElementById("standaloneLink");
 const sourceInfo = document.getElementById("sourceInfo");
+const navDismiss = document.getElementById("navDismiss");
 
 let currentChart = "ecoco";
 let childResizeObserver = null;
@@ -91,16 +92,44 @@ function detachChildObservers() {
   childMutationObserver = null;
   if (childDecorateTimer !== null) window.clearTimeout(childDecorateTimer);
   childDecorateTimer = null;
-  if (childWindow) childWindow.removeEventListener("resize", scheduleFrameMeasure);
+  if (childWindow) {
+    childWindow.removeEventListener("resize", scheduleFrameMeasure);
+    try {
+      childWindow.document?.removeEventListener("pointerdown", closePinnedNavFromOutside, true);
+    } catch (_error) {
+      /* iframe may already be gone */
+    }
+  }
   childWindow = null;
 }
 
 
 function closeNavGroups() {
-  document.querySelectorAll(".oga-nav-group.is-open").forEach((group) => {
+  document.querySelectorAll(".oga-nav-group").forEach((group) => {
     group.classList.remove("is-open");
   });
   updateGroupExpandedState();
+  syncNavDismiss();
+}
+
+function syncNavDismiss() {
+  if (!navDismiss) return;
+  const pinned = Boolean(document.querySelector(".oga-nav-group.is-open"));
+  navDismiss.hidden = !pinned;
+  navDismiss.setAttribute("aria-hidden", pinned ? "false" : "true");
+}
+
+function closePinnedNavFromOutside() {
+  closeNavGroups();
+  blurNavFocus();
+}
+
+function blurNavFocus() {
+  // Chart picks leave focus on the menu item; :focus-within would keep the menu open after mouseleave.
+  const active = document.activeElement;
+  if (active && typeof active.blur === "function" && active.closest?.(".oga-nav-group")) {
+    active.blur();
+  }
 }
 
 function updateGroupExpandedState() {
@@ -121,10 +150,15 @@ function getHeadingPlainText(heading) {
 function resolveBlockKicker(text) {
   if (!text) return "DATA VIEW";
   if (text.includes("\u6210\u679c\u7e3d\u89bd") || text.includes("\u7d2f\u7a4d\u7bc0\u7701\u74e6\u6578")) return "CUMULATIVE IMPACT";
-  if (text.includes("\u5e74\u5ea6\u63a8\u9032") || text.includes("\u975eLED\u6c70\u63db") || text.includes("\u6c70\u63db\u6578\u7e3d\u89bd") || text.includes("\u6c70\u63db\u91cf\u7e3d\u89bd")) return "REPLACEMENT MIX";
-  if (text.includes("\u6539\u5584\u54c1\u8cea") || text.includes("\u6c70\u63db\u54c1\u8cea\u6bd4\u8f03") || text.includes("\u6c70\u63db\u6548\u76ca\u7e3d\u89bd")) return "REPLACEMENT EFFICIENCY";
+  if (text.includes("歷年節省瓦數") || text.includes("年度節省瓦數") || text.includes("歷年全校節省瓦數")) return "YEARLY SAVINGS";
+  if (text.includes("各校區節省瓦數") || text.includes("校區節省瓦數") || text.includes("省瓦歸因") || text.includes("省瓦來源")) return "CAMPUS SAVINGS";
+  if (text.includes("\u6c70\u63db\u91cf") || text.includes("\u5e74\u5ea6\u63a8\u9032") || text.includes("\u975eLED\u6c70\u63db") || text.includes("\u6c70\u63db\u6578\u7e3d\u89bd")) return "REPLACEMENT VOLUME";
+  if (text.includes("\u6539\u5584\u54c1\u8cea") || text.includes("\u6c70\u63db\u54c1\u8cea") || text.includes("\u6c70\u63db\u6548\u76ca\u7e3d\u89bd")) return "REPLACEMENT EFFICIENCY";
+  if (text.includes("月份排名") || text.includes("月度排名") || text.includes("同年月排名")) return "MONTHLY RANKING";
   if (text.includes("歷史排名")) return "HISTORICAL RANKING";
+  if (text.includes("逐月趨勢")) return "MONTHLY TREND";
   if (text.includes("歷史趨勢")) return "HISTORICAL TREND";
+  if (text.includes("月份總覽")) return "MONTHLY OVERVIEW";
   if (text.includes("年度總覽")) return "ANNUAL OVERVIEW";
   if (text.includes("地點總覽") || text.includes("校區總覽")) return "LOCATION VIEW";
   if (text.includes("類別佔比")) return "CATEGORY SHARE";
@@ -133,7 +167,7 @@ function resolveBlockKicker(text) {
 }
 
 function decorateBlockTitles(doc) {
-  doc.querySelectorAll(".ga-card-title h2, .ga-overview-head h3").forEach((heading) => {
+  doc.querySelectorAll(".ga-card-title h2, .ga-overview-head h3, .ga-quality-head h2").forEach((heading) => {
     const text = getHeadingPlainText(heading);
     const label = resolveBlockKicker(text);
     let kicker = heading.querySelector(":scope > .oga-block-kicker");
@@ -210,8 +244,22 @@ function prepareChildFrame() {
         letter-spacing: 0.13em;
         line-height: 1.1;
         text-transform: uppercase;
-        content: "${["led-replacement", "streetlight-replacement"].includes(currentChart) ? "REPLACEMENT EFFICIENCY" : "HISTORICAL TREND"}";
+        content: "HISTORICAL TREND";
         pointer-events: none;
+      }
+      body.ga-month-grain .ga-chart-card::before {
+        content: "MONTHLY TREND";
+      }
+      /* Replacement right panels use quality-head kickers instead. */
+      body.ga-replacement-chart .ga-chart-card::before {
+        content: none !important;
+        display: none !important;
+      }
+      .ga-quality-head h2 {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
       }
     `;
     doc.head.appendChild(style);
@@ -226,12 +274,20 @@ function prepareChildFrame() {
   childResizeObserver.observe(root);
   childWindow = win;
   childWindow.addEventListener("resize", scheduleFrameMeasure);
+  // Clicks inside the chart iframe never bubble to the explorer document.
+  doc.addEventListener("pointerdown", closePinnedNavFromOutside, true);
 
   scheduleFrameMeasure();
   window.setTimeout(scheduleFrameMeasure, 120);
   window.setTimeout(scheduleFrameMeasure, 500);
   window.setTimeout(scheduleFrameMeasure, 1400);
   doc.fonts?.ready.then(scheduleFrameMeasure).catch(() => {});
+}
+
+function formatDataVersionDate(value) {
+  const raw = String(value || "").trim();
+  if (!/^\d{8}$/.test(raw)) return "";
+  return `${raw.slice(0, 4)}-${raw.slice(4, 6)}-${raw.slice(6, 8)}`;
 }
 
 async function updateSourceInfo(chartId) {
@@ -241,9 +297,10 @@ async function updateSourceInfo(chartId) {
     if (!response.ok) throw new Error(String(response.status));
     const payload = await response.json();
     if (chartId !== currentChart) return;
-    sourceInfo.textContent = `來源：${payload.sourceFile || "總務處彙整資料"} · ${payload.sheet || CHARTS[chartId].title}`;
+    const updated = formatDataVersionDate(payload.dataVersion);
+    sourceInfo.textContent = ["資料來源：總務處", updated ? `更新日期 ${updated}` : ""].filter(Boolean).join(" · ");
   } catch (_error) {
-    sourceInfo.textContent = `來源：總務處彙整資料 · ${CHARTS[chartId].title}`;
+    sourceInfo.textContent = "資料來源：總務處";
   }
 }
 
@@ -267,13 +324,14 @@ function renderNavigation() {
 
 function switchChart(chartId, historyMode = "push") {
   if (!CHARTS[chartId]) return;
-  const sameChart = chartId === currentChart && frame.src !== "about:blank";
   currentChart = chartId;
   renderNavigation();
   updateUrl(historyMode);
+  // Chart pick: unpin. Menu stays only while :hover, then closes on mouseleave.
   closeNavGroups();
-  if (sameChart) return;
+  blurNavFocus();
 
+  // Always reload so chart-local filters reset (ECOCO → 全部, etc.).
   detachChildObservers();
   lastFrameHeight = 0;
   stage.setAttribute("aria-busy", "true");
@@ -285,14 +343,26 @@ function switchChart(chartId, historyMode = "push") {
 }
 
 function bindEvents() {
+  document.querySelectorAll(".oga-nav-group").forEach((group) => {
+    group.addEventListener("mouseleave", () => {
+      // Card click pins with is-open — stay open until outside click.
+      // Hover-only / after picking a chart: clear focus so the menu can close.
+      if (group.classList.contains("is-open")) return;
+      blurNavFocus();
+      updateGroupExpandedState();
+    });
+  });
+
   document.querySelectorAll(".oga-nav-group-trigger").forEach((trigger) => {
     trigger.addEventListener("click", (event) => {
       event.stopPropagation();
       const group = trigger.closest(".oga-nav-group");
       const shouldOpen = group && !group.classList.contains("is-open");
       closeNavGroups();
+      blurNavFocus();
       if (group && shouldOpen) group.classList.add("is-open");
       updateGroupExpandedState();
+      syncNavDismiss();
     });
   });
 
@@ -304,11 +374,22 @@ function bindEvents() {
     }, { once: true });
   });
 
+  if (navDismiss) {
+    navDismiss.addEventListener("pointerdown", (event) => {
+      event.preventDefault();
+      closePinnedNavFromOutside();
+    });
+  }
+
   document.addEventListener("click", (event) => {
-    if (!event.target.closest(".oga-nav-group")) closeNavGroups();
+    if (!event.target.closest(".oga-nav-group") && event.target !== navDismiss) {
+      closePinnedNavFromOutside();
+    }
   });
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") closeNavGroups();
+    if (event.key === "Escape") {
+      closePinnedNavFromOutside();
+    }
   });
 
   mobileSelect.addEventListener("change", (event) => switchChart(event.target.value));

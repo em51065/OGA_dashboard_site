@@ -3,11 +3,8 @@
   --muted: #667085;
   --line: #dbe2eb;
   --paper: #f5f7fa;
-  --surface: #ffffff;
   --navy: #203754;
   --blue: #4567e8;
-  --red: #cf4557;
-  --teal: #238b8d;
   color-scheme: light;
 }
 
@@ -61,39 +58,41 @@ body { overflow-x: hidden; }
 }
 
 .oga-brand-mark svg { width: 25px; height: 25px; }
-.oga-eyebrow { display: block; margin-bottom: 4px; color: var(--blue); font-size: 10px; font-weight: 900; letter-spacing: 0.12em; }
+.oga-eyebrow {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--navy);
+  font-size: 13.5px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
 .oga-brand h1 { margin: 0; font-size: clamp(24px, 3vw, 34px); line-height: 1.12; }
 .oga-brand p { margin: 6px 0 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
 
-.oga-header-meta {
-  display: inline-flex;
-  flex: 0 0 auto;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 10px;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.76);
-  color: #475467;
-  font-size: 11px;
-  font-weight: 800;
-}
 
-.oga-live-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #22a06b;
-  box-shadow: 0 0 0 4px rgba(34, 160, 107, 0.12);
-}
 
 .oga-chart-nav {
   position: relative;
-  z-index: 20;
+  z-index: 40;
   display: flex;
   justify-content: center;
   gap: 12px;
   padding: 8px 4px 4px;
+}
+
+.oga-nav-dismiss {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: default;
+}
+
+.oga-nav-dismiss[hidden] {
+  display: none !important;
 }
 
 .oga-nav-group {
@@ -137,7 +136,6 @@ body { overflow-x: hidden; }
   transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease, background 140ms ease;
 }
 
-.oga-nav-group-trigger::before { display: none; }
 
 .oga-nav-group-trigger::after {
   position: absolute;
@@ -175,7 +173,6 @@ body { overflow-x: hidden; }
   --nav-ink: #183f39;
   --nav-muted: #638278;
   --nav-accent: #16806e;
-  --nav-accent-2: #cf4557;
   --nav-icon-bg: #e5f5ee;
   --nav-glow-a: rgba(22, 128, 110, 0.15);
   --nav-glow-b: rgba(207, 69, 87, 0.08);
@@ -192,7 +189,6 @@ body { overflow-x: hidden; }
   --nav-ink: #203754;
   --nav-muted: #65768d;
   --nav-accent: #356cc9;
-  --nav-accent-2: #d49a24;
   --nav-icon-bg: #e8f1ff;
   --nav-glow-a: rgba(53, 108, 201, 0.16);
   --nav-glow-b: rgba(212, 154, 36, 0.13);
@@ -209,7 +205,6 @@ body { overflow-x: hidden; }
   --nav-ink: #41384a;
   --nav-muted: #81717e;
   --nav-accent: #b46a2a;
-  --nav-accent-2: #5d5878;
   --nav-icon-bg: #f4eadf;
   --nav-glow-a: rgba(180, 106, 42, 0.15);
   --nav-glow-b: rgba(93, 88, 120, 0.12);
@@ -326,9 +321,9 @@ body { overflow-x: hidden; }
   display: block;
   margin-bottom: 4px;
   color: var(--nav-muted, #718096);
-  font-size: 9px;
-  font-weight: 950;
-  letter-spacing: 0.13em;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
 }
 
 .oga-nav-menu {
@@ -395,6 +390,19 @@ body { overflow-x: hidden; }
   width: 18px;
   height: 18px;
   color: var(--nav-accent, #697789);
+}
+
+.oga-nav-choice:hover {
+  background: rgba(15, 23, 42, 0.04);
+}
+
+.oga-nav-choice.is-active {
+  background: rgba(15, 23, 42, 0.06);
+  color: var(--nav-ink, #172033);
+}
+
+.oga-nav-choice.is-active svg {
+  color: var(--nav-accent, #203754);
 }
 
 .oga-mobile-select { display: none; }
@@ -472,8 +480,35 @@ body { overflow-x: hidden; }
 .oga-loading-mark svg { width: 19px; height: 19px; animation: oga-spin 900ms linear infinite; }
 
 
+.oga-footnote {
+  margin-top: 6px;
+  padding: 2px 4px 2px;
+  border-top: none;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.oga-footnote p {
+  margin: 0;
+}
+
+.oga-footnote p + p {
+  margin-top: 4px;
+}
+
+#sourceInfo {
+  color: #52637a;
+  font-weight: 700;
+}
+
 .is-embedded body { background: transparent; }
 .is-embedded .oga-portal { padding-top: 14px; }
+
+.is-embedded .oga-footnote {
+  margin-top: 4px;
+  padding-top: 2px;
+}
 
 @keyframes oga-spin { to { transform: rotate(360deg); } }
 
@@ -484,12 +519,12 @@ body { overflow-x: hidden; }
 }
 
 @media (max-width: 760px) {
-  .oga-portal { padding: 14px 12px 12px; }
-  .oga-header { align-items: flex-start; padding-bottom: 14px; }
+  .oga-portal { padding: 10px 8px 12px; }
+  .oga-header { align-items: flex-start; padding: 0 0 12px; }
   .oga-brand-mark { flex-basis: 42px; width: 42px; height: 42px; }
-  .oga-brand h1 { font-size: 24px; }
+  .oga-brand h1 { font-size: 24px; line-height: 1.1; }
   .oga-brand p { max-width: 32rem; font-size: 12px; }
-  .oga-eyebrow, .oga-header-meta, .oga-chart-nav { display: none; }
+  .oga-eyebrow, .oga-chart-nav { display: none; }
   .oga-mobile-select {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
@@ -518,12 +553,12 @@ body { overflow-x: hidden; }
 }
 
 @media (max-width: 460px) {
-  .oga-portal { padding-inline: 8px; }
+  .oga-portal { padding-inline: 6px; }
   .oga-header { gap: 9px; }
   .oga-brand { align-items: flex-start; gap: 10px; }
-  .oga-brand-mark { flex-basis: 38px; width: 38px; height: 38px; }
+  .oga-brand-mark { display: none; }
   .oga-brand-mark svg { width: 21px; height: 21px; }
-  .oga-brand h1 { font-size: 21px; }
+  .oga-brand h1 { font-size: 22px; line-height: 1.08; }
   .oga-brand p { font-size: 11px; }
   .oga-mobile-select { grid-template-columns: 1fr; gap: 6px; }
   .oga-stage-bar { align-items: flex-start; }

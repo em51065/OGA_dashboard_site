@@ -1,7 +1,7 @@
 {
-  "dataVersion": "20260513",
-  "generatedAt": "2026-06-30 09:04:05",
-  "sourceFile": "Total_20260513.xlsx",
+  "dataVersion": "20260713",
+  "generatedAt": "2026-07-16 08:19:07",
+  "sourceFile": "Total_20260713.xlsx",
   "chartId": "rainwater-reuse",
   "sheet": "中軸雨水回收",
   "metric": "中軸雨水回收",
@@ -9,6 +9,8 @@
   "valueNoun": "流量",
   "unit": "公噸",
   "defaultYear": 2026,
+  "supportsMonthGrain": true,
+  "monthGrainMinYear": 2025,
   "records": [
     {
       "year": 2022,
@@ -104,18 +106,19 @@
     },
     {
       "year": 2026,
-      "value": 4926.1,
-      "months": 4,
+      "value": 6418.21,
+      "months": 5,
       "monthsList": [
         1,
         2,
         3,
-        4
+        4,
+        5
       ],
-      "maxMonth": 4,
+      "maxMonth": 5,
       "hasDecember": false,
       "start": "2026-01",
-      "end": "2026-04"
+      "end": "2026-05"
     }
   ],
   "monthly": [
@@ -372,12 +375,17 @@
     {
       "year": 2026,
       "month": 3,
-      "value": 1232.5
+      "value": 1232.61
     },
     {
       "year": 2026,
       "month": 4,
       "value": 1640.6
+    },
+    {
+      "year": 2026,
+      "month": 5,
+      "value": 1492.0
     }
   ]
 }

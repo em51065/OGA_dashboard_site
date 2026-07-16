@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
-  <title>NCKU永續數據儀表板</title>
+  <title>國立成功大學永續數據儀表板</title>
   <link rel="stylesheet" href="../assets/explorer.css">
   <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
 </head>
@@ -14,9 +14,9 @@
       <div class="oga-brand">
         <span class="oga-brand-mark" aria-hidden="true"><i data-lucide="chart-no-axes-combined"></i></span>
         <div>
-          <span class="oga-eyebrow">NCKU SUSTAINABILITY DASHBOARD</span>
-          <h1>NCKU永續數據儀表板</h1>
-          <p>選擇主題，即時檢視歷史位置、年度趨勢與各指標的完整互動分析。</p>
+          <span class="oga-eyebrow">國立成功大學</span>
+          <h1>永續數據儀表板</h1>
+          <p>公開檢視校園永續相關指標的歷史位置、年月趨勢與互動分析。</p>
         </div>
       </div>
     </header>
@@ -34,7 +34,7 @@
               <path d="M4.35 7.25 6.9 4.05 8.35 7.9"></path>
             </svg>
           </span>
-          <span><small>CIRCULARITY</small>減廢與循環</span>
+          <span><small>減廢循環</small>減廢與循環</span>
           <i data-lucide="chevron-down" aria-hidden="true"></i>
         </button>
         <div class="oga-nav-menu" role="menu">
@@ -56,7 +56,7 @@
       <div class="oga-nav-group" data-group="energy-water">
         <button type="button" class="oga-nav-group-trigger" aria-haspopup="true" aria-expanded="false">
           <i data-lucide="waves" aria-hidden="true"></i>
-          <span><small>ENERGY & WATER</small>能源與水資源</span>
+          <span><small>能源與水</small>能源與水資源</span>
           <i data-lucide="chevron-down" aria-hidden="true"></i>
         </button>
         <div class="oga-nav-menu" role="menu">
@@ -78,7 +78,7 @@
       <div class="oga-nav-group" data-group="replacement">
         <button type="button" class="oga-nav-group-trigger" aria-haspopup="true" aria-expanded="false">
           <i data-lucide="lightbulb" aria-hidden="true"></i>
-          <span><small>EFFICIENCY</small>節能汰換</span>
+          <span><small>設備更新</small>節能汰換</span>
           <i data-lucide="chevron-down" aria-hidden="true"></i>
         </button>
         <div class="oga-nav-menu" role="menu">
@@ -100,6 +100,7 @@
         </div>
       </div>
     </nav>
+    <button type="button" class="oga-nav-dismiss" id="navDismiss" hidden aria-label="關閉選單"></button>
 
     <label class="oga-mobile-select">
       <span>選擇圖表</span>
@@ -110,7 +111,7 @@
           <option value="resource-recycle">資源回收</option>
           <option value="food-waste-recycle">廚餘回收</option>
         </optgroup>
-        <optgroup label="水與能源">
+        <optgroup label="能源與水資源">
           <option value="rainwater-reuse">中軸雨水回收</option>
           <option value="water-use">用水量</option>
           <option value="electricity-use">用電量</option>
@@ -144,11 +145,15 @@
           id="chartFrame"
           title="ECOCO互動圖表"
           src="about:blank"
-          scrolling="no"
           loading="eager"
         ></iframe>
       </div>
     </section>
+
+    <footer class="oga-footnote" aria-label="資料說明">
+      <p id="sourceInfo">資料來源：總務處</p>
+      <p>本儀表板由永續處製作；原始資料由總務處提供。圖表數值為彙總統計，不含個人識別資訊。</p>
+    </footer>
   </main>
   <script src="../assets/explorer.js"></script>
 </body>

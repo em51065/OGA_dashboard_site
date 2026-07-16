@@ -32,11 +32,34 @@
     border-radius: 14px;
   }
   .ga-head {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
     gap: 16px;
-    align-items: end;
     margin-bottom: 14px;
+  }
+  .ga-head-copy {
+    min-width: 0;
+    flex: 1 1 auto;
+    padding-bottom: 12px;
+    position: relative;
+  }
+  .ga-head > .ga-metric-switch {
+    flex: 0 0 auto;
+    align-self: center;
+    margin: 32px 18px 0 0;
+  }
+  .ga-head-tools {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    gap: 10px;
+    flex: 0 1 auto;
+    flex-wrap: wrap;
+    max-width: min(720px, 66%);
+  }
+  body.ga-has-metric-switch .ga-head-tools {
+    max-width: min(420px, 42%);
   }
   h1 {
     margin: 0 0 6px;
@@ -44,10 +67,46 @@
     line-height: 1.1;
     letter-spacing: 0;
   }
+  .ga-title-row {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.55em;
+    margin: 0 0 6px;
+  }
+  .ga-title-row h1 {
+    margin: 0;
+  }
   .ga-sub {
     color: var(--muted);
     font-size: 13px;
     line-height: 1.5;
+  }
+  .ga-sub-extra {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .ga-sub-extra[hidden] {
+    display: none !important;
+  }
+  /* Keep title/subtitle flex height identical to other charts; park the glossary
+     in the existing head-copy padding / head margin slack so it does not lift the title. */
+  .ga-replacement-chart .ga-sub-extra:not([hidden]) {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(100% - 12px);
+  }
+  .ga-location-meta {
+    color: #475569;
+    font-size: 12.5px;
+    font-weight: 850;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+  .ga-location-meta[hidden] {
+    display: none !important;
   }
   .ga-control {
     min-width: 180px;
@@ -61,6 +120,7 @@
     gap: 10px;
     align-items: stretch;
     justify-content: flex-end;
+    flex-wrap: wrap;
   }
   .ga-control[hidden] {
     display: none;
@@ -71,6 +131,41 @@
     color: #334155;
     font-size: 12px;
     font-weight: 900;
+  }
+  .ga-category-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    justify-content: flex-end;
+    max-width: min(560px, 100%);
+    margin: 0;
+    padding: 0 0 2px;
+  }
+  .ga-category-chips[hidden] {
+    display: none !important;
+  }
+  .ga-category-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #d5dee9;
+    border-radius: 999px;
+    padding: 7px 12px;
+    background: #fff;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 850;
+    line-height: 1.1;
+    cursor: pointer;
+    transition: border-color 140ms ease, color 140ms ease, background 140ms ease, box-shadow 140ms ease;
+  }
+  .ga-category-chip.is-parent {
+    font-weight: 950;
+  }
+  .ga-category-chip.is-active {
+    color: #fff;
+    border-color: transparent;
   }
   select {
     width: 100%;
@@ -110,12 +205,21 @@
     position: relative;
     flex: 0 0 auto;
   }
+  .ga-coverage-wrap::after {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 14px;
+    content: "";
+  }
   .ga-coverage {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 6px 10px;
-    border: 1px solid #dbeafe;
+    gap: 5px;
+    padding: 6px 10px 6px 12px;
+    border: 1px solid #93c5fd;
     border-radius: 999px;
     background: #eef6ff;
     color: #1d4ed8;
@@ -124,14 +228,31 @@
     font-weight: 950;
     white-space: nowrap;
     cursor: pointer;
+    box-shadow: 0 1px 2px rgba(29, 78, 216, 0.12);
+    transition: border-color 140ms ease, background 140ms ease, box-shadow 140ms ease, transform 140ms ease;
   }
   .ga-coverage[hidden] {
     display: none !important;
   }
   .ga-coverage:hover,
   .ga-coverage[aria-expanded="true"] {
-   border-color: #93c5fd;
-   background: #dbeafe;
+    border-color: #60a5fa;
+    background: #dbeafe;
+    box-shadow: 0 4px 12px rgba(29, 78, 216, 0.16);
+  }
+  .ga-coverage:active {
+    transform: translateY(1px);
+  }
+  .ga-coverage-caret {
+    display: inline-block;
+    font-size: 10px;
+    line-height: 1;
+    opacity: 0.85;
+    transform: translateY(-0.5px);
+    transition: transform 0.15s ease;
+  }
+  .ga-coverage[aria-expanded="true"] .ga-coverage-caret {
+    transform: translateY(-0.5px) rotate(180deg);
   }
   .ga-coverage.ga-formula {
     align-items: flex-start;
@@ -153,12 +274,6 @@
   .ga-coverage.ga-formula[aria-expanded="true"] {
     border-color: #d9e1ec;
     background: #f8fafc;
-  }
-  .ga-formula-title {
-    align-self: flex-end;
-    color: #64748b;
-    font-size: 11px;
-    font-weight: 950;
   }
   .ga-formula-line {
     display: block;
@@ -211,6 +326,50 @@
   .ga-month-popover[hidden] {
     display: none;
   }
+  .ga-month-popover.is-month-pick {
+    width: 268px;
+  }
+  .ga-metric-popover {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 30;
+    width: 168px;
+    padding: 12px;
+    border: 1px solid #dbe4ef;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 18px 38px rgba(15, 23, 42, 0.16);
+  }
+  .ga-metric-popover[hidden] {
+    display: none;
+  }
+  .ga-metric-options {
+    display: grid;
+    gap: 6px;
+  }
+  .ga-metric-options button {
+    border: 1px solid #dbe4ef;
+    border-radius: 8px;
+    padding: 8px 10px;
+    background: #f8fafc;
+    color: #334155;
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 950;
+    text-align: left;
+    cursor: pointer;
+  }
+  .ga-metric-options button:hover {
+    border-color: #93c5fd;
+    background: #eef6ff;
+    color: #1d4ed8;
+  }
+  .ga-metric-options button.active {
+    border-color: #1f4b99;
+    background: #1f4b99;
+    color: #ffffff;
+  }
   .ga-month-title {
     margin-bottom: 9px;
     color: #101827;
@@ -222,6 +381,11 @@
     grid-template-columns: 1fr 1fr;
     gap: 8px;
   }
+  .ga-month-fields[hidden],
+  .ga-month-actions[hidden],
+  .ga-month-grid[hidden] {
+    display: none !important;
+  }
   .ga-month-fields label {
     color: #475569;
     font-size: 11px;
@@ -231,6 +395,36 @@
     margin-top: 4px;
     padding: 7px 8px;
     font-size: 13px;
+  }
+  .ga-month-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+  }
+  .ga-month-grid button {
+    border: 1px solid #dbe4ef;
+    border-radius: 8px;
+    padding: 8px 0;
+    background: #f8fafc;
+    color: #334155;
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 950;
+    cursor: pointer;
+  }
+  .ga-month-grid button:hover:not(:disabled) {
+    border-color: #93c5fd;
+    background: #eef6ff;
+    color: #1d4ed8;
+  }
+  .ga-month-grid button.active {
+    border-color: #1f4b99;
+    background: #1f4b99;
+    color: #ffffff;
+  }
+  .ga-month-grid button:disabled {
+    opacity: 0.34;
+    cursor: not-allowed;
   }
   .ga-month-actions {
     display: flex;
@@ -275,7 +469,7 @@
     font-weight: 900;
   }
   .ga-replacement-chart .ga-pr-card {
-    overflow: hidden;
+    overflow: visible;
   }
   .ga-replacement-chart .ga-card-title {
     align-items: flex-start;
@@ -284,7 +478,14 @@
     min-width: 0;
   }
   .ga-replacement-chart .ga-coverage-wrap {
-    max-width: 52%;
+    max-width: none;
+    flex: 0 1 auto;
+    min-width: 0;
+    margin-right: 10px;
+  }
+  .ga-replacement-chart .ga-coverage:not(.ga-formula) {
+    max-width: none;
+    white-space: nowrap;
   }
   .ga-replacement-chart .ga-coverage.ga-formula {
     max-width: 100%;
@@ -402,9 +603,165 @@
   }
   .ga-replacement-chart .ga-hint {
     white-space: nowrap;
-    font-size: clamp(8.6px, 0.72vw, 12px);
-    line-height: 1.32;
-    letter-spacing: -0.018em;
+    font-size: clamp(10px, 0.85vw, 12px);
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    color: #64748b;
+  }
+  .ga-replacement-chart .ga-pr-track,
+  .ga-replacement-chart .ga-axis,
+  .ga-replacement-chart .ga-hint {
+    display: none !important;
+  }
+  .ga-replacement-chart .ga-card-title {
+    display: block;
+  }
+  .ga-replacement-chart .ga-card-title .ga-coverage-wrap {
+    display: none;
+  }
+  .ga-replacement-chart .ga-pr-score {
+    width: 100%;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 10px;
+    margin: 4px 0 12px;
+    transform: translateX(-8%);
+  }
+  .ga-replacement-chart .ga-pr-score strong {
+    max-width: none;
+    flex: 0 0 auto;
+  }
+  .ga-replacement-chart .ga-pr-score span {
+    flex: 0 0 auto;
+    min-width: 0;
+    margin-bottom: 8px;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.2;
+    font-weight: 900;
+    white-space: nowrap;
+    text-align: left;
+  }
+  .ga-replacement-chart .ga-coverage-anchor {
+    display: block;
+    margin: 4px 0 2px;
+  }
+  .ga-replacement-chart .ga-coverage-anchor[hidden] {
+    display: none !important;
+  }
+  .ga-replacement-chart .ga-coverage-anchor .ga-coverage-wrap {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    flex: none;
+  }
+  .ga-replacement-chart .ga-coverage-anchor .ga-coverage-wrap::after {
+    top: auto;
+    bottom: 100%;
+    height: 10px;
+  }
+  .ga-replacement-chart .ga-replacement-dual-badge {
+    display: flex;
+    width: 100%;
+    min-height: 36px;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    padding: 0 10px;
+    cursor: default;
+    --ga-badge-menu: #3b82f6;
+    --ga-badge-static: #1d4ed8;
+  }
+  .ga-replacement-chart .ga-coverage-campus {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    padding: 0;
+    color: var(--ga-badge-static);
+    font-size: 13px;
+    font-weight: 950;
+    line-height: 1.25;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .ga-replacement-chart .ga-coverage-campus[hidden] {
+    display: none !important;
+  }
+  .ga-replacement-chart .ga-coverage-zone {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+    padding: 10px 2px;
+    border: none;
+    background: transparent;
+    color: var(--ga-badge-menu);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 950;
+    line-height: 1.25;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: color 140ms ease, background 140ms ease;
+  }
+  .ga-replacement-chart .ga-coverage-zone-left {
+    justify-content: flex-start;
+    padding-left: 4px;
+  }
+  .ga-replacement-chart .ga-coverage-zone-right {
+    justify-content: flex-start;
+    padding-right: 4px;
+  }
+  .ga-replacement-chart .ga-coverage-zone:hover,
+  .ga-replacement-chart .ga-coverage-zone[aria-expanded="true"] {
+    background: rgba(255, 255, 255, 0.35);
+    color: var(--ga-badge-static);
+  }
+  .ga-replacement-chart .ga-coverage-zone .ga-coverage-range,
+  .ga-replacement-chart .ga-coverage-zone .ga-coverage-saving {
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .ga-replacement-chart .ga-coverage-zone .ga-coverage-caret {
+    flex: 0 0 auto;
+    font-size: 12px;
+    opacity: 1;
+  }
+  .ga-replacement-chart .ga-coverage-zone[aria-expanded="true"] .ga-coverage-caret {
+    transform: translateY(-0.5px) rotate(180deg);
+  }
+  .ga-replacement-chart .ga-coverage-anchor .ga-month-popover {
+    top: auto;
+    bottom: calc(100% + 8px);
+    left: 0;
+    right: auto;
+    /* Leave room for the metric popover on the right when both stay open. */
+    width: min(calc(100% - 184px), 248px);
+    min-width: 216px;
+    padding: 12px 14px;
+    box-sizing: border-box;
+  }
+  .ga-replacement-chart .ga-coverage-anchor .ga-month-fields {
+    gap: 10px;
+  }
+  .ga-replacement-chart .ga-coverage-anchor .ga-month-fields select {
+    padding: 7px 10px;
+  }
+  .ga-replacement-chart .ga-coverage-anchor .ga-metric-popover {
+    top: auto;
+    bottom: calc(100% + 8px);
+    left: auto;
+    right: 0;
+    width: min(100%, 168px);
+    z-index: 31;
+  }
+  .ga-replacement-chart .ga-value-row {
+    margin-bottom: 12px;
   }
   .ga-overview-wrap {
     margin-top: 14px;
@@ -440,6 +797,18 @@
   .ga-overview-note[hidden] {
     display: none;
   }
+  .ga-overview-footnote {
+    margin-top: 4px;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 850;
+    line-height: 1.25;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .ga-overview-footnote[hidden] {
+    display: none;
+  }
   .ga-mode-switch {
     display: inline-flex;
     gap: 4px;
@@ -466,24 +835,83 @@
     background: #101827;
     color: #ffffff;
   }
+  .ga-mode-switch.ga-overview-icon-switch button {
+    display: inline-grid;
+    place-items: center;
+    width: 30px;
+    height: 26px;
+    padding: 0;
+  }
+  .ga-mode-switch.ga-overview-icon-switch button svg {
+    width: 14px;
+    height: 14px;
+    display: block;
+    fill: currentColor;
+  }
+  .ga-year-label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .ga-year-label-row label {
+    margin-bottom: 0;
+  }
+  .ga-timegrain-switch {
+    padding: 2px;
+    gap: 2px;
+    border-color: #9aa8bc;
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+  }
+  .ga-timegrain-switch button {
+    padding: 1px 9px;
+    font-size: 11px;
+    line-height: 1.25;
+  }
+  .ga-timegrain-switch button.active {
+    background: #1f4b99;
+    color: #ffffff;
+  }
+  .ga-metric-switch {
+    padding: 5px;
+    gap: 4px;
+    border-color: #9aa8bc;
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+  }
+  .ga-metric-switch button {
+    padding: 9px 20px;
+    font-size: 14px;
+    line-height: 1.2;
+    color: #64748b;
+    transition: background 140ms ease, color 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+  }
+  .ga-metric-switch button.active {
+    color: #ffffff;
+  }
+  .ga-trend-line-icon {
+    width: 26px;
+    height: 12px;
+    display: block;
+    flex: 0 0 auto;
+  }
   #overviewChart { height: 260px; }
-  .ga-chart-card { padding: 14px 16px 8px; position: relative; }
+  .ga-chart-card { padding: 14px 16px 8px; position: relative; overflow: visible; }
   .ga-quality-head {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) clamp(228px, 31%, 300px);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
     gap: 12px;
-    align-items: start;
     padding: 0 2px 2px;
   }
   .ga-quality-head[hidden] { display: none; }
-  .ga-quality-copy { min-width: 0; }
-  .ga-quality-kicker {
-    margin-bottom: 4px;
-    color: #7c8ca3;
-    font-size: 10.5px;
-    line-height: 1.1;
-    font-weight: 950;
-    letter-spacing: 0.18em;
+  .ga-quality-copy { min-width: 0; flex: 1 1 auto; }
+  .ga-quality-head > .ga-mode-switch {
+    flex: 0 0 auto;
+    margin-left: auto;
+    align-self: flex-end;
   }
   .ga-quality-copy h2 {
     margin: 0 0 3px;
@@ -506,7 +934,7 @@
   .ga-quality-copy p + p { margin-top: 1px; }
   .ga-quality-copy strong { font-weight: 400; white-space: nowrap; }
   .ga-quality-formula {
-    justify-self: end;
+    flex: 0 1 auto;
     width: 100%;
     max-width: 300px;
     display: grid;
@@ -543,8 +971,8 @@
   #trendChart { height: 586px; margin-top: 2px; }
   .ga-replacement-chart #trendChart { height: 500px; margin-top: 0; }
   @media (max-width: 860px) {
-    .ga-quality-head { grid-template-columns: 1fr; }
-    .ga-quality-formula { justify-self: start; width: min(100%, 300px); }
+    .ga-quality-head { flex-wrap: wrap; }
+    .ga-quality-formula { width: min(100%, 300px); }
   }
   .ga-trend-hover-tip {
     position: absolute;
@@ -576,9 +1004,14 @@
   }
   .ga-toggle-bar {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
     gap: 8px;
-    padding: 0 8px 10px 56px;
+    width: max-content;
+    max-width: none;
+    margin: 0 auto;
+    padding: 0 4px 10px;
   }
   .ga-toggle-bar[hidden] {
     display: none;
@@ -587,6 +1020,7 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
+    flex: 0 0 auto;
     border: 1px solid #dbe4ef;
     border-radius: 999px;
     padding: 6px 9px;
@@ -594,6 +1028,7 @@
     color: #64748b;
     font-size: 12px;
     font-weight: 950;
+    white-space: nowrap;
     cursor: pointer;
     opacity: 0.42;
     transition: opacity 160ms ease, transform 160ms ease, border-color 160ms ease;
@@ -602,15 +1037,6 @@
     border-color: currentColor;
     opacity: 1;
     transform: translateY(-1px);
-  }
-  .ga-icon-symbol {
-    display: inline-grid;
-    place-items: center;
-    width: 22px;
-    height: 22px;
-    border-radius: 999px;
-    background: rgba(15, 23, 42, 0.08);
-    font-size: 12px;
   }
   .ga-error {
     padding: 18px;
@@ -624,32 +1050,264 @@
     .ga-head,
     .ga-grid,
     .ga-value-row { grid-template-columns: 1fr; }
-    .ga-controls { justify-content: stretch; flex-direction: column; }
+    .ga-head {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .ga-head-copy { padding-bottom: 0; }
+    .ga-head > .ga-metric-switch {
+      align-self: flex-start;
+      margin: 0 0 8px;
+      width: fit-content;
+    }
+    .ga-head-tools {
+      max-width: none;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .ga-controls { justify-content: stretch; flex-direction: column; align-items: stretch; }
     .ga-control { min-width: 0; }
-    .ga-toggle-bar { padding-left: 8px; }
+    .ga-category-chips {
+      max-width: none;
+      justify-content: flex-start;
+      padding-bottom: 0;
+    }
+    .ga-toggle-bar { padding-left: 4px; }
     #trendChart { height: 506px; }
+  }
+  @media (max-width: 760px) {
+    .ga-widget {
+      width: 100% !important;
+      max-width: 100% !important;
+      padding: 12px !important;
+      border-radius: 12px !important;
+    }
+    .ga-head {
+      flex-direction: column !important;
+      align-items: stretch !important;
+      gap: 12px !important;
+      margin-bottom: 12px !important;
+    }
+    .ga-head-copy { padding-bottom: 0 !important; }
+    .ga-replacement-chart .ga-head-copy {
+      padding-bottom: 12px !important;
+    }
+    .ga-head-tools {
+      max-width: none !important;
+      flex-direction: column !important;
+      align-items: stretch !important;
+    }
+    .ga-head h1 {
+      margin-bottom: 7px !important;
+      font-size: clamp(28px, 9vw, 34px) !important;
+      line-height: 1.08 !important;
+    }
+    .ga-sub {
+      font-size: 13px !important;
+      line-height: 1.45 !important;
+    }
+    .ga-controls {
+      display: grid !important;
+      grid-template-columns: 1fr !important;
+      gap: 9px !important;
+      justify-content: stretch !important;
+    }
+    .ga-control {
+      width: 100% !important;
+      min-width: 0 !important;
+      padding: 10px 12px !important;
+    }
+    .ga-control label { font-size: 11px !important; }
+    .ga-control select { font-size: 15px !important; }
+    .ga-grid {
+      grid-template-columns: 1fr !important;
+      gap: 12px !important;
+    }
+    .ga-card {
+      border-radius: 12px !important;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.07) !important;
+    }
+    .ga-pr-card {
+      padding: 14px !important;
+      overflow: visible !important;
+    }
+    .ga-card-title {
+      display: grid !important;
+      grid-template-columns: 1fr !important;
+      gap: 8px !important;
+      align-items: start !important;
+      margin-bottom: 10px !important;
+    }
+    .ga-card-title h2,
+    .ga-overview-head h3 {
+      font-size: 20px !important;
+      line-height: 1.22 !important;
+    }
+    .ga-coverage-wrap {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+    .ga-coverage {
+      width: 100% !important;
+      justify-content: center !important;
+      white-space: normal !important;
+    }
+    .ga-month-popover {
+      left: 0 !important;
+      right: auto !important;
+      width: min(100%, 284px) !important;
+    }
+    .ga-replacement-chart .ga-coverage-anchor .ga-month-popover {
+      width: min(100%, 248px) !important;
+      min-width: 0 !important;
+    }
+    .ga-pr-score {
+      justify-content: flex-start !important;
+      gap: 8px !important;
+      margin: 8px 0 10px !important;
+      transform: none !important;
+    }
+    .ga-pr-score strong {
+      max-width: 100% !important;
+      font-size: clamp(48px, 18vw, 70px) !important;
+    }
+    .ga-pr-score span {
+      min-width: 0 !important;
+      font-size: 12px !important;
+      white-space: normal !important;
+    }
+    .ga-value-row {
+      grid-template-columns: 1fr !important;
+      gap: 8px !important;
+      margin: 12px 0 !important;
+    }
+    .ga-mini { padding: 10px 11px !important; }
+    .ga-mini-value {
+      font-size: 22px !important;
+      white-space: normal !important;
+    }
+    .ga-pr-track {
+      height: 24px !important;
+      margin: 14px 0 8px !important;
+    }
+    .ga-axis { font-size: 11px !important; }
+    .ga-hint {
+      white-space: normal !important;
+      font-size: 12px !important;
+      line-height: 1.45 !important;
+      letter-spacing: 0 !important;
+    }
+    .ga-overview-wrap {
+      margin-top: 12px !important;
+      padding-top: 10px !important;
+    }
+    .ga-overview-head {
+      display: grid !important;
+      grid-template-columns: 1fr !important;
+      gap: 8px !important;
+      align-items: start !important;
+      min-height: 0 !important;
+    }
+    .ga-overview-note {
+      justify-self: start !important;
+      margin-left: 0 !important;
+      text-align: left !important;
+      white-space: normal !important;
+      font-size: 11px !important;
+    }
+    .ga-mode-switch { justify-self: start !important; }
+    #overviewChart { height: 260px !important; }
+    .ga-chart-card {
+      padding: 30px 12px 10px !important;
+      overflow: visible !important;
+    }
+    .ga-chart-card::before {
+      top: 13px !important;
+      left: 12px !important;
+    }
+    #trendChart { height: 370px !important; }
+    .ga-replacement-chart #trendChart { height: 440px !important; }
+    .ga-quality-head {
+      flex-wrap: wrap !important;
+      gap: 10px !important;
+      padding-inline: 0 !important;
+    }
+    .ga-quality-copy p {
+      display: block !important;
+      font-size: 12px !important;
+      line-height: 1.45 !important;
+    }
+    .ga-quality-copy p + p { margin-top: 4px !important; }
+    .ga-quality-copy strong { white-space: nowrap !important; }
+    .ga-quality-formula {
+      justify-self: start !important;
+      width: 100% !important;
+      max-width: none !important;
+      grid-template-columns: auto minmax(0, 1fr) !important;
+      gap: 8px 9px !important;
+      padding: 8px !important;
+      font-size: 10.8px !important;
+    }
+    .ga-formula-frac { min-width: 72px !important; }
+    .ga-toggle-bar {
+      justify-content: center !important;
+      flex-wrap: nowrap !important;
+      width: max-content !important;
+      margin: 0 auto !important;
+      padding: 0 0 10px !important;
+      gap: 6px !important;
+    }
+    .ga-icon-toggle {
+      padding: 5px 8px !important;
+      font-size: 11px !important;
+    }
+  }
+  @media (max-width: 420px) {
+    .ga-widget { padding: 10px !important; }
+    .ga-head h1 { font-size: clamp(26px, 8.4vw, 31px) !important; }
+    .ga-sub { font-size: 12px !important; }
+    .ga-card-title h2,
+    .ga-overview-head h3 { font-size: 19px !important; }
+    .ga-pr-score strong { font-size: clamp(44px, 17vw, 62px) !important; }
+    #overviewChart { height: 240px !important; }
+    #trendChart { height: 340px !important; }
+    .ga-replacement-chart #trendChart { height: 410px !important; }
   }
 </style>
 </head>
 <body>
 <div class="ga-widget" id="gaWidget">
   <div class="ga-head">
-    <div>
-      <h1>太陽能</h1>
-      <div class="ga-sub">用年度排名呈現太陽能的歷史位置；完整年只比完整年，未滿年只比同期累積。</div>
+    <div class="ga-head-copy">
+      <div class="ga-title-row">
+        <h1>太陽能</h1>
+        <span class="ga-location-meta" id="locationScope" hidden aria-live="polite"></span>
+      </div>
+      <div class="ga-sub" id="chartSubtitle">用年度排名呈現太陽能的歷史位置；完整年只比完整年，未滿年只比同期累積。</div>
+      <div class="ga-sub-extra" id="chartSubtitleExtra" hidden></div>
     </div>
-    <div class="ga-controls">
-      <div class="ga-control" id="locationControl" hidden>
-        <label for="locationSelect" id="locationLabel">選擇地點</label>
-        <select id="locationSelect"></select>
-      </div>
-      <div class="ga-control" id="categoryControl" hidden>
-        <label for="categorySelect" id="categoryLabel">選擇類別</label>
-        <select id="categorySelect"></select>
-      </div>
-      <div class="ga-control">
-        <label for="yearSelect">選擇年份</label>
-        <select id="yearSelect"></select>
+    <div class="ga-mode-switch ga-metric-switch" id="metricSwitch" hidden aria-label="選擇指標"></div>
+    <div class="ga-head-tools">
+      <div class="ga-category-chips" id="categoryChips" hidden role="listbox" aria-label="類別"></div>
+      <div class="ga-controls">
+        <div class="ga-control" id="locationControl" hidden>
+          <label for="locationSelect" id="locationLabel">選擇地點</label>
+          <select id="locationSelect"></select>
+        </div>
+        <div class="ga-control" id="categoryControl" hidden>
+          <label for="categorySelect" id="categoryLabel">選擇類別</label>
+          <select id="categorySelect"></select>
+        </div>
+        <div class="ga-control" id="yearControl">
+          <div class="ga-year-label-row">
+            <label for="yearSelect">選擇年份</label>
+            <div class="ga-mode-switch ga-timegrain-switch" id="timeGrainSwitch" hidden>
+              <button type="button" data-time-grain="year" class="active">年</button>
+              <button type="button" data-time-grain="month">月</button>
+            </div>
+          </div>
+          <select id="yearSelect"></select>
+        </div>
       </div>
     </div>
   </div>
@@ -660,18 +1318,19 @@
         <div class="ga-coverage-wrap">
           <button type="button" class="ga-coverage" id="yearMonthsTop" aria-expanded="false">--</button>
           <div class="ga-month-popover" id="monthPopover" hidden>
-            <div class="ga-month-title">選擇資料涵蓋範圍</div>
-            <div class="ga-month-fields">
-              <label>
+            <div class="ga-month-title">選擇比較區間</div>
+            <div class="ga-month-fields" id="monthRangeFields">
+              <label id="monthStartField">
                 起月
                 <select id="monthStartSelect"></select>
               </label>
-              <label>
+              <label id="monthEndField">
                 迄月
                 <select id="monthEndSelect"></select>
               </label>
             </div>
-            <div class="ga-month-actions">
+            <div class="ga-month-grid" id="monthPickGrid" hidden></div>
+            <div class="ga-month-actions" id="monthRangeActions">
               <button type="button" class="ga-month-reset" id="monthResetBtn">預設</button>
               <button type="button" class="ga-month-apply" id="monthApplyBtn">套用</button>
             </div>
@@ -692,6 +1351,7 @@
           <div class="ga-mini-value" id="meanDiff">--</div>
         </div>
       </div>
+      <div class="ga-coverage-anchor" id="coverageAnchor" hidden></div>
       <div class="ga-pr-track">
         <div class="ga-pr-fill" id="rankFill"></div>
         <div class="ga-pr-pin" id="rankPin"></div>
@@ -702,20 +1362,27 @@
         <div class="ga-overview-head">
           <h3 id="overviewTitle">年度總覽</h3>
           <div class="ga-overview-note" id="overviewNote" hidden></div>
-          <div class="ga-mode-switch" id="overviewModeSwitch" hidden>
-            <button type="button" data-overview-mode="bar" class="active">長條</button>
-            <button type="button" data-overview-mode="pie">圓餅</button>
+          <div class="ga-mode-switch ga-overview-icon-switch" id="overviewModeSwitch" hidden>
+            <button type="button" data-overview-mode="bar" class="active" aria-label="長條" title="長條">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1" y="2" width="14" height="3" rx="0.5"/><rect x="1" y="6.5" width="10" height="3" rx="0.5"/><rect x="1" y="11" width="7" height="3" rx="0.5"/></svg>
+            </button>
+            <button type="button" data-overview-mode="pie" aria-label="圓餅" title="圓餅">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.2A6.8 6.8 0 1 0 14.8 8H8V1.2z"/><path d="M9.2 1.35A6.8 6.8 0 0 1 14.65 6.8H9.2V1.35z"/></svg>
+            </button>
           </div>
         </div>
         <div id="overviewChart"></div>
+        <div class="ga-overview-footnote" id="overviewFootNote" hidden></div>
       </div>
     </section>
     <section class="ga-card ga-chart-card">
       <div class="ga-quality-head" id="qualityHead" hidden>
         <div class="ga-quality-copy">
-          <h2>汰換效益總覽</h2>
-          <p><strong>平均節省瓦數：</strong>該年每盞完成汰換的燈具，平均降低的瓦數。</p>
-          <p><strong>改善率：</strong>該年汰換後，相對於原燈具總瓦數，整體用電瓦數降低的比例。</p>
+          <h2>汰換品質</h2>
+        </div>
+        <div class="ga-mode-switch" id="qualityModeSwitch" hidden aria-label="節省瓦數檢視">
+          <button type="button" data-quality-mode="location" class="active">校區</button>
+          <button type="button" data-quality-mode="year">年度</button>
         </div>
         <div class="ga-quality-formula" id="qualityFormula" hidden></div>
       </div>
@@ -732,45 +1399,217 @@ let GA_DATA = null;
 let selectedYear = null;
 let selectedCategory = null;
 let selectedLocation = null;
+let selectedMonth = null;
+let timeGrain = "year";
 let visibleTrendCategories = new Set();
 let overviewMode = "bar";
+let overviewModeTouched = false;
+let savingViewMode = "location";
+let savingViewModeTouched = false;
 let customMonthRange = null;
 let customReplacementYearRange = null;
-let trendDialogState = null;
+let replacementRangeMetric = "saving";
+let focusedCampus = null;
+let replacementMetricPopoverPinned = false;
+let replacementMetricPopoverCloseTimer = null;
+let draftMonthRange = null;
+let lastValidMonthRange = null;
+let monthPopoverPinned = false;
+let monthPopoverCloseTimer = null;
+let monthRangeSelectActive = false;
+let monthRangeSelectGuardTimer = null;
 const fmt = new Intl.NumberFormat("zh-TW", { maximumFractionDigits: 2 });
 const pctFmt = new Intl.NumberFormat("zh-TW", { maximumFractionDigits: 1 });
 const yearSelect = document.getElementById("yearSelect");
 const categorySelect = document.getElementById("categorySelect");
 const categoryControl = document.getElementById("categoryControl");
 const categoryLabel = document.getElementById("categoryLabel");
+const categoryChips = document.getElementById("categoryChips");
 const locationSelect = document.getElementById("locationSelect");
 const locationControl = document.getElementById("locationControl");
 const locationLabel = document.getElementById("locationLabel");
+const locationScope = document.getElementById("locationScope");
 const trendChart = document.getElementById("trendChart");
 const trendHoverTip = document.getElementById("trendHoverTip");
 const trendToggles = document.getElementById("trendToggles");
 const qualityFormula = document.getElementById("qualityFormula");
 const qualityHead = document.getElementById("qualityHead");
+const qualityModeSwitch = document.getElementById("qualityModeSwitch");
 const overviewModeSwitch = document.getElementById("overviewModeSwitch");
 const overviewTitle = document.getElementById("overviewTitle");
 const overviewNote = document.getElementById("overviewNote");
+const overviewFootNote = document.getElementById("overviewFootNote");
+const chartSubtitle = document.getElementById("chartSubtitle");
 const yearMonthsTop = document.getElementById("yearMonthsTop");
+let coverageWrap = yearMonthsTop ? yearMonthsTop.closest(".ga-coverage-wrap") : null;
+let yearRangeTop = null;
+let replacementMetricTop = null;
+let replacementMetricPopover = null;
+const OVERVIEW_BAR_ICON = '<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1" y="2" width="14" height="3" rx="0.5"></rect><rect x="1" y="6.5" width="10" height="3" rx="0.5"></rect><rect x="1" y="11" width="7" height="3" rx="0.5"></rect></svg>';
+const OVERVIEW_PIE_ICON = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.2A6.8 6.8 0 1 0 14.8 8H8V1.2z"></path><path d="M9.2 1.35A6.8 6.8 0 0 1 14.65 6.8H9.2V1.35z"></path></svg>';
+const ECOCO_YEAR_SUBTITLE = "用年度排名呈現ECOCO的歷史位置；完整年只比完整年，未滿年只比同期累積。";
+const MONTH_GRAIN_SUBTITLE = "用該年各月比較呈現結果；右側為同年逐月趨勢，點選月份端點可同步左側排名。";
+const ECOCO_MONTH_MIN_YEAR = 2025;
+const defaultChartSubtitle = chartSubtitle ? chartSubtitle.textContent : "";
 const monthPopover = document.getElementById("monthPopover");
 const monthStartSelect = document.getElementById("monthStartSelect");
 const monthEndSelect = document.getElementById("monthEndSelect");
 const monthApplyBtn = document.getElementById("monthApplyBtn");
 const monthResetBtn = document.getElementById("monthResetBtn");
+const timeGrainSwitch = document.getElementById("timeGrainSwitch");
+const monthStartField = document.getElementById("monthStartField");
+const monthEndField = document.getElementById("monthEndField");
+const monthRangeFields = document.getElementById("monthRangeFields");
+const monthRangeActions = document.getElementById("monthRangeActions");
+const monthPickGrid = document.getElementById("monthPickGrid");
+const yearControlLabel = document.querySelector("#yearControl label[for='yearSelect']");
+const metricSwitch = document.getElementById("metricSwitch");
 
 function isEcocoChart() {
   return GA_DATA.chartType === "ecoco";
 }
 
-function isSolarChart() {
-  return GA_DATA.chartType === "solar";
+function supportsMonthGrain() {
+  return isEcocoChart() || GA_DATA.supportsMonthGrain === true;
 }
 
-function isUtilityChart() {
-  return GA_DATA.chartType === "utility";
+function usesCategoryChips() {
+  return isEcocoChart() || GA_DATA.usesCategoryChips === true;
+}
+
+function usesMetricSwitch() {
+  return GA_DATA.usesMetricSwitch === true;
+}
+
+function usesDualMetricTrend() {
+  return GA_DATA.dualMetricTrend === true && Array.isArray(GA_DATA.categories) && GA_DATA.categories.length === 2;
+}
+
+/** Fixed left/right axis slots from category order — switching metrics only changes emphasis, not geometry. */
+function dualMetricAxisCategories() {
+  const categories = GA_DATA.categories || [];
+  if (categories.length < 2) return null;
+  return { left: categories[0], right: categories[1] };
+}
+
+/** Asymmetric Y ranges on fixed left/right axes — avoids dual-axis visual overlap when series are nearly proportional. */
+function dualMetricAxisRanges(maxLeft, maxRight) {
+  return {
+    left: [0, Math.max(Number(maxLeft) || 0, 1) * 1.12],
+    right: [0, Math.max(Number(maxRight) || 0, 1) * 1.45],
+  };
+}
+
+function secondaryMetricCategory(primary = selectedCategory) {
+  return (GA_DATA.categories || []).find((category) => category !== primary) || null;
+}
+
+function isMonthGrain() {
+  return supportsMonthGrain() && timeGrain === "month";
+}
+
+function monthGrainMinYear() {
+  if (isEcocoChart()) return ECOCO_MONTH_MIN_YEAR;
+  const raw = GA_DATA.monthGrainMinYear;
+  if (raw == null || raw === "") return null;
+  const configured = Number(raw);
+  return Number.isFinite(configured) ? configured : null;
+}
+
+function updateLocationScopeMeta() {
+  if (!locationScope) return;
+  const locations = GA_DATA.locations || [];
+  const singleLocation = locations.length === 1;
+  if (!singleLocation) {
+    locationScope.hidden = true;
+    locationScope.textContent = "";
+    return;
+  }
+  const location = selectedLocation || GA_DATA.defaultLocation || locations[0];
+  locationScope.hidden = false;
+  locationScope.textContent = location;
+}
+
+function updateChartSubtitle() {
+  if (!chartSubtitle || !supportsMonthGrain()) return;
+  if (isMonthGrain()) {
+    chartSubtitle.textContent = MONTH_GRAIN_SUBTITLE;
+    return;
+  }
+  if (isEcocoChart()) {
+    chartSubtitle.textContent = ECOCO_YEAR_SUBTITLE;
+    return;
+  }
+  chartSubtitle.textContent = defaultChartSubtitle;
+}
+
+function updateYearControlLabel() {
+  if (!yearControlLabel) return;
+  yearControlLabel.textContent = supportsMonthGrain() ? "選擇時間" : "選擇年份";
+}
+
+function syncGrainBodyClass() {
+  document.body.classList.toggle("ga-month-grain", isMonthGrain());
+  document.body.classList.toggle("ga-has-metric-switch", usesMetricSwitch());
+}
+
+function setOverviewModeButtons(kind) {
+  if (!overviewModeSwitch) return;
+  const modeButtons = overviewModeSwitch.querySelectorAll("button");
+  overviewModeSwitch.classList.toggle("ga-overview-icon-switch", kind === "icons");
+  if (kind === "location") {
+    const locationName = locationAxisName();
+    if (isStreetlightChart()) {
+      if (modeButtons[0]) {
+        modeButtons[0].textContent = locationName;
+        modeButtons[0].dataset.overviewMode = "location";
+        modeButtons[0].removeAttribute("title");
+        modeButtons[0].setAttribute("aria-label", locationName);
+      }
+      if (modeButtons[1]) {
+        modeButtons[1].textContent = "年度";
+        modeButtons[1].dataset.overviewMode = "bar";
+        modeButtons[1].removeAttribute("title");
+        modeButtons[1].setAttribute("aria-label", "年度");
+      }
+    } else {
+      if (modeButtons[0]) {
+        modeButtons[0].textContent = "年度";
+        modeButtons[0].dataset.overviewMode = "bar";
+        modeButtons[0].removeAttribute("title");
+        modeButtons[0].setAttribute("aria-label", "年度");
+      }
+      if (modeButtons[1]) {
+        modeButtons[1].textContent = locationName;
+        modeButtons[1].dataset.overviewMode = "location";
+        modeButtons[1].removeAttribute("title");
+        modeButtons[1].setAttribute("aria-label", locationName);
+      }
+    }
+    modeButtons.forEach((button) => {
+      button.classList.toggle("active", button.dataset.overviewMode === overviewMode);
+    });
+    return;
+  }
+  if (modeButtons[0]) {
+    modeButtons[0].innerHTML = OVERVIEW_BAR_ICON;
+    modeButtons[0].dataset.overviewMode = "bar";
+    modeButtons[0].title = "長條";
+    modeButtons[0].setAttribute("aria-label", "長條");
+  }
+  if (modeButtons[1]) {
+    modeButtons[1].innerHTML = OVERVIEW_PIE_ICON;
+    modeButtons[1].dataset.overviewMode = "pie";
+    modeButtons[1].title = "圓餅";
+    modeButtons[1].setAttribute("aria-label", "圓餅");
+  }
+  modeButtons.forEach((button) => {
+    button.classList.toggle("active", button.dataset.overviewMode === overviewMode);
+  });
+}
+
+function isSolarChart() {
+  return GA_DATA.chartType === "solar";
 }
 
 function isStreetlightChart() {
@@ -782,7 +1621,7 @@ function isReplacementChart() {
 }
 
 function usesMonthCoverage() {
-  return !GA_DATA.disableMonthRange && !isStreetlightChart() && !isReplacementChart();
+  return !GA_DATA.disableMonthRange && !isReplacementChart();
 }
 
 function usesYearRange() {
@@ -817,7 +1656,43 @@ function hasCategoryControl() {
 }
 
 function hasTrendToggles() {
-  return overviewMode !== "location" && (isEcocoChart() || isSolarChart());
+  // Keep location-line toggles even in 地點 overview mode — right side stays a year trend.
+  return isEcocoChart() || isSolarChart();
+}
+
+function categoryDisplayName(category) {
+  if (isEcocoChart() && category === "ECOCO") return "全部";
+  return category;
+}
+
+function isParentCategory(category) {
+  if (isEcocoChart() && category === "ECOCO") return true;
+  if (isSolarChart() && category === (GA_DATA.defaultCategory || "全地點")) return true;
+  return false;
+}
+
+function showAggregatePieMode() {
+  // Pie share is useful for ECOCO's many material subtypes; solar keeps 年度|地點 bars instead.
+  return isEcocoChart() && selectedCategory === "ECOCO";
+}
+
+function aggregatePieTitleLabel() {
+  return "類別佔比";
+}
+
+function syncOverviewModeControls() {
+  if (!overviewModeSwitch) return;
+  if (showAggregatePieMode()) {
+    setOverviewModeButtons("icons");
+    if (overviewMode === "location") overviewMode = "bar";
+  } else if (hasLocationOverviewMode()) {
+    if (isStreetlightChart() && !overviewModeTouched) overviewMode = "location";
+    setOverviewModeButtons("location");
+    if (overviewMode === "pie") overviewMode = "bar";
+  } else {
+    setOverviewModeButtons("icons");
+    if (overviewMode === "location" || overviewMode === "pie") overviewMode = "bar";
+  }
 }
 
 function activeMeta(category = selectedCategory) {
@@ -903,15 +1778,48 @@ function monthsInRange(months, startMonth, endMonth) {
     .sort((a, b) => a - b);
 }
 
-function valuesForYearUntil(year, cutoffMonth, category = selectedCategory) {
-  const series = currentSeries(category);
-  const rows = series.monthly
-    .filter((item) => Number(item.year) === Number(year) && Number(item.month) <= Number(cutoffMonth))
-    .sort((a, b) => a.month - b.month);
-  return {
-    value: aggregateRows(rows, category),
-    months: rows.map((item) => Number(item.month)),
-  };
+function monthsBetween(startMonth, endMonth) {
+  const start = Number(startMonth);
+  const end = Number(endMonth);
+  if (!Number.isFinite(start) || !Number.isFinite(end) || start > end) return [];
+  const months = [];
+  for (let month = start; month <= end; month += 1) months.push(month);
+  return months;
+}
+
+function monthsAvailableForYear(year = selectedYear, category = selectedCategory) {
+  const record = recordForYear(year, category);
+  return [...new Set((record ? record.monthsList : []) || [])]
+    .map(Number)
+    .filter(Number.isFinite)
+    .sort((a, b) => a - b);
+}
+
+function clampMonthRangeToAvailable(range, months) {
+  const list = [...new Set((months || []).map(Number).filter(Number.isFinite))].sort((a, b) => a - b);
+  if (!list.length) return range ? { start: Number(range.start), end: Number(range.end) } : { start: 1, end: 12 };
+  if (!range) return { start: list[0], end: list[list.length - 1] };
+  const overlap = list.filter((month) => month >= Number(range.start) && month <= Number(range.end));
+  if (!overlap.length) return { start: list[0], end: list[list.length - 1] };
+  return { start: overlap[0], end: overlap[overlap.length - 1] };
+}
+
+function reconcileCustomMonthRangeForYear(year = selectedYear, category = selectedCategory) {
+  if (!usesMonthCoverage() || isMonthGrain()) return;
+  const months = monthsAvailableForYear(year, category);
+  if (!months.length) return;
+  if (customMonthRange) {
+    const clamped = clampMonthRangeToAvailable(customMonthRange, months);
+    customMonthRange = { start: clamped.start, end: clamped.end };
+    draftMonthRange = { start: clamped.start, end: clamped.end };
+    lastValidMonthRange = { start: clamped.start, end: clamped.end };
+    return;
+  }
+  // No applied custom: popover draft must follow this year's default window
+  // (e.g. 2026 → 1–5, then switch to 2025 → draft becomes 1–12, not leftover 1–5).
+  const yearDefault = defaultRangeForRecord(recordForYear(year, category));
+  draftMonthRange = { start: yearDefault.start, end: yearDefault.end };
+  lastValidMonthRange = { start: yearDefault.start, end: yearDefault.end };
 }
 
 function aggregateRows(rows, category = selectedCategory) {
@@ -972,6 +1880,81 @@ function averageRank(value, values) {
   return less + 1 + (equal - 1) / 2;
 }
 
+function monthlyRowsForYear(year, category = selectedCategory) {
+  const series = currentSeries(category);
+  return ((series && series.monthly) || [])
+    .filter((item) => Number(item.year) === Number(year))
+    .map((item) => ({
+      year: Number(item.year),
+      month: Number(item.month),
+      value: Number(item.value) || 0,
+      label: `${Number(item.month)}月`,
+      monthsList: [Number(item.month)],
+      comparisonMonths: [Number(item.month)],
+    }))
+    .sort((a, b) => a.month - b.month);
+}
+
+function ensureSelectedMonth(year = selectedYear, category = selectedCategory) {
+  const rows = monthlyRowsForYear(year, category);
+  if (!rows.length) {
+    selectedMonth = null;
+    return null;
+  }
+  if (!rows.some((row) => Number(row.month) === Number(selectedMonth))) {
+    selectedMonth = rows[rows.length - 1].month;
+  }
+  return selectedMonth;
+}
+
+function comparisonForMonthsInYear(year, category = selectedCategory) {
+  ensureSelectedMonth(year, category);
+  let rows = monthlyRowsForYear(year, category);
+  if (!rows.length) {
+    return {
+      selected: null,
+      selectedRecord: null,
+      selectedDisplayMonths: [],
+      startMonth: 1,
+      cutoffMonth: 12,
+      shortBasisLabel: "無資料",
+      rows: [],
+      values: [],
+      mean: 0,
+      category,
+      grain: "month",
+    };
+  }
+  const values = rows.map((row) => row.value);
+  rows = rows.map((row) => {
+    const rank = averageRank(row.value, values);
+    const higher = values.filter((item) => item > row.value + 1e-9).length;
+    const lower = values.filter((item) => item < row.value - 1e-9).length;
+    return {
+      ...row,
+      rank,
+      pr: rows.length === 1 ? 100 : 1 + (rank - 1) * 99 / (rows.length - 1),
+      rankHigh: higher + 1,
+      relativePosition: rows.length === 1 ? 100 : (lower / (rows.length - 1)) * 100,
+    };
+  });
+  const selected = rows.find((row) => Number(row.month) === Number(selectedMonth)) || rows[rows.length - 1];
+  const mean = values.reduce((sum, value) => sum + value, 0) / values.length;
+  return {
+    selected,
+    selectedRecord: selected,
+    selectedDisplayMonths: selected ? [selected.month] : [],
+    startMonth: selected ? selected.month : 1,
+    cutoffMonth: selected ? selected.month : 12,
+    shortBasisLabel: selected ? `${selected.month}月` : "無資料",
+    rows,
+    values,
+    mean,
+    category,
+    grain: "month",
+  };
+}
+
 function comparisonForYear(year, category = selectedCategory) {
   const series = currentSeries(category);
   const selectedRecord = recordForYear(year, category);
@@ -1024,11 +2007,16 @@ function comparisonForYear(year, category = selectedCategory) {
       category,
     };
   }
+  // Badge shows this year's overlapping months under the applied / default window
+  // (e.g. custom 1–12 on 2026 → 1–5), matching what the picker can offer.
   const selectedDisplayMonths = range.isCustom
     ? monthsInRange(selectedRecord.monthsList, range.start, range.end)
     : selectedRecord.monthsList;
+  const effectiveMonths = selectedDisplayMonths;
   const isFullYearRange = !range.isCustom && range.start === 1 && range.end === 12;
-  const shortBasisLabel = isFullYearRange ? "全年累積" : `${formatMonths(selectedDisplayMonths)}累積`;
+  const shortBasisLabel = isFullYearRange
+    ? "全年累積"
+    : `${formatMonths(effectiveMonths.length ? effectiveMonths : monthsBetween(range.start, range.end))}累積`;
   let rows = series.records.map((record) => {
     const part = valuesForYearRange(record.year, range.start, range.end, category);
     return { ...record, value: part.value, comparisonMonths: part.months };
@@ -1040,7 +2028,7 @@ function comparisonForYear(year, category = selectedCategory) {
 
   if (!rows.length) {
     return {
-      selected: { ...selectedRecord, value: 0, rankHigh: 1, relativePosition: 100, comparisonMonths: [] },
+      selected: null,
       selectedRecord,
       selectedDisplayMonths,
       startMonth: range.start,
@@ -1064,7 +2052,8 @@ function comparisonForYear(year, category = selectedCategory) {
     return { ...row, rank, pr, rankHigh, relativePosition };
   });
 
-  const selected = rows.find((row) => String(row.year) === String(year)) || rows[rows.length - 1];
+  // Never fall back to another year: missing endpoints under the applied interval → no rank for this year.
+  const selected = rows.find((row) => String(row.year) === String(year)) || null;
   const mean = values.reduce((sum, value) => sum + value, 0) / values.length;
   return { selected, selectedRecord, selectedDisplayMonths, startMonth: range.start, cutoffMonth, shortBasisLabel, rows, values, mean, category };
 }
@@ -1134,6 +2123,7 @@ function locationRankingComparison() {
 }
 
 function activeRankingComparison() {
+  if (isMonthGrain()) return comparisonForMonthsInYear(selectedYear, selectedCategory);
   return usesLocationRanking() ? locationRankingComparison() : comparisonForYear(selectedYear);
 }
 
@@ -1143,7 +2133,244 @@ function renderCoverageBadge(text) {
   yearMonthsTop.classList.remove("ga-formula");
   yearMonthsTop.disabled = false;
   yearMonthsTop.removeAttribute("aria-disabled");
-  yearMonthsTop.textContent = text;
+  yearMonthsTop.replaceChildren();
+  yearMonthsTop.appendChild(document.createTextNode(text));
+  const caret = document.createElement("span");
+  caret.className = "ga-coverage-caret";
+  caret.setAttribute("aria-hidden", "true");
+  caret.textContent = "▾";
+  yearMonthsTop.appendChild(caret);
+}
+
+function renderReplacementCoverageBadge(rangeMetrics) {
+  if (!isReplacementChart()) return;
+  setupReplacementDualBadge();
+  syncReplacementDualBadgeLayout();
+  const rangeEl = document.getElementById("replacementRangeLabel");
+  const metricEl = document.getElementById("replacementMetricLabel");
+  const campusEl = ensureReplacementScopeLabel();
+  if (isStreetlightChart()) {
+    if (rangeEl) rangeEl.textContent = rangeMetrics.rangeLabel;
+    if (campusEl) {
+      campusEl.hidden = false;
+      campusEl.textContent = streetlightFocusScopeLabel();
+    }
+  } else {
+    if (rangeEl) rangeEl.textContent = rangeMetrics.rangeLabel;
+    if (campusEl) {
+      campusEl.hidden = false;
+      campusEl.textContent = "累積汰換";
+    }
+  }
+  if (metricEl) metricEl.textContent = replacementRangeMetricDisplay(rangeMetrics).text;
+  renderReplacementMetricOptions();
+}
+
+function streetlightFocusScopeLabel() {
+  const loc = streetlightFocusLocation();
+  if (loc === (GA_DATA.defaultLocation || "全校區")) return "全校汰換";
+  const short = streetlightCampusShortLabel(loc);
+  return `${short}校區汰換`;
+}
+
+function syncReplacementDualBadgeLayout() {
+  const shell = coverageWrap && coverageWrap.querySelector(".ga-replacement-dual-badge");
+  if (!shell) return;
+  const left = document.getElementById("yearRangeTop");
+  if (left) {
+    const caret = left.querySelector(".ga-coverage-caret");
+    const range = left.querySelector(".ga-coverage-range");
+    // Desired order: "2025-2026 年▾" (caret after year, both menus right-aligned).
+    if (caret && range) left.append(range, caret);
+  }
+}
+
+function ensureReplacementScopeLabel() {
+  if (!coverageWrap) return null;
+  let el = document.getElementById("replacementScopeLabel");
+  const shell = coverageWrap.querySelector(".ga-replacement-dual-badge");
+  if (!shell) return el;
+  if (el) {
+    const rightBtn = shell.querySelector("#replacementMetricTop");
+    if (rightBtn && el.nextElementSibling !== rightBtn) shell.insertBefore(el, rightBtn);
+    return el;
+  }
+  const rightBtn = shell.querySelector("#replacementMetricTop");
+  el = document.createElement("span");
+  el.className = "ga-coverage-campus";
+  el.id = "replacementScopeLabel";
+  el.setAttribute("aria-hidden", "true");
+  if (rightBtn) shell.insertBefore(el, rightBtn);
+  else shell.appendChild(el);
+  return el;
+}
+
+function replacementRangeMetricDisplay(metrics) {
+  if (replacementRangeMetric === "qty") {
+    return { text: `總計汰換 ${fmt.format(metrics.cumulativeQty)} 盞` };
+  }
+  if (replacementRangeMetric === "avg") {
+    if (!(metrics.cumulativeQty > 0) || metrics.avgSavingPerLamp == null) return { text: "平均每次節省 --" };
+    return { text: `平均每次節省 ${fmt.format(metrics.avgSavingPerLamp)} 瓦` };
+  }
+  return { text: `總計節省 ${fmt.format(metrics.cumulativeSaving)} 瓦` };
+}
+
+function renderReplacementMetricOptions() {
+  const container = document.getElementById("replacementMetricOptions");
+  if (!container) return;
+  const options = [
+    { key: "saving", label: "節省瓦數" },
+    { key: "qty", label: "汰換數量" },
+    { key: "avg", label: "平均節省" },
+  ];
+  container.replaceChildren();
+  options.forEach((option) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = option.label;
+    button.classList.toggle("active", replacementRangeMetric === option.key);
+    button.addEventListener("click", () => {
+      replacementRangeMetric = option.key;
+      closeReplacementMetricPopover();
+      updateAll();
+    });
+    container.appendChild(button);
+  });
+}
+
+function setupReplacementDualBadge() {
+  if (!isReplacementChart() || !coverageWrap) return;
+  yearRangeTop = document.getElementById("yearRangeTop");
+  replacementMetricTop = document.getElementById("replacementMetricTop");
+  replacementMetricPopover = document.getElementById("replacementMetricPopover");
+  if (yearRangeTop && replacementMetricTop) return;
+
+  const shell = document.createElement("div");
+  shell.className = "ga-coverage ga-replacement-dual-badge";
+  shell.setAttribute("role", "group");
+  shell.setAttribute("aria-label", "年度範圍與區間指標");
+
+  const leftBtn = document.createElement("button");
+  leftBtn.type = "button";
+  leftBtn.className = "ga-coverage-zone ga-coverage-zone-left";
+  leftBtn.id = "yearRangeTop";
+  leftBtn.setAttribute("aria-expanded", "false");
+  leftBtn.setAttribute("aria-haspopup", "dialog");
+  const leftCaret = document.createElement("span");
+  leftCaret.className = "ga-coverage-caret";
+  leftCaret.setAttribute("aria-hidden", "true");
+  leftCaret.textContent = "▾";
+  const rangeSpan = document.createElement("span");
+  rangeSpan.className = "ga-coverage-range";
+  rangeSpan.id = "replacementRangeLabel";
+  leftBtn.append(rangeSpan, leftCaret);
+
+  const campusSpan = document.createElement("span");
+  campusSpan.className = "ga-coverage-campus";
+  campusSpan.id = "replacementScopeLabel";
+  campusSpan.setAttribute("aria-hidden", "true");
+  campusSpan.hidden = true;
+
+  const rightBtn = document.createElement("button");
+  rightBtn.type = "button";
+  rightBtn.className = "ga-coverage-zone ga-coverage-zone-right";
+  rightBtn.id = "replacementMetricTop";
+  rightBtn.setAttribute("aria-expanded", "false");
+  rightBtn.setAttribute("aria-haspopup", "dialog");
+  const metricSpan = document.createElement("span");
+  metricSpan.className = "ga-coverage-saving";
+  metricSpan.id = "replacementMetricLabel";
+  const rightCaret = document.createElement("span");
+  rightCaret.className = "ga-coverage-caret";
+  rightCaret.setAttribute("aria-hidden", "true");
+  rightCaret.textContent = "▾";
+  rightBtn.append(metricSpan, rightCaret);
+
+  shell.append(leftBtn, campusSpan, rightBtn);
+
+  if (yearMonthsTop && yearMonthsTop.parentElement === coverageWrap) {
+    yearMonthsTop.replaceWith(shell);
+  } else if (!coverageWrap.querySelector(".ga-replacement-dual-badge")) {
+    coverageWrap.prepend(shell);
+  }
+
+  if (!document.getElementById("replacementMetricPopover")) {
+    const popover = document.createElement("div");
+    popover.className = "ga-metric-popover";
+    popover.id = "replacementMetricPopover";
+    popover.hidden = true;
+    popover.innerHTML = [
+      '<div class="ga-month-title">選擇指標</div>',
+      '<div class="ga-metric-options" id="replacementMetricOptions"></div>',
+    ].join("");
+    coverageWrap.appendChild(popover);
+  }
+
+  yearRangeTop = document.getElementById("yearRangeTop");
+  replacementMetricTop = document.getElementById("replacementMetricTop");
+  replacementMetricPopover = document.getElementById("replacementMetricPopover");
+  bindReplacementDualBadgeEvents();
+}
+
+function bindReplacementDualBadgeEvents() {
+  if (!yearRangeTop || yearRangeTop.dataset.bound === "1") return;
+  yearRangeTop.dataset.bound = "1";
+  yearRangeTop.addEventListener("click", (event) => {
+    event.stopPropagation();
+    if (!canOpenMonthPopover()) return;
+    if (monthPopoverPinned) {
+      closeMonthPopover();
+      return;
+    }
+    openMonthPopover({ pin: true });
+  });
+  yearRangeTop.addEventListener("mouseenter", () => {
+    if (!prefersMonthPopoverHover() || !canOpenMonthPopover()) return;
+    openMonthPopover({ pin: false });
+  });
+  yearRangeTop.addEventListener("mouseleave", () => {
+    if (!prefersMonthPopoverHover()) return;
+    scheduleCloseMonthPopover();
+  });
+  if (replacementMetricTop) {
+    replacementMetricTop.addEventListener("click", (event) => {
+      event.stopPropagation();
+      if (replacementMetricPopoverPinned) {
+        closeReplacementMetricPopover();
+        return;
+      }
+      openReplacementMetricPopover({ pin: true });
+    });
+    replacementMetricTop.addEventListener("mouseenter", () => {
+      if (!prefersMonthPopoverHover()) return;
+      openReplacementMetricPopover({ pin: false });
+    });
+    replacementMetricTop.addEventListener("mouseleave", () => {
+      if (!prefersMonthPopoverHover()) return;
+      scheduleCloseReplacementMetricPopover();
+    });
+  }
+  if (replacementMetricPopover) {
+    replacementMetricPopover.addEventListener("click", (event) => event.stopPropagation());
+    replacementMetricPopover.addEventListener("mouseenter", () => {
+      clearMonthPopoverCloseTimer();
+      clearReplacementMetricPopoverCloseTimer();
+    });
+    replacementMetricPopover.addEventListener("mouseleave", () => {
+      if (!prefersMonthPopoverHover()) return;
+      scheduleCloseReplacementMetricPopover();
+    });
+  }
+}
+
+function placeReplacementCoverageControl() {
+  if (!isReplacementChart() || !coverageWrap) return;
+  const anchor = document.getElementById("coverageAnchor");
+  if (!anchor) return;
+  if (coverageWrap.parentElement !== anchor) anchor.appendChild(coverageWrap);
+  anchor.hidden = false;
+  setupReplacementDualBadge();
 }
 
 function renderFormulaBadgeFor(category = selectedCategory) {
@@ -1177,6 +2404,129 @@ function renderFormulaBadge() {
 }
 
 
+function streetlightFocusLocation() {
+  if (!isStreetlightChart()) return selectedLocation || GA_DATA.defaultLocation || "全校區";
+  return focusedCampus || GA_DATA.defaultLocation || "全校區";
+}
+
+function streetlightRowLocationKey(row) {
+  if (!row) return GA_DATA.defaultLocation || "全校區";
+  if (row.location === "全校" || row.location === (GA_DATA.defaultLocation || "全校區")) {
+    return GA_DATA.defaultLocation || "全校區";
+  }
+  return row.location;
+}
+
+function isStreetlightFocusRow(row) {
+  return streetlightRowLocationKey(row) === streetlightFocusLocation();
+}
+
+function selectStreetlightCampusFocus(locationKey) {
+  if (!isStreetlightChart() || !locationKey) return;
+  const next = String(locationKey);
+  if (focusedCampus === next) return;
+  focusedCampus = next;
+  updateAll();
+}
+
+function streetlightSeriesAt(location, category) {
+  const loc = location || streetlightFocusLocation();
+  return (GA_DATA.locationSeries && GA_DATA.locationSeries[loc] && GA_DATA.locationSeries[loc][category])
+    || { records: [] };
+}
+
+function streetlightMetricAt(location, category, year = selectedYear) {
+  const row = (streetlightSeriesAt(location, category).records || [])
+    .find((item) => String(item.year) === String(year));
+  return row ? Number(row.value || 0) : 0;
+}
+
+function streetlightFocusYearMetrics(year = selectedYear) {
+  const loc = streetlightFocusLocation();
+  const annualQty = streetlightMetricAt(loc, "年度汰換數量", year);
+  const nonLedQty = streetlightMetricAt(loc, "非LED原舊燈具汰換量", year);
+  return {
+    annualSaving: streetlightMetricAt(loc, "累積節省瓦數", year),
+    annualQty,
+    avgSaving: streetlightMetricAt(loc, "平均節省瓦數", year),
+    nonLedQty,
+  };
+}
+
+function sumStreetlightMetricAt(location, category, start, end) {
+  return (streetlightSeriesAt(location, category).records || []).reduce((total, row) => {
+    const year = Number(row.year);
+    if (year >= Number(start) && year <= Number(end)) return total + Number(row.value || 0);
+    return total;
+  }, 0);
+}
+
+function streetlightFocusRangeMetrics() {
+  const range = activeReplacementYearRange();
+  const loc = streetlightFocusLocation();
+  const annualSaving = sumStreetlightMetricAt(loc, "累積節省瓦數", range.start, range.end);
+  const cumulativeQty = sumStreetlightMetricAt(loc, "年度汰換數量", range.start, range.end);
+  const dataYears = new Set((streetlightSeriesAt(loc, "累積節省瓦數").records || [])
+    .map((row) => Number(row.year))
+    .filter((year) => Number.isFinite(year) && year >= Number(range.start) && year <= Number(range.end)));
+  const yearCount = Math.max(1, dataYears.size);
+  return {
+    range,
+    rangeLabel: formatYearRange(range),
+    annualSaving,
+    averageSaving: annualSaving / yearCount,
+    cumulativeSaving: annualSaving,
+    cumulativeQty,
+    avgSavingPerLamp: cumulativeQty > 0 ? annualSaving / cumulativeQty : null,
+  };
+}
+
+function bindStreetlightCampusBarClicks(chartId, rows) {
+  const chart = document.getElementById(chartId);
+  if (!chart || !rows || !rows.length) return;
+  chart.removeAllListeners?.("plotly_click");
+  chart.style.cursor = "pointer";
+  chart.on("plotly_click", (event) => {
+    const point = event.points && event.points[0];
+    if (!point) return;
+    const idx = Number(point.pointIndex);
+    const row = rows[idx];
+    if (!row) return;
+    selectStreetlightCampusFocus(streetlightRowLocationKey(row));
+  });
+}
+
+function streetlightFocusChromeColor() {
+  // Warm amber outline: selection chrome only — not a third data fill color.
+  return "#e8a838";
+}
+
+function streetlightFocusLabelColor() {
+  // Keep red for selected row numbers (same accent as 全校 / KPI emphasis).
+  return "#b83248";
+}
+
+function streetlightSelectedBarAccent(yVals, selectedIdx) {
+  if (!(selectedIdx >= 0) || !yVals.length) return [];
+  const y0 = yVals[selectedIdx];
+  return [{
+    type: "line",
+    xref: "paper",
+    x0: 0,
+    x1: 0,
+    yref: "y",
+    y0: y0 - 0.32,
+    y1: y0 + 0.32,
+    line: { color: streetlightFocusChromeColor(), width: 3 },
+  }];
+}
+
+function streetlightBarIsHot(row, isYearSelected) {
+  // Data encoding: 全校 stays red; year rows keep selected-year red; campus focus does not recolor.
+  if (row && row.location != null) return row.location === "全校";
+  return Boolean(isYearSelected);
+}
+
 function replacementRecords(category = selectedCategory) {
   return [...(currentSeries(category).records || [])]
     .filter((row) => Number.isFinite(Number(row.value)))
@@ -1200,54 +2550,9 @@ function replacementCumulativeRows(category = selectedCategory) {
   });
 }
 
-function replacementSelectedRow(category = selectedCategory) {
-  const rows = replacementRecords(category);
-  return rows.find((row) => String(row.year) === String(selectedYear)) || rows[rows.length - 1] || null;
-}
-
-function replacementCumulativeValue(year, category = selectedCategory) {
-  const row = replacementCumulativeRows(category).find((item) => String(item.year) === String(year));
-  return row ? Number(row.cumulative || 0) : 0;
-}
-
-function replacementAnnualAverage(category = selectedCategory) {
-  const rows = replacementRecords(category);
-  if (!rows.length) return 0;
-  return rows.reduce((sum, row) => sum + Number(row.value || 0), 0) / rows.length;
-}
-
-function replacementRelativePosition(value, values) {
-  const available = values.map(Number).filter(Number.isFinite);
-  if (!available.length) return 0;
-  const minValue = Math.min(...available);
-  const maxValue = Math.max(...available);
-  if (Math.abs(maxValue - minValue) <= 1e-9) return 100;
-  return ((Number(value) - minValue) / (maxValue - minValue)) * 100;
-}
-
-function setAxisLabels(left, middle, right) {
-  const labels = document.querySelectorAll(".ga-axis span");
-  if (labels[0]) labels[0].textContent = left;
-  if (labels[1]) labels[1].textContent = middle;
-  if (labels[2]) labels[2].textContent = right;
-}
-
 function setTextIfExists(id, value) {
   const node = document.getElementById(id);
   if (node) node.textContent = value;
-}
-
-function fitSingleLineText(node, maxSize = 12, minSize = 8.2) {
-  if (!node) return;
-  node.style.whiteSpace = "nowrap";
-  node.style.fontSize = `${maxSize}px`;
-  const available = node.clientWidth || node.parentElement?.clientWidth || 0;
-  if (!available) return;
-  let size = maxSize;
-  while (size > minSize && node.scrollWidth > available) {
-    size -= 0.2;
-    node.style.fontSize = `${size.toFixed(1)}px`;
-  }
 }
 
 function setSmallMetric(elementId, value, unit) {
@@ -1275,14 +2580,14 @@ function replacementYears() {
 }
 
 function availableReplacementRangeYears() {
-  const endYear = Number(selectedYear);
-  return replacementYears().filter((year) => Number.isFinite(year) && year <= endYear);
+  // Year range is independent of the highlight year (selectedYear).
+  return replacementYears();
 }
 
 function defaultReplacementYearRange() {
   const years = availableReplacementRangeYears();
   if (!years.length) return { start: Number(selectedYear), end: Number(selectedYear), isCustom: false };
-  return { start: years[0], end: Number(selectedYear), isCustom: false };
+  return { start: years[0], end: years[years.length - 1], isCustom: false };
 }
 
 function activeReplacementYearRange() {
@@ -1324,6 +2629,7 @@ function replacementRangeMetrics() {
     averageSaving: annualSaving / yearCount,
     cumulativeSaving: annualSaving,
     cumulativeQty,
+    avgSavingPerLamp: cumulativeQty > 0 ? annualSaving / cumulativeQty : null,
   };
 }
 
@@ -1351,49 +2657,37 @@ function replacementMetrics(year = selectedYear) {
   };
 }
 
-function replacementOutcomeProgress(metrics) {
-  const years = replacementYears();
-  const finalValue = years.length ? sumReplacementMetric("累積節省瓦數", Math.min(...years), Math.max(...years)) : 0;
-  return {
-    width: finalValue > 0 ? metrics.cumulativeSaving / finalValue * 100 : 0,
-    color: "#d43f55",
-    axis: ["起點", "所選範圍", "全期間"],
-  };
-}
-
 function renderReplacementDom() {
-  const metrics = replacementRangeMetrics();
-  const progress = replacementOutcomeProgress(metrics);
-  const width = Math.max(5, Math.min(100, progress.width));
-  const rankFill = document.getElementById("rankFill");
-  const rankPin = document.getElementById("rankPin");
+  const rangeMetrics = isStreetlightChart()
+    ? streetlightFocusRangeMetrics()
+    : replacementRangeMetrics();
   const rankNumberEl = document.getElementById("rankNumber");
   const meanDiffEl = document.getElementById("meanDiff");
-  const singleYear = metrics.range.start === metrics.range.end;
+  const yearMetrics = isStreetlightChart()
+    ? streetlightFocusYearMetrics(selectedYear)
+    : replacementMetrics(selectedYear);
+  const accent = "#d43f55";
+  renderReplacementCoverageBadge(rangeMetrics);
 
-  setTextIfExists("rankTitle", "累積節省瓦數");
-  setTextIfExists("rankNumber", fmt.format(metrics.cumulativeSaving));
-  setTextIfExists("rankTotal", `瓦｜${metrics.rangeLabel}`);
-  if (rankNumberEl) rankNumberEl.style.color = progress.color;
-  if (rankFill) {
-    rankFill.style.width = `${width}%`;
-    rankFill.style.background = "linear-gradient(90deg, #2563eb 0%, #b8c7d9 52%, #d43f55 100%)";
-    rankFill.style.backgroundSize = `${10000 / width}% 100%`;
+  setTextIfExists("rankTitle", "節省瓦數");
+  setTextIfExists("rankNumber", fmt.format(yearMetrics.annualSaving));
+  if (isStreetlightChart()) {
+    const focusLabel = streetlightCampusShortLabel(
+      streetlightFocusLocation() === (GA_DATA.defaultLocation || "全校區")
+        ? "全校"
+        : streetlightFocusLocation()
+    );
+    setTextIfExists("rankTotal", `瓦｜${selectedYear} 年｜${focusLabel}`);
+  } else {
+    setTextIfExists("rankTotal", `瓦｜${selectedYear} 年`);
   }
-  if (rankPin) rankPin.style.left = `${width}%`;
-  setAxisLabels(...progress.axis);
-
-  setTextIfExists("valueMiniLabel", singleYear ? "該年節省瓦數" : "年均節省瓦數");
-  setSmallMetric("yearValue", singleYear ? metrics.annualSaving : metrics.averageSaving, "瓦");
-  setTextIfExists("secondaryMiniLabel", "累積汰換數量");
-  setSmallMetric("meanDiff", metrics.cumulativeQty, "顆/隻/片");
-  if (meanDiffEl) meanDiffEl.style.color = progress.color;
-  const hintPrefix = metrics.range.start === metrics.range.end
-    ? `${metrics.range.end} 年均節省`
-    : `${metrics.range.start}-${metrics.range.end} 年均節省`;
-  setTextIfExists("rankHint", `${hintPrefix} ${fmt.format(metrics.averageSaving)} 瓦。總計已累積節省 ${fmt.format(metrics.cumulativeSaving)} 瓦`);
-  fitSingleLineText(document.getElementById("rankHint"));
-  renderCoverageBadge(`年度範圍 ${metrics.rangeLabel}`);
+  if (rankNumberEl) rankNumberEl.style.color = accent;
+  setTextIfExists("valueMiniLabel", "汰換數量");
+  setSmallMetric("yearValue", yearMetrics.annualQty, "盞");
+  setTextIfExists("secondaryMiniLabel", "平均每次節省");
+  if (!(yearMetrics.annualQty > 0)) setTextIfExists("meanDiff", "--");
+  else setSmallMetric("meanDiff", yearMetrics.avgSaving, "瓦");
+  if (meanDiffEl) meanDiffEl.style.color = "";
 }
 
 function emptyReplacementLayout(message) {
@@ -1409,17 +2703,30 @@ function emptyReplacementLayout(message) {
 }
 
 function renderReplacementOverview() {
+  if (isStreetlightChart()) {
+    syncOverviewModeControls();
+    if (overviewModeSwitch) {
+      overviewModeSwitch.hidden = false;
+      overviewModeSwitch.querySelectorAll("button").forEach((button) => {
+        button.classList.toggle("active", button.dataset.overviewMode === overviewMode);
+      });
+    }
+    if (overviewMode === "location") {
+      renderReplacementLocationOverview();
+      return;
+    }
+    renderReplacementStructureOverview();
+    return;
+  }
   if (overviewModeSwitch) overviewModeSwitch.hidden = true;
   renderReplacementStructureOverview();
 }
 
 function renderReplacementStructureOverview() {
   const rows = replacementStructureRows();
-  if (overviewTitle) overviewTitle.textContent = "汰換量總覽";
-  if (overviewNote) {
-    overviewNote.textContent = "色段與 % 數＝非LED原燈具占比";
-    overviewNote.hidden = false;
-  }
+  if (overviewTitle) overviewTitle.textContent = "汰換量";
+  if (overviewNote) overviewNote.hidden = true;
+  if (overviewFootNote) overviewFootNote.hidden = true;
   if (!rows.length) {
     Plotly.react("overviewChart", [], emptyReplacementLayout("目前沒有汰換量資料"), { displayModeBar: false, responsive: true });
     return;
@@ -1428,14 +2735,73 @@ function renderReplacementStructureOverview() {
   const selectedRows = rows.filter((row) => String(row.year) === String(selectedYear));
   const otherRows = rows.filter((row) => String(row.year) !== String(selectedYear)).sort((a, b) => Number(b.year) - Number(a.year));
   const sorted = [...selectedRows, ...otherRows];
-  const selectedInfo = selectedRows[0] || sorted[0];
-  const labels = sorted.map((row) => `${row.year} 年`);
-  const y = sorted.map((_, idx) => idx === 0 ? -0.1 : idx * 0.86);
-  const totals = sorted.map((row) => Math.max(0, Number(row.qty || 0)));
-  const maxQty = Math.max(...totals, 1);
-  const shares = sorted.map((row) => Math.max(0, Math.min(100, Number(row.nonLedShare || 0))));
-  const displayTotals = totals.map((total) => total > 0 ? Math.max(total, maxQty * 0.035) : 0);
+  paintReplacementQtyShareBars({
+    sorted,
+    labels: sorted.map((row) => `${row.year} 年`),
+    isSelected: (row) => String(row.year) === String(selectedYear),
+    hoverLeft: (row) => `${row.year} 年`,
+  });
+}
+
+function streetlightCampusShortLabel(location) {
+  const raw = String(location || "");
+  if (raw === "全校" || raw === (GA_DATA.defaultLocation || "全校區")) return "全校";
+  return raw.replace(/校區$/, "");
+}
+
+function streetlightCampusBarYs(rows) {
+  // Lift 全校 slightly and add a small gap before campus ranking rows.
+  const hasTotalLead = Boolean(rows[0] && rows[0].location === "全校");
+  return rows.map((_, idx) => {
+    if (idx === 0) return hasTotalLead ? -0.28 : -0.1;
+    return hasTotalLead ? idx * 0.86 + 0.28 : idx * 0.86;
+  });
+}
+
+function streetlightCampusBarLeftMargin(labels) {
+  const maxLabelChars = Math.max(...labels.map((label) => String(label).length), 2);
+  // Tight fit for short campus names / "YYYY 年" — reclaim width for right-side labels.
+  return Math.min(62, Math.max(40, maxLabelChars * 8 + 16));
+}
+
+function replacementDualColumnLayout(labels) {
+  // Count right-aligns into a reserved mid band; share left-aligns after a clear gutter
+  // and ends before the plot edge so "非LED占比" neither clips nor collides with 盞/瓦.
+  return {
+    leftMargin: streetlightCampusBarLeftMargin(labels),
+    rightMargin: 12,
+    barDomainEnd: 0.58,
+    countPaperX: 0.76,
+    sharePaperX: 0.815,
+    countAnchor: "right",
+    shareAnchor: "left",
+    tickStandoff: 6,
+  };
+}
+
+function paintReplacementQtyShareBars({ sorted, labels, isSelected, hoverLeft, enableCampusClick = false }) {
+  const rowHasData = (row) => row.hasData !== false;
+  const isTotalRow = (row) => row.location === "全校";
+  const y = streetlightCampusBarYs(sorted);
+  const selectedIdx = sorted.findIndex((row) => isSelected(row));
+  const totals = sorted.map((row) => (rowHasData(row) ? Math.max(0, Number(row.qty || 0)) : 0));
+  // Scale by campus rows only so 全校 does not dominate the length axis.
+  const maxQty = Math.max(
+    ...sorted.map((row, idx) => (isTotalRow(row) ? 0 : totals[idx])),
+    1,
+  );
+  const shares = sorted.map((row) => (
+    rowHasData(row) ? Math.max(0, Math.min(100, Number(row.nonLedShare || 0))) : 0
+  ));
+  const displayTotals = sorted.map((row, idx) => {
+    if (!rowHasData(row)) return 0;
+    // 全校: fixed full-width track; campuses: qty-proportional bars.
+    if (isTotalRow(row)) return maxQty;
+    const total = totals[idx];
+    return total > 0 ? Math.max(total, maxQty * 0.035) : 0;
+  });
   const displayNonLed = sorted.map((row, idx) => {
+    if (!rowHasData(row)) return 0;
     const share = shares[idx];
     const total = displayTotals[idx];
     if (share <= 0 || total <= 0) return 0;
@@ -1443,60 +2809,62 @@ function renderReplacementStructureOverview() {
     const minStripe = maxQty * 0.014;
     return Math.min(total, Math.max(rawWidth, minStripe));
   });
-  const selectedText = `${selectedInfo.year} 年非LED原燈具汰換量：${fmt.format(selectedInfo.nonLed)} 顆/隻/片`;
-  const shareLabelMode = sorted.map((row, idx) => {
-    if (displayNonLed[idx] >= maxQty * 0.28 && shares[idx] >= 12) return "segment";
-    if (shares[idx] > 0) return "edge";
-    return "outside";
-  });
-  // Fixed right-side column for quantity labels. It must be declared before
-  // shareLabelX because short percentage labels use it as a collision boundary.
-  const countColumnX = maxQty * 1.12;
-  const countX = sorted.map(() => countColumnX);
-  const xMax = maxQty * 1.48;
-  const outsideShareX = sorted.map((row, idx) =>
-    Math.max(displayTotals[idx] + maxQty * 0.018, maxQty * 0.052)
-  );
-  const shareLabelX = sorted.map((row, idx) => {
-    if (shareLabelMode[idx] === "segment") return displayNonLed[idx] / 2;
-    if (shareLabelMode[idx] === "edge") {
-      return Math.min(displayNonLed[idx] + maxQty * 0.018, countColumnX - maxQty * 0.18);
-    }
-    return outsideShareX[idx];
-  });
-  const shareAnnotations = sorted.map((row, idx) => {
-    const mode = shareLabelMode[idx];
-    const outside = mode === "outside";
-    const edge = mode === "edge";
-    const segment = mode === "segment";
-    const selected = String(row.year) === String(selectedYear);
+  const layout = replacementDualColumnLayout(labels);
+  const useFocusChrome = Boolean(enableCampusClick);
+  const focusColor = streetlightFocusChromeColor();
+  const labelColor = streetlightFocusLabelColor();
+  const countAnnotations = sorted.map((row, idx) => {
+    const focused = isSelected(row);
     return {
-      text: `${pctFmt.format(shares[idx])}%`,
-      x: shareLabelX[idx],
+      text: rowHasData(row) ? `${fmt.format(row.qty)} 盞` : "",
+      x: layout.countPaperX,
       y: y[idx],
-      xref: "x",
+      xref: "paper",
       yref: "y",
       showarrow: false,
-      xanchor: segment ? "center" : "left",
+      xanchor: layout.countAnchor,
       yanchor: "middle",
-      bgcolor: outside || edge ? (selected ? "rgba(255,255,255,0.88)" : "rgba(255,255,255,0.78)") : "rgba(255,255,255,0)",
-      bordercolor: outside || edge ? (selected ? "rgba(212,63,85,0.44)" : "rgba(203,213,225,0.62)") : "rgba(255,255,255,0)",
-      borderwidth: outside || edge ? 1 : 0,
-      borderpad: outside || edge ? 2 : 0,
-      font: { size: 11, color: segment ? "#ffffff" : (selected ? "#b83248" : "#253047") },
+      font: { size: focused ? 12.5 : 12, color: focused ? labelColor : "#253047" },
     };
   });
-  const countAnnotations = sorted.map((row, idx) => ({
-    text: `${fmt.format(row.qty)} 顆/隻/片`,
-    x: countX[idx],
-    y: y[idx],
-    xref: "x",
-    yref: "y",
-    showarrow: false,
-    xanchor: "left",
-    yanchor: "middle",
-    font: { size: 12, color: "#253047" },
-  }));
+  const shareAnnotations = sorted.map((row, idx) => {
+    const focused = isSelected(row);
+    return {
+      text: rowHasData(row) ? `${pctFmt.format(shares[idx])}%` : "",
+      x: layout.sharePaperX,
+      y: y[idx],
+      xref: "paper",
+      yref: "y",
+      showarrow: false,
+      xanchor: layout.shareAnchor,
+      yanchor: "middle",
+      font: { size: focused ? 12.5 : 12, color: focused ? labelColor : "#253047" },
+    };
+  });
+  const columnHeaders = [
+    {
+      text: "總汰換量",
+      x: layout.countPaperX,
+      y: 0.925,
+      xref: "paper",
+      yref: "paper",
+      showarrow: false,
+      xanchor: layout.countAnchor,
+      yanchor: "bottom",
+      font: { size: 11, color: "#64748b" },
+    },
+    {
+      text: "非LED占比",
+      x: layout.sharePaperX,
+      y: 0.925,
+      xref: "paper",
+      yref: "paper",
+      showarrow: false,
+      xanchor: layout.shareAnchor,
+      yanchor: "bottom",
+      font: { size: 11, color: "#64748b" },
+    },
+  ];
 
   Plotly.react("overviewChart", [
     {
@@ -1506,9 +2874,23 @@ function renderReplacementStructureOverview() {
       x: displayTotals,
       y,
       width: sorted.map(() => 0.58),
-      marker: { color: "#e8eef6", line: { color: "#ffffff", width: 1 } },
-      customdata: sorted.map((row) => [row.year, row.qty, row.nonLed, row.ledOld, row.nonLedShare]),
-      hovertemplate: "%{customdata[0]} 年<br>年度汰換總量：%{customdata[1]:,.2f} 顆/隻/片<br>非LED原燈具：%{customdata[2]:,.2f}<br>LED原燈具：%{customdata[3]:,.2f}<br>非LED占比：%{customdata[4]:.1f}%<extra></extra>",
+      marker: {
+        color: sorted.map((row) => (rowHasData(row) ? "#e8eef6" : "rgba(0,0,0,0)")),
+        line: {
+          color: sorted.map((row) => (
+            rowHasData(row)
+              ? (useFocusChrome && isSelected(row) ? focusColor : "#ffffff")
+              : "rgba(0,0,0,0)"
+          )),
+          width: sorted.map((row) => (useFocusChrome && isSelected(row) ? 2 : 1)),
+        },
+      },
+      customdata: sorted.map((row) => [hoverLeft(row), row.qty, row.nonLed, row.ledOld, row.nonLedShare]),
+      hovertemplate: sorted.map((row) => (
+        rowHasData(row)
+          ? "%{customdata[0]}<br>總汰換量：%{customdata[1]:,.2f} 盞<br>非LED原燈具：%{customdata[2]:,.2f}<br>LED原燈具：%{customdata[3]:,.2f}<br>非LED占比：%{customdata[4]:.1f}%<extra></extra>"
+          : "%{customdata[0]}<extra></extra>"
+      )),
     },
     {
       type: "bar",
@@ -1518,229 +2900,433 @@ function renderReplacementStructureOverview() {
       y,
       width: sorted.map(() => 0.58),
       marker: {
-        color: sorted.map((row) => String(row.year) === String(selectedYear) ? "#d43f55" : "#8fa1bb"),
-        line: { color: "#ffffff", width: 1 },
+        color: sorted.map((row) => (
+          rowHasData(row) ? (streetlightBarIsHot(row, isSelected(row)) ? "#d43f55" : "#8fa1bb") : "rgba(0,0,0,0)"
+        )),
+        line: {
+          color: sorted.map((row) => (
+            rowHasData(row)
+              ? (useFocusChrome && isSelected(row) ? focusColor : "#ffffff")
+              : "rgba(0,0,0,0)"
+          )),
+          width: sorted.map((row) => (useFocusChrome && isSelected(row) ? 2 : 1)),
+        },
       },
       hoverinfo: "skip",
     },
   ], {
     barmode: "overlay",
-    margin: { l: 66, r: 126, t: 42, b: 22 },
-    paper_bgcolor: "rgba(0,0,0,0)",
-    plot_bgcolor: "#ffffff",
-    xaxis: { range: [0, xMax], visible: false, fixedrange: true },
-    yaxis: { tickmode: "array", tickvals: y, ticktext: labels, range: [Math.max(...y) + 0.46, -0.74], showgrid: false, zeroline: false, fixedrange: true },
-    showlegend: false,
-    annotations: [
-      {
-        text: selectedText,
-        x: -0.13,
-        y: 0.99,
-        xref: "paper",
-        yref: "paper",
-        showarrow: false,
-        xanchor: "left",
-        yanchor: "bottom",
-        font: { size: 12, color: "#253047", weight: 900 },
-      },
-      ...shareAnnotations,
-      ...countAnnotations,
-    ],
-  }, { displayModeBar: false, responsive: true });
-}
-function renderReplacementLocationOverview() {
-  if (overviewNote) overviewNote.hidden = true;
-  const rows = locationRowsForSelectedYear().filter(hasLocationData);
-  if (overviewTitle) overviewTitle.textContent = `校區分布｜${selectedYear} 年`;
-  if (!rows.length) {
-    Plotly.react("overviewChart", [], emptyReplacementLayout("目前沒有校區資料"), { displayModeBar: false, responsive: true });
-    return;
-  }
-  const target = selectedLocation || GA_DATA.defaultLocation;
-  const sorted = target && target !== GA_DATA.defaultLocation
-    ? [...rows.filter((item) => item.location === target), ...rows.filter((item) => item.location !== target).sort((a, b) => b.value - a.value)]
-    : [...rows].sort((a, b) => b.value - a.value);
-  const values = sorted.map((item) => Number(item.value || 0));
-  const displayValues = visibleBarValues(values);
-  const y = sorted.map((_, idx) => idx === 0 ? 0 : idx + 0.42);
-  Plotly.react("overviewChart", [{
-    type: "bar", orientation: "h", x: displayValues, y, width: sorted.map(() => 0.58),
-    text: sorted.map((item) => `${fmt.format(item.value)} ${activeUnit()}`), textposition: "outside", textfont: { color: "#253047", size: 12 }, cliponaxis: false,
-    marker: { color: sorted.map((item) => item.location === target ? "#d43f55" : "#8aa0bd"), line: { color: "#ffffff", width: 1 } },
-    customdata: sorted.map((item) => [item.location, item.value]),
-    hovertemplate: "%{customdata[0]}<br>" + activeValueNoun() + "：%{customdata[1]:,.2f} " + activeUnit() + "<extra></extra>",
-  }], {
-    margin: { l: 86, r: 94, t: 18, b: 42 }, paper_bgcolor: "rgba(0,0,0,0)", plot_bgcolor: "#ffffff",
-    xaxis: { title: activeUnit(), gridcolor: "#edf2f7", zeroline: false, range: [0, Math.max(...displayValues, ...values, 1) * 1.18] },
-    yaxis: { tickmode: "array", tickvals: y, ticktext: sorted.map((item) => item.location), range: [Math.max(...y) + 0.72, -0.56], showgrid: false, zeroline: false },
-    showlegend: false,
-  }, { displayModeBar: false, responsive: true });
-}
-
-function renderReplacementTrend() {
-  clearTrendInteractions();
-  if (trendToggles) trendToggles.hidden = true;
-  renderReplacementQualityDashboard();
-}
-
-function replacementTrendLayout(title, subtitle, years, unit, maxY, showLegend) {
-  return {
-    title: { text: `${title}<br><sup>${subtitle}</sup>`, x: 0, xanchor: "left", y: 0.965, yanchor: "top", pad: { t: 3, b: 0 }, font: { size: 19, color: "#101827" } },
-    margin: { l: 62, r: 86, t: 126, b: 74 },
-    paper_bgcolor: "rgba(0,0,0,0)",
-    plot_bgcolor: "#ffffff",
-    xaxis: { tickmode: "array", tickvals: years, title: "", showgrid: false, zeroline: false },
-    yaxis: { title: unit, rangemode: "tozero", range: [0, maxY * 1.18], gridcolor: "#e8eef6", zeroline: false },
-    legend: showLegend ? { orientation: "h", x: 0, y: 1.08, font: { size: 11 } } : undefined,
-    showlegend: showLegend,
-  };
-}
-
-function emptyTrendLayout(message) {
-  return {
-    title: { text: `改善品質<br><sup>${message}</sup>`, x: 0, xanchor: "left", y: 0.965, yanchor: "top", pad: { t: 3, b: 0 }, font: { size: 19, color: "#101827" } },
-    margin: { l: 62, r: 86, t: 126, b: 74 },
-    paper_bgcolor: "rgba(0,0,0,0)",
-    plot_bgcolor: "#ffffff",
-    xaxis: { visible: false },
-    yaxis: { visible: false },
-    annotations: [{ text: message, x: 0.5, y: 0.5, xref: "paper", yref: "paper", showarrow: false, font: { size: 14, color: "#64748b" } }],
-    showlegend: false,
-  };
-}
-
-function renderReplacementQualityDashboard() {
-  if (qualityHead) qualityHead.hidden = false;
-  if (qualityFormula) {
-    qualityFormula.hidden = false;
-    qualityFormula.innerHTML = `
-      <span class="ga-formula-name">平均節省瓦數 =</span>
-      <span><span class="ga-formula-frac"><span>節省瓦數總和</span><span>汰換數量</span></span></span>
-      <span class="ga-formula-name">改善率 =</span>
-      <span><span class="ga-formula-frac"><span>節省瓦數總和</span><span>原燈具總瓦數</span></span><span class="ga-formula-times">×100%</span></span>
-    `;
-  }
-  const avgRows = replacementRecords("平均節省瓦數");
-  const rateRows = replacementRecords("節能改善率");
-  if (!avgRows.length) {
-    Plotly.react("trendChart", [], emptyTrendLayout("目前沒有汰換品質資料"), { displayModeBar: false, responsive: true });
-    return;
-  }
-  const rateMap = new Map(rateRows.map((row) => [Number(row.year), Number(row.value || 0)]));
-  const allRows = avgRows
-    .map((row) => ({
-      year: Number(row.year),
-      value: Number(row.value || 0),
-      rate: Number(rateMap.get(Number(row.year)) || 0),
-    }))
-    .filter((row) => Number.isFinite(row.year));
-  if (!allRows.length) {
-    Plotly.react("trendChart", [], emptyTrendLayout("目前沒有可用年度品質資料"), { displayModeBar: false, responsive: true });
-    return;
-  }
-  const selectedRows = allRows.filter((row) => String(row.year) === String(selectedYear));
-  const otherRows = allRows.filter((row) => String(row.year) !== String(selectedYear)).sort((a, b) => b.year - a.year);
-  const rows = [...selectedRows, ...otherRows];
-  const y = rows.map((_, idx) => idx === 0 ? 0 : idx + 0.42);
-  const values = rows.map((row) => row.value);
-  const maxValue = Math.max(...values, 1);
-  const displayValues = values.map((value) => value > 0 ? Math.max(value, maxValue * 0.035) : 0);
-  const avgMean = allRows.length ? allRows.reduce((sum, row) => sum + row.value, 0) / allRows.length : 0;
-  const selected = rows[0] || { year: selectedYear, value: 0, rate: 0 };
-  const xMax = Math.max(maxValue * 1.72, 1);
-  const valueX = Math.max(maxValue * 1.04, xMax * 0.58);
-  const rateX = Math.max(maxValue * 1.34, xMax * 0.74);
-  const annotations = [
-    {
-      text: `均值 ${fmt.format(avgMean)} 瓦`,
-      x: avgMean,
-      y: -0.56,
-      xref: "x",
-      yref: "y",
-      showarrow: false,
-      xanchor: "center",
-      yanchor: "bottom",
-      bgcolor: "rgba(255,255,255,0)",
-      font: { size: 11, color: "#475569" },
-    },
-    ...rows.flatMap((row, idx) => ([
-      {
-        text: `${fmt.format(row.value)} 瓦`,
-        x: valueX,
-        y: y[idx],
-        xref: "x",
-        yref: "y",
-        showarrow: false,
-        xanchor: "left",
-        yanchor: "middle",
-        font: { size: 12, color: "#253047" },
-      },
-      {
-        text: `改善率 ${fmt.format(row.rate)}%`,
-        x: rateX,
-        y: y[idx],
-        xref: "x",
-        yref: "y",
-        showarrow: false,
-        xanchor: "left",
-        yanchor: "middle",
-        bgcolor: String(row.year) === String(selectedYear) ? "rgba(212,63,85,0.12)" : "rgba(248,250,252,0.94)",
-        bordercolor: String(row.year) === String(selectedYear) ? "#d43f55" : "#d9e1ec",
-        borderwidth: 1,
-        borderpad: 5,
-        font: { size: 11, color: String(row.year) === String(selectedYear) ? "#b83248" : "#475569" },
-      },
-    ])),
-  ];
-  const layout = {
-    margin: { l: 76, r: 26, t: 24, b: 48 },
+    margin: { l: layout.leftMargin, r: layout.rightMargin, t: 16, b: 14 },
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "#ffffff",
     xaxis: {
-      range: [0, xMax],
-      title: "平均節省瓦數（瓦）",
-      gridcolor: "#edf2f7",
-      zeroline: false,
+      range: [0, maxQty * 1.04],
+      domain: [0, layout.barDomainEnd],
+      visible: false,
       fixedrange: true,
     },
     yaxis: {
       tickmode: "array",
       tickvals: y,
-      ticktext: rows.map((row) => `${row.year} 年`),
-      range: [Math.max(...y) + 0.62, -0.82],
+      ticktext: labels,
+      range: [Math.max(...y) + 0.46, -0.74],
+      domain: [0, 0.885],
+      automargin: false,
+      ticklabelstandoff: layout.tickStandoff,
+      tickfont: { size: 12, color: "#253047" },
       showgrid: false,
       zeroline: false,
       fixedrange: true,
     },
-    shapes: [
-      {
-        type: "line",
-        x0: avgMean,
-        x1: avgMean,
-        y0: Math.max(...y) + 0.36,
-        y1: -0.42,
-        xref: "x",
-        yref: "y",
-        line: { color: "#64748b", width: 2, dash: "dash" },
-      },
-    ],
-    annotations,
+    shapes: useFocusChrome ? streetlightSelectedBarAccent(y, selectedIdx) : [],
     showlegend: false,
+    annotations: [...columnHeaders, ...shareAnnotations, ...countAnnotations],
+  }, { displayModeBar: false, responsive: true });
+  const overview = document.getElementById("overviewChart");
+  overview?.removeAllListeners?.("plotly_click");
+  if (enableCampusClick) bindStreetlightCampusBarClicks("overviewChart", sorted);
+}
+
+function streetlightLocationStructureRows() {
+  const byLocation = GA_DATA.savingsAttributionByLocation || {};
+  const defaultLoc = GA_DATA.defaultLocation;
+  const buildRow = (location, order, displayLocation) => {
+    const yearRow = (byLocation[location] || []).find((row) => String(row.year) === String(selectedYear));
+    const qty = Number(yearRow?.qty || 0);
+    const nonLed = Number(yearRow?.nonLedQty || 0);
+    const nonLedShare = Number(yearRow?.nonLedShare || 0);
+    const hasData = Boolean(yearRow) && (qty > 0 || nonLed > 0);
+    return {
+      location: displayLocation || location,
+      order,
+      hasData,
+      qty: hasData ? qty : 0,
+      nonLed: hasData ? nonLed : 0,
+      ledOld: hasData ? Math.max(qty - nonLed, 0) : 0,
+      nonLedShare: hasData && qty > 0 ? nonLedShare : 0,
+    };
   };
-  Plotly.react("trendChart", [{
-    type: "bar",
-    orientation: "h",
-    name: "平均節省瓦數",
-    x: displayValues,
-    y,
-    width: rows.map(() => 0.54),
-    marker: {
-      color: rows.map((row) => String(row.year) === String(selectedYear) ? "#d43f55" : "#8fa1bb"),
-      line: { color: "#ffffff", width: 1 },
+  const campusRows = (GA_DATA.locations || [])
+    .filter((location) => location && location !== defaultLoc)
+    .map((location, order) => buildRow(location, order));
+  const withData = campusRows.filter((row) => row.hasData).sort((a, b) => b.qty - a.qty);
+  const withoutData = campusRows.filter((row) => !row.hasData).sort((a, b) => a.order - b.order);
+  return [buildRow(defaultLoc, -1, "全校"), ...withData, ...withoutData];
+}
+
+function renderReplacementLocationOverview() {
+  if (overviewNote) overviewNote.hidden = true;
+  if (overviewFootNote) overviewFootNote.hidden = true;
+  if (overviewTitle) overviewTitle.textContent = "汰換量";
+  const rows = streetlightLocationStructureRows();
+  if (!rows.length) {
+    Plotly.react("overviewChart", [], emptyReplacementLayout("目前沒有校區資料"), { displayModeBar: false, responsive: true });
+    return;
+  }
+  paintReplacementQtyShareBars({
+    sorted: rows,
+    labels: rows.map((row) => streetlightCampusShortLabel(row.location)),
+    isSelected: (row) => isStreetlightFocusRow(row),
+    hoverLeft: (row) => streetlightCampusShortLabel(row.location),
+    enableCampusClick: true,
+  });
+}
+
+function renderReplacementTrend() {
+  clearTrendInteractions();
+  if (trendToggles) trendToggles.hidden = true;
+  if (isStreetlightChart()) {
+    syncQualityModeControls();
+    if (savingViewMode === "year") {
+      renderYearSavingOverview();
+      return;
+    }
+    renderStreetlightCampusSavingOverview();
+    return;
+  }
+  if (qualityModeSwitch) qualityModeSwitch.hidden = true;
+  renderYearSavingOverview();
+}
+
+function streetlightCampusSavingRows() {
+  const byLocation = GA_DATA.savingsAttributionByLocation || {};
+  const defaultLoc = GA_DATA.defaultLocation;
+  const buildRow = (location, order, displayLocation) => {
+    const yearRow = (byLocation[location] || []).find((row) => String(row.year) === String(selectedYear));
+    const saving = Number(yearRow?.saving || 0);
+    const nonLedSaving = Number(yearRow?.nonLedSaving || 0);
+    const ledOriginSaving = Number(yearRow?.ledOriginSaving || 0);
+    const nonLedSavingShare = Number(yearRow?.nonLedSavingShare || 0);
+    const hasData = Boolean(yearRow) && saving > 0;
+    return {
+      location: displayLocation || location,
+      order,
+      hasData,
+      saving: hasData ? saving : 0,
+      nonLedSaving: hasData ? nonLedSaving : 0,
+      ledOriginSaving: hasData ? ledOriginSaving : 0,
+      nonLedSavingShare: hasData ? nonLedSavingShare : 0,
+    };
+  };
+  const campusRows = (GA_DATA.locations || [])
+    .filter((location) => location && location !== defaultLoc)
+    .map((location, order) => buildRow(location, order));
+  const withData = campusRows.filter((row) => row.hasData).sort((a, b) => b.saving - a.saving);
+  const withoutData = campusRows.filter((row) => !row.hasData).sort((a, b) => a.order - b.order);
+  return [buildRow(defaultLoc, -1, "全校"), ...withData, ...withoutData];
+}
+
+function yearSavingAttributionSource() {
+  if (isStreetlightChart()) {
+    const byLocation = GA_DATA.savingsAttributionByLocation || {};
+    const key = GA_DATA.defaultLocation || "全校區";
+    return byLocation[key] || byLocation["全校區"] || [];
+  }
+  return GA_DATA.savingsAttribution || [];
+}
+
+function yearSavingRows() {
+  const rows = yearSavingAttributionSource()
+    .map((row) => {
+      const year = Number(row.year);
+      const saving = Number(row.saving || 0);
+      const nonLedSaving = Number(row.nonLedSaving || 0);
+      const ledOriginSaving = Number(row.ledOriginSaving || 0);
+      const nonLedSavingShare = Number(row.nonLedSavingShare || 0);
+      const hasData = Number.isFinite(year) && saving > 0;
+      return {
+        year,
+        hasData,
+        saving: hasData ? saving : 0,
+        nonLedSaving: hasData ? nonLedSaving : 0,
+        ledOriginSaving: hasData ? ledOriginSaving : 0,
+        nonLedSavingShare: hasData ? nonLedSavingShare : 0,
+      };
+    })
+    .filter((row) => row.hasData);
+  const selectedRows = rows.filter((row) => String(row.year) === String(selectedYear));
+  const otherRows = rows
+    .filter((row) => String(row.year) !== String(selectedYear))
+    .sort((a, b) => Number(b.year) - Number(a.year));
+  return [...selectedRows, ...otherRows];
+}
+
+function syncQualityModeControls() {
+  if (!qualityModeSwitch) return;
+  if (!isStreetlightChart()) {
+    qualityModeSwitch.hidden = true;
+    return;
+  }
+  if (!savingViewModeTouched) savingViewMode = "location";
+  qualityModeSwitch.hidden = false;
+  qualityModeSwitch.querySelectorAll("button").forEach((button) => {
+    button.classList.toggle("active", button.dataset.qualityMode === savingViewMode);
+  });
+}
+
+function paintReplacementSavingShareBars({ sorted, labels, isSelected, hoverLeft, enableCampusClick = false }) {
+  const rowHasData = (row) => row.hasData !== false;
+  const isTotalRow = (row) => row.location === "全校";
+  const y = streetlightCampusBarYs(sorted);
+  const selectedIdx = sorted.findIndex((row) => isSelected(row));
+  const totals = sorted.map((row) => (rowHasData(row) ? Math.max(0, Number(row.saving || 0)) : 0));
+  const maxSaving = Math.max(
+    ...sorted.map((row, idx) => (isTotalRow(row) ? 0 : totals[idx])),
+    1,
+  );
+  const shares = sorted.map((row) => (
+    rowHasData(row) ? Math.max(0, Math.min(100, Number(row.nonLedSavingShare || 0))) : 0
+  ));
+  const displayTotals = sorted.map((row, idx) => {
+    if (!rowHasData(row)) return 0;
+    if (isTotalRow(row)) return maxSaving;
+    const total = totals[idx];
+    return total > 0 ? Math.max(total, maxSaving * 0.035) : 0;
+  });
+  const displayNonLed = sorted.map((row, idx) => {
+    if (!rowHasData(row)) return 0;
+    const share = shares[idx];
+    const total = displayTotals[idx];
+    if (share <= 0 || total <= 0) return 0;
+    const rawWidth = total * share / 100;
+    const minStripe = maxSaving * 0.014;
+    return Math.min(total, Math.max(rawWidth, minStripe));
+  });
+  const layout = replacementDualColumnLayout(labels);
+  const useFocusChrome = Boolean(enableCampusClick);
+  const focusColor = streetlightFocusChromeColor();
+  const labelColor = streetlightFocusLabelColor();
+  const countAnnotations = sorted.map((row, idx) => ({
+    text: rowHasData(row) ? `${fmt.format(row.saving)} 瓦` : "",
+    x: layout.countPaperX,
+    y: y[idx],
+    xref: "paper",
+    yref: "y",
+    showarrow: false,
+    xanchor: layout.countAnchor,
+    yanchor: "middle",
+    font: { size: isSelected(row) ? 12.5 : 12, color: isSelected(row) ? labelColor : "#253047" },
+  }));
+  const shareAnnotations = sorted.map((row, idx) => ({
+    text: rowHasData(row) ? `${pctFmt.format(shares[idx])}%` : "",
+    x: layout.sharePaperX,
+    y: y[idx],
+    xref: "paper",
+    yref: "y",
+    showarrow: false,
+    xanchor: layout.shareAnchor,
+    yanchor: "middle",
+    font: { size: isSelected(row) ? 12.5 : 12, color: isSelected(row) ? labelColor : "#253047" },
+  }));
+  const columnHeaders = [
+    {
+      text: "總節省瓦數",
+      x: layout.countPaperX,
+      y: 0.925,
+      xref: "paper",
+      yref: "paper",
+      showarrow: false,
+      xanchor: layout.countAnchor,
+      yanchor: "bottom",
+      font: { size: 11, color: "#64748b" },
     },
-    customdata: rows.map((row) => [row.year, row.value, row.rate]),
-    hovertemplate: "%{customdata[0]} 年<br>平均節省瓦數：%{customdata[1]:,.2f} 瓦<br>節能改善率：%{customdata[2]:,.2f}%<extra></extra>",
-  }], layout, { displayModeBar: false, responsive: true });
+    {
+      text: "非LED占比",
+      x: layout.sharePaperX,
+      y: 0.925,
+      xref: "paper",
+      yref: "paper",
+      showarrow: false,
+      xanchor: layout.shareAnchor,
+      yanchor: "bottom",
+      font: { size: 11, color: "#64748b" },
+    },
+  ];
+
+  Plotly.react("trendChart", [
+    {
+      type: "bar",
+      orientation: "h",
+      name: "總節省瓦數",
+      x: displayTotals,
+      y,
+      width: sorted.map(() => 0.58),
+      marker: {
+        color: sorted.map((row) => (rowHasData(row) ? "#e8eef6" : "rgba(0,0,0,0)")),
+        line: {
+          color: sorted.map((row) => (
+            rowHasData(row)
+              ? (useFocusChrome && isSelected(row) ? focusColor : "#ffffff")
+              : "rgba(0,0,0,0)"
+          )),
+          width: sorted.map((row) => (useFocusChrome && isSelected(row) ? 2 : 1)),
+        },
+      },
+      customdata: sorted.map((row) => [
+        hoverLeft(row),
+        row.saving,
+        row.nonLedSaving,
+        row.ledOriginSaving,
+        row.nonLedSavingShare,
+      ]),
+      hovertemplate: sorted.map((row) => (
+        rowHasData(row)
+          ? "%{customdata[0]}<br>總節省瓦數：%{customdata[1]:,.0f} 瓦<br>非LED來源：%{customdata[2]:,.0f} 瓦<br>其他來源：%{customdata[3]:,.0f} 瓦<br>非LED占比：%{customdata[4]:.1f}%<extra></extra>"
+          : "%{customdata[0]}<extra></extra>"
+      )),
+    },
+    {
+      type: "bar",
+      orientation: "h",
+      name: "非LED來源省瓦",
+      x: displayNonLed,
+      y,
+      width: sorted.map(() => 0.58),
+      marker: {
+        color: sorted.map((row) => (
+          rowHasData(row) ? (streetlightBarIsHot(row, isSelected(row)) ? "#d43f55" : "#8fa1bb") : "rgba(0,0,0,0)"
+        )),
+        line: {
+          color: sorted.map((row) => (
+            rowHasData(row)
+              ? (useFocusChrome && isSelected(row) ? focusColor : "#ffffff")
+              : "rgba(0,0,0,0)"
+          )),
+          width: sorted.map((row) => (useFocusChrome && isSelected(row) ? 2 : 1)),
+        },
+      },
+      hoverinfo: "skip",
+    },
+  ], {
+    barmode: "overlay",
+    margin: { l: layout.leftMargin, r: layout.rightMargin, t: 16, b: 14 },
+    paper_bgcolor: "rgba(0,0,0,0)",
+    plot_bgcolor: "#ffffff",
+    xaxis: {
+      range: [0, maxSaving * 1.04],
+      domain: [0, layout.barDomainEnd],
+      visible: false,
+      fixedrange: true,
+    },
+    yaxis: {
+      tickmode: "array",
+      tickvals: y,
+      ticktext: labels,
+      range: [Math.max(...y) + 0.46, -0.74],
+      domain: [0, 0.885],
+      automargin: false,
+      ticklabelstandoff: layout.tickStandoff,
+      tickfont: { size: 12, color: "#253047" },
+      showgrid: false,
+      zeroline: false,
+      fixedrange: true,
+    },
+    shapes: useFocusChrome ? streetlightSelectedBarAccent(y, selectedIdx) : [],
+    showlegend: false,
+    annotations: [...columnHeaders, ...shareAnnotations, ...countAnnotations],
+  }, { displayModeBar: false, responsive: true });
+  const trend = document.getElementById("trendChart");
+  trend?.removeAllListeners?.("plotly_click");
+  if (enableCampusClick) bindStreetlightCampusBarClicks("trendChart", sorted);
+}
+
+function renderStreetlightCampusSavingOverview() {
+  if (qualityHead) {
+    qualityHead.hidden = false;
+    const title = qualityHead.querySelector("h2");
+    if (title) title.textContent = "各校區節省瓦數";
+  }
+  if (qualityFormula) {
+    qualityFormula.hidden = true;
+    qualityFormula.innerHTML = "";
+  }
+  const rows = streetlightCampusSavingRows();
+  if (!rows.length) {
+    Plotly.react("trendChart", [], {
+      margin: { l: 86, r: 12, t: 16, b: 18 },
+      paper_bgcolor: "rgba(0,0,0,0)",
+      plot_bgcolor: "#ffffff",
+      xaxis: { visible: false },
+      yaxis: { visible: false },
+      annotations: [{
+        text: "目前沒有校區省瓦資料",
+        x: 0.5,
+        y: 0.5,
+        xref: "paper",
+        yref: "paper",
+        showarrow: false,
+        font: { size: 14, color: "#64748b" },
+      }],
+      showlegend: false,
+    }, { displayModeBar: false, responsive: true });
+    return;
+  }
+  paintReplacementSavingShareBars({
+    sorted: rows,
+    labels: rows.map((row) => streetlightCampusShortLabel(row.location)),
+    isSelected: (row) => isStreetlightFocusRow(row),
+    hoverLeft: (row) => streetlightCampusShortLabel(row.location),
+    enableCampusClick: true,
+  });
+}
+
+function renderYearSavingOverview() {
+  if (qualityHead) {
+    qualityHead.hidden = false;
+    const title = qualityHead.querySelector("h2");
+    if (title) title.textContent = "歷年節省瓦數";
+  }
+  if (qualityFormula) {
+    qualityFormula.hidden = true;
+    qualityFormula.innerHTML = "";
+  }
+  const rows = yearSavingRows();
+  if (!rows.length) {
+    Plotly.react("trendChart", [], {
+      margin: { l: 86, r: 12, t: 16, b: 18 },
+      paper_bgcolor: "rgba(0,0,0,0)",
+      plot_bgcolor: "#ffffff",
+      xaxis: { visible: false },
+      yaxis: { visible: false },
+      annotations: [{
+        text: "目前沒有歷年省瓦資料",
+        x: 0.5,
+        y: 0.5,
+        xref: "paper",
+        yref: "paper",
+        showarrow: false,
+        font: { size: 14, color: "#64748b" },
+      }],
+      showlegend: false,
+    }, { displayModeBar: false, responsive: true });
+    return;
+  }
+  paintReplacementSavingShareBars({
+    sorted: rows,
+    labels: rows.map((row) => `${row.year} 年`),
+    isSelected: (row) => String(row.year) === String(selectedYear),
+    hoverLeft: (row) => `${row.year} 年`,
+  });
 }
 
 function updateDom() {
@@ -1750,17 +3336,25 @@ function updateDom() {
   }
   const comparison = activeRankingComparison();
   const row = comparison.selected;
-  const rankingUnit = usesLocationRanking() ? locationAxisName() : "年";
+  const rankingUnit = usesLocationRanking() ? locationAxisName() : (isMonthGrain() ? "月" : "年");
   setTextIfExists("rankTitle", usesLocationRanking()
     ? `${locationAxisName()}排名-${activeValueNoun()}`
-    : `歷史排名-${activeValueNoun()}`);
+    : isMonthGrain()
+      ? `月份排名-${activeValueNoun()}`
+      : `歷史排名-${activeValueNoun()}`);
   if (!row) {
     setTextIfExists("rankNumber", "--");
-    setTextIfExists("rankTotal", `/ 共 0 ${rankingUnit}`);
+    setTextIfExists("rankTotal", `/ 共 ${comparison.rows.length} ${rankingUnit}`);
     setTextIfExists("valueMiniLabel", activeValueNoun());
     setTextIfExists("yearValue", "--");
-    if (usesMonthCoverage()) renderCoverageBadge("資料涵蓋 無資料");
-    else renderFormulaBadge();
+    if (isMonthGrain()) renderCoverageBadge("選擇月份 無資料");
+    else if (usesMonthCoverage()) {
+      // Keep applied custom interval visible even when this year has no overlap.
+      const customLabel = comparison.selectedDisplayMonths && comparison.selectedDisplayMonths.length
+        ? formatMonths(comparison.selectedDisplayMonths)
+        : (customMonthRange ? formatMonths(monthsBetween(customMonthRange.start, customMonthRange.end)) : "無資料");
+      renderCoverageBadge(`比較區間 ${customLabel}`);
+    } else renderFormulaBadge();
     setTextIfExists("meanDiff", "--");
     const rankFillEmpty = document.getElementById("rankFill");
     if (rankFillEmpty) rankFillEmpty.style.width = "0%";
@@ -1781,7 +3375,8 @@ function updateDom() {
   setTextIfExists("rankTotal", `/ 共 ${comparison.rows.length} ${rankingUnit}`);
   setTextIfExists("valueMiniLabel", activeValueNoun());
   setMiniValue(row.value, activeUnit());
-  if (usesMonthCoverage()) renderCoverageBadge(`資料涵蓋 ${formatMonths(comparison.selectedDisplayMonths)}`);
+  if (isMonthGrain()) renderCoverageBadge(`選擇月份 ${formatMonths(comparison.selectedDisplayMonths)}`);
+  else if (usesMonthCoverage()) renderCoverageBadge(`比較區間 ${formatMonths(comparison.selectedDisplayMonths)}`);
   else renderFormulaBadge();
   setTextIfExists("meanDiff", `${direction} ${pctFmt.format(Math.abs(diffPct))}%`);
   const meanDiffEl = document.getElementById("meanDiff");
@@ -1792,7 +3387,9 @@ function updateDom() {
   const rankPin = document.getElementById("rankPin");
   if (rankPin) rankPin.style.left = `${width}%`;
   setTextIfExists("rankHint",
-    `${fmt.format(row.value)} ${activeUnit()}｜第 ${row.rankHigh} / 共 ${comparison.rows.length} ${rankingUnit}`);
+    isMonthGrain()
+      ? `${selectedYear}年${row.month}月｜${fmt.format(row.value)} ${activeUnit()}｜第 ${row.rankHigh} / 共 ${comparison.rows.length} 月`
+      : `${fmt.format(row.value)} ${activeUnit()}｜第 ${row.rankHigh} / 共 ${comparison.rows.length} ${rankingUnit}`);
 }
 
 function setMiniValue(value, unit) {
@@ -1828,6 +3425,10 @@ const CATEGORY_COLOR_MAP = {
   "電池": "#7c3aed",
   "牛奶瓶": "#0891b2",
   "機台數": "#475569",
+  "用水量": "#2563eb",
+  "用電量": "#0f766e",
+  "金額": "#b45309",
+  "每度成本": "#0f766e",
 };
 
 function categoryColor(category) {
@@ -1837,11 +3438,174 @@ function categoryColor(category) {
   return CATEGORY_COLORS[idx % CATEGORY_COLORS.length];
 }
 
-function categoryIcon(category) {
-  return (GA_DATA.categoryIcons && GA_DATA.categoryIcons[category]) || category.slice(0, 1);
+function hexToRgba(hex, alpha) {
+  const raw = String(hex || "").replace("#", "").trim();
+  if (!/^[0-9a-fA-F]{6}$/.test(raw)) return `rgba(31, 75, 153, ${alpha})`;
+  const r = parseInt(raw.slice(0, 2), 16);
+  const g = parseInt(raw.slice(2, 4), 16);
+  const b = parseInt(raw.slice(4, 6), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+function selectCategoryFocus(category) {
+  selectedCategory = category;
+  // Dual-metric: top switch sets which line stays bright; secondary resets to dim.
+  visibleTrendCategories = new Set([selectedCategory]);
+  // Streetlight keeps campus/year overview choice; other charts return to year bars.
+  if (!isStreetlightChart()) overviewMode = "bar";
+  // Keep applied comparison interval across metric/category switches (water, electricity, ECOCO).
+  if (categorySelect && !categorySelect.hidden) categorySelect.value = selectedCategory;
+  renderCategoryChips();
+  renderMetricSwitch();
+  populateYearSelect();
+  if (isMonthGrain()) ensureSelectedMonth();
+  else reconcileCustomMonthRangeForYear(selectedYear);
+  updateAll();
+}
+
+function selectYearFocus(year) {
+  const next = String(year);
+  if (!next || next === "undefined" || next === "null") return;
+  if (!Number.isFinite(Number(next))) return;
+  if (String(selectedYear) === next) return;
+  if (yearSelect && yearSelect.options.length) {
+    const allowed = [...yearSelect.options].some((opt) => String(opt.value) === next);
+    if (!allowed) return;
+  }
+  selectedYear = next;
+  if (yearSelect) yearSelect.value = selectedYear;
+  if (isMonthGrain()) {
+    selectedMonth = null;
+    ensureSelectedMonth();
+  } else {
+    reconcileCustomMonthRangeForYear(selectedYear);
+  }
+  updateAll();
+}
+
+function renderMetricSwitch() {
+  if (!metricSwitch || !usesMetricSwitch() || !hasCategoryControl()) {
+    if (metricSwitch) metricSwitch.hidden = true;
+    return;
+  }
+  metricSwitch.hidden = false;
+  metricSwitch.innerHTML = "";
+  (GA_DATA.categories || []).forEach((category) => {
+    const color = categoryColor(category);
+    const active = category === selectedCategory;
+    const button = document.createElement("button");
+    button.type = "button";
+    button.dataset.metric = category;
+    button.textContent = categoryDisplayName(category);
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", active ? "true" : "false");
+    if (active) {
+      button.style.background = color;
+      button.style.color = "#ffffff";
+      button.style.boxShadow = `0 4px 12px ${hexToRgba(color, 0.28)}`;
+    } else {
+      button.style.background = "transparent";
+      button.style.color = color;
+      button.style.boxShadow = "";
+    }
+    button.addEventListener("click", () => {
+      if (category === selectedCategory) return;
+      selectCategoryFocus(category);
+    });
+    metricSwitch.appendChild(button);
+  });
+}
+
+function bindAggregatePieCategoryClick() {
+  const overview = document.getElementById("overviewChart");
+  if (!overview) return;
+  overview.removeAllListeners?.("plotly_click");
+  overview.style.cursor = "pointer";
+  overview.on("plotly_click", (event) => {
+    const point = event.points && event.points[0];
+    if (!point) return;
+    const category = String(point.label || "");
+    if (!category || !(GA_DATA.rawCategories || []).includes(category)) return;
+    if (category === selectedCategory) return;
+    selectCategoryFocus(category);
+  });
+}
+
+function renderCategoryChips() {
+  if (!categoryChips || !usesCategoryChips() || !hasCategoryControl()) {
+    if (categoryChips) categoryChips.hidden = true;
+    return;
+  }
+  categoryChips.hidden = false;
+  categoryChips.setAttribute("aria-label", GA_DATA.categoryLabel || "選擇類別");
+  categoryChips.innerHTML = "";
+  GA_DATA.categories.forEach((category) => {
+    const active = category === selectedCategory;
+    const color = categoryColor(category);
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "ga-category-chip";
+    if (isParentCategory(category)) btn.classList.add("is-parent");
+    if (active) btn.classList.add("is-active");
+    btn.setAttribute("role", "option");
+    btn.setAttribute("aria-selected", active ? "true" : "false");
+    btn.dataset.category = category;
+    btn.textContent = categoryDisplayName(category);
+    if (active) {
+      btn.style.background = color;
+      btn.style.color = "#fff";
+      btn.style.borderColor = "transparent";
+      btn.style.boxShadow = `0 6px 16px ${hexToRgba(color, 0.28)}`;
+    } else {
+      btn.style.background = "";
+      btn.style.color = "";
+      btn.style.borderColor = "";
+      btn.style.boxShadow = "";
+      btn.style.opacity = "";
+    }
+    btn.addEventListener("click", () => {
+      if (category === selectedCategory) return;
+      selectCategoryFocus(category);
+    });
+    categoryChips.appendChild(btn);
+  });
+}
+
+function trendLineLegendIcon() {
+  return '<svg class="ga-trend-line-icon" viewBox="0 0 26 12" aria-hidden="true"><line x1="1.5" y1="6" x2="24.5" y2="6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"></line><circle cx="13" cy="6" r="3.1" fill="#ffffff" stroke="currentColor" stroke-width="2"></circle></svg>';
 }
 
 function renderTrendToggles() {
+  if (usesDualMetricTrend()) {
+    if (!trendToggles) return;
+    visibleTrendCategories.add(selectedCategory);
+    trendToggles.hidden = false;
+    trendToggles.innerHTML = "";
+    (GA_DATA.categories || []).forEach((category) => {
+      const bright = visibleTrendCategories.has(category);
+      const locked = category === selectedCategory;
+      const color = categoryColor(category);
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = `ga-icon-toggle${bright ? " active" : ""}`;
+      btn.style.color = color;
+      btn.title = locked ? "目前指標（維持亮線）" : (bright ? "切換為淡線" : "切換為亮線");
+      btn.innerHTML = `${trendLineLegendIcon()}<span>${categoryDisplayName(category)}</span>`;
+      btn.addEventListener("click", () => {
+        if (category === selectedCategory) return;
+        if (visibleTrendCategories.has(category)) {
+          visibleTrendCategories.delete(category);
+        } else {
+          visibleTrendCategories.add(category);
+        }
+        visibleTrendCategories.add(selectedCategory);
+        renderTrendToggles();
+        renderTrend();
+      });
+      trendToggles.appendChild(btn);
+    });
+    return;
+  }
   if (!hasTrendToggles()) {
     trendToggles.hidden = true;
     return;
@@ -1853,7 +3617,7 @@ function renderTrendToggles() {
     btn.type = "button";
     btn.className = `ga-icon-toggle${visibleTrendCategories.has(category) ? " active" : ""}`;
     btn.style.color = categoryColor(category);
-    btn.innerHTML = `<span>${category}</span>`;
+    btn.innerHTML = `${trendLineLegendIcon()}<span>${categoryDisplayName(category)}</span>`;
     btn.addEventListener("click", () => {
       if (visibleTrendCategories.has(category)) {
         visibleTrendCategories.delete(category);
@@ -1886,7 +3650,7 @@ function showTrendHoverTip(point) {
   const valueName = data[5] || activeValueNoun(category);
   const unit = data[6] || activeUnit(category);
   const categoryLine = hasTrendToggles() || hasCategoryControl()
-    ? `<span>類別：${category}</span>`
+    ? `<span>類別：${categoryDisplayName(category)}</span>`
     : "";
   trendHoverTip.innerHTML = `
     <strong>${fmt.format(point.y)} ${unit}</strong>
@@ -1926,18 +3690,7 @@ function bindTrendClick(scope) {
   trendChart.on("plotly_click", (event) => {
     const point = event.points && event.points[0];
     if (!point) return;
-    const data = point.customdata || [];
-    const category = data[4] || selectedCategory;
-    const year = String(point.x);
-    const samePoint = trendDialogState
-      && trendDialogState.scope === scope
-      && trendDialogState.visible
-      && String(trendDialogState.year) === year
-      && trendDialogState.category === category;
-    trendDialogState = samePoint
-      ? { scope, year, category, visible: false }
-      : { scope, year, category, visible: true };
-    renderTrend();
+    selectYearFocus(point.x);
   });
 }
 
@@ -1950,141 +3703,501 @@ function clearTrendInteractions() {
   }
 }
 
-function orderedLocationRows(rows) {
-  const target = locationModeTarget();
-  const aggregate = aggregateLocationKey();
-  if (!target || target === aggregate) return rows;
-  return [
-    ...rows.filter((row) => row.location === target),
-    ...rows.filter((row) => row.location !== target),
-  ];
+function bindYearOverviewClick() {
+  const overview = document.getElementById("overviewChart");
+  if (!overview) return;
+  overview.removeAllListeners?.("plotly_click");
+  overview.style.cursor = "pointer";
+  overview.on("plotly_click", (event) => {
+    const point = event.points && event.points[0];
+    if (!point) return;
+    const year = point.customdata && point.customdata.length
+      ? point.customdata[point.customdata.length - 1]
+      : point.y;
+    selectYearFocus(year);
+  });
 }
 
-function renderLocationTrendBars() {
-  clearTrendInteractions();
-  const rows = orderedLocationRows(locationRowsForSelectedYear());
-  const axisName = locationAxisName();
-  const hideLocationBarUnit = isStreetlightChart() && ["年度汰換數量", "非LED原舊燈具汰換量"].includes(selectedCategory);
-  const locationBarText = (value) => hideLocationBarUnit
-    ? fmt.format(value)
-    : `${fmt.format(value)} ${activeUnit()}`;
-  const locationTrendRightMargin = 124;
-  const dataRows = rows.filter(hasLocationData);
-  if (!rows.length || !dataRows.length) {
+function renderDualMetricMonthTrend() {
+  ensureSelectedMonth();
+  const axes = dualMetricAxisCategories();
+  const primary = selectedCategory;
+  const secondary = secondaryMetricCategory(primary);
+  if (!axes || !secondary) {
+    return false;
+  }
+  const { left, right } = axes;
+  const leftRows = monthlyRowsForYear(selectedYear, left);
+  const rightRows = monthlyRowsForYear(selectedYear, right);
+  const primaryRows = primary === left ? leftRows : rightRows;
+  const monthSet = new Set([
+    ...leftRows.map((row) => row.month),
+    ...rightRows.map((row) => row.month),
+  ]);
+  const months = [...monthSet].sort((a, b) => a - b);
+  if (!months.length || !primaryRows.length) {
     Plotly.react("trendChart", [], {
       title: {
-        text: `${boldTitle(`${axisName}比較-${activeValueNoun()}`)}<br><sup>目前篩選條件沒有資料</sup>`,
-        x: 0,
-        xanchor: "left",
-        y: 0.974,
-        yanchor: "top",
-        pad: { t: 3, b: 0 },
-        font: { size: 19, color: "#101827" },
+        text: `${boldTitle(`逐月趨勢-${activeValueNoun(primary)}`)}<br><sup>${selectedYear}年逐月｜目前沒有資料</sup>`,
+        x: 0, xanchor: "left", y: 0.974, yanchor: "top", pad: { t: 3, b: 0 }, font: { size: 19, color: "#101827" },
       },
-      margin: { l: 62, r: 92, t: 104, b: 78 },
+      margin: { l: 70, r: 92, t: 78, b: 62 },
       paper_bgcolor: "rgba(0,0,0,0)",
       plot_bgcolor: "#ffffff",
       xaxis: { visible: false },
       yaxis: { visible: false },
-      annotations: [{
-        text: `目前沒有可比較的${axisName}資料`,
-        x: 0.5,
-        y: 0.5,
-        xref: "paper",
+      annotations: [{ text: "目前沒有可繪製的月趨勢資料", x: 0.5, y: 0.5, xref: "paper", yref: "paper", showarrow: false, font: { size: 14, color: "#64748b" } }],
+      showlegend: false,
+    }, { displayModeBar: false, responsive: true });
+    return true;
+  }
+  const leftByMonth = new Map(leftRows.map((row) => [row.month, row.value]));
+  const rightByMonth = new Map(rightRows.map((row) => [row.month, row.value]));
+  const leftColor = categoryColor(left);
+  const rightColor = categoryColor(right);
+  const focus = primaryRows.find((row) => Number(row.month) === Number(selectedMonth));
+  const leftMean = Number(comparisonForMonthsInYear(selectedYear, left).mean) || 0;
+  const rightMean = Number(comparisonForMonthsInYear(selectedYear, right).mean) || 0;
+  const mean = primary === left ? leftMean : rightMean;
+  const leftValues = months.map((month) => leftByMonth.get(month) ?? null);
+  const rightValues = months.map((month) => rightByMonth.get(month) ?? null);
+  const maxLeft = Math.max(...leftValues.filter((value) => value != null), leftMean, 1);
+  const maxRight = Math.max(...rightValues.filter((value) => value != null), rightMean, 1);
+  const minMonth = months[0];
+  const maxMonth = months[months.length - 1];
+  const primaryYref = primary === left ? "y" : "y2";
+  const makeTrace = (category, values, yaxis) => {
+    const color = categoryColor(category);
+    const bright = visibleTrendCategories.has(category) || category === primary;
+    const focusPoint = category === primary;
+    return {
+      type: "scatter",
+      mode: "lines+markers",
+      name: categoryDisplayName(category),
+      x: months,
+      y: values,
+      yaxis,
+      line: { color: bright ? color : hexToRgba(color, 0.26), width: 3.4 },
+      marker: {
+        color: months.map((month) => (focusPoint && Number(month) === Number(selectedMonth) ? color : "#ffffff")),
+        size: months.map((month) => (focusPoint && Number(month) === Number(selectedMonth) ? 13 : 8)),
+        line: { color: bright ? color : hexToRgba(color, 0.32), width: 2 },
+      },
+      customdata: months.map((month) => [month, category, activeValueNoun(category), activeUnit(category)]),
+      hovertemplate: "%{customdata[0]}月<br>%{customdata[2]}：%{y:,.2f} %{customdata[3]}<extra></extra>",
+    };
+  };
+  const leftTrace = makeTrace(left, leftValues, "y");
+  const rightTrace = makeTrace(right, rightValues, "y2");
+  const traces = primary === left ? [rightTrace, leftTrace] : [leftTrace, rightTrace];
+  const annotations = [{
+    x: maxMonth,
+    y: mean,
+    xref: "x",
+    yref: primaryYref,
+    text: `均值 ${fmt.format(mean)} ${activeUnit(primary)}`,
+    showarrow: false,
+    xanchor: "left",
+    yanchor: "middle",
+    xshift: 8,
+    font: { size: 12, color: "#475569" },
+  }];
+  if (focus) {
+    annotations.push({
+      x: focus.month,
+      y: focus.value,
+      xref: "x",
+      yref: primaryYref,
+      text: `${fmt.format(focus.value)} ${activeUnit(primary)}`,
+      showarrow: true,
+      arrowhead: 2,
+      arrowcolor: "#cbd5e1",
+      ax: 0,
+      ay: -54,
+      xanchor: "center",
+      yanchor: "bottom",
+      bgcolor: "rgba(255,255,255,0.94)",
+      bordercolor: "#d9e1ec",
+      borderpad: 6,
+      font: { size: 12, color: "#101827" },
+    });
+  }
+  const dualRanges = dualMetricAxisRanges(maxLeft, maxRight);
+  Plotly.react("trendChart", traces, {
+    title: {
+      text: `${boldTitle(`逐月趨勢-${activeValueNoun(primary)}`)}<br><sup>${selectedYear}年逐月｜亮線為目前指標，淡線為${categoryDisplayName(secondary)}對照｜點選端點可同步左側</sup>`,
+      x: 0, xanchor: "left", y: 0.974, yanchor: "top", pad: { t: 3, b: 0 }, font: { size: 19, color: "#101827" },
+    },
+    margin: { l: 64, r: 72, t: 78, b: 62 },
+    paper_bgcolor: "rgba(0,0,0,0)",
+    plot_bgcolor: "#ffffff",
+    xaxis: {
+      title: "",
+      tickmode: "array",
+      tickvals: months,
+      ticktext: months.map((month) => `${month}月`),
+      showgrid: false,
+      zeroline: false,
+    },
+    yaxis: {
+      title: activeUnit(left),
+      rangemode: "tozero",
+      range: dualRanges.left,
+      gridcolor: "#e8eef6",
+      zeroline: false,
+      titlefont: { color: leftColor },
+      tickfont: { color: leftColor },
+    },
+    yaxis2: {
+      title: activeUnit(right),
+      rangemode: "tozero",
+      range: dualRanges.right,
+      overlaying: "y",
+      side: "right",
+      showgrid: false,
+      zeroline: false,
+      titlefont: { color: hexToRgba(rightColor, 0.72) },
+      tickfont: { color: hexToRgba(rightColor, 0.72) },
+    },
+    showlegend: false,
+    shapes: [
+      ...(focus ? [{
+        type: "line",
+        x0: focus.month,
+        x1: focus.month,
+        y0: 0,
+        y1: 1,
+        xref: "x",
         yref: "paper",
-        showarrow: false,
-        font: { size: 14, color: "#64748b" },
-      }],
+        line: { color: "#d43f55", width: 2, dash: "dot" },
+      }] : []),
+      {
+        type: "line",
+        x0: minMonth,
+        x1: maxMonth,
+        y0: mean,
+        y1: mean,
+        xref: "x",
+        yref: primaryYref,
+        line: { color: "#64748b", width: 2, dash: "dash" },
+      },
+    ],
+    annotations,
+  }, { displayModeBar: false, responsive: true });
+  const chart = document.getElementById("trendChart");
+  chart.removeAllListeners?.("plotly_click");
+  chart.on("plotly_click", (event) => {
+    const point = event.points && event.points[0];
+    if (!point) return;
+    const month = Number((point.customdata && point.customdata[0]) || point.x);
+    if (!Number.isFinite(month)) return;
+    selectedMonth = month;
+    updateAll();
+  });
+  return true;
+}
+
+function renderDualMetricYearTrend() {
+  const axes = dualMetricAxisCategories();
+  const primary = selectedCategory;
+  const secondary = secondaryMetricCategory(primary);
+  if (!axes || !secondary) return false;
+  const { left, right } = axes;
+  const leftComparison = comparisonForYear(selectedYear, left);
+  const rightComparison = comparisonForYear(selectedYear, right);
+  const primaryComparison = primary === left ? leftComparison : rightComparison;
+  const years = [...new Set([
+    ...leftComparison.rows.map((row) => row.year),
+    ...rightComparison.rows.map((row) => row.year),
+  ])].sort((a, b) => a - b);
+  const selected = primaryComparison.selected;
+  if (!years.length || !selected || !primaryComparison.rows.length) {
+    Plotly.react("trendChart", [], {
+      title: {
+        text: `${boldTitle(`歷史趨勢-${activeValueNoun(primary)}`)}<br><sup>${activeTrendSubtitle(primary, "目前篩選條件沒有資料")}</sup>`,
+        x: 0, xanchor: "left", y: 0.974, yanchor: "top", pad: { t: 3, b: 0 }, font: { size: 19, color: "#101827" },
+      },
+      margin: { l: 70, r: 92, t: 78, b: 62 },
+      paper_bgcolor: "rgba(0,0,0,0)",
+      plot_bgcolor: "#ffffff",
+      xaxis: { visible: false },
+      yaxis: { visible: false },
+      annotations: [{ text: "目前沒有可繪製的趨勢資料", x: 0.5, y: 0.5, xref: "paper", yref: "paper", showarrow: false, font: { size: 14, color: "#64748b" } }],
+      showlegend: false,
+    }, { displayModeBar: false, responsive: true });
+    return true;
+  }
+  const leftByYear = new Map(leftComparison.rows.map((row) => [row.year, row]));
+  const rightByYear = new Map(rightComparison.rows.map((row) => [row.year, row]));
+  const leftColor = categoryColor(left);
+  const rightColor = categoryColor(right);
+  const leftValues = years.map((year) => (leftByYear.get(year) ? leftByYear.get(year).value : null));
+  const rightValues = years.map((year) => (rightByYear.get(year) ? rightByYear.get(year).value : null));
+  const leftMean = Number(leftComparison.mean) || 0;
+  const rightMean = Number(rightComparison.mean) || 0;
+  const mean = primary === left ? leftMean : rightMean;
+  const maxLeft = Math.max(...leftValues.filter((value) => value != null), leftMean, 1);
+  const maxRight = Math.max(...rightValues.filter((value) => value != null), rightMean, 1);
+  const minYear = years[0];
+  const maxYear = years[years.length - 1];
+  const primaryByYear = primary === left ? leftByYear : rightByYear;
+  const focus = primaryByYear.get(Number(selectedYear)) || selected;
+  const primaryYref = primary === left ? "y" : "y2";
+  const makeTrace = (category, values, byYear, yaxis) => {
+    const color = categoryColor(category);
+    const bright = visibleTrendCategories.has(category) || category === primary;
+    const focusPoint = category === primary;
+    const comparison = category === left ? leftComparison : rightComparison;
+    return {
+      type: "scatter",
+      mode: "lines+markers",
+      name: categoryDisplayName(category),
+      x: years,
+      y: values,
+      yaxis,
+      line: { color: bright ? color : hexToRgba(color, 0.26), width: 3.4 },
+      marker: {
+        color: years.map((year) => (focusPoint && String(year) === String(selectedYear) ? color : "#ffffff")),
+        size: years.map((year) => (focusPoint && String(year) === String(selectedYear) ? 13 : 8)),
+        line: { color: bright ? color : hexToRgba(color, 0.32), width: 2 },
+      },
+      customdata: years.map((year) => {
+        const row = byYear.get(year);
+        return [row ? row.rankHigh : null, comparison.rows.length, category, activeValueNoun(category), activeUnit(category)];
+      }),
+      hovertemplate: "%{x} 年<br>%{customdata[3]}：%{y:,.2f} %{customdata[4]}<extra></extra>",
+    };
+  };
+  const leftTrace = makeTrace(left, leftValues, leftByYear, "y");
+  const rightTrace = makeTrace(right, rightValues, rightByYear, "y2");
+  const traces = primary === left ? [rightTrace, leftTrace] : [leftTrace, rightTrace];
+  const annotations = [{
+    x: maxYear,
+    y: mean,
+    xref: "x",
+    yref: primaryYref,
+    text: `均值 ${fmt.format(mean)} ${activeUnit(primary)}`,
+    showarrow: false,
+    xanchor: "left",
+    yanchor: "middle",
+    xshift: 8,
+    font: { size: 12, color: "#475569" },
+  }];
+  if (focus) {
+    annotations.push({
+      x: focus.year,
+      y: focus.value,
+      xref: "x",
+      yref: primaryYref,
+      text: `${fmt.format(focus.value)} ${activeUnit(primary)}`,
+      showarrow: true,
+      arrowhead: 2,
+      arrowcolor: "#cbd5e1",
+      ax: 0,
+      ay: -54,
+      xanchor: "center",
+      yanchor: "bottom",
+      bgcolor: "rgba(255,255,255,0.94)",
+      bordercolor: "#d9e1ec",
+      borderpad: 6,
+      font: { size: 12, color: "#101827" },
+    });
+  }
+  const scope = trendDialogScope();
+  const dualRanges = dualMetricAxisRanges(maxLeft, maxRight);
+  Plotly.react("trendChart", traces, {
+    title: {
+      text: `${boldTitle(`歷史趨勢-${activeValueNoun(primary)}`)}<br><sup>${primaryComparison.shortBasisLabel}｜亮線為目前指標，淡線為${categoryDisplayName(secondary)}對照｜點選端點可同步選年</sup>`,
+      x: 0, xanchor: "left", y: 0.974, yanchor: "top", pad: { t: 3, b: 0 }, font: { size: 19, color: "#101827" },
+    },
+    margin: { l: 64, r: 72, t: 96, b: 78 },
+    paper_bgcolor: "rgba(0,0,0,0)",
+    plot_bgcolor: "#ffffff",
+    xaxis: { tickmode: "array", tickvals: years, title: "", showgrid: false, zeroline: false },
+    yaxis: {
+      title: activeUnit(left),
+      rangemode: "tozero",
+      range: dualRanges.left,
+      gridcolor: "#e8eef6",
+      zeroline: false,
+      titlefont: { color: leftColor },
+      tickfont: { color: leftColor },
+    },
+    yaxis2: {
+      title: activeUnit(right),
+      rangemode: "tozero",
+      range: dualRanges.right,
+      overlaying: "y",
+      side: "right",
+      showgrid: false,
+      zeroline: false,
+      titlefont: { color: hexToRgba(rightColor, 0.72) },
+      tickfont: { color: hexToRgba(rightColor, 0.72) },
+    },
+    showlegend: false,
+    shapes: [
+      {
+        type: "line",
+        x0: selected.year,
+        x1: selected.year,
+        y0: 0,
+        y1: 1,
+        xref: "x",
+        yref: "paper",
+        line: { color: "#d43f55", width: 2, dash: "dot" },
+      },
+      {
+        type: "line",
+        x0: minYear,
+        x1: maxYear,
+        y0: mean,
+        y1: mean,
+        xref: "x",
+        yref: primaryYref,
+        line: { color: "#64748b", width: 2, dash: "dash" },
+      },
+    ],
+    annotations,
+  }, { displayModeBar: false, responsive: true }).then(() => bindTrendClick(scope));
+  return true;
+}
+
+function renderMonthTrend() {
+  if (usesDualMetricTrend() && renderDualMetricMonthTrend()) return;
+  ensureSelectedMonth();
+  const activeCategories = hasTrendToggles() ? [...visibleTrendCategories] : [selectedCategory];
+  const monthSet = new Set();
+  const traces = activeCategories.map((category) => {
+    const rows = monthlyRowsForYear(selectedYear, category);
+    rows.forEach((row) => monthSet.add(row.month));
+    if (!rows.length) return null;
+    const color = hasTrendToggles() ? categoryColor(category) : "#1f3b57";
+    return {
+      type: "scatter",
+      mode: "lines+markers",
+      name: categoryDisplayName(category),
+      x: rows.map((row) => row.month),
+      y: rows.map((row) => row.value),
+      line: { color, width: category === selectedCategory ? 3.4 : 2.4 },
+      marker: {
+        color: rows.map((row) => Number(row.month) === Number(selectedMonth) ? color : "#ffffff"),
+        size: rows.map((row) => Number(row.month) === Number(selectedMonth) ? 13 : 8),
+        line: { color, width: 2 },
+      },
+      customdata: rows.map((row) => [row.month, category, activeValueNoun(category), activeUnit(category)]),
+      hovertemplate: "%{customdata[0]}月<br>%{customdata[2]}：%{y:,.2f} %{customdata[3]}<extra></extra>",
+    };
+  }).filter(Boolean);
+  const months = [...monthSet].sort((a, b) => a - b);
+  if (!traces.length || !months.length) {
+    Plotly.react("trendChart", [], {
+      title: {
+        text: `${boldTitle(`逐月趨勢-${activeValueNoun()}`)}<br><sup>${selectedYear}年逐月｜目前沒有資料</sup>`,
+        x: 0, xanchor: "left", y: 0.974, yanchor: "top", pad: { t: 3, b: 0 }, font: { size: 19, color: "#101827" },
+      },
+      margin: { l: 70, r: 92, t: 78, b: 62 },
+      paper_bgcolor: "rgba(0,0,0,0)",
+      plot_bgcolor: "#ffffff",
+      xaxis: { visible: false },
+      yaxis: { visible: false },
+      annotations: [{ text: "目前沒有可繪製的月趨勢資料", x: 0.5, y: 0.5, xref: "paper", yref: "paper", showarrow: false, font: { size: 14, color: "#64748b" } }],
       showlegend: false,
     }, { displayModeBar: false, responsive: true });
     return;
   }
-
-  const values = rows.map((row) => hasLocationData(row) ? Number(row.value || 0) : 0);
-  const dataValues = dataRows.map((row) => Number(row.value || 0));
-  const displayValues = visibleBarValues(values);
-  const mean = dataValues.reduce((sum, value) => sum + value, 0) / dataValues.length;
-  const maxValue = Math.max(...displayValues, mean, 1);
-  const ranked = rows.map((row) => {
-    if (!hasLocationData(row)) return { ...row, relativePosition: null };
-    const lower = dataRows.filter((item) => item.value < row.value - 1e-9).length;
-    return {
-      ...row,
-      relativePosition: dataRows.length === 1 ? 100 : (lower / (dataRows.length - 1)) * 100,
-    };
-  });
-  const labels = ranked.map((row) => row.location);
-
-  Plotly.react("trendChart", [{
-    type: "bar",
-    orientation: "v",
-    x: labels,
-    y: displayValues,
-    text: ranked.map((row) => hasLocationData(row) ? locationBarText(row.value) : ""),
-    textposition: "outside",
-    textfont: { color: "#253047", size: 12 },
-    cliponaxis: false,
-    marker: {
-      color: ranked.map((row) => hasLocationData(row) ? colorForPosition(Math.round(row.relativePosition)) : "rgba(148,163,184,0)"),
-      line: { color: "#ffffff", width: 1 },
-    },
-    customdata: ranked.map((row) => [row.location, hasLocationData(row) ? row.value : null, formatMonths(row.comparisonMonths || [])]),
-    hovertemplate: usesMonthCoverage()
-      ? "%{customdata[0]}<br>" + activeValueNoun() + "：%{customdata[1]:,.2f} " + activeUnit() +
-        "<br>資料涵蓋：%{customdata[2]}<extra></extra>"
-      : "%{customdata[0]}<br>" + activeValueNoun() + "：%{customdata[1]:,.2f} " + activeUnit() + "<extra></extra>",
-  }], {
+  const focusRows = monthlyRowsForYear(selectedYear, selectedCategory);
+  const focus = focusRows.find((row) => Number(row.month) === Number(selectedMonth));
+  const monthComparison = comparisonForMonthsInYear(selectedYear, selectedCategory);
+  const mean = Number(monthComparison.mean) || 0;
+  const minMonth = Math.min(...months);
+  const maxMonth = Math.max(...months);
+  const maxY = Math.max(...traces.flatMap((trace) => trace.y), mean, 1);
+  const annotations = [{
+    x: maxMonth,
+    y: mean,
+    xref: "x",
+    yref: "y",
+    text: `均值 ${fmt.format(mean)} ${activeUnit()}`,
+    showarrow: false,
+    xanchor: "left",
+    yanchor: "middle",
+    xshift: 8,
+    yshift: 0,
+    bgcolor: "rgba(0,0,0,0)",
+    bordercolor: "rgba(0,0,0,0)",
+    borderpad: 0,
+    font: { size: 12, color: "#475569" },
+  }];
+  if (focus) {
+    annotations.push({
+      x: focus.month,
+      y: focus.value,
+      text: `${fmt.format(focus.value)} ${activeUnit()}`,
+      showarrow: true,
+      arrowhead: 2,
+      arrowcolor: "#cbd5e1",
+      ax: 0,
+      ay: -54,
+      xanchor: "center",
+      yanchor: "bottom",
+      bgcolor: "rgba(255,255,255,0.94)",
+      bordercolor: "#d9e1ec",
+      borderpad: 6,
+      font: { size: 12, color: "#101827" },
+    });
+  }
+  Plotly.react("trendChart", traces, {
     title: {
-      text: `${boldTitle(`${axisName}比較-${activeValueNoun()}`)}<br><sup>${selectedYear} 年各${axisName}比較，虛線為各${axisName}均值</sup>`,
-      x: 0,
-      xanchor: "left",
-      y: 0.974,
-      yanchor: "top",
-      pad: { t: 3, b: 0 },
-      font: { size: 19, color: "#101827" },
+      text: `${boldTitle(`逐月趨勢-${activeValueNoun()}`)}<br><sup>${selectedYear}年逐月｜點選月份端點可同步左側排名</sup>`,
+      x: 0, xanchor: "left", y: 0.974, yanchor: "top", pad: { t: 3, b: 0 }, font: { size: 19, color: "#101827" },
     },
-    shapes: [{
-      type: "line",
-      x0: 0,
-      x1: 1,
-      y0: mean,
-      y1: mean,
-      xref: "paper",
-      yref: "y",
-      line: { color: "#64748b", width: 2, dash: "dash" },
-    }],
-    annotations: [{
-      x: 1,
-      y: mean,
-      xref: "paper",
-      yref: "y",
-      text: `均值 ${fmt.format(mean)}`,
-      showarrow: false,
-      xanchor: "left",
-      yanchor: "middle",
-      xshift: 8,
-      yshift: 0,
-      font: { size: 10, color: "#475569" },
-    }],
-    margin: { l: 62, r: locationTrendRightMargin, t: 118, b: 92 },
+    margin: { l: 70, r: 92, t: 78, b: 62 },
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "#ffffff",
     xaxis: {
-      title: axisName,
-      tickangle: labels.length > 5 ? -22 : 0,
+      title: "",
+      tickmode: "array",
+      tickvals: months,
+      ticktext: months.map((month) => `${month}月`),
       showgrid: false,
       zeroline: false,
-      automargin: true,
     },
-    yaxis: {
-      title: activeUnit(),
-      rangemode: "tozero",
-      range: [0, maxValue * 1.22],
-      gridcolor: "#e8eef6",
-      zeroline: false,
-    },
+    yaxis: { title: activeUnit(), rangemode: "tozero", range: [0, maxY * 1.22], gridcolor: "#e8eef6", zeroline: false },
     showlegend: false,
+    shapes: [
+      ...(focus ? [{
+        type: "line",
+        x0: focus.month,
+        x1: focus.month,
+        y0: 0,
+        y1: 1,
+        xref: "x",
+        yref: "paper",
+        line: { color: "#d43f55", width: 2, dash: "dot" },
+      }] : []),
+      {
+        type: "line",
+        x0: minMonth,
+        x1: maxMonth,
+        y0: mean,
+        y1: mean,
+        xref: "x",
+        yref: "y",
+        line: { color: "#64748b", width: 2, dash: "dash" },
+      },
+    ],
+    annotations,
   }, { displayModeBar: false, responsive: true });
+  const chart = document.getElementById("trendChart");
+  chart.removeAllListeners?.("plotly_click");
+  chart.on("plotly_click", (event) => {
+    const point = event.points && event.points[0];
+    if (!point) return;
+    const month = Number((point.customdata && point.customdata[0]) || point.x);
+    if (!Number.isFinite(month)) return;
+    selectedMonth = month;
+    updateAll();
+  });
 }
 
 function renderTrend() {
@@ -2093,10 +4206,13 @@ function renderTrend() {
     renderReplacementTrend();
     return;
   }
-  if (hasLocationOverviewMode() && overviewMode === "location") {
-    renderLocationTrendBars();
+  // Location mode only remaps the left overview/ranking; keep the right-side year trend line
+  // so history for the focused site (or 全地點) stays visible instead of duplicating location bars.
+  if (isMonthGrain()) {
+    renderMonthTrend();
     return;
   }
+  if (usesDualMetricTrend() && renderDualMetricYearTrend()) return;
   const baseComparison = comparisonForYear(selectedYear, selectedCategory);
   const activeCategories = hasTrendToggles() ? [...visibleTrendCategories] : [selectedCategory];
   const comparisonByCategory = new Map();
@@ -2158,72 +4274,16 @@ function renderTrend() {
   const minYear = Math.min(...years);
   const maxYear = Math.max(...years);
   const scope = trendDialogScope();
-  const defaultDialogCategory = activeCategories.includes(selectedCategory) ? selectedCategory : activeCategories[0];
-  const currentDialogState = trendDialogState && trendDialogState.scope === scope
-    ? trendDialogState
-    : { scope, year: selectedYear, category: defaultDialogCategory, visible: true };
-  const dialogComparison = comparisonByCategory.get(currentDialogState.category) || comparisonForYear(selectedYear, currentDialogState.category);
-  const dialogRow = currentDialogState.visible
-    ? dialogComparison.rows.find((item) => String(item.year) === String(currentDialogState.year))
-    : null;
-  const dialogYears = dialogComparison.rows.map((item) => item.year);
-  const dialogIndex = dialogRow ? dialogYears.findIndex((year) => String(year) === String(dialogRow.year)) : -1;
-  const dialogRows = dialogComparison.rows;
-  const previousDialogRow = dialogIndex > 0 ? dialogRows[dialogIndex - 1] : null;
-  const nextDialogRow = dialogIndex >= 0 && dialogIndex < dialogRows.length - 1 ? dialogRows[dialogIndex + 1] : null;
-  let dialogSide = "center";
-  let dialogVertical = "below";
-  if (dialogRow && dialogRows.length > 1) {
-    if (!previousDialogRow && nextDialogRow) {
-      dialogSide = "right";
-      dialogVertical = nextDialogRow.value < dialogRow.value ? "above" : "below";
-    } else if (previousDialogRow && !nextDialogRow) {
-      dialogSide = "left";
-      dialogVertical = previousDialogRow.value < dialogRow.value ? "above" : "below";
-    } else if (previousDialogRow && nextDialogRow) {
-      const values = dialogRows.map((item) => item.value);
-      const minValue = Math.min(...values);
-      const maxValue = Math.max(...values);
-      const yPosition = maxValue === minValue ? 0.5 : (dialogRow.value - minValue) / (maxValue - minValue);
-      const candidates = [
-        { side: "left", vertical: "above", neighbor: previousDialogRow },
-        { side: "left", vertical: "below", neighbor: previousDialogRow },
-        { side: "right", vertical: "above", neighbor: nextDialogRow },
-        { side: "right", vertical: "below", neighbor: nextDialogRow },
-      ].map((candidate) => {
-        let score = 0;
-        const neighborIsHigher = candidate.neighbor.value > dialogRow.value;
-        const neighborIsLower = candidate.neighbor.value < dialogRow.value;
-        if (candidate.vertical === "above") {
-          score += 0.8;
-          if (neighborIsHigher) score += 8;
-          if (yPosition > 0.62) score += 6 + ((yPosition - 0.62) * 12);
-        } else {
-          if (neighborIsLower) score += 8;
-          if (yPosition < 0.16) score += 3 + ((0.16 - yPosition) * 8);
-        }
-        if (candidate.side === "left" && dialogIndex <= 1) score += 1.6;
-        if (candidate.side === "right" && dialogIndex >= dialogRows.length - 2) score += 1.6;
-        return { ...candidate, score };
-      }).sort((a, b) => a.score - b.score);
-      dialogSide = candidates[0].side;
-      dialogVertical = candidates[0].vertical;
-    }
-  }
-  const dialogAx = dialogSide === "left" ? -40 : dialogSide === "right" ? 40 : 0;
-  const dialogAy = dialogVertical === "above" ? -54 : 54;
-  const dialogXAnchor = "center";
-  const dialogYAnchor = dialogVertical === "above" ? "bottom" : "top";
-  const dialogText = dialogRow
-    ? `${fmt.format(dialogRow.value)} ${activeUnit(currentDialogState.category)}`
-    : null;
+  const focusCategory = activeCategories.includes(selectedCategory) ? selectedCategory : activeCategories[0];
+  const focusComparison = comparisonByCategory.get(focusCategory) || baseComparison;
+  const focusRow = focusComparison.rows.find((item) => String(item.year) === String(selectedYear)) || selected;
   const annotations = [
     {
       x: maxYear,
-      y: baseComparison.mean,
+      y: focusComparison.mean,
       xref: "x",
       yref: "y",
-      text: `均值 ${fmt.format(baseComparison.mean)} ${activeUnit()}`,
+      text: `均值 ${fmt.format(focusComparison.mean)} ${activeUnit(focusCategory)}`,
       showarrow: false,
       xanchor: "left",
       yanchor: "middle",
@@ -2235,20 +4295,20 @@ function renderTrend() {
       font: { size: 12, color: "#475569" },
     },
   ];
-  if (dialogRow && dialogText) {
+  if (focusRow) {
     annotations.push({
-      x: dialogRow.year,
-      y: dialogRow.value,
+      x: focusRow.year,
+      y: focusRow.value,
       xref: "x",
       yref: "y",
-      text: dialogText,
+      text: `${fmt.format(focusRow.value)} ${activeUnit(focusCategory)}`,
       showarrow: true,
       arrowhead: 2,
       arrowcolor: "#cbd5e1",
-      ax: dialogAx,
-      ay: dialogAy,
-      xanchor: dialogXAnchor,
-      yanchor: dialogYAnchor,
+      ax: 0,
+      ay: -54,
+      xanchor: "center",
+      yanchor: "bottom",
       bgcolor: "rgba(255,255,255,0.94)",
       bordercolor: "#d9e1ec",
       borderpad: 6,
@@ -2258,7 +4318,7 @@ function renderTrend() {
 
   Plotly.react("trendChart", traces, {
     title: {
-      text: `${boldTitle(`歷史趨勢-${activeValueNoun()}`)}<br><sup>${activeTrendSubtitle(selectedCategory, `${baseComparison.shortBasisLabel}，每一點代表該比較基準下的累積量`)}</sup>`,
+      text: `${boldTitle(`歷史趨勢-${activeValueNoun()}`)}<br><sup>${activeTrendSubtitle(selectedCategory, `${baseComparison.shortBasisLabel}，每一點代表該比較基準下的累積量｜點選端點可同步選年`)}</sup>`,
       x: 0,
       xanchor: "left",
       y: 0.974,
@@ -2281,8 +4341,8 @@ function renderTrend() {
         type: "line",
         x0: minYear,
         x1: maxYear,
-        y0: baseComparison.mean,
-        y1: baseComparison.mean,
+        y0: focusComparison.mean,
+        y1: focusComparison.mean,
         xref: "x",
         yref: "y",
         line: { color: "#64748b", width: 2, dash: "dash" },
@@ -2391,38 +4451,166 @@ function renderLocationOverview(comparison) {
   }, { displayModeBar: false, responsive: true });
 }
 
+function renderMonthOverview() {
+  const comparison = comparisonForMonthsInYear(selectedYear, selectedCategory);
+  syncOverviewModeControls();
+  const showPieMode = showAggregatePieMode();
+  const overview = document.getElementById("overviewChart");
+  if (overview) overview.style.cursor = "";
+  overviewModeSwitch.hidden = !showPieMode;
+  overviewModeSwitch.querySelectorAll("button").forEach((button) => {
+    button.classList.toggle("active", button.dataset.overviewMode === overviewMode);
+  });
+  if (!showPieMode) overviewMode = "bar";
+
+  if (showPieMode && overviewMode === "pie") {
+    const month = Number(selectedMonth);
+    const totals = new Map();
+    (GA_DATA.categoryMonthly || [])
+      .filter((item) => Number(item.year) === Number(selectedYear) && Number(item.month) === month)
+      .forEach((item) => totals.set(item.category, (totals.get(item.category) || 0) + Number(item.value || 0)));
+    const rows = (GA_DATA.rawCategories || [])
+      .map((category) => ({ category, value: totals.get(category) || 0 }))
+      .filter((row) => row.value > 0)
+      .sort((a, b) => b.value - a.value);
+    const total = rows.reduce((sum, row) => sum + row.value, 0);
+    if (overviewTitle) overviewTitle.textContent = `${aggregatePieTitleLabel()}｜${selectedYear}年${month}月`;
+    Plotly.react("overviewChart", [{
+      type: "pie",
+      labels: rows.map((row) => row.category),
+      values: rows.map((row) => row.value),
+      hole: 0.42,
+      sort: false,
+      automargin: true,
+      domain: { x: [0.05, 0.95], y: [0.03, 0.84] },
+      marker: { colors: rows.map((row) => categoryColor(row.category)), line: { color: "#ffffff", width: 2 } },
+      textinfo: "label+percent",
+      textposition: "outside",
+      textfont: { size: 11 },
+      hovertemplate: "%{label}<br>" + activeValueNoun() + "：%{value:,.2f} " + activeUnit() + "<br>佔比：%{percent}<extra></extra>",
+    }], {
+      annotations: [{ text: `${fmt.format(total)}<br>${activeUnit()}`, x: 0.5, y: 0.435, showarrow: false, font: { size: 14, color: "#101827" } }],
+      margin: { l: 28, r: 28, t: 38, b: 18 },
+      paper_bgcolor: "rgba(0,0,0,0)",
+      plot_bgcolor: "#ffffff",
+      showlegend: false,
+    }, { displayModeBar: false, responsive: true });
+    bindAggregatePieCategoryClick();
+    return;
+  }
+
+  if (!comparison.rows.length) {
+    if (overviewTitle) overviewTitle.textContent = "月份總覽｜無資料";
+    Plotly.react("overviewChart", [], {
+      margin: { l: 64, r: 86, t: 18, b: 42 },
+      paper_bgcolor: "rgba(0,0,0,0)",
+      plot_bgcolor: "#ffffff",
+      annotations: [{ text: "目前沒有可比較的月份資料", x: 0.5, y: 0.5, xref: "paper", yref: "paper", showarrow: false, font: { size: 13, color: "#64748b" } }],
+      xaxis: { visible: false },
+      yaxis: { visible: false },
+      showlegend: false,
+    }, { displayModeBar: false, responsive: true });
+    return;
+  }
+
+  const selectedBars = comparison.rows.filter((item) => Number(item.month) === Number(selectedMonth));
+  const otherBars = comparison.rows
+    .filter((item) => Number(item.month) !== Number(selectedMonth))
+    .sort((a, b) => Number(b.month) - Number(a.month));
+  const bars = [...selectedBars, ...otherBars];
+  const values = bars.map((item) => item.value);
+  const displayValues = visibleBarValues(values);
+  const yPositions = bars.map((_, idx) => idx * 1.08);
+  const maxValue = Math.max(...values, 1);
+  const colors = bars.map((item) => colorForPosition(Math.round(item.relativePosition)));
+  if (overviewTitle) overviewTitle.textContent = `月份總覽｜${selectedYear}年`;
+
+  Plotly.react("overviewChart", [{
+    type: "bar",
+    orientation: "h",
+    x: displayValues,
+    y: yPositions,
+    width: bars.map(() => 0.84),
+    text: bars.map((item) => `${fmt.format(item.value)} ${activeUnit()}`),
+    textposition: "outside",
+    textfont: { color: "#253047", size: 13.5 },
+    cliponaxis: false,
+    marker: { color: colors, line: { color: "#ffffff", width: 1 } },
+    customdata: bars.map((item) => [item.month, formatMonths(item.comparisonMonths)]),
+    hovertemplate: "%{customdata[0]}月<br>" + activeValueNoun() + "：%{x:,.2f} " + activeUnit() + "<extra></extra>",
+  }], {
+    margin: { l: 52, r: 102, t: 10, b: 12 },
+    paper_bgcolor: "rgba(0,0,0,0)",
+    plot_bgcolor: "#ffffff",
+    xaxis: { title: "", showticklabels: false, gridcolor: "#edf2f7", zeroline: false, range: [0, Math.max(...displayValues, maxValue) * 1.22] },
+    yaxis: {
+      tickmode: "array",
+      tickvals: yPositions,
+      ticktext: bars.map((item) => `${item.month}月`),
+      tickfont: { size: 12.5, color: "#334155" },
+      range: [Math.max(...yPositions) + 0.58, -0.42],
+      showgrid: false,
+      zeroline: false,
+    },
+    showlegend: false,
+  }, { displayModeBar: false, responsive: true });
+
+  if (!overview) return;
+  overview.removeAllListeners?.("plotly_click");
+  overview.style.cursor = "pointer";
+  overview.on("plotly_click", (event) => {
+    const point = event.points && event.points[0];
+    if (!point || !point.customdata) return;
+    const month = Number(point.customdata[0]);
+    if (!Number.isFinite(month)) return;
+    selectedMonth = month;
+    updateAll();
+  });
+}
+
 function renderOverview() {
   if (isReplacementChart()) {
     renderReplacementOverview();
     return;
   }
+  if (isMonthGrain()) {
+    renderMonthOverview();
+    return;
+  }
   const comparison = comparisonForYear(selectedYear, selectedCategory);
-  const showEcocoPieMode = isEcocoChart() && selectedCategory === "ECOCO";
-  const showLocationMode = hasLocationOverviewMode();
-  overviewModeSwitch.hidden = !(showEcocoPieMode || showLocationMode);
+  syncOverviewModeControls();
+  const showPieMode = showAggregatePieMode();
+  const showLocationMode = hasLocationOverviewMode() && !showPieMode;
+  const overview = document.getElementById("overviewChart");
+  if (overview) overview.style.cursor = "";
+  overviewModeSwitch.hidden = !(showPieMode || showLocationMode);
   overviewModeSwitch.querySelectorAll("button").forEach((button) => {
     button.classList.toggle("active", button.dataset.overviewMode === overviewMode);
   });
-  if (!(showEcocoPieMode || showLocationMode)) overviewMode = "bar";
+  if (!(showPieMode || showLocationMode)) overviewMode = "bar";
   if (showLocationMode && overviewMode === "location") {
     renderLocationOverview(comparison);
     return;
   }
-  if (showEcocoPieMode && overviewMode === "pie") {
+  if (showPieMode && overviewMode === "pie") {
     const totals = new Map();
-    GA_DATA.categoryMonthly
+    (GA_DATA.categoryMonthly || [])
       .filter((item) =>
         Number(item.year) === Number(selectedYear) &&
         Number(item.month) >= Number(comparison.startMonth) &&
         Number(item.month) <= Number(comparison.cutoffMonth)
       )
       .forEach((item) => totals.set(item.category, (totals.get(item.category) || 0) + Number(item.value || 0)));
-    const rows = GA_DATA.rawCategories
+    const rows = (GA_DATA.rawCategories || [])
       .map((category) => ({ category, value: totals.get(category) || 0 }))
       .filter((row) => row.value > 0)
       .sort((a, b) => b.value - a.value);
     const total = rows.reduce((sum, row) => sum + row.value, 0);
-    if (overviewTitle) overviewTitle.textContent = "類別佔比";
+    if (overviewTitle) {
+      overviewTitle.textContent = usesMonthCoverage()
+        ? `${aggregatePieTitleLabel()}｜${comparison.shortBasisLabel}`
+        : aggregatePieTitleLabel();
+    }
     Plotly.react("overviewChart", [{
       type: "pie",
       labels: rows.map((row) => row.category),
@@ -2449,6 +4637,7 @@ function renderOverview() {
       plot_bgcolor: "#ffffff",
       showlegend: false,
     }, { displayModeBar: false, responsive: true });
+    bindAggregatePieCategoryClick();
     return;
   }
   if (!comparison.rows.length) {
@@ -2505,6 +4694,7 @@ function renderOverview() {
       comparison.shortBasisLabel,
       `${item.year} 年`,
       item.value,
+      item.year,
     ]),
     hovertemplate: usesMonthCoverage()
       ? "%{customdata[4]}<br>" + activeValueNoun() + "：%{customdata[5]:,.2f} " + activeUnit() +
@@ -2514,14 +4704,15 @@ function renderOverview() {
       : "%{customdata[4]}<br>" + activeValueNoun() + "：%{customdata[5]:,.2f} " + activeUnit() +
         "<br>第 %{customdata[0]} / 共 %{customdata[1]} 年<extra></extra>",
   }], {
-    margin: { l: 64, r: 86, t: 18, b: 42 },
+    margin: { l: 64, r: 102, t: 12, b: 12 },
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "#ffffff",
     xaxis: {
-      title: activeUnit(),
+      title: "",
+      showticklabels: false,
       gridcolor: "#edf2f7",
       zeroline: false,
-      range: [0, Math.max(...displayValues, maxValue) * 1.18],
+      range: [0, Math.max(...displayValues, maxValue) * 1.22],
     },
     yaxis: {
       title: "",
@@ -2535,14 +4726,12 @@ function renderOverview() {
     },
     showlegend: false,
   }, { displayModeBar: false, responsive: true });
+  bindYearOverviewClick();
 }
 
 function availableMonthsForSelection() {
-  const record = recordForYear(selectedYear, selectedCategory);
-  return [...new Set((record ? record.monthsList : []) || [])]
-    .map(Number)
-    .filter(Number.isFinite)
-    .sort((a, b) => a - b);
+  // Year-mode comparison interval + month grain: only months with data for the selected year.
+  return monthsAvailableForYear(selectedYear, selectedCategory);
 }
 
 function fillMonthSelect(select, values, selectedValue, suffix = "月") {
@@ -2556,59 +4745,291 @@ function fillMonthSelect(select, values, selectedValue, suffix = "月") {
   select.value = String(selectedValue);
 }
 
+function setMonthPopoverMode(mode) {
+  const isPick = mode === "pick";
+  if (monthPopover) monthPopover.classList.toggle("is-month-pick", isPick);
+  if (monthRangeFields) monthRangeFields.hidden = isPick;
+  if (monthRangeActions) monthRangeActions.hidden = isPick;
+  if (monthPickGrid) monthPickGrid.hidden = !isPick;
+}
+
+function renderMonthPickGrid(availableMonths) {
+  if (!monthPickGrid) return;
+  const available = new Set((availableMonths || []).map(Number));
+  const current = Number(selectedMonth);
+  monthPickGrid.innerHTML = "";
+  for (let month = 1; month <= 12; month += 1) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = `${month}月`;
+    button.dataset.month = String(month);
+    const enabled = available.has(month);
+    button.disabled = !enabled;
+    button.classList.toggle("active", enabled && month === current);
+    button.setAttribute("aria-pressed", enabled && month === current ? "true" : "false");
+    if (enabled) {
+      button.addEventListener("click", () => {
+        selectedMonth = month;
+        closeMonthPopover();
+        updateAll();
+      });
+    }
+    monthPickGrid.appendChild(button);
+  }
+}
+
 function syncMonthRangeControls() {
   const title = monthPopover ? monthPopover.querySelector(".ga-month-title") : null;
   const labels = monthPopover ? monthPopover.querySelectorAll(".ga-month-fields label") : [];
   if (usesYearRange()) {
+    setMonthPopoverMode("range");
     const years = availableReplacementRangeYears();
     if (!years.length) return;
     if (title) title.textContent = "選擇年度範圍";
     if (labels[0] && labels[0].childNodes[0]) labels[0].childNodes[0].nodeValue = "起年 ";
     if (labels[1] && labels[1].childNodes[0]) labels[1].childNodes[0].nodeValue = "迄年 ";
+    if (monthEndField) monthEndField.hidden = false;
+    if (monthStartField) monthStartField.style.gridColumn = "";
     const fallback = activeReplacementYearRange();
     const start = years.includes(Number(fallback.start)) ? Number(fallback.start) : years[0];
-    const endCandidates = years.filter((year) => year >= start);
-    const end = endCandidates.includes(Number(fallback.end)) ? Number(fallback.end) : endCandidates[endCandidates.length - 1];
+    const end = years.includes(Number(fallback.end)) && Number(fallback.end) >= start
+      ? Number(fallback.end)
+      : years.filter((year) => year >= start).slice(-1)[0] || start;
     fillMonthSelect(monthStartSelect, years, start, "年");
-    fillMonthSelect(monthEndSelect, endCandidates, end, "年");
+    fillMonthSelect(monthEndSelect, [...years].reverse(), end, "年");
+    lastValidMonthRange = { start, end };
+    return;
+  }
+  if (isMonthGrain()) {
+    ensureSelectedMonth();
+    const months = availableMonthsForSelection();
+    if (title) title.textContent = "選擇月份";
+    setMonthPopoverMode("pick");
+    renderMonthPickGrid(months);
     return;
   }
   if (!usesMonthCoverage()) return;
-  if (title) title.textContent = "選擇資料涵蓋範圍";
+  setMonthPopoverMode("range");
+  if (title) title.textContent = "選擇比較區間";
   if (labels[0] && labels[0].childNodes[0]) labels[0].childNodes[0].nodeValue = "起月 ";
   if (labels[1] && labels[1].childNodes[0]) labels[1].childNodes[0].nodeValue = "迄月 ";
+  if (monthEndField) monthEndField.hidden = false;
+  if (monthStartField) monthStartField.style.gridColumn = "";
   const months = availableMonthsForSelection();
   if (!months.length) return;
-  const fallbackStart = customMonthRange ? customMonthRange.start : months[0];
-  const fallbackEnd = customMonthRange ? customMonthRange.end : months[months.length - 1];
-  const start = months.includes(Number(fallbackStart)) ? Number(fallbackStart) : months[0];
-  const endCandidates = months.filter((month) => month >= start);
-  const end = endCandidates.includes(Number(fallbackEnd)) ? Number(fallbackEnd) : endCandidates[endCandidates.length - 1];
+  const yearDefault = defaultRangeForRecord(recordForYear(selectedYear, selectedCategory));
+  // Applied custom: draft wins for in-progress edits. No custom: draft should already
+  // match year default after year switch; fall back to yearDefault if draft missing.
+  const fallbackSource = customMonthRange
+    ? (draftMonthRange || customMonthRange || lastValidMonthRange || yearDefault)
+    : (draftMonthRange || lastValidMonthRange || yearDefault);
+  const clamped = clampMonthRangeToAvailable(
+    { start: fallbackSource.start, end: fallbackSource.end },
+    months
+  );
+  let start = clamped.start;
+  let end = clamped.end;
+  if (start > end) {
+    start = months.filter((month) => month <= end).slice(-1)[0] || end;
+  }
   fillMonthSelect(monthStartSelect, months, start);
-  fillMonthSelect(monthEndSelect, endCandidates, end);
+  fillMonthSelect(monthEndSelect, months, end);
+  lastValidMonthRange = { start, end };
+  draftMonthRange = { start, end };
 }
 
-function closeMonthPopover() {
-  if (monthPopover) monthPopover.hidden = true;
-  yearMonthsTop.setAttribute("aria-expanded", "false");
+function beginMonthRangeSelectGuard() {
+  monthRangeSelectActive = true;
+  if (monthPopoverCloseTimer) {
+    clearTimeout(monthPopoverCloseTimer);
+    monthPopoverCloseTimer = null;
+  }
+  if (monthRangeSelectGuardTimer) {
+    clearTimeout(monthRangeSelectGuardTimer);
+    monthRangeSelectGuardTimer = null;
+  }
 }
 
-function openMonthPopover() {
-  if (!usesMonthCoverage() && !usesYearRange()) return;
-  syncMonthRangeControls();
-  if (monthPopover) monthPopover.hidden = false;
-  yearMonthsTop.setAttribute("aria-expanded", "true");
+function endMonthRangeSelectGuard() {
+  if (monthRangeSelectGuardTimer) clearTimeout(monthRangeSelectGuardTimer);
+  monthRangeSelectGuardTimer = setTimeout(() => {
+    monthRangeSelectGuardTimer = null;
+    monthRangeSelectActive = false;
+    if (
+      prefersMonthPopoverHover() &&
+      !monthPopoverPinned &&
+      coverageWrap &&
+      !coverageWrap.matches(":hover")
+    ) {
+      scheduleCloseMonthPopover();
+    }
+  }, 280);
+}
+
+function captureDraftMonthRange() {
+  if (isMonthGrain()) return;
+  const start = Number(monthStartSelect && monthStartSelect.value);
+  const end = Number(monthEndSelect && monthEndSelect.value);
+  if (!Number.isFinite(start) || !Number.isFinite(end) || start > end) return;
+  draftMonthRange = { start, end };
+  lastValidMonthRange = { start, end };
+  beginMonthRangeSelectGuard();
+}
+
+function commitMonthRangeSelection(which) {
+  if (isMonthGrain()) return;
+  const values = usesYearRange() ? availableReplacementRangeYears() : availableMonthsForSelection();
+  if (!values.length) return;
+  const start = Number(monthStartSelect.value);
+  const end = Number(monthEndSelect.value);
+  const previous = lastValidMonthRange || draftMonthRange || { start: values[0], end: values[values.length - 1] };
+  if (which === "start" && start > end) {
+    const revert = values.includes(Number(previous.start)) && Number(previous.start) <= end
+      ? Number(previous.start)
+      : (values.filter((value) => value <= end).slice(-1)[0] || end);
+    monthStartSelect.value = String(revert);
+    beginMonthRangeSelectGuard();
+    return;
+  }
+  if (which === "end" && end < start) {
+    const revert = values.includes(Number(previous.end)) && Number(previous.end) >= start
+      ? Number(previous.end)
+      : (values.filter((value) => value >= start)[0] || start);
+    monthEndSelect.value = String(revert);
+    beginMonthRangeSelectGuard();
+    return;
+  }
+  captureDraftMonthRange();
 }
 
 function resetMonthRange() {
   customMonthRange = null;
+  draftMonthRange = null;
+  lastValidMonthRange = null;
   customReplacementYearRange = null;
   closeMonthPopover();
 }
 
+function coveragePopoverTrigger() {
+  return isReplacementChart() ? yearRangeTop : yearMonthsTop;
+}
+
+function canOpenMonthPopover() {
+  const trigger = coveragePopoverTrigger();
+  if (!trigger || trigger.hidden || trigger.disabled) return false;
+  if (yearMonthsTop && yearMonthsTop.classList.contains("ga-formula")) return false;
+  return usesMonthCoverage() || usesYearRange() || isMonthGrain();
+}
+
+function prefersMonthPopoverHover() {
+  return window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+}
+
+function clearMonthPopoverCloseTimer() {
+  if (monthPopoverCloseTimer) {
+    clearTimeout(monthPopoverCloseTimer);
+    monthPopoverCloseTimer = null;
+  }
+}
+
+function syncReplacementCoverageOpenState() {
+  if (!coverageWrap || !isReplacementChart()) return;
+  const monthOpen = Boolean(monthPopover && !monthPopover.hidden && monthPopoverPinned);
+  const metricOpen = Boolean(replacementMetricPopover && !replacementMetricPopover.hidden && replacementMetricPopoverPinned);
+  coverageWrap.classList.toggle("is-open", monthOpen || metricOpen);
+}
+
+function closeMonthPopover() {
+  clearMonthPopoverCloseTimer();
+  if (monthRangeSelectGuardTimer) {
+    clearTimeout(monthRangeSelectGuardTimer);
+    monthRangeSelectGuardTimer = null;
+  }
+  monthRangeSelectActive = false;
+  monthPopoverPinned = false;
+  if (monthPopover) monthPopover.hidden = true;
+  const trigger = coveragePopoverTrigger();
+  if (trigger) trigger.setAttribute("aria-expanded", "false");
+  if (isReplacementChart()) syncReplacementCoverageOpenState();
+  else if (coverageWrap) coverageWrap.classList.remove("is-open");
+}
+
+function openMonthPopover({ pin = false } = {}) {
+  if (!canOpenMonthPopover()) return;
+  const alreadyOpen = monthPopover && !monthPopover.hidden;
+  clearMonthPopoverCloseTimer();
+  // Native <select> + hover reopen: never resync while already open or mid-edit.
+  if (!alreadyOpen) {
+    syncMonthRangeControls();
+  }
+  if (pin) monthPopoverPinned = true;
+  if (monthPopover) monthPopover.hidden = false;
+  const trigger = coveragePopoverTrigger();
+  if (trigger) trigger.setAttribute("aria-expanded", "true");
+  if (isReplacementChart()) syncReplacementCoverageOpenState();
+  else if (coverageWrap) coverageWrap.classList.toggle("is-open", monthPopoverPinned);
+}
+
+function clearReplacementMetricPopoverCloseTimer() {
+  if (replacementMetricPopoverCloseTimer) {
+    clearTimeout(replacementMetricPopoverCloseTimer);
+    replacementMetricPopoverCloseTimer = null;
+  }
+}
+
+function closeReplacementMetricPopover() {
+  clearReplacementMetricPopoverCloseTimer();
+  replacementMetricPopoverPinned = false;
+  if (replacementMetricPopover) replacementMetricPopover.hidden = true;
+  if (replacementMetricTop) replacementMetricTop.setAttribute("aria-expanded", "false");
+  syncReplacementCoverageOpenState();
+}
+
+function openReplacementMetricPopover({ pin = false } = {}) {
+  if (!isReplacementChart() || !replacementMetricPopover || !replacementMetricTop) return;
+  clearReplacementMetricPopoverCloseTimer();
+  renderReplacementMetricOptions();
+  if (pin) replacementMetricPopoverPinned = true;
+  replacementMetricPopover.hidden = false;
+  replacementMetricTop.setAttribute("aria-expanded", "true");
+  syncReplacementCoverageOpenState();
+}
+
+function scheduleCloseReplacementMetricPopover() {
+  if (replacementMetricPopoverPinned) return;
+  if (replacementMetricPopover && replacementMetricPopover.contains(document.activeElement)) return;
+  if (coverageWrap && coverageWrap.matches(":hover")) return;
+  clearReplacementMetricPopoverCloseTimer();
+  replacementMetricPopoverCloseTimer = setTimeout(() => {
+    replacementMetricPopoverCloseTimer = null;
+    if (replacementMetricPopoverPinned) return;
+    if (replacementMetricPopover && replacementMetricPopover.contains(document.activeElement)) return;
+    if (coverageWrap && coverageWrap.matches(":hover")) return;
+    closeReplacementMetricPopover();
+  }, 240);
+}
+
+function scheduleCloseMonthPopover() {
+  if (monthPopoverPinned || monthRangeSelectActive) return;
+  if (monthPopover && monthPopover.contains(document.activeElement)) return;
+  if (coverageWrap && coverageWrap.matches(":hover")) return;
+  clearMonthPopoverCloseTimer();
+  monthPopoverCloseTimer = setTimeout(() => {
+    monthPopoverCloseTimer = null;
+    if (monthPopoverPinned || monthRangeSelectActive) return;
+    if (monthPopover && monthPopover.contains(document.activeElement)) return;
+    if (coverageWrap && coverageWrap.matches(":hover")) return;
+    closeMonthPopover();
+  }, 240);
+}
+
 function updateAll() {
+  updateChartSubtitle();
+  updateLocationScopeMeta();
+  updateYearControlLabel();
+  syncGrainBodyClass();
   updateDom();
-  if (monthPopover && !monthPopover.hidden) syncMonthRangeControls();
+  // Avoid resyncing open range controls — that overwrote in-progress start/end picks.
   renderTrendToggles();
   renderTrend();
   renderOverview();
@@ -2626,64 +5047,130 @@ function populateYearSelect() {
     yearSelect.value = "";
     return;
   }
-  [...series.records].sort((a, b) => b.year - a.year).forEach((row) => {
+  let records = [...series.records].sort((a, b) => b.year - a.year);
+  if (isMonthGrain()) {
+    const minYear = monthGrainMinYear();
+    if (minYear != null) {
+      records = records.filter((row) => Number(row.year) >= minYear);
+    }
+    records = records.filter((row) => monthlyRowsForYear(row.year).length > 0);
+  }
+  if (!records.length) {
+    const opt = document.createElement("option");
+    opt.value = "";
+    opt.textContent = "無可用年份";
+    yearSelect.appendChild(opt);
+    selectedYear = "";
+    yearSelect.value = "";
+    return;
+  }
+  records.forEach((row) => {
     const opt = document.createElement("option");
     opt.value = String(row.year);
     opt.textContent = `${row.year} 年`;
     yearSelect.appendChild(opt);
   });
-  selectedYear = String(series.defaultYear || GA_DATA.defaultYear);
+  const preferred = String(selectedYear || GA_DATA.defaultYear || series.defaultYear);
+  selectedYear = records.some((row) => String(row.year) === preferred)
+    ? preferred
+    : String(records[0].year);
   yearSelect.value = selectedYear;
 }
 
 function initSelect() {
   if (GA_DATA.locations && GA_DATA.locations.length) {
-    locationControl.hidden = false;
-    if (locationLabel) locationLabel.textContent = GA_DATA.locationLabel || "選擇地點";
-    locationSelect.innerHTML = "";
-    GA_DATA.locations.forEach((location) => {
-      const opt = document.createElement("option");
-      opt.value = location;
-      opt.textContent = location;
-      locationSelect.appendChild(opt);
-    });
     selectedLocation = GA_DATA.defaultLocation || GA_DATA.locations[0];
-    locationSelect.value = selectedLocation;
-    locationSelect.disabled = GA_DATA.locations.length <= 1;
-    locationSelect.addEventListener("change", (event) => {
-      selectedLocation = event.target.value;
-      resetMonthRange();
-      populateYearSelect();
-      updateAll();
-    });
+    const singleLocation = GA_DATA.locations.length <= 1;
+    const hideLocationControl = singleLocation || isStreetlightChart();
+    if (hideLocationControl) {
+      locationControl.hidden = true;
+      if (locationSelect) {
+        locationSelect.hidden = true;
+        locationSelect.disabled = true;
+        locationSelect.innerHTML = "";
+      }
+      if (isStreetlightChart()) {
+        selectedLocation = GA_DATA.defaultLocation || "全校區";
+      }
+    } else {
+      locationControl.hidden = false;
+      if (locationLabel) {
+        locationLabel.textContent = GA_DATA.locationLabel || "選擇地點";
+        locationLabel.setAttribute("for", "locationSelect");
+      }
+      locationSelect.hidden = false;
+      locationSelect.disabled = false;
+      locationSelect.innerHTML = "";
+      GA_DATA.locations.forEach((location) => {
+        const opt = document.createElement("option");
+        opt.value = location;
+        opt.textContent = location;
+        locationSelect.appendChild(opt);
+      });
+      locationSelect.value = selectedLocation;
+      locationSelect.addEventListener("change", (event) => {
+        selectedLocation = event.target.value;
+        resetMonthRange();
+        populateYearSelect();
+        updateAll();
+      });
+    }
+    updateLocationScopeMeta();
   } else {
     locationControl.hidden = true;
+    if (locationScope) {
+      locationScope.hidden = true;
+      locationScope.textContent = "";
+    }
   }
 
   if (hasCategoryControl()) {
     categoryControl.hidden = false;
-    if (categoryLabel) categoryLabel.textContent = GA_DATA.categoryLabel || "選擇類別";
-    categorySelect.innerHTML = "";
-    GA_DATA.categories.forEach((category) => {
-      const opt = document.createElement("option");
-      opt.value = category;
-      opt.textContent = category;
-      categorySelect.appendChild(opt);
-    });
     selectedCategory = GA_DATA.defaultCategory;
-    categorySelect.value = selectedCategory;
     visibleTrendCategories = new Set([selectedCategory]);
-    if (isReplacementChart()) categoryControl.hidden = true;
-    categorySelect.addEventListener("change", (event) => {
-      selectedCategory = event.target.value;
+
+    if (usesMetricSwitch()) {
+      categoryControl.hidden = true;
+      if (categorySelect) categorySelect.hidden = true;
+      if (categoryChips) categoryChips.hidden = true;
+      selectedCategory = GA_DATA.defaultCategory || GA_DATA.categories[0];
       visibleTrendCategories = new Set([selectedCategory]);
-      overviewMode = "bar";
-      resetMonthRange();
-      populateYearSelect();
-      updateAll();
-    });
+      renderMetricSwitch();
+    } else if (usesCategoryChips()) {
+      categoryControl.hidden = true;
+      if (categorySelect) categorySelect.hidden = true;
+      if (metricSwitch) metricSwitch.hidden = true;
+      selectedCategory = GA_DATA.defaultCategory || GA_DATA.categories[0];
+      visibleTrendCategories = new Set([selectedCategory]);
+      renderCategoryChips();
+    } else {
+      categoryControl.classList.remove("ga-control-chips");
+      if (metricSwitch) metricSwitch.hidden = true;
+      if (categoryLabel) {
+        categoryLabel.textContent = GA_DATA.categoryLabel || "選擇類別";
+        categoryLabel.setAttribute("for", "categorySelect");
+      }
+      if (categorySelect) {
+        categorySelect.hidden = false;
+        categorySelect.innerHTML = "";
+        GA_DATA.categories.forEach((category) => {
+          const opt = document.createElement("option");
+          opt.value = category;
+          opt.textContent = categoryDisplayName(category);
+          categorySelect.appendChild(opt);
+        });
+        categorySelect.value = selectedCategory;
+        categorySelect.addEventListener("change", (event) => {
+          selectCategoryFocus(event.target.value);
+        });
+      }
+      if (categoryChips) categoryChips.hidden = true;
+    }
+
+    if (isReplacementChart()) categoryControl.hidden = true;
     overviewModeSwitch.querySelectorAll("button").forEach((button) => {
       button.addEventListener("click", () => {
+        overviewModeTouched = true;
         overviewMode = button.dataset.overviewMode;
         updateAll();
       });
@@ -2693,49 +5180,152 @@ function initSelect() {
     selectedCategory = GA_DATA.metric;
     visibleTrendCategories = new Set([selectedCategory]);
   }
-  const modeButtons = overviewModeSwitch ? overviewModeSwitch.querySelectorAll("button") : [];
-  if (hasLocationOverviewMode()) {
-    if (modeButtons[0]) { modeButtons[0].textContent = "年度"; modeButtons[0].dataset.overviewMode = "bar"; }
-    if (modeButtons[1]) { modeButtons[1].textContent = "地點"; modeButtons[1].dataset.overviewMode = "location"; }
-  } else {
-    if (modeButtons[0]) { modeButtons[0].textContent = "長條"; modeButtons[0].dataset.overviewMode = "bar"; }
-    if (modeButtons[1]) { modeButtons[1].textContent = "圓餅"; modeButtons[1].dataset.overviewMode = "pie"; }
+  if (hasLocationOverviewMode() && !(GA_DATA.categories && GA_DATA.categories.length)) {
+    overviewModeSwitch.querySelectorAll("button").forEach((button) => {
+      button.addEventListener("click", () => {
+        overviewModeTouched = true;
+        overviewMode = button.dataset.overviewMode;
+        updateAll();
+      });
+    });
   }
+  if (hasCategoryControl() || hasLocationOverviewMode()) {
+    if (isStreetlightChart() && !overviewModeTouched) overviewMode = "location";
+    syncOverviewModeControls();
+  } else {
+    setOverviewModeButtons("icons");
+  }
+  if (qualityModeSwitch) {
+    qualityModeSwitch.querySelectorAll("button").forEach((button) => {
+      button.addEventListener("click", () => {
+        if (!isStreetlightChart()) return;
+        savingViewModeTouched = true;
+        savingViewMode = button.dataset.qualityMode === "year" ? "year" : "location";
+        updateAll();
+      });
+    });
+  }
+  if (isStreetlightChart() && !savingViewModeTouched) savingViewMode = "location";
+  if (supportsMonthGrain() && timeGrainSwitch) {
+    timeGrainSwitch.hidden = false;
+    timeGrainSwitch.querySelectorAll("button").forEach((button) => {
+      button.classList.toggle("active", button.dataset.timeGrain === timeGrain);
+      button.addEventListener("click", () => {
+        const next = button.dataset.timeGrain === "month" ? "month" : "year";
+        if (next === timeGrain) return;
+        timeGrain = next;
+        timeGrainSwitch.querySelectorAll("button").forEach((item) => {
+          item.classList.toggle("active", item.dataset.timeGrain === timeGrain);
+        });
+        closeMonthPopover();
+        populateYearSelect();
+        if (isMonthGrain()) ensureSelectedMonth();
+        updateAll();
+      });
+    });
+  } else if (timeGrainSwitch) {
+    timeGrainSwitch.hidden = true;
+  }
+  updateYearControlLabel();
   populateYearSelect();
   yearSelect.addEventListener("change", (event) => {
-    selectedYear = event.target.value;
-    resetMonthRange();
-    updateAll();
+    selectYearFocus(event.target.value);
   });
-  yearMonthsTop.addEventListener("click", (event) => {
-    event.stopPropagation();
-    if (!usesMonthCoverage() && !usesYearRange()) return;
-    if (monthPopover && monthPopover.hidden) openMonthPopover();
-    else closeMonthPopover();
-  });
+  if (yearMonthsTop && !isReplacementChart()) {
+    yearMonthsTop.addEventListener("click", (event) => {
+      event.stopPropagation();
+      if (!canOpenMonthPopover()) return;
+      if (monthPopoverPinned) {
+        closeMonthPopover();
+        return;
+      }
+      openMonthPopover({ pin: true });
+    });
+  }
+  if (coverageWrap) {
+    coverageWrap.addEventListener("mouseenter", () => {
+      if (!prefersMonthPopoverHover() || !canOpenMonthPopover()) return;
+      if (isReplacementChart()) return;
+      openMonthPopover({ pin: false });
+    });
+    coverageWrap.addEventListener("mouseleave", () => {
+      if (!prefersMonthPopoverHover()) return;
+      scheduleCloseMonthPopover();
+      scheduleCloseReplacementMetricPopover();
+    });
+  }
   monthPopover.addEventListener("click", (event) => {
     event.stopPropagation();
   });
+  monthPopover.addEventListener("mouseenter", () => {
+    clearMonthPopoverCloseTimer();
+  });
+  monthPopover.addEventListener("mouseleave", () => {
+    if (!prefersMonthPopoverHover()) return;
+    scheduleCloseMonthPopover();
+  });
+  const bindRangeSelectGuard = (select) => {
+    if (!select) return;
+    select.addEventListener("mousedown", () => beginMonthRangeSelectGuard());
+    select.addEventListener("focus", () => beginMonthRangeSelectGuard());
+    select.addEventListener("blur", () => endMonthRangeSelectGuard());
+  };
+  bindRangeSelectGuard(monthStartSelect);
+  bindRangeSelectGuard(monthEndSelect);
   monthStartSelect.addEventListener("change", () => {
-    const start = Number(monthStartSelect.value);
-    const values = (usesYearRange() ? availableReplacementRangeYears() : availableMonthsForSelection()).filter((value) => value >= start);
-    const currentEnd = Number(monthEndSelect.value);
-    const end = values.includes(currentEnd) ? currentEnd : values[values.length - 1];
-    fillMonthSelect(monthEndSelect, values, end, usesYearRange() ? "年" : "月");
+    if (isMonthGrain()) return;
+    commitMonthRangeSelection("start");
+  });
+  monthEndSelect.addEventListener("change", () => {
+    if (isMonthGrain()) return;
+    commitMonthRangeSelection("end");
   });
   monthApplyBtn.addEventListener("click", () => {
     const start = Number(monthStartSelect.value);
     const end = Number(monthEndSelect.value);
-    if (usesYearRange()) customReplacementYearRange = { start: Math.min(start, end), end: Math.max(start, end) };
-    else customMonthRange = { start: Math.min(start, end), end: Math.max(start, end) };
+    if (isMonthGrain()) {
+      selectedMonth = start;
+      closeMonthPopover();
+      updateAll();
+      return;
+    }
+    if (start > end) {
+      commitMonthRangeSelection("start");
+      return;
+    }
+    if (usesYearRange()) {
+      customReplacementYearRange = { start, end };
+      draftMonthRange = { start, end };
+      lastValidMonthRange = { start, end };
+    } else {
+      customMonthRange = { start, end };
+      draftMonthRange = { start, end };
+      lastValidMonthRange = { start, end };
+    }
     closeMonthPopover();
     updateAll();
   });
   monthResetBtn.addEventListener("click", () => {
+    if (isMonthGrain()) {
+      selectedMonth = null;
+      ensureSelectedMonth();
+      closeMonthPopover();
+      updateAll();
+      return;
+    }
     resetMonthRange();
     updateAll();
   });
-  document.addEventListener("click", closeMonthPopover);
+  document.addEventListener("click", () => {
+    closeMonthPopover();
+    closeReplacementMetricPopover();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeMonthPopover();
+      closeReplacementMetricPopover();
+    }
+  });
 }
 
 function showError(error) {
@@ -2750,13 +5340,20 @@ fetch(`./data.json?t=${Date.now()}`)
   .then((data) => {
     GA_DATA = data;
     document.body.classList.toggle("ga-replacement-chart", isReplacementChart());
+    if (isStreetlightChart()) {
+      overviewMode = "location";
+      overviewModeTouched = false;
+      savingViewMode = "location";
+      savingViewModeTouched = false;
+      focusedCampus = GA_DATA.defaultLocation || "全校區";
+    }
+    placeReplacementCoverageControl();
     initSelect();
     updateAll();
   })
   .catch(showError);
 
 window.addEventListener("resize", () => {
-  if (isReplacementChart()) fitSingleLineText(document.getElementById("rankHint"));
   Plotly.Plots.resize(document.getElementById("trendChart"));
   Plotly.Plots.resize(document.getElementById("overviewChart"));
 });

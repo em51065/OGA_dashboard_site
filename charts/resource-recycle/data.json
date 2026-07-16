@@ -1,7 +1,7 @@
 {
-  "dataVersion": "20260513",
-  "generatedAt": "2026-06-30 09:04:05",
-  "sourceFile": "Total_20260513.xlsx",
+  "dataVersion": "20260713",
+  "generatedAt": "2026-07-16 08:19:07",
+  "sourceFile": "Total_20260713.xlsx",
   "chartId": "resource-recycle",
   "sheet": "資源回收",
   "metric": "資源回收",
@@ -9,6 +9,7 @@
   "valueNoun": "回收量",
   "unit": "公噸",
   "defaultYear": 2026,
+  "supportsMonthGrain": true,
   "records": [
     {
       "year": 2022,
@@ -104,18 +105,19 @@
     },
     {
       "year": 2026,
-      "value": 79.37,
-      "months": 4,
+      "value": 95.9,
+      "months": 5,
       "monthsList": [
         1,
         2,
         3,
-        4
+        4,
+        5
       ],
-      "maxMonth": 4,
+      "maxMonth": 5,
       "hasDecember": false,
       "start": "2026-01",
-      "end": "2026-04"
+      "end": "2026-05"
     }
   ],
   "monthly": [
@@ -378,6 +380,11 @@
       "year": 2026,
       "month": 4,
       "value": 19.6
+    },
+    {
+      "year": 2026,
+      "month": 5,
+      "value": 16.53
     }
   ]
 }
