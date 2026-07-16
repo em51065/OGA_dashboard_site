@@ -59,6 +59,13 @@ function reportOuterHeight() {
   });
 }
 
+// Parent pages may load `oga-embed.js` with `async`, potentially missing the first
+// `oga:resize` message. Support a request/response handshake to re-measure.
+window.addEventListener("message", (event) => {
+  if (!event.data || event.data.type !== "oga:request-resize") return;
+  reportOuterHeight();
+});
+
 function scheduleFrameMeasure() {
   if (measureFrameId !== null) window.cancelAnimationFrame(measureFrameId);
   measureFrameId = window.requestAnimationFrame(() => {
