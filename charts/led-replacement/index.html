@@ -62,25 +62,36 @@
     max-width: min(420px, 42%);
   }
   /* Match solar: title | chips | year on one row (ECOCO has more chips). */
+  body.ga-has-category-chips .ga-head {
+    gap: 12px;
+  }
   body.ga-has-category-chips .ga-head-copy {
     flex: 0 1 auto;
-    /* Keep subtitle + extra as two single lines (not three). */
-    min-width: min(100%, 22rem);
+    /* Fit two subtitle lines without stealing space from chips (~OSSD 1058). */
+    min-width: min(100%, 19rem);
   }
   body.ga-has-category-chips .ga-head-tools {
     flex: 1 1 auto;
     flex-wrap: nowrap;
     max-width: none;
     min-width: 0;
+    gap: 8px;
   }
   body.ga-has-category-chips .ga-category-chips {
     flex: 1 1 auto;
     max-width: none;
     min-width: 0;
     justify-content: flex-end;
+    gap: 5px;
+  }
+  body.ga-has-category-chips .ga-category-chip {
+    padding: 6px 10px;
   }
   body.ga-has-category-chips .ga-controls {
     flex: 0 0 auto;
+  }
+  body.ga-has-category-chips .ga-control {
+    min-width: 160px;
   }
   body.ga-has-category-chips .ga-sub,
   body.ga-has-category-chips .ga-sub-extra {
@@ -1031,11 +1042,13 @@
     flex-wrap: nowrap;
     justify-content: center;
     align-items: center;
-    gap: 8px;
-    width: max-content;
-    max-width: none;
-    margin: 0 auto;
-    padding: 0 4px 10px;
+    gap: 6px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0 0 10px;
+    min-width: 0;
   }
   .ga-toggle-bar[hidden] {
     display: none;
@@ -1044,7 +1057,8 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    flex: 0 0 auto;
+    flex: 0 1 auto;
+    min-width: 0;
     border: 1px solid #dbe4ef;
     border-radius: 999px;
     padding: 6px 9px;
@@ -1056,6 +1070,19 @@
     cursor: pointer;
     opacity: 0.42;
     transition: opacity 160ms ease, transform 160ms ease, border-color 160ms ease;
+  }
+  /* ECOCO-scale legends: stay one row inside the trend card. */
+  .ga-toggle-bar:has(.ga-icon-toggle:nth-child(6)) {
+    gap: 4px;
+  }
+  .ga-toggle-bar:has(.ga-icon-toggle:nth-child(6)) .ga-icon-toggle {
+    padding: 5px 7px;
+    gap: 4px;
+    font-size: 11px;
+  }
+  .ga-toggle-bar:has(.ga-icon-toggle:nth-child(6)) .ga-trend-line-icon {
+    width: 20px;
+    height: 10px;
   }
   .ga-icon-toggle.active {
     border-color: currentColor;
@@ -1291,14 +1318,20 @@
     .ga-toggle-bar {
       justify-content: center !important;
       flex-wrap: nowrap !important;
-      width: max-content !important;
-      margin: 0 auto !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
       padding: 0 0 10px !important;
-      gap: 6px !important;
+      gap: 4px !important;
     }
     .ga-icon-toggle {
-      padding: 5px 8px !important;
+      padding: 5px 7px !important;
       font-size: 11px !important;
+      gap: 4px !important;
+    }
+    .ga-trend-line-icon {
+      width: 20px !important;
+      height: 10px !important;
     }
   }
   @media (max-width: 420px) {
@@ -1488,9 +1521,11 @@ let replacementMetricPopover = null;
 const OVERVIEW_BAR_ICON = '<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1" y="2" width="14" height="3" rx="0.5"></rect><rect x="1" y="6.5" width="10" height="3" rx="0.5"></rect><rect x="1" y="11" width="7" height="3" rx="0.5"></rect></svg>';
 const OVERVIEW_PIE_ICON = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.2A6.8 6.8 0 1 0 14.8 8H8V1.2z"></path><path d="M9.2 1.35A6.8 6.8 0 0 1 14.65 6.8H9.2V1.35z"></path></svg>';
 const ECOCO_YEAR_SUBTITLE = "用年度排名呈現ECOCO的歷史位置；";
-const MONTH_GRAIN_SUBTITLE = "用該年各月比較呈現結果；右側為同年逐月趨勢，點選月份端點可同步左側排名。";
+const MONTH_GRAIN_SUBTITLE = "用該年各月比較呈現結果；";
+const MONTH_GRAIN_SUBTITLE_EXTRA = "右側為逐月趨勢，點選端點可同步左側排名。";
 const ECOCO_MONTH_MIN_YEAR = 2025;
 const defaultChartSubtitle = chartSubtitle ? chartSubtitle.textContent : "";
+const defaultChartSubtitleExtra = chartSubtitleExtra ? chartSubtitleExtra.textContent : "";
 const defaultChartSubtitleExtraVisible = Boolean(chartSubtitleExtra && !chartSubtitleExtra.hidden);
 const monthPopover = document.getElementById("monthPopover");
 const monthStartSelect = document.getElementById("monthStartSelect");
@@ -1575,10 +1610,16 @@ function updateChartSubtitle() {
   if (!chartSubtitle || !supportsMonthGrain()) return;
   if (isMonthGrain()) {
     chartSubtitle.textContent = MONTH_GRAIN_SUBTITLE;
-    if (chartSubtitleExtra) chartSubtitleExtra.hidden = true;
+    if (chartSubtitleExtra) {
+      chartSubtitleExtra.textContent = MONTH_GRAIN_SUBTITLE_EXTRA;
+      chartSubtitleExtra.hidden = false;
+    }
     return;
   }
-  if (chartSubtitleExtra) chartSubtitleExtra.hidden = !defaultChartSubtitleExtraVisible;
+  if (chartSubtitleExtra) {
+    chartSubtitleExtra.textContent = defaultChartSubtitleExtra;
+    chartSubtitleExtra.hidden = !defaultChartSubtitleExtraVisible;
+  }
   if (isEcocoChart()) {
     chartSubtitle.textContent = ECOCO_YEAR_SUBTITLE;
     return;

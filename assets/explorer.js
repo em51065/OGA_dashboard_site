@@ -277,11 +277,14 @@ function prepareChildFrame() {
         }
         body.ga-has-category-chips .ga-head-copy {
           flex: 0 1 auto !important;
-          min-width: min(100%, 22rem) !important;
+          min-width: min(100%, 19rem) !important;
         }
         body.ga-has-category-chips .ga-sub,
         body.ga-has-category-chips .ga-sub-extra {
           white-space: nowrap !important;
+        }
+        body.ga-has-category-chips .ga-head {
+          gap: 12px !important;
         }
         body.ga-has-category-chips .ga-head-tools {
           flex-direction: row !important;
@@ -291,15 +294,23 @@ function prepareChildFrame() {
           max-width: none !important;
           flex: 1 1 auto !important;
           min-width: 0 !important;
+          gap: 8px !important;
         }
         body.ga-has-category-chips .ga-category-chips {
           justify-content: flex-end !important;
           max-width: none !important;
           flex: 1 1 auto !important;
           min-width: 0 !important;
+          gap: 5px !important;
+        }
+        body.ga-has-category-chips .ga-category-chip {
+          padding: 6px 10px !important;
         }
         body.ga-has-category-chips .ga-controls {
           flex: 0 0 auto !important;
+        }
+        body.ga-has-category-chips .ga-control {
+          min-width: 160px !important;
         }
         .ga-pr-card .ga-card-title {
           position: relative !important;
