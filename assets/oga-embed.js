@@ -9,6 +9,29 @@
     return [...document.querySelectorAll(selector)];
   }
 
+  function notifyHostHeight(height) {
+    const payloads = [
+      { type: "oga:resize", height },
+      { type: "resize", height },
+      { type: "setHeight", height },
+    ];
+    const targets = [window.parent];
+    try {
+      if (window.parent !== window.top) targets.push(window.top);
+    } catch (_error) {
+      /* cross-origin top access may throw */
+    }
+    targets.forEach((target) => {
+      payloads.forEach((payload) => {
+        try {
+          target.postMessage(payload, "*");
+        } catch (_error) {
+          /* ignore */
+        }
+      });
+    });
+  }
+
   function applyHeight(frame, rawHeight) {
     const height = Math.max(MIN_HEIGHT, Math.min(MAX_HEIGHT, Math.ceil(Number(rawHeight) || 0)));
     if (!height) return;
@@ -20,7 +43,10 @@
     const wrap = frame.parentElement;
     if (wrap && wrap !== document.body) {
       wrap.style.minHeight = `${height}px`;
+      wrap.style.height = "auto";
+      wrap.style.overflow = "visible";
     }
+    notifyHostHeight(height);
   }
 
   function requestResizeForAllFrames() {

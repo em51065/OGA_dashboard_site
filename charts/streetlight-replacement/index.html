@@ -90,9 +90,8 @@
   .ga-sub-extra[hidden] {
     display: none !important;
   }
-  /* Keep title/subtitle flex height identical to other charts; park the glossary
-     in the existing head-copy padding / head margin slack so it does not lift the title. */
-  .ga-replacement-chart .ga-sub-extra:not([hidden]) {
+  /* Keep title/subtitle flex height identical; park the second line in head-copy padding slack. */
+  .ga-sub-extra:not([hidden]) {
     position: absolute;
     left: 0;
     right: 0;
@@ -1060,16 +1059,21 @@
       margin: 0 0 8px;
       width: fit-content;
     }
+    /* Keep chips beside the year control; only full-stack on phone widths. */
     .ga-head-tools {
       max-width: none;
-      flex-direction: column;
-      align-items: stretch;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: flex-end;
+      gap: 8px;
     }
-    .ga-controls { justify-content: stretch; flex-direction: column; align-items: stretch; }
-    .ga-control { min-width: 0; }
+    .ga-controls { justify-content: flex-end; flex-direction: row; align-items: flex-end; }
+    .ga-control { min-width: 160px; }
     .ga-category-chips {
       max-width: none;
-      justify-content: flex-start;
+      flex: 1 1 auto;
+      justify-content: flex-end;
       padding-bottom: 0;
     }
     .ga-toggle-bar { padding-left: 4px; }
@@ -1440,6 +1444,7 @@ const overviewTitle = document.getElementById("overviewTitle");
 const overviewNote = document.getElementById("overviewNote");
 const overviewFootNote = document.getElementById("overviewFootNote");
 const chartSubtitle = document.getElementById("chartSubtitle");
+const chartSubtitleExtra = document.getElementById("chartSubtitleExtra");
 const yearMonthsTop = document.getElementById("yearMonthsTop");
 let coverageWrap = yearMonthsTop ? yearMonthsTop.closest(".ga-coverage-wrap") : null;
 let yearRangeTop = null;
@@ -1447,10 +1452,11 @@ let replacementMetricTop = null;
 let replacementMetricPopover = null;
 const OVERVIEW_BAR_ICON = '<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1" y="2" width="14" height="3" rx="0.5"></rect><rect x="1" y="6.5" width="10" height="3" rx="0.5"></rect><rect x="1" y="11" width="7" height="3" rx="0.5"></rect></svg>';
 const OVERVIEW_PIE_ICON = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.2A6.8 6.8 0 1 0 14.8 8H8V1.2z"></path><path d="M9.2 1.35A6.8 6.8 0 0 1 14.65 6.8H9.2V1.35z"></path></svg>';
-const ECOCO_YEAR_SUBTITLE = "用年度排名呈現ECOCO的歷史位置；完整年只比完整年，未滿年只比同期累積。";
+const ECOCO_YEAR_SUBTITLE = "用年度排名呈現ECOCO的歷史位置；";
 const MONTH_GRAIN_SUBTITLE = "用該年各月比較呈現結果；右側為同年逐月趨勢，點選月份端點可同步左側排名。";
 const ECOCO_MONTH_MIN_YEAR = 2025;
 const defaultChartSubtitle = chartSubtitle ? chartSubtitle.textContent : "";
+const defaultChartSubtitleExtraVisible = Boolean(chartSubtitleExtra && !chartSubtitleExtra.hidden);
 const monthPopover = document.getElementById("monthPopover");
 const monthStartSelect = document.getElementById("monthStartSelect");
 const monthEndSelect = document.getElementById("monthEndSelect");
@@ -1534,8 +1540,10 @@ function updateChartSubtitle() {
   if (!chartSubtitle || !supportsMonthGrain()) return;
   if (isMonthGrain()) {
     chartSubtitle.textContent = MONTH_GRAIN_SUBTITLE;
+    if (chartSubtitleExtra) chartSubtitleExtra.hidden = true;
     return;
   }
+  if (chartSubtitleExtra) chartSubtitleExtra.hidden = !defaultChartSubtitleExtraVisible;
   if (isEcocoChart()) {
     chartSubtitle.textContent = ECOCO_YEAR_SUBTITLE;
     return;

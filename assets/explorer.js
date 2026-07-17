@@ -65,10 +65,27 @@ function measurePortalHeight() {
 function reportOuterHeight() {
   if (window.parent === window) return;
   window.requestAnimationFrame(() => {
-    window.parent.postMessage({
-      type: "oga:resize",
-      height: measurePortalHeight(),
-    }, "*");
+    const height = measurePortalHeight();
+    const payloads = [
+      { type: "oga:resize", height },
+      { type: "resize", height },
+      { type: "setHeight", height },
+    ];
+    const targets = [window.parent];
+    try {
+      if (window.parent !== window.top) targets.push(window.top);
+    } catch (_error) {
+      /* ignore */
+    }
+    targets.forEach((target) => {
+      payloads.forEach((payload) => {
+        try {
+          target.postMessage(payload, "*");
+        } catch (_error) {
+          /* ignore */
+        }
+      });
+    });
   });
 }
 
@@ -254,6 +271,21 @@ function prepareChildFrame() {
       }
       .ga-card-title h2, .ga-overview-head h3 { letter-spacing: 0 !important; }
       @media (min-width: 761px) {
+        .ga-head {
+          flex-direction: row !important;
+          align-items: flex-end !important;
+        }
+        .ga-head-tools {
+          flex-direction: row !important;
+          flex-wrap: wrap !important;
+          align-items: flex-end !important;
+          justify-content: flex-end !important;
+          max-width: min(720px, 62%) !important;
+        }
+        .ga-category-chips {
+          justify-content: flex-end !important;
+          max-width: none !important;
+        }
         .ga-pr-card .ga-card-title {
           position: relative !important;
           display: block !important;
