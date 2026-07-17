@@ -778,9 +778,9 @@
     left: 0;
     right: auto;
     /* Leave room for the metric popover on the right when both stay open. */
-    width: min(calc(100% - 184px), 248px);
-    min-width: 216px;
-    padding: 12px 14px;
+    width: min(calc(100% - 160px), 228px);
+    min-width: 0;
+    padding: 12px 12px;
     box-sizing: border-box;
   }
   .ga-replacement-chart .ga-coverage-anchor .ga-month-fields {
@@ -794,7 +794,8 @@
     bottom: calc(100% + 8px);
     left: auto;
     right: 0;
-    width: min(100%, 168px);
+    width: min(100%, 148px);
+    padding: 10px;
     z-index: 31;
   }
   .ga-replacement-chart .ga-value-row {
@@ -1226,7 +1227,7 @@
       width: min(100%, 284px) !important;
     }
     .ga-replacement-chart .ga-coverage-anchor .ga-month-popover {
-      width: min(100%, 248px) !important;
+      width: min(calc(100% - 160px), 228px) !important;
       min-width: 0 !important;
     }
     .ga-pr-score {
@@ -5123,6 +5124,15 @@ function updateAll() {
   renderOverview();
 }
 
+function notifyPortalReady() {
+  if (new URLSearchParams(window.location.search).get("portal") !== "1") return;
+  try {
+    window.parent.postMessage({ type: "oga:chart-ready" }, "*");
+  } catch (_error) {
+    /* ignore cross-origin */
+  }
+}
+
 function populateYearSelect() {
   const series = currentSeries();
   yearSelect.innerHTML = "";
@@ -5414,6 +5424,21 @@ function initSelect() {
       closeReplacementMetricPopover();
     }
   });
+  // Embed host clicks never reach this document; close pinned menus on blur / parent signal.
+  window.addEventListener("blur", () => {
+    window.setTimeout(() => {
+      if (monthRangeSelectActive) return;
+      if (monthPopover && monthPopover.contains(document.activeElement)) return;
+      if (replacementMetricPopover && replacementMetricPopover.contains(document.activeElement)) return;
+      closeMonthPopover();
+      closeReplacementMetricPopover();
+    }, 0);
+  });
+  window.addEventListener("message", (event) => {
+    if (!event.data || event.data.type !== "oga:close-popovers") return;
+    closeMonthPopover();
+    closeReplacementMetricPopover();
+  });
 }
 
 function showError(error) {
@@ -5439,6 +5464,7 @@ fetch(`./data.json?t=${Date.now()}`)
     placeReplacementCoverageControl();
     initSelect();
     updateAll();
+    notifyPortalReady();
   })
   .catch(showError);
 

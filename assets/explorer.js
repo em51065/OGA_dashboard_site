@@ -28,6 +28,7 @@ let childMutationObserver = null;
 let childDecorateTimer = null;
 let childWindow = null;
 let measureFrameId = null;
+let chartReadyFallbackTimer = null;
 let lastFrameHeight = 0;
 let lastOuterHeight = 0;
 /* Match current Wix HTML component on ossd.ncku.edu.tw (comp-mqylfndk). */
@@ -95,12 +96,40 @@ function reportOuterHeight() {
 // Parent pages may load `oga-embed.js` with `async`, potentially missing the first
 // `oga:resize` message. Support a request/response handshake to re-measure.
 window.addEventListener("message", (event) => {
-  if (!event.data || event.data.type !== "oga:request-resize") return;
-  scheduleFrameMeasure();
-  reportOuterHeight();
-  window.setTimeout(reportOuterHeight, 120);
-  window.setTimeout(reportOuterHeight, 600);
+  if (!event.data) return;
+  if (event.data.type === "oga:request-resize") {
+    scheduleFrameMeasure();
+    reportOuterHeight();
+    window.setTimeout(reportOuterHeight, 120);
+    window.setTimeout(reportOuterHeight, 600);
+    return;
+  }
+  if (event.data.type === "oga:chart-ready") {
+    revealChartFrame();
+  }
 });
+
+function clearChartReadyFallback() {
+  if (chartReadyFallbackTimer !== null) {
+    window.clearTimeout(chartReadyFallbackTimer);
+    chartReadyFallbackTimer = null;
+  }
+}
+
+function revealChartFrame() {
+  clearChartReadyFallback();
+  stage.setAttribute("aria-busy", "false");
+  loading.hidden = true;
+  reportOuterHeight();
+}
+
+function scheduleChartReadyFallback() {
+  clearChartReadyFallback();
+  chartReadyFallbackTimer = window.setTimeout(() => {
+    chartReadyFallbackTimer = null;
+    revealChartFrame();
+  }, 3000);
+}
 
 function scheduleFrameMeasure() {
   if (measureFrameId !== null) window.cancelAnimationFrame(measureFrameId);
@@ -189,6 +218,14 @@ function closePinnedNavFromOutside() {
   blurNavFocus();
 }
 
+function closeChildChartPopovers() {
+  try {
+    frame.contentWindow?.postMessage({ type: "oga:close-popovers" }, "*");
+  } catch (_error) {
+    /* iframe may be cross-origin or unloading */
+  }
+}
+
 function blurNavFocus() {
   // Chart picks leave focus on the menu item; :focus-within would keep the menu open after mouseleave.
   const active = document.activeElement;
@@ -214,11 +251,14 @@ function getHeadingPlainText(heading) {
 
 function resolveBlockKicker(text) {
   if (!text) return "DATA VIEW";
-  if (text.includes("\u6210\u679c\u7e3d\u89bd") || text.includes("\u7d2f\u7a4d\u7bc0\u7701\u74e6\u6578")) return "CUMULATIVE IMPACT";
+  if (text.includes("成果追蹤")) return "DATA SUMMARY";
+  if (text.includes("\u6210\u679c\u7e3d\u89bd")) return "CUMULATIVE IMPACT";
+  if (text.includes("\u7d2f\u7a4d\u7bc0\u7701\u74e6\u6578")) return "CUMULATIVE IMPACT";
   if (text.includes("歷年節省瓦數") || text.includes("年度節省瓦數") || text.includes("歷年全校節省瓦數")) return "YEARLY SAVINGS";
   if (text.includes("各校區節省瓦數") || text.includes("校區節省瓦數") || text.includes("省瓦歸因") || text.includes("省瓦來源")) return "CAMPUS SAVINGS";
   if (text.includes("\u6c70\u63db\u91cf") || text.includes("\u5e74\u5ea6\u63a8\u9032") || text.includes("\u975eLED\u6c70\u63db") || text.includes("\u6c70\u63db\u6578\u7e3d\u89bd")) return "REPLACEMENT VOLUME";
   if (text.includes("\u6539\u5584\u54c1\u8cea") || text.includes("\u6c70\u63db\u54c1\u8cea") || text.includes("\u6c70\u63db\u6548\u76ca\u7e3d\u89bd")) return "REPLACEMENT EFFICIENCY";
+  if (text.includes("節省瓦數") || text.includes("節能效益")) return "DATA SUMMARY";
   if (text.includes("月份排名") || text.includes("月度排名") || text.includes("同年月排名")) return "MONTHLY RANKING";
   if (text.includes("歷史排名")) return "HISTORICAL RANKING";
   if (text.includes("逐月趨勢")) return "MONTHLY TREND";
@@ -454,6 +494,7 @@ function switchChart(chartId, historyMode = "push") {
 
   // Always reload so chart-local filters reset (ECOCO → 全部, etc.).
   detachChildObservers();
+  clearChartReadyFallback();
   lastFrameHeight = 0;
   lastOuterHeight = 0;
   stage.setAttribute("aria-busy", "true");
@@ -508,9 +549,15 @@ function bindEvents() {
       closePinnedNavFromOutside();
     }
   });
+  // Clicks on explorer chrome (outside the chart iframe) never reach the child document.
+  document.addEventListener("pointerdown", (event) => {
+    if (event.target === frame || frame.contains(event.target)) return;
+    closeChildChartPopovers();
+  }, true);
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
       closePinnedNavFromOutside();
+      closeChildChartPopovers();
     }
   });
 
@@ -518,9 +565,7 @@ function bindEvents() {
 
   frame.addEventListener("load", () => {
     prepareChildFrame();
-    stage.setAttribute("aria-busy", "false");
-    loading.hidden = true;
-    reportOuterHeight();
+    scheduleChartReadyFallback();
   });
 
   window.addEventListener("resize", scheduleFrameMeasure);

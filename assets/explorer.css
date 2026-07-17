@@ -455,7 +455,7 @@ body { overflow-x: hidden; }
   overflow: hidden;
 }
 
-.oga-stage[aria-busy="true"] #chartFrame { opacity: 0.18; }
+.oga-stage[aria-busy="true"] #chartFrame { opacity: 0; visibility: hidden; }
 
 .oga-loading {
   position: absolute;
