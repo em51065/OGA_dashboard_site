@@ -29,6 +29,7 @@ let childDecorateTimer = null;
 let childWindow = null;
 let measureFrameId = null;
 let lastFrameHeight = 0;
+let lastOuterHeight = 0;
 
 function parseInitialChart() {
   const params = new URLSearchParams(window.location.search);
@@ -52,15 +53,14 @@ function updateUrl(mode = "replace") {
 function measurePortalHeight() {
   const portal = document.getElementById("ogaPortal") || document.body;
   const portalRect = portal.getBoundingClientRect();
-  // Small pad so the host iframe (Wix HTML box) is not 1–16px short of content.
-  const HEIGHT_PAD = 16;
+  // Only measure #ogaPortal. Never use html/body scrollHeight: after the host
+  // iframe grows, those values track the viewport and create an endless +pad loop.
+  const HEIGHT_PAD = 8;
   return Math.max(
     560,
-    Math.ceil(document.documentElement.scrollHeight || 0),
-    Math.ceil(document.body?.scrollHeight || 0),
     Math.ceil(portal.scrollHeight || 0),
     Math.ceil(portal.offsetHeight || 0),
-    Math.ceil(portalRect.height + Math.max(0, portalRect.top) + 8)
+    Math.ceil(portalRect.height + Math.max(0, portalRect.top))
   ) + HEIGHT_PAD;
 }
 
@@ -68,6 +68,8 @@ function reportOuterHeight() {
   if (window.parent === window) return;
   window.requestAnimationFrame(() => {
     const height = measurePortalHeight();
+    if (Math.abs(height - lastOuterHeight) < 3) return;
+    lastOuterHeight = height;
     const payloads = [
       { type: "oga:resize", height },
       { type: "resize", height },
@@ -118,7 +120,7 @@ function measureChild() {
     const rootRect = root.getBoundingClientRect();
     // Measure only the chart widget. Including body/html scrollHeight creates a
     // feedback loop with the iframe's own min-height and leaves a dead gap above the footnote.
-    const CHILD_HEIGHT_PAD = 12;
+    const CHILD_HEIGHT_PAD = 4;
     const height = Math.max(
       360,
       Math.ceil(rootRect.height + Math.max(0, rootRect.top) + 2),
@@ -435,6 +437,7 @@ function switchChart(chartId, historyMode = "push") {
   // Always reload so chart-local filters reset (ECOCO → 全部, etc.).
   detachChildObservers();
   lastFrameHeight = 0;
+  lastOuterHeight = 0;
   stage.setAttribute("aria-busy", "true");
   loading.hidden = false;
   frame.title = `${CHARTS[chartId].title}互動圖表`;
