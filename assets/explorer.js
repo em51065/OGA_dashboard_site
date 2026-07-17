@@ -372,7 +372,7 @@ function prepareChildFrame() {
       /* Fit inside fixed Wix host (~1159px) without nested scroll. */
       .ga-widget { padding: 12px !important; }
       .ga-head { margin-bottom: 8px !important; gap: 10px !important; }
-      .ga-head-copy { padding-bottom: 8px !important; }
+      .ga-head-copy { padding-bottom: 8px !important; align-self: flex-start !important; margin-top: 10px !important; }
       .ga-pr-card { padding: 12px !important; }
       .ga-chart-card { padding: 8px 12px 4px !important; padding-top: 22px !important; }
       .ga-chart-card::before { top: 10px !important; }
