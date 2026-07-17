@@ -30,6 +30,12 @@ let childWindow = null;
 let measureFrameId = null;
 let lastFrameHeight = 0;
 let lastOuterHeight = 0;
+/* Match current Wix HTML component on ossd.ncku.edu.tw (comp-mqylfndk). */
+const EMBED_HOST_MAX_HEIGHT = 1159;
+
+function isEmbeddedMode() {
+  return document.documentElement.classList.contains("is-embedded");
+}
 
 function parseInitialChart() {
   const params = new URLSearchParams(window.location.search);
@@ -54,8 +60,8 @@ function measurePortalHeight() {
   const portal = document.getElementById("ogaPortal");
   if (!portal) return 560;
   // Measure content box only — never html/body scrollHeight (tracks iframe viewport).
-  const HEIGHT_PAD = 8;
-  const MAX_CONTENT_HEIGHT = 2400;
+  const HEIGHT_PAD = 4;
+  const MAX_CONTENT_HEIGHT = isEmbeddedMode() ? EMBED_HOST_MAX_HEIGHT : 2400;
   const foot = portal.querySelector(".oga-footnote");
   const portalTop = portal.getBoundingClientRect().top;
   const contentBottom = foot
@@ -113,13 +119,18 @@ function measureChild() {
     const rootRect = root.getBoundingClientRect();
     // Measure only the chart widget. Including body/html scrollHeight creates a
     // feedback loop with the iframe's own min-height and leaves a dead gap above the footnote.
-    const CHILD_HEIGHT_PAD = 4;
-    const height = Math.max(
+    const CHILD_HEIGHT_PAD = 2;
+    let height = Math.max(
       360,
       Math.ceil(rootRect.height + Math.max(0, rootRect.top) + 2),
       Math.ceil(root.scrollHeight || 0),
       Math.ceil(root.offsetHeight || 0)
     ) + CHILD_HEIGHT_PAD;
+    if (isEmbeddedMode()) {
+      // Leave room for explorer chrome above/below the chart iframe inside 1159px host.
+      const EMBED_CHART_MAX = 920;
+      height = Math.min(EMBED_CHART_MAX, height);
+    }
     if (Math.abs(height - lastFrameHeight) < 2) {
       reportOuterHeight();
       return;
@@ -357,6 +368,20 @@ function prepareChildFrame() {
         align-items: flex-start;
         gap: 0;
       }
+      ${isEmbeddedMode() ? `
+      /* Fit inside fixed Wix host (~1159px) without nested scroll. */
+      .ga-widget { padding: 12px !important; }
+      .ga-head { margin-bottom: 8px !important; gap: 10px !important; }
+      .ga-head-copy { padding-bottom: 8px !important; }
+      .ga-pr-card { padding: 12px !important; }
+      .ga-chart-card { padding: 8px 12px 4px !important; padding-top: 22px !important; }
+      .ga-chart-card::before { top: 10px !important; }
+      #trendChart { height: 520px !important; margin-top: 0 !important; }
+      .ga-replacement-chart #trendChart { height: 450px !important; }
+      #overviewChart { height: 220px !important; }
+      .ga-toggle-bar { padding-bottom: 4px !important; }
+      .ga-pr-score { margin: 6px 0 8px !important; }
+      ` : ""}
     `;
     doc.head.appendChild(style);
   }
