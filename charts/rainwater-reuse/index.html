@@ -4607,7 +4607,8 @@ function renderMonthOverview() {
   const bars = [...selectedBars, ...otherBars];
   const values = bars.map((item) => item.value);
   const displayValues = visibleBarValues(values);
-  const yPositions = bars.map((_, idx) => idx * 1.08);
+  // Match year mode: lift the selected month slightly with a small gap before the rest.
+  const yPositions = bars.map((_, idx) => (idx === 0 ? 0 : idx * 1.08 + 0.42));
   const maxValue = Math.max(...values, 1);
   const colors = bars.map((item) => colorForPosition(Math.round(item.relativePosition)));
   if (overviewTitle) overviewTitle.textContent = `月份總覽｜${selectedYear}年`;
