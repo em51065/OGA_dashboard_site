@@ -509,13 +509,17 @@ body { overflow-x: hidden; }
    and overflow:hidden avoids a nested scrollbar while the parent iframe auto-grows. */
 html.is-embedded,
 html.is-embedded body {
+  height: auto !important;
+  min-height: 0 !important;
   overflow: hidden !important;
   background: var(--paper) !important;
 }
 
 html.is-embedded .oga-portal {
   padding-top: 14px;
+  padding-bottom: 8px;
   background: var(--paper);
+  min-height: 0;
 }
 
 html.is-embedded .oga-footnote {

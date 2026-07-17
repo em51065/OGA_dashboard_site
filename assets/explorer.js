@@ -51,17 +51,23 @@ function updateUrl(mode = "replace") {
 }
 
 function measurePortalHeight() {
-  const portal = document.getElementById("ogaPortal") || document.body;
-  const portalRect = portal.getBoundingClientRect();
-  // Only measure #ogaPortal. Never use html/body scrollHeight: after the host
-  // iframe grows, those values track the viewport and create an endless +pad loop.
+  const portal = document.getElementById("ogaPortal");
+  if (!portal) return 560;
+  // Measure content box only — never html/body scrollHeight (tracks iframe viewport).
   const HEIGHT_PAD = 8;
-  return Math.max(
+  const MAX_CONTENT_HEIGHT = 2400;
+  const foot = portal.querySelector(".oga-footnote");
+  const portalTop = portal.getBoundingClientRect().top;
+  const contentBottom = foot
+    ? foot.getBoundingClientRect().bottom
+    : portal.getBoundingClientRect().bottom;
+  const fromEdges = Math.ceil(contentBottom - portalTop + (window.scrollY || 0));
+  const height = Math.max(
     560,
     Math.ceil(portal.scrollHeight || 0),
-    Math.ceil(portal.offsetHeight || 0),
-    Math.ceil(portalRect.height + Math.max(0, portalRect.top))
+    fromEdges
   ) + HEIGHT_PAD;
+  return Math.min(MAX_CONTENT_HEIGHT, height);
 }
 
 function reportOuterHeight() {
@@ -70,26 +76,13 @@ function reportOuterHeight() {
     const height = measurePortalHeight();
     if (Math.abs(height - lastOuterHeight) < 3) return;
     lastOuterHeight = height;
-    const payloads = [
-      { type: "oga:resize", height },
-      { type: "resize", height },
-      { type: "setHeight", height },
-    ];
-    const targets = [window.parent];
+    // Only oga:resize to parent. Broadcasting resize/setHeight to window.top
+    // can make Wix HTML components keep growing and leave a huge empty tail.
     try {
-      if (window.parent !== window.top) targets.push(window.top);
+      window.parent.postMessage({ type: "oga:resize", height }, "*");
     } catch (_error) {
       /* ignore */
     }
-    targets.forEach((target) => {
-      payloads.forEach((payload) => {
-        try {
-          target.postMessage(payload, "*");
-        } catch (_error) {
-          /* ignore */
-        }
-      });
-    });
   });
 }
 

@@ -2,7 +2,7 @@
   "use strict";
 
   const selector = "iframe[data-oga-autoheight]";
-  const MAX_HEIGHT = 12000;
+  const MAX_HEIGHT = 2400;
   const MIN_HEIGHT = 560;
 
   function frames() {
@@ -10,26 +10,12 @@
   }
 
   function notifyHostHeight(height) {
-    const payloads = [
-      { type: "oga:resize", height },
-      { type: "resize", height },
-      { type: "setHeight", height },
-    ];
-    const targets = [window.parent];
+    // Single message type to the direct parent only — avoids Wix growth loops.
     try {
-      if (window.parent !== window.top) targets.push(window.top);
+      window.parent.postMessage({ type: "oga:resize", height }, "*");
     } catch (_error) {
-      /* cross-origin top access may throw */
+      /* ignore */
     }
-    targets.forEach((target) => {
-      payloads.forEach((payload) => {
-        try {
-          target.postMessage(payload, "*");
-        } catch (_error) {
-          /* ignore */
-        }
-      });
-    });
   }
 
   function applyHeight(frame, rawHeight) {
@@ -37,14 +23,15 @@
     if (!height) return;
     const prev = Number.parseInt(frame.style.height, 10) || 0;
     if (prev && Math.abs(prev - height) < 3) return;
-    // Use important so host CMS styles (e.g. Wix) are less likely to keep a short fixed height.
     frame.style.setProperty("height", `${height}px`, "important");
     frame.style.setProperty("min-height", `${height}px`, "important");
+    frame.style.setProperty("max-height", `${MAX_HEIGHT}px`, "important");
     frame.style.setProperty("overflow", "hidden", "important");
     frame.setAttribute("scrolling", "no");
     const wrap = frame.parentElement;
     if (wrap && wrap !== document.body) {
       wrap.style.minHeight = `${height}px`;
+      wrap.style.maxHeight = "";
       wrap.style.height = "auto";
       wrap.style.overflow = "visible";
     }
