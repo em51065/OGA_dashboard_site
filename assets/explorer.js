@@ -80,8 +80,19 @@ function measureChild() {
     if (!doc) return;
     const root = doc.getElementById("gaWidget") || doc.body?.firstElementChild || doc.body;
     if (!root) return;
-    const rect = root.getBoundingClientRect();
-    const height = Math.max(360, Math.ceil(rect.height + Math.max(0, rect.top) + 3));
+    const rootRect = root.getBoundingClientRect();
+    const body = doc.body;
+    const html = doc.documentElement;
+    const height = Math.max(
+      360,
+      Math.ceil(rootRect.height + Math.max(0, rootRect.top) + 3),
+      Math.ceil(root.scrollHeight || 0),
+      Math.ceil(root.offsetHeight || 0),
+      Math.ceil(body?.scrollHeight || 0),
+      Math.ceil(body?.offsetHeight || 0),
+      Math.ceil(html?.scrollHeight || 0),
+      Math.ceil(html?.offsetHeight || 0)
+    );
     if (Math.abs(height - lastFrameHeight) < 2) return;
     lastFrameHeight = height;
     frame.style.height = `${height}px`;
@@ -200,6 +211,7 @@ function prepareChildFrame() {
   const doc = frame.contentDocument;
   const win = frame.contentWindow;
   if (!doc || !win) return;
+  frame.setAttribute("scrolling", "no");
 
   let style = doc.getElementById("oga-portal-embed-style");
   if (!style) {
