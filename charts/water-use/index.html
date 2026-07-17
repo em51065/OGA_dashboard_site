@@ -933,7 +933,7 @@
     flex: 0 0 auto;
   }
   #overviewChart { height: 260px; }
-  .ga-chart-card { padding: 14px 16px 8px; position: relative; overflow: visible; }
+  .ga-chart-card { padding: 14px 6px 8px 14px; position: relative; overflow: visible; }
   .ga-quality-head {
     display: flex;
     align-items: flex-end;
@@ -4180,7 +4180,7 @@ function renderMonthTrend() {
         text: `${boldTitle(`逐月趨勢-${activeValueNoun()}`)}<br><sup>${selectedYear}年逐月｜目前沒有資料</sup>`,
         x: 0, xanchor: "left", y: 0.974, yanchor: "top", pad: { t: 3, b: 0 }, font: { size: 19, color: "#101827" },
       },
-      margin: { l: 70, r: 92, t: 78, b: 62 },
+      margin: { l: 64, r: 28, t: 78, b: 62 },
       paper_bgcolor: "rgba(0,0,0,0)",
       plot_bgcolor: "#ffffff",
       xaxis: { visible: false },
@@ -4236,7 +4236,7 @@ function renderMonthTrend() {
       text: `${boldTitle(`逐月趨勢-${activeValueNoun()}`)}<br><sup>${selectedYear}年逐月｜點選月份端點可同步左側排名</sup>`,
       x: 0, xanchor: "left", y: 0.974, yanchor: "top", pad: { t: 3, b: 0 }, font: { size: 19, color: "#101827" },
     },
-    margin: { l: 70, r: 92, t: 78, b: 62 },
+    margin: { l: 64, r: 28, t: 78, b: 62 },
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "#ffffff",
     xaxis: {
@@ -4337,7 +4337,7 @@ function renderTrend() {
         pad: { t: 3, b: 0 },
         font: { size: 19, color: "#101827" },
       },
-      margin: { l: 70, r: 92, t: 78, b: 62 },
+      margin: { l: 64, r: 28, t: 78, b: 62 },
       paper_bgcolor: "rgba(0,0,0,0)",
       plot_bgcolor: "#ffffff",
       xaxis: { visible: false },
@@ -4434,7 +4434,7 @@ function renderTrend() {
       },
     ],
     annotations,
-    margin: { l: 54, r: 80, t: 128, b: 78 },
+    margin: { l: 54, r: 28, t: 128, b: 78 },
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "#ffffff",
     xaxis: { tickmode: "array", tickvals: years, title: "", showgrid: false, zeroline: false },
