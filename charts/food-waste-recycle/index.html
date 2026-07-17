@@ -61,6 +61,31 @@
   body.ga-has-metric-switch .ga-head-tools {
     max-width: min(420px, 42%);
   }
+  /* Match solar: title | chips | year on one row (ECOCO has more chips). */
+  body.ga-has-category-chips .ga-head-copy {
+    flex: 0 1 auto;
+    /* Keep subtitle + extra as two single lines (not three). */
+    min-width: min(100%, 22rem);
+  }
+  body.ga-has-category-chips .ga-head-tools {
+    flex: 1 1 auto;
+    flex-wrap: nowrap;
+    max-width: none;
+    min-width: 0;
+  }
+  body.ga-has-category-chips .ga-category-chips {
+    flex: 1 1 auto;
+    max-width: none;
+    min-width: 0;
+    justify-content: flex-end;
+  }
+  body.ga-has-category-chips .ga-controls {
+    flex: 0 0 auto;
+  }
+  body.ga-has-category-chips .ga-sub,
+  body.ga-has-category-chips .ga-sub-extra {
+    white-space: nowrap;
+  }
   h1 {
     margin: 0 0 6px;
     font-size: clamp(24px, 3vw, 36px);
@@ -1054,6 +1079,13 @@
       align-items: stretch;
     }
     .ga-head-copy { padding-bottom: 0; }
+    body.ga-has-category-chips .ga-head-copy {
+      min-width: 0;
+    }
+    body.ga-has-category-chips .ga-sub,
+    body.ga-has-category-chips .ga-sub-extra {
+      white-space: normal;
+    }
     .ga-head > .ga-metric-switch {
       align-self: flex-start;
       margin: 0 0 8px;
@@ -1067,6 +1099,9 @@
       align-items: flex-end;
       justify-content: flex-end;
       gap: 8px;
+    }
+    body.ga-has-category-chips .ga-head-tools {
+      flex-wrap: wrap;
     }
     .ga-controls { justify-content: flex-end; flex-direction: row; align-items: flex-end; }
     .ga-control { min-width: 160px; }
@@ -1559,6 +1594,7 @@ function updateYearControlLabel() {
 function syncGrainBodyClass() {
   document.body.classList.toggle("ga-month-grain", isMonthGrain());
   document.body.classList.toggle("ga-has-metric-switch", usesMetricSwitch());
+  document.body.classList.toggle("ga-has-category-chips", usesCategoryChips());
 }
 
 function setOverviewModeButtons(kind) {
@@ -5348,6 +5384,7 @@ fetch(`./data.json?t=${Date.now()}`)
   .then((data) => {
     GA_DATA = data;
     document.body.classList.toggle("ga-replacement-chart", isReplacementChart());
+    document.body.classList.toggle("ga-has-category-chips", usesCategoryChips());
     if (isStreetlightChart()) {
       overviewMode = "location";
       overviewModeTouched = false;

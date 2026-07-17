@@ -114,17 +114,13 @@ function measureChild() {
     const root = doc.getElementById("gaWidget") || doc.body?.firstElementChild || doc.body;
     if (!root) return;
     const rootRect = root.getBoundingClientRect();
-    const body = doc.body;
-    const html = doc.documentElement;
+    // Measure only the chart widget. Including body/html scrollHeight creates a
+    // feedback loop with the iframe's own min-height and leaves a dead gap above the footnote.
     const height = Math.max(
       360,
-      Math.ceil(rootRect.height + Math.max(0, rootRect.top) + 3),
+      Math.ceil(rootRect.height + Math.max(0, rootRect.top) + 2),
       Math.ceil(root.scrollHeight || 0),
-      Math.ceil(root.offsetHeight || 0),
-      Math.ceil(body?.scrollHeight || 0),
-      Math.ceil(body?.offsetHeight || 0),
-      Math.ceil(html?.scrollHeight || 0),
-      Math.ceil(html?.offsetHeight || 0)
+      Math.ceil(root.offsetHeight || 0)
     );
     if (Math.abs(height - lastFrameHeight) < 2) {
       reportOuterHeight();
@@ -133,6 +129,10 @@ function measureChild() {
     lastFrameHeight = height;
     frame.style.setProperty("height", `${height}px`, "important");
     frame.style.setProperty("min-height", `${height}px`, "important");
+    const wrap = frame.parentElement;
+    if (wrap?.classList?.contains("oga-frame-wrap")) {
+      wrap.style.setProperty("min-height", `${height}px`, "important");
+    }
     reportOuterHeight();
   } catch (_error) {
     frame.style.setProperty("height", "1200px", "important");
@@ -275,16 +275,31 @@ function prepareChildFrame() {
           flex-direction: row !important;
           align-items: flex-end !important;
         }
-        .ga-head-tools {
+        body.ga-has-category-chips .ga-head-copy {
+          flex: 0 1 auto !important;
+          min-width: min(100%, 22rem) !important;
+        }
+        body.ga-has-category-chips .ga-sub,
+        body.ga-has-category-chips .ga-sub-extra {
+          white-space: nowrap !important;
+        }
+        body.ga-has-category-chips .ga-head-tools {
           flex-direction: row !important;
-          flex-wrap: wrap !important;
+          flex-wrap: nowrap !important;
           align-items: flex-end !important;
           justify-content: flex-end !important;
-          max-width: min(720px, 62%) !important;
+          max-width: none !important;
+          flex: 1 1 auto !important;
+          min-width: 0 !important;
         }
-        .ga-category-chips {
+        body.ga-has-category-chips .ga-category-chips {
           justify-content: flex-end !important;
           max-width: none !important;
+          flex: 1 1 auto !important;
+          min-width: 0 !important;
+        }
+        body.ga-has-category-chips .ga-controls {
+          flex: 0 0 auto !important;
         }
         .ga-pr-card .ga-card-title {
           position: relative !important;

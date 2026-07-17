@@ -26,7 +26,7 @@ body { overflow-x: hidden; }
 .oga-portal {
   width: min(1280px, 100%);
   margin: 0 auto;
-  padding: 22px 24px 18px;
+  padding: 22px 24px 10px;
 }
 
 .oga-header {
@@ -441,14 +441,14 @@ body { overflow-x: hidden; }
 
 .oga-frame-wrap {
   position: relative;
-  min-height: 760px;
+  min-height: 360px;
   overflow: hidden;
 }
 
 #chartFrame {
   display: block;
   width: 100%;
-  min-height: 760px;
+  min-height: 360px;
   border: 0;
   background: transparent;
   opacity: 1;
@@ -484,8 +484,8 @@ body { overflow-x: hidden; }
 
 
 .oga-footnote {
-  margin-top: 6px;
-  padding: 2px 4px 2px;
+  margin-top: 0;
+  padding: 2px 4px 0;
   border-top: none;
   color: var(--muted);
   font-size: 11px;
@@ -519,8 +519,8 @@ html.is-embedded .oga-portal {
 }
 
 html.is-embedded .oga-footnote {
-  margin-top: 4px;
-  padding-top: 2px;
+  margin-top: 0;
+  padding-top: 0;
 }
 
 @keyframes oga-spin { to { transform: rotate(360deg); } }
@@ -565,7 +565,7 @@ html.is-embedded .oga-footnote {
   }
   .oga-stage { margin-top: 10px; }
   .oga-stage-bar { padding-inline: 2px; }
-  .oga-frame-wrap, #chartFrame { min-height: 1080px; }
+  .oga-frame-wrap, #chartFrame { min-height: 360px; }
 }
 
 @media (max-width: 460px) {
