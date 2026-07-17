@@ -33,7 +33,12 @@
   }
 
   function applyHeight(frame, rawHeight) {
-    const height = Math.max(MIN_HEIGHT, Math.min(MAX_HEIGHT, Math.ceil(Number(rawHeight) || 0)));
+    // Extra pad for host CMS rounding / borders so nested scrollbars don't appear "just short".
+    const HOST_HEIGHT_PAD = 8;
+    const height = Math.max(
+      MIN_HEIGHT,
+      Math.min(MAX_HEIGHT, Math.ceil(Number(rawHeight) || 0) + HOST_HEIGHT_PAD)
+    );
     if (!height) return;
     // Use important so host CMS styles (e.g. Wix) are less likely to keep a short fixed height.
     frame.style.setProperty("height", `${height}px`, "important");

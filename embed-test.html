@@ -3,49 +3,231 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>永續處圖表嵌入測試</title>
+  <title>永續處圖表嵌入測試（OSSD 對照）</title>
   <style>
     * { box-sizing: border-box; }
     body { margin: 0; background: #f3f5f8; color: #172033; font-family: Inter, "Noto Sans TC", sans-serif; }
     .test-shell { max-width: 1380px; margin: 0 auto; padding: 24px; }
-    .test-toolbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-    .test-toolbar strong { margin-right: 8px; }
-    .test-toolbar button { border: 1px solid #cbd5e1; background: #fff; padding: 8px 12px; cursor: pointer; font: inherit; }
-    .test-toolbar button:hover, .test-toolbar button.is-active { border-color: #243b5a; color: #fff; background: #243b5a; }
-    .host-page { width: min(100%, 1220px); margin: 0 auto; transition: width 160ms ease; }
-    iframe { width: 100%; min-height: 720px; border: 0; display: block; }
+    .test-toolbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+    .test-toolbar strong { margin-right: 4px; }
+    .test-toolbar button {
+      border: 1px solid #cbd5e1;
+      background: #fff;
+      padding: 8px 12px;
+      cursor: pointer;
+      font: inherit;
+    }
+    .test-toolbar button:hover,
+    .test-toolbar button.is-active {
+      border-color: #243b5a;
+      color: #fff;
+      background: #243b5a;
+    }
+    .test-note {
+      margin: 0 0 8px;
+      color: #52637a;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .test-note strong { color: #243b5a; }
+    .test-rule {
+      margin: 0 0 16px;
+      padding: 10px 12px;
+      border: 1px solid #d7e0ea;
+      border-radius: 8px;
+      background: #fff;
+      color: #334155;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .host-page {
+      width: 1058px;
+      max-width: 100%;
+      margin: 0 auto;
+      transition: width 160ms ease;
+    }
+    /*
+      Mimic Wix HTML component: fixed box. Content taller than the box
+      → nested vertical scrollbar (same failure mode as ossd.ncku.edu.tw).
+    */
+    .host-frame-wrap {
+      width: 100%;
+      height: 1159px;
+      overflow: auto;
+      border: 1px solid #c5d0dc;
+      background: #fff;
+      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
+    }
+    .host-frame-wrap.is-auto-grow {
+      height: auto;
+      overflow: visible;
+    }
+    iframe {
+      width: 100%;
+      min-height: 100%;
+      border: 0;
+      display: block;
+      background: #f5f7fa;
+    }
   </style>
 </head>
 <body>
   <main class="test-shell">
-    <div class="test-toolbar" aria-label="嵌入寬度測試">
-      <strong>模擬外部網站內容寬度</strong>
-      <button type="button" data-width="1220" class="is-active">1220</button>
+    <p class="test-rule">
+      <strong>對照原則：</strong>
+      此頁預設 = 目前
+      <a href="https://ossd.ncku.edu.tw/%E6%A0%A1%E5%8B%99%E7%A0%94%E7%A9%B6%E8%B3%87%E8%A8%8A%E5%85%AC%E9%96%8B" target="_blank" rel="noopener">ossd.ncku.edu.tw 校務研究資訊圖表</a>
+      的嵌入框（寬 <strong>1058</strong> × 高 <strong>1159</strong>）。
+      測試頁有內部捲軸 ↔ 真站也會有；測試頁沒有 ↔ 真站在相同設定下也不會有。
+      真站若改 HTML 元件高度，請同步改下方「嵌入框高度」按鈕。
+    </p>
+
+    <div class="test-toolbar" aria-label="嵌入框寬度（對應 Wix HTML 元件寬）">
+      <strong>嵌入框寬度</strong>
+      <button type="button" data-width="1058" class="is-active" title="目前真站 HTML 元件寬">1058（真站）</button>
+      <button type="button" data-width="1220">1220</button>
       <button type="button" data-width="1024">1024</button>
-      <button type="button" data-width="1058" title="約等同 ossd.ncku.edu.tw 儀表板 HTML 元件寬（comp-mqylfndk）">1058（OSSD）</button>
       <button type="button" data-width="900">900</button>
       <button type="button" data-width="768">768</button>
-      <button type="button" data-width="430">430</button>
-      <button type="button" data-width="390">390</button>
     </div>
+
+    <div class="test-toolbar" aria-label="嵌入框高度（對應 Wix HTML 元件高）">
+      <strong>嵌入框高度</strong>
+      <button type="button" data-height="1159" class="is-active" title="目前真站 HTML 元件高（已知偏矮）">1159（真站現況）</button>
+      <button type="button" data-height="1300" title="建議真站先改到的高度">1300（建議）</button>
+      <button type="button" data-height="1400">1400</button>
+      <button type="button" data-height="auto" title="僅當真站有 Velo／宿主會跟著長高時才代表真站">自動長高（需 Velo）</button>
+    </div>
+
+    <p class="test-note" id="profileNote"></p>
+    <p class="test-note" id="heightReadout">內容高度：載入中…</p>
+
     <div class="host-page" id="hostPage">
-      <iframe
-        src="./explorer/?embed=1"
-        title="成大永續數據探索"
-        loading="eager"
-        data-oga-autoheight
-      ></iframe>
+      <div class="host-frame-wrap" id="hostFrameWrap">
+        <iframe
+          id="embedFrame"
+          src="./explorer/?embed=1"
+          title="成大永續數據探索"
+          loading="eager"
+          data-oga-autoheight
+        ></iframe>
+      </div>
     </div>
   </main>
   <script src="./assets/oga-embed.js"></script>
   <script>
     const host = document.getElementById("hostPage");
+    const wrap = document.getElementById("hostFrameWrap");
+    const frame = document.getElementById("embedFrame");
+    const profileNote = document.getElementById("profileNote");
+    const heightReadout = document.getElementById("heightReadout");
+
+    // Keep these in sync with the live Wix HTML component when it changes.
+    const PRODUCTION = { width: 1058, height: 1159 };
+
+    let boxWidth = PRODUCTION.width;
+    let boxHeight = PRODUCTION.height; // number | "auto"
+    let contentHeight = 0;
+
+    function syncButtons() {
+      document.querySelectorAll("[data-width]").forEach((btn) => {
+        btn.classList.toggle("is-active", Number(btn.dataset.width) === boxWidth);
+      });
+      document.querySelectorAll("[data-height]").forEach((btn) => {
+        const value = btn.dataset.height;
+        const active = value === "auto" ? boxHeight === "auto" : Number(value) === boxHeight;
+        btn.classList.toggle("is-active", active);
+      });
+    }
+
+    function updateCopy() {
+      const matchesProduction =
+        boxWidth === PRODUCTION.width && boxHeight === PRODUCTION.height;
+      if (boxHeight === "auto") {
+        profileNote.innerHTML =
+          "目前：<strong>自動長高</strong>。只有真站也接了 Velo／宿主會改 HTML 高度時，這個結果才等於真站。";
+      } else if (matchesProduction) {
+        profileNote.innerHTML =
+          `目前：<strong>完全模擬真站</strong>（${boxWidth}×${boxHeight}）。此模式的內部捲軸問題 = 真站現況。`;
+      } else {
+        profileNote.innerHTML =
+          `目前：模擬嵌入框 <strong>${boxWidth}×${boxHeight}</strong>。若真站改成同樣數字，結果應一致。`;
+      }
+
+      if (!contentHeight) {
+        heightReadout.textContent = "內容高度：載入中…";
+        return;
+      }
+      if (boxHeight === "auto") {
+        heightReadout.textContent = `內容高度：${contentHeight}px（外框跟著長高，理論上不應有內部捲軸）`;
+        return;
+      }
+      const delta = contentHeight - boxHeight;
+      if (delta > 2) {
+        heightReadout.textContent =
+          `內容高度：${contentHeight}px，外框 ${boxHeight}px → 矮 ${delta}px → 會有內部捲軸。真站請把 HTML 高度設成 ≥ ${Math.ceil(contentHeight / 10) * 10}。`;
+      } else {
+        heightReadout.textContent =
+          `內容高度：${contentHeight}px，外框 ${boxHeight}px → 足夠，內部捲軸應消失。`;
+      }
+    }
+
+    function applyProfile() {
+      host.style.width = `${boxWidth}px`;
+      if (boxHeight === "auto") {
+        wrap.classList.add("is-auto-grow");
+        wrap.style.height = "";
+        wrap.style.maxHeight = "";
+        wrap.style.overflow = "visible";
+        frame.setAttribute("data-oga-autoheight", "");
+        frame.setAttribute("scrolling", "no");
+        try {
+          frame.contentWindow?.postMessage({ type: "oga:request-resize" }, "*");
+        } catch (_error) {
+          /* ignore */
+        }
+      } else {
+        // Faithful Wix box: fixed size; oga-embed may grow the iframe, wrap scrolls if needed.
+        wrap.classList.remove("is-auto-grow");
+        wrap.style.height = `${boxHeight}px`;
+        wrap.style.maxHeight = `${boxHeight}px`;
+        wrap.style.overflow = "auto";
+        frame.setAttribute("data-oga-autoheight", "");
+        frame.setAttribute("scrolling", "no");
+        try {
+          frame.contentWindow?.postMessage({ type: "oga:request-resize" }, "*");
+        } catch (_error) {
+          /* ignore */
+        }
+      }
+      syncButtons();
+      updateCopy();
+    }
+
     document.querySelectorAll("[data-width]").forEach((button) => {
       button.addEventListener("click", () => {
-        host.style.width = `${button.dataset.width}px`;
-        document.querySelectorAll("[data-width]").forEach((item) => item.classList.toggle("is-active", item === button));
+        boxWidth = Number(button.dataset.width);
+        applyProfile();
       });
     });
+
+    document.querySelectorAll("[data-height]").forEach((button) => {
+      button.addEventListener("click", () => {
+        boxHeight = button.dataset.height === "auto" ? "auto" : Number(button.dataset.height);
+        applyProfile();
+      });
+    });
+
+    window.addEventListener("message", (event) => {
+      const data = event.data || {};
+      const height = Number(data.height);
+      if (!height) return;
+      if (data.type !== "oga:resize" && data.type !== "resize" && data.type !== "setHeight") return;
+      contentHeight = height;
+      updateCopy();
+    });
+
+    applyProfile();
   </script>
 </body>
 </html>

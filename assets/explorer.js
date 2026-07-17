@@ -52,6 +52,8 @@ function updateUrl(mode = "replace") {
 function measurePortalHeight() {
   const portal = document.getElementById("ogaPortal") || document.body;
   const portalRect = portal.getBoundingClientRect();
+  // Small pad so the host iframe (Wix HTML box) is not 1–16px short of content.
+  const HEIGHT_PAD = 16;
   return Math.max(
     560,
     Math.ceil(document.documentElement.scrollHeight || 0),
@@ -59,7 +61,7 @@ function measurePortalHeight() {
     Math.ceil(portal.scrollHeight || 0),
     Math.ceil(portal.offsetHeight || 0),
     Math.ceil(portalRect.height + Math.max(0, portalRect.top) + 8)
-  );
+  ) + HEIGHT_PAD;
 }
 
 function reportOuterHeight() {
@@ -116,12 +118,13 @@ function measureChild() {
     const rootRect = root.getBoundingClientRect();
     // Measure only the chart widget. Including body/html scrollHeight creates a
     // feedback loop with the iframe's own min-height and leaves a dead gap above the footnote.
+    const CHILD_HEIGHT_PAD = 12;
     const height = Math.max(
       360,
       Math.ceil(rootRect.height + Math.max(0, rootRect.top) + 2),
       Math.ceil(root.scrollHeight || 0),
       Math.ceil(root.offsetHeight || 0)
-    );
+    ) + CHILD_HEIGHT_PAD;
     if (Math.abs(height - lastFrameHeight) < 2) {
       reportOuterHeight();
       return;
