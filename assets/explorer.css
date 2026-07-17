@@ -97,8 +97,9 @@ body { overflow-x: hidden; }
 
 .oga-nav-group {
   position: relative;
-  flex: 0 1 292px;
-  min-width: 0;
+  flex: 1 1 220px;
+  min-width: min(100%, 180px);
+  max-width: 320px;
 }
 
 .oga-nav-group::after {
@@ -441,6 +442,7 @@ body { overflow-x: hidden; }
 .oga-frame-wrap {
   position: relative;
   min-height: 760px;
+  overflow: hidden;
 }
 
 #chartFrame {
@@ -450,6 +452,7 @@ body { overflow-x: hidden; }
   border: 0;
   background: transparent;
   opacity: 1;
+  overflow: hidden;
 }
 
 .oga-stage[aria-busy="true"] #chartFrame { opacity: 0.18; }
@@ -502,10 +505,20 @@ body { overflow-x: hidden; }
   font-weight: 700;
 }
 
-.is-embedded body { background: transparent; }
-.is-embedded .oga-portal { padding-top: 14px; }
+/* Embedded mode: opaque background prevents host-page decorations bleeding through,
+   and overflow:hidden avoids a nested scrollbar while the parent iframe auto-grows. */
+html.is-embedded,
+html.is-embedded body {
+  overflow: hidden !important;
+  background: var(--paper) !important;
+}
 
-.is-embedded .oga-footnote {
+html.is-embedded .oga-portal {
+  padding-top: 14px;
+  background: var(--paper);
+}
+
+html.is-embedded .oga-footnote {
   margin-top: 4px;
   padding-top: 2px;
 }
@@ -514,7 +527,10 @@ body { overflow-x: hidden; }
 
 @media (max-width: 1040px) {
   .oga-chart-nav { gap: 10px; }
-  .oga-nav-group { flex-basis: 0; }
+  .oga-nav-group {
+    flex: 1 1 180px;
+    min-width: min(100%, 160px);
+  }
   .oga-nav-group-trigger { padding-inline: 10px; }
 }
 

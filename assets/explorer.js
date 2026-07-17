@@ -49,12 +49,25 @@ function updateUrl(mode = "replace") {
   window.history[method]({ chart: currentChart }, "", nextUrl);
 }
 
+function measurePortalHeight() {
+  const portal = document.getElementById("ogaPortal") || document.body;
+  const portalRect = portal.getBoundingClientRect();
+  return Math.max(
+    560,
+    Math.ceil(document.documentElement.scrollHeight || 0),
+    Math.ceil(document.body?.scrollHeight || 0),
+    Math.ceil(portal.scrollHeight || 0),
+    Math.ceil(portal.offsetHeight || 0),
+    Math.ceil(portalRect.height + Math.max(0, portalRect.top) + 8)
+  );
+}
+
 function reportOuterHeight() {
   if (window.parent === window) return;
   window.requestAnimationFrame(() => {
     window.parent.postMessage({
       type: "oga:resize",
-      height: Math.ceil(document.documentElement.scrollHeight),
+      height: measurePortalHeight(),
     }, "*");
   });
 }
@@ -63,7 +76,10 @@ function reportOuterHeight() {
 // `oga:resize` message. Support a request/response handshake to re-measure.
 window.addEventListener("message", (event) => {
   if (!event.data || event.data.type !== "oga:request-resize") return;
+  scheduleFrameMeasure();
   reportOuterHeight();
+  window.setTimeout(reportOuterHeight, 120);
+  window.setTimeout(reportOuterHeight, 600);
 });
 
 function scheduleFrameMeasure() {
@@ -93,12 +109,17 @@ function measureChild() {
       Math.ceil(html?.scrollHeight || 0),
       Math.ceil(html?.offsetHeight || 0)
     );
-    if (Math.abs(height - lastFrameHeight) < 2) return;
+    if (Math.abs(height - lastFrameHeight) < 2) {
+      reportOuterHeight();
+      return;
+    }
     lastFrameHeight = height;
-    frame.style.height = `${height}px`;
+    frame.style.setProperty("height", `${height}px`, "important");
+    frame.style.setProperty("min-height", `${height}px`, "important");
     reportOuterHeight();
   } catch (_error) {
-    frame.style.height = "1200px";
+    frame.style.setProperty("height", "1200px", "important");
+    frame.style.setProperty("min-height", "1200px", "important");
     reportOuterHeight();
   }
 }
