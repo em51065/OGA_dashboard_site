@@ -226,6 +226,7 @@
     box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
   }
   .ga-pr-card { padding: 18px; }
+  .ga-rank-block { min-width: 0; }
   .ga-card-title {
     display: flex;
     align-items: baseline;
@@ -1112,6 +1113,15 @@
     body.ga-has-category-chips .ga-head-copy {
       min-width: 0;
     }
+    .ga-sub-extra:not([hidden]),
+    body.ga-has-category-chips .ga-sub-extra:not([hidden]) {
+      position: static;
+      top: auto;
+      left: auto;
+      right: auto;
+      width: auto;
+      white-space: normal;
+    }
     body.ga-has-category-chips .ga-sub,
     body.ga-has-category-chips .ga-sub-extra {
       white-space: normal;
@@ -1148,53 +1158,78 @@
     .ga-widget {
       width: 100% !important;
       max-width: 100% !important;
-      padding: 12px !important;
+      padding: 14px 12px 16px !important;
       border-radius: 12px !important;
     }
     body.ga-has-category-chips .ga-head,
     .ga-head {
       flex-direction: column !important;
       align-items: stretch !important;
-      gap: 8px !important;
-      margin-bottom: 8px !important;
+      gap: 10px !important;
+      margin-bottom: 10px !important;
     }
     .ga-head-copy {
       position: relative !important;
+      flex: 1 1 auto !important;
+      width: 100% !important;
+      min-width: 100% !important;
+      max-width: 100% !important;
+      margin-top: 0 !important;
       padding-bottom: 0 !important;
       overflow: visible !important;
+      z-index: 2 !important;
+    }
+    body.ga-has-category-chips .ga-head-copy {
+      min-width: 100% !important;
+      flex: 1 1 auto !important;
     }
     .ga-replacement-chart .ga-head-copy {
-      padding-bottom: 8px !important;
+      padding-bottom: 0 !important;
     }
     .ga-head-tools {
+      position: relative !important;
+      z-index: 1 !important;
       max-width: none !important;
+      width: 100% !important;
       flex-direction: column !important;
       align-items: stretch !important;
+      margin-top: 0 !important;
+    }
+    body.ga-has-category-chips .ga-head-tools {
+      flex-wrap: wrap !important;
+      max-width: none !important;
     }
     .ga-head h1 {
-      margin-bottom: 4px !important;
+      margin-bottom: 6px !important;
       font-size: clamp(22px, 6.6vw, 28px) !important;
-      line-height: 1.08 !important;
+      line-height: 1.12 !important;
     }
+    .ga-sub,
+    .ga-sub-extra,
     .ga-sub-extra:not([hidden]),
+    body.ga-has-category-chips .ga-sub,
+    body.ga-has-category-chips .ga-sub-extra,
     body.ga-has-category-chips .ga-sub-extra:not([hidden]) {
       position: static !important;
       top: auto !important;
       left: auto !important;
       right: auto !important;
       width: auto !important;
-      white-space: normal !important;
-    }
-    .ga-sub,
-    .ga-sub-extra,
-    body.ga-has-category-chips .ga-sub,
-    body.ga-has-category-chips .ga-sub-extra {
+      max-width: 100% !important;
+      display: block !important;
       white-space: normal !important;
       overflow: visible !important;
       text-overflow: unset !important;
-      max-width: 100% !important;
       font-size: 12px !important;
       line-height: 1.45 !important;
+    }
+    .ga-sub-extra:not([hidden]),
+    body.ga-has-category-chips .ga-sub-extra:not([hidden]) {
+      margin: 4px 0 2px !important;
+    }
+    .ga-sub-extra[hidden],
+    body.ga-has-category-chips .ga-sub-extra[hidden] {
+      display: none !important;
     }
     #overviewChart,
     #trendChart {
@@ -1221,6 +1256,10 @@
       max-width: 100% !important;
       flex-wrap: unset !important;
       justify-items: stretch !important;
+      justify-content: stretch !important;
+    }
+    body.ga-has-category-chips .ga-category-chips {
+      justify-content: stretch !important;
     }
     .ga-category-chip {
       min-height: 42px !important;
@@ -1240,7 +1279,7 @@
       border-radius: 12px !important;
       box-shadow: 0 10px 24px rgba(15, 23, 42, 0.07) !important;
     }
-    /* Rank (top-left) + overview (bottom-left) as two clear stacked blocks. */
+    /* Rank = one card; overview stays a separate card below. */
     .ga-pr-card {
       display: flex !important;
       flex-direction: column !important;
@@ -1251,61 +1290,46 @@
       background: transparent !important;
       box-shadow: none !important;
     }
-    .ga-pr-card > :not(.ga-overview-wrap) {
-      background: rgba(255,255,255,0.94) !important;
-    }
-    .ga-pr-card > .ga-card-title,
-    .ga-pr-card > .ga-pr-score,
-    .ga-pr-card > .ga-value-row,
-    .ga-pr-card > .ga-coverage-anchor,
-    .ga-pr-card > .ga-pr-track,
-    .ga-pr-card > .ga-axis,
-    .ga-pr-card > .ga-hint {
-      padding-left: 14px !important;
-      padding-right: 14px !important;
-    }
-    .ga-pr-card > .ga-card-title {
-      margin: 0 !important;
-      padding-top: 14px !important;
+    .ga-rank-block {
+      padding: 16px 14px !important;
       border: 1px solid var(--line) !important;
-      border-bottom: 0 !important;
-      border-radius: 12px 12px 0 0 !important;
-    }
-    .ga-pr-card > .ga-pr-score {
-      margin: 0 !important;
-      border-left: 1px solid var(--line) !important;
-      border-right: 1px solid var(--line) !important;
-    }
-    .ga-pr-card > .ga-value-row {
-      margin: 0 !important;
-      padding-top: 12px !important;
-      padding-bottom: 12px !important;
-      border-left: 1px solid var(--line) !important;
-      border-right: 1px solid var(--line) !important;
-    }
-    .ga-pr-card > .ga-coverage-anchor,
-    .ga-pr-card > .ga-pr-track,
-    .ga-pr-card > .ga-axis,
-    .ga-pr-card > .ga-hint {
-      border-left: 1px solid var(--line) !important;
-      border-right: 1px solid var(--line) !important;
-    }
-    .ga-pr-card > .ga-hint {
-      margin: 0 !important;
-      padding-bottom: 14px !important;
-      border-bottom: 1px solid var(--line) !important;
-      border-radius: 0 0 12px 12px !important;
+      border-radius: 12px !important;
+      background: rgba(255,255,255,0.94) !important;
       box-shadow: 0 10px 24px rgba(15, 23, 42, 0.07) !important;
-      white-space: normal !important;
+      overflow: hidden !important;
     }
-    .ga-pr-card > .ga-axis {
-      padding-bottom: 4px !important;
-      overflow: visible !important;
+    .ga-rank-block .ga-card-title {
+      margin: 0 0 12px !important;
+      padding: 0 !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+    }
+    .ga-rank-block .ga-pr-score,
+    .ga-rank-block .ga-value-row,
+    .ga-rank-block .ga-coverage-anchor,
+    .ga-rank-block .ga-pr-track,
+    .ga-rank-block .ga-axis,
+    .ga-rank-block .ga-hint {
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+    }
+    .ga-rank-block .ga-hint {
+      margin-bottom: 0 !important;
+      padding-bottom: 0 !important;
+      white-space: normal !important;
     }
     .ga-axis {
       font-size: 11px !important;
       gap: 4px !important;
       padding-inline: 2px !important;
+      overflow: visible !important;
     }
     .ga-axis span {
       flex: 1 1 0 !important;
@@ -1359,13 +1383,13 @@
       white-space: normal !important;
     }
     .ga-value-row {
-      grid-template-columns: 1fr !important;
+      grid-template-columns: 1fr 1fr !important;
       gap: 8px !important;
       margin: 12px 0 !important;
     }
     .ga-mini { padding: 10px 11px !important; }
     .ga-mini-value {
-      font-size: 22px !important;
+      font-size: 20px !important;
       white-space: normal !important;
     }
     .ga-pr-track {
@@ -1391,11 +1415,12 @@
     }
     .ga-overview-wrap {
       margin-top: 0 !important;
-      padding: 14px !important;
+      padding: 16px 14px !important;
       border: 1px solid var(--line) !important;
       border-radius: 12px !important;
       background: rgba(255,255,255,0.94) !important;
       box-shadow: 0 10px 24px rgba(15, 23, 42, 0.07) !important;
+      border-top: 1px solid var(--line) !important;
     }
     .ga-overview-head {
       display: grid !important;
@@ -1403,6 +1428,7 @@
       gap: 8px !important;
       align-items: start !important;
       min-height: 0 !important;
+      margin-bottom: 8px !important;
     }
     .ga-overview-note {
       justify-self: start !important;
@@ -1414,12 +1440,12 @@
     .ga-mode-switch { justify-self: start !important; }
     #overviewChart { height: 200px !important; width: 100% !important; max-width: 100% !important; }
     .ga-chart-card {
-      padding: 26px 10px 10px !important;
+      padding: 18px 12px 12px !important;
       overflow: hidden !important;
       max-width: 100% !important;
     }
     .ga-chart-card::before {
-      top: 13px !important;
+      top: 16px !important;
       left: 12px !important;
     }
     #trendChart {
@@ -1443,9 +1469,9 @@
       width: 100% !important;
     }
     .ga-toggle-bar {
-      display: flex !important;
-      flex-wrap: wrap !important;
-      justify-content: flex-start !important;
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      justify-content: stretch !important;
       width: 100% !important;
       max-width: 100% !important;
       margin: 0 !important;
@@ -1453,8 +1479,12 @@
       gap: 8px !important;
       overflow: visible !important;
     }
+    .ga-toggle-bar .ga-icon-toggle:last-child {
+      grid-column: 1 / -1 !important;
+    }
     .ga-icon-toggle {
       min-height: 40px !important;
+      justify-content: center !important;
       padding: 8px 12px !important;
       font-size: 13px !important;
       gap: 6px !important;
@@ -1488,12 +1518,13 @@
     .ga-formula-frac { min-width: 72px !important; }
   }
   @media (max-width: 420px) {
-    .ga-widget { padding: 10px !important; }
-    .ga-head h1 { font-size: clamp(26px, 8.4vw, 31px) !important; }
+    .ga-widget { padding: 14px 12px 16px !important; }
+    .ga-head h1 { font-size: clamp(22px, 6.8vw, 28px) !important; }
     .ga-sub,
     .ga-sub-extra {
       font-size: 12px !important;
       white-space: normal !important;
+      position: static !important;
     }
     .ga-card-title h2,
     .ga-overview-head h3 { font-size: 19px !important; }
@@ -1542,6 +1573,7 @@
   </div>
   <div class="ga-grid">
     <section class="ga-card ga-pr-card">
+      <div class="ga-rank-block">
       <div class="ga-card-title">
         <h2 id="rankTitle">歷史排名-用電量</h2>
         <div class="ga-coverage-wrap">
@@ -1587,6 +1619,7 @@
       </div>
       <div class="ga-axis"><span>低</span><span>中</span><span>高</span></div>
       <div class="ga-hint" id="rankHint">長條圖顯示所選年度與所有比較年度的用電量。</div>
+      </div>
       <div class="ga-overview-wrap">
         <div class="ga-overview-head">
           <h3 id="overviewTitle">年度總覽</h3>
