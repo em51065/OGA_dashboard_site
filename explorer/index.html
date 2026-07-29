@@ -102,6 +102,83 @@
     </nav>
     <button type="button" class="oga-nav-dismiss" id="navDismiss" hidden aria-label="關閉選單"></button>
 
+    <nav class="oga-mobile-theme-nav" id="mobileThemeNav" aria-label="手機圖表主題">
+      <div class="oga-mobile-theme-toolbar">
+        <button type="button" class="oga-mobile-theme-arrow" id="mobileThemePrev" aria-label="上一個主題">
+          <i data-lucide="chevron-left" aria-hidden="true"></i>
+        </button>
+        <p class="oga-mobile-theme-status" id="mobileThemeStatus" aria-live="polite">1 / 3</p>
+        <button type="button" class="oga-mobile-theme-arrow" id="mobileThemeNext" aria-label="下一個主題">
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="oga-mobile-theme-viewport" id="mobileThemeViewport">
+        <div class="oga-mobile-theme-panel is-active" data-theme-index="0">
+          <button type="button" class="oga-mobile-theme-card" aria-expanded="false" aria-controls="mobileThemeChoices0">
+            <span class="oga-custom-icon oga-circularity-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M12 3.4a8.6 8.6 0 0 1 7.45 4.3"></path>
+                <path d="M19.7 4.7 20.15 8.8 16.15 7.75"></path>
+                <path d="M19.45 13.1a8.6 8.6 0 0 1-7.45 7.5"></path>
+                <path d="M15.35 20.35 11.55 21.65 12.45 17.65"></path>
+                <path d="M8.05 19.65a8.6 8.6 0 0 1-.05-15.3"></path>
+                <path d="M4.35 7.25 6.9 4.05 8.35 7.9"></path>
+              </svg>
+            </span>
+            <span class="oga-mobile-theme-copy">
+              <small>減廢循環</small>
+              <strong>減廢與循環</strong>
+              <em class="oga-mobile-theme-current" data-theme-current></em>
+            </span>
+            <i data-lucide="chevron-down" aria-hidden="true"></i>
+          </button>
+          <div class="oga-mobile-theme-choices" id="mobileThemeChoices0" hidden>
+            <button type="button" class="oga-mobile-theme-choice" data-chart="ecoco">ECOCO</button>
+            <button type="button" class="oga-mobile-theme-choice" data-chart="general-recycle">一般回收</button>
+            <button type="button" class="oga-mobile-theme-choice" data-chart="resource-recycle">資源回收</button>
+            <button type="button" class="oga-mobile-theme-choice" data-chart="food-waste-recycle">廚餘回收</button>
+          </div>
+        </div>
+        <div class="oga-mobile-theme-panel" data-theme-index="1" hidden>
+          <button type="button" class="oga-mobile-theme-card" aria-expanded="false" aria-controls="mobileThemeChoices1">
+            <i data-lucide="waves" aria-hidden="true"></i>
+            <span class="oga-mobile-theme-copy">
+              <small>能源與水</small>
+              <strong>能源與水資源</strong>
+              <em class="oga-mobile-theme-current" data-theme-current></em>
+            </span>
+            <i data-lucide="chevron-down" aria-hidden="true"></i>
+          </button>
+          <div class="oga-mobile-theme-choices" id="mobileThemeChoices1" hidden>
+            <button type="button" class="oga-mobile-theme-choice" data-chart="rainwater-reuse">中軸雨水回收</button>
+            <button type="button" class="oga-mobile-theme-choice" data-chart="water-use">用水量</button>
+            <button type="button" class="oga-mobile-theme-choice" data-chart="electricity-use">用電量</button>
+            <button type="button" class="oga-mobile-theme-choice" data-chart="solar-energy">太陽能</button>
+          </div>
+        </div>
+        <div class="oga-mobile-theme-panel" data-theme-index="2" hidden>
+          <button type="button" class="oga-mobile-theme-card" aria-expanded="false" aria-controls="mobileThemeChoices2">
+            <i data-lucide="lightbulb" aria-hidden="true"></i>
+            <span class="oga-mobile-theme-copy">
+              <small>設備更新</small>
+              <strong>節能汰換</strong>
+              <em class="oga-mobile-theme-current" data-theme-current></em>
+            </span>
+            <i data-lucide="chevron-down" aria-hidden="true"></i>
+          </button>
+          <div class="oga-mobile-theme-choices" id="mobileThemeChoices2" hidden>
+            <button type="button" class="oga-mobile-theme-choice" data-chart="led-replacement">LED燈具汰換</button>
+            <button type="button" class="oga-mobile-theme-choice" data-chart="streetlight-replacement">路燈汰換</button>
+          </div>
+        </div>
+      </div>
+      <div class="oga-mobile-theme-dots" id="mobileThemeDots" role="tablist" aria-label="主題位置">
+        <button type="button" class="is-active" data-theme-dot="0" aria-label="減廢與循環" aria-current="true"></button>
+        <button type="button" data-theme-dot="1" aria-label="能源與水資源"></button>
+        <button type="button" data-theme-dot="2" aria-label="節能汰換"></button>
+      </div>
+    </nav>
+
     <label class="oga-mobile-select">
       <span>選擇圖表</span>
       <select id="mobileChartSelect">
@@ -131,10 +208,14 @@
           <strong id="activeChartTitle">ECOCO</strong>
         </div>
         <a id="standaloneLink" href="../charts/ecoco/" target="_blank" rel="noopener">
-          在新視窗開啟
+          <span class="oga-open-label oga-open-label--desktop">在新視窗開啟</span>
+          <span class="oga-open-label oga-open-label--mobile">開啟手機友善版</span>
           <i data-lucide="external-link" aria-hidden="true"></i>
         </a>
       </div>
+      <p class="oga-mobile-embed-tip" id="mobileEmbedTip" hidden>
+        手機建議點右上角「開啟手機友善版」，以全螢幕檢視完整儀表板。
+      </p>
 
       <div class="oga-frame-wrap">
         <div class="oga-loading" id="loadingState" role="status">

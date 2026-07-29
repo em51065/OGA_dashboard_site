@@ -1196,9 +1196,62 @@
       border-radius: 12px !important;
       box-shadow: 0 10px 24px rgba(15, 23, 42, 0.07) !important;
     }
+    /* Rank (top-left) + overview (bottom-left) as two clear stacked blocks. */
     .ga-pr-card {
-      padding: 14px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 12px !important;
+      padding: 0 !important;
       overflow: visible !important;
+      border: 0 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+    }
+    .ga-pr-card > :not(.ga-overview-wrap) {
+      background: rgba(255,255,255,0.94) !important;
+    }
+    .ga-pr-card > .ga-card-title,
+    .ga-pr-card > .ga-pr-score,
+    .ga-pr-card > .ga-value-row,
+    .ga-pr-card > .ga-coverage-anchor,
+    .ga-pr-card > .ga-pr-track,
+    .ga-pr-card > .ga-axis,
+    .ga-pr-card > .ga-hint {
+      padding-left: 14px !important;
+      padding-right: 14px !important;
+    }
+    .ga-pr-card > .ga-card-title {
+      margin: 0 !important;
+      padding-top: 14px !important;
+      border: 1px solid var(--line) !important;
+      border-bottom: 0 !important;
+      border-radius: 12px 12px 0 0 !important;
+    }
+    .ga-pr-card > .ga-pr-score {
+      margin: 0 !important;
+      border-left: 1px solid var(--line) !important;
+      border-right: 1px solid var(--line) !important;
+    }
+    .ga-pr-card > .ga-value-row {
+      margin: 0 !important;
+      padding-top: 12px !important;
+      padding-bottom: 12px !important;
+      border-left: 1px solid var(--line) !important;
+      border-right: 1px solid var(--line) !important;
+    }
+    .ga-pr-card > .ga-coverage-anchor,
+    .ga-pr-card > .ga-pr-track,
+    .ga-pr-card > .ga-axis,
+    .ga-pr-card > .ga-hint {
+      border-left: 1px solid var(--line) !important;
+      border-right: 1px solid var(--line) !important;
+    }
+    .ga-pr-card > .ga-hint {
+      margin: 0 !important;
+      padding-bottom: 14px !important;
+      border-bottom: 1px solid var(--line) !important;
+      border-radius: 0 0 12px 12px !important;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.07) !important;
     }
     .ga-card-title {
       display: grid !important;
@@ -1227,7 +1280,7 @@
       width: min(100%, 284px) !important;
     }
     .ga-replacement-chart .ga-coverage-anchor .ga-month-popover {
-      width: min(calc(100% - 160px), 228px) !important;
+      width: min(calc(100% - 24px), 280px) !important;
       min-width: 0 !important;
     }
     .ga-pr-score {
@@ -1267,8 +1320,12 @@
       letter-spacing: 0 !important;
     }
     .ga-overview-wrap {
-      margin-top: 12px !important;
-      padding-top: 10px !important;
+      margin-top: 0 !important;
+      padding: 14px !important;
+      border: 1px solid var(--line) !important;
+      border-radius: 12px !important;
+      background: rgba(255,255,255,0.94) !important;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.07) !important;
     }
     .ga-overview-head {
       display: grid !important;
@@ -1296,6 +1353,17 @@
     }
     #trendChart { height: 370px !important; }
     .ga-replacement-chart #trendChart { height: 440px !important; }
+    .ga-replacement-chart .ga-value-row,
+    .ga-replacement-chart .ga-coverage-zone {
+      grid-template-columns: 1fr !important;
+    }
+    .ga-category-chips,
+    .ga-controls {
+      width: 100% !important;
+    }
+    .ga-category-chip {
+      min-height: 40px !important;
+    }
     .ga-quality-head {
       flex-wrap: wrap !important;
       gap: 10px !important;

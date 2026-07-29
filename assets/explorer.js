@@ -21,8 +21,22 @@ const mobileSelect = document.getElementById("mobileChartSelect");
 const standaloneLink = document.getElementById("standaloneLink");
 const sourceInfo = document.getElementById("sourceInfo");
 const navDismiss = document.getElementById("navDismiss");
+const mobileThemeNav = document.getElementById("mobileThemeNav");
+const mobileThemePrev = document.getElementById("mobileThemePrev");
+const mobileThemeNext = document.getElementById("mobileThemeNext");
+const mobileThemeStatus = document.getElementById("mobileThemeStatus");
+const mobileThemeViewport = document.getElementById("mobileThemeViewport");
+const mobileEmbedTip = document.getElementById("mobileEmbedTip");
+const mobileNarrowMq = window.matchMedia("(max-width: 760px)");
+
+const NAV_THEME_CHARTS = [
+  ["ecoco", "general-recycle", "resource-recycle", "food-waste-recycle"],
+  ["rainwater-reuse", "water-use", "electricity-use", "solar-energy"],
+  ["led-replacement", "streetlight-replacement"],
+];
 
 let currentChart = "ecoco";
+let mobileThemeIndex = 0;
 let childResizeObserver = null;
 let childMutationObserver = null;
 let childDecorateTimer = null;
@@ -36,6 +50,138 @@ const EMBED_HOST_MAX_HEIGHT = 1159;
 
 function isEmbeddedMode() {
   return document.documentElement.classList.contains("is-embedded");
+}
+
+function shouldUseMobileFriendlyOpen() {
+  const narrowViewport = mobileNarrowMq.matches;
+  const narrowScreen = Math.min(window.screen.width || 0, window.screen.height || 0) <= 760;
+  if (isEmbeddedMode() && narrowScreen) return true;
+  return narrowViewport;
+}
+
+function syncStandaloneLink() {
+  if (!standaloneLink) return;
+  const mobileFriendly = shouldUseMobileFriendlyOpen();
+  const title = CHARTS[currentChart]?.title || currentChart;
+  if (mobileFriendly) {
+    standaloneLink.href = `?chart=${encodeURIComponent(currentChart)}`;
+    standaloneLink.setAttribute("aria-label", `開啟手機友善版完整儀表板（目前：${title}）`);
+  } else {
+    standaloneLink.href = `../charts/${currentChart}/`;
+    standaloneLink.setAttribute("aria-label", `在新視窗開啟${title}`);
+  }
+  // Already on full (non-embed) mobile dashboard — link is redundant.
+  standaloneLink.hidden = Boolean(mobileFriendly && !isEmbeddedMode());
+  if (mobileEmbedTip) {
+    mobileEmbedTip.hidden = !(isEmbeddedMode() && mobileFriendly && !standaloneLink.hidden);
+  }
+}
+
+function themeIndexForChart(chartId) {
+  const index = NAV_THEME_CHARTS.findIndex((charts) => charts.includes(chartId));
+  return index >= 0 ? index : 0;
+}
+
+function closeMobileThemeMenus() {
+  if (!mobileThemeNav) return;
+  mobileThemeNav.querySelectorAll(".oga-mobile-theme-card").forEach((card) => {
+    card.setAttribute("aria-expanded", "false");
+  });
+  mobileThemeNav.querySelectorAll(".oga-mobile-theme-choices").forEach((menu) => {
+    menu.hidden = true;
+  });
+}
+
+function setMobileThemeIndex(nextIndex, { syncChart = false } = {}) {
+  if (!mobileThemeNav) return;
+  const total = NAV_THEME_CHARTS.length;
+  mobileThemeIndex = ((nextIndex % total) + total) % total;
+  mobileThemeNav.querySelectorAll(".oga-mobile-theme-panel").forEach((panel) => {
+    const active = Number(panel.dataset.themeIndex) === mobileThemeIndex;
+    panel.classList.toggle("is-active", active);
+    panel.hidden = !active;
+  });
+  mobileThemeNav.querySelectorAll("[data-theme-dot]").forEach((dot) => {
+    const active = Number(dot.dataset.themeDot) === mobileThemeIndex;
+    dot.classList.toggle("is-active", active);
+    if (active) dot.setAttribute("aria-current", "true");
+    else dot.removeAttribute("aria-current");
+  });
+  if (mobileThemeStatus) mobileThemeStatus.textContent = `${mobileThemeIndex + 1} / ${total}`;
+  closeMobileThemeMenus();
+  if (syncChart) {
+    const charts = NAV_THEME_CHARTS[mobileThemeIndex] || [];
+    if (charts.length && !charts.includes(currentChart)) switchChart(charts[0]);
+  }
+  updateMobileThemeCurrentLabels();
+}
+
+function updateMobileThemeCurrentLabels() {
+  if (!mobileThemeNav) return;
+  mobileThemeNav.querySelectorAll(".oga-mobile-theme-panel").forEach((panel) => {
+    const index = Number(panel.dataset.themeIndex);
+    const label = panel.querySelector("[data-theme-current]");
+    if (!label) return;
+    const charts = NAV_THEME_CHARTS[index] || [];
+    if (charts.includes(currentChart)) {
+      label.textContent = `目前：${CHARTS[currentChart].title}`;
+      label.hidden = false;
+    } else {
+      label.textContent = "";
+      label.hidden = true;
+    }
+  });
+  mobileThemeNav.querySelectorAll(".oga-mobile-theme-choice").forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.chart === currentChart);
+  });
+}
+
+function bindMobileThemeNav() {
+  if (!mobileThemeNav) return;
+  if (mobileThemePrev) {
+    mobileThemePrev.addEventListener("click", () => setMobileThemeIndex(mobileThemeIndex - 1));
+  }
+  if (mobileThemeNext) {
+    mobileThemeNext.addEventListener("click", () => setMobileThemeIndex(mobileThemeIndex + 1));
+  }
+  mobileThemeNav.querySelectorAll("[data-theme-dot]").forEach((dot) => {
+    dot.addEventListener("click", () => setMobileThemeIndex(Number(dot.dataset.themeDot)));
+  });
+  mobileThemeNav.querySelectorAll(".oga-mobile-theme-card").forEach((card) => {
+    card.addEventListener("click", () => {
+      const panel = card.closest(".oga-mobile-theme-panel");
+      const menu = panel?.querySelector(".oga-mobile-theme-choices");
+      if (!menu) return;
+      const willOpen = menu.hidden;
+      closeMobileThemeMenus();
+      menu.hidden = !willOpen;
+      card.setAttribute("aria-expanded", willOpen ? "true" : "false");
+    });
+  });
+  mobileThemeNav.querySelectorAll(".oga-mobile-theme-choice").forEach((button) => {
+    button.addEventListener("click", () => {
+      switchChart(button.dataset.chart);
+      closeMobileThemeMenus();
+    });
+  });
+
+  let touchStartX = 0;
+  let touchStartY = 0;
+  if (mobileThemeViewport) {
+    mobileThemeViewport.addEventListener("touchstart", (event) => {
+      const touch = event.changedTouches[0];
+      touchStartX = touch?.clientX || 0;
+      touchStartY = touch?.clientY || 0;
+    }, { passive: true });
+    mobileThemeViewport.addEventListener("touchend", (event) => {
+      const touch = event.changedTouches[0];
+      if (!touch) return;
+      const dx = touch.clientX - touchStartX;
+      const dy = touch.clientY - touchStartY;
+      if (Math.abs(dx) < 48 || Math.abs(dx) < Math.abs(dy)) return;
+      setMobileThemeIndex(mobileThemeIndex + (dx < 0 ? 1 : -1));
+    }, { passive: true });
+  }
 }
 
 function parseInitialChart() {
@@ -477,10 +623,10 @@ function renderNavigation() {
   updateGroupExpandedState();
   if (mobileSelect) mobileSelect.value = currentChart;
   if (activeTitle) activeTitle.textContent = CHARTS[currentChart].title;
-  if (standaloneLink) {
-    standaloneLink.href = `../charts/${currentChart}/`;
-    standaloneLink.setAttribute("aria-label", `在新視窗開啟${CHARTS[currentChart].title}`);
-  }
+  syncStandaloneLink();
+  const nextTheme = themeIndexForChart(currentChart);
+  if (nextTheme !== mobileThemeIndex) setMobileThemeIndex(nextTheme);
+  else updateMobileThemeCurrentLabels();
 }
 
 function switchChart(chartId, historyMode = "push") {
@@ -548,6 +694,9 @@ function bindEvents() {
     if (!event.target.closest(".oga-nav-group") && event.target !== navDismiss) {
       closePinnedNavFromOutside();
     }
+    if (mobileThemeNav && !event.target.closest(".oga-mobile-theme-nav")) {
+      closeMobileThemeMenus();
+    }
   });
   // Clicks on explorer chrome (outside the chart iframe) never reach the child document.
   document.addEventListener("pointerdown", (event) => {
@@ -558,10 +707,21 @@ function bindEvents() {
     if (event.key === "Escape") {
       closePinnedNavFromOutside();
       closeChildChartPopovers();
+      closeMobileThemeMenus();
     }
   });
 
   mobileSelect.addEventListener("change", (event) => switchChart(event.target.value));
+
+  bindMobileThemeNav();
+  setMobileThemeIndex(themeIndexForChart(currentChart));
+  const syncOpenMode = () => syncStandaloneLink();
+  if (typeof mobileNarrowMq.addEventListener === "function") {
+    mobileNarrowMq.addEventListener("change", syncOpenMode);
+  } else if (typeof mobileNarrowMq.addListener === "function") {
+    mobileNarrowMq.addListener(syncOpenMode);
+  }
+  window.addEventListener("resize", syncOpenMode);
 
   frame.addEventListener("load", () => {
     prepareChildFrame();

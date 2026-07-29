@@ -408,7 +408,24 @@ body { overflow-x: hidden; }
 
 .oga-mobile-select { display: none; }
 
+.oga-open-label--mobile { display: none; }
 
+.oga-mobile-theme-nav {
+  display: none;
+}
+
+.oga-mobile-embed-tip {
+  display: none;
+  margin: 0 0 8px;
+  padding: 8px 10px;
+  border: 1px solid #d7e3f4;
+  border-radius: 8px;
+  background: #f3f8ff;
+  color: #334155;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.45;
+}
 
 .oga-stage {
   margin-top: 16px;
@@ -592,28 +609,145 @@ html.is-embedded .oga-footnote {
   .oga-brand h1 { font-size: 24px; line-height: 1.1; }
   .oga-brand p { max-width: 32rem; font-size: 12px; }
   .oga-eyebrow, .oga-chart-nav { display: none; }
-  .oga-mobile-select {
+  .oga-mobile-select { display: none; }
+  .oga-open-label--desktop { display: none; }
+  .oga-open-label--mobile { display: inline; }
+  .oga-mobile-embed-tip:not([hidden]) { display: block; }
+
+  .oga-mobile-theme-nav {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    align-items: center;
     gap: 10px;
-    padding: 10px 12px;
-    border: 1px solid var(--line);
-    border-radius: 7px;
-    background: #fff;
+    margin: 0 0 4px;
   }
-  .oga-mobile-select span { color: #475467; font-size: 12px; font-weight: 900; }
-  .oga-mobile-select select {
-    min-width: 0;
-    width: 100%;
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    padding: 9px 10px;
-    background: #fff;
-    color: var(--ink);
-    font: inherit;
+  .oga-mobile-theme-toolbar {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 8px;
+  }
+  .oga-mobile-theme-status {
+    margin: 0;
+    text-align: center;
+    color: #52637a;
+    font-size: 12px;
     font-weight: 900;
   }
+  .oga-mobile-theme-arrow {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    place-items: center;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .oga-mobile-theme-arrow svg { width: 18px; height: 18px; }
+  .oga-mobile-theme-viewport {
+    min-width: 0;
+  }
+  .oga-mobile-theme-panel {
+    min-width: 0;
+  }
+  .oga-mobile-theme-card {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-height: 72px;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+    color: var(--ink);
+    text-align: left;
+    cursor: pointer;
+    font: inherit;
+  }
+  .oga-mobile-theme-card > i,
+  .oga-mobile-theme-card > .oga-custom-icon {
+    width: 34px;
+    height: 34px;
+    color: var(--navy);
+  }
+  .oga-mobile-theme-card > i svg,
+  .oga-mobile-theme-card > .oga-custom-icon svg {
+    width: 34px;
+    height: 34px;
+  }
+  .oga-mobile-theme-copy {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+  }
+  .oga-mobile-theme-copy small {
+    color: #667085;
+    font-size: 11px;
+    font-weight: 800;
+  }
+  .oga-mobile-theme-copy strong {
+    font-size: 16px;
+    font-weight: 900;
+    line-height: 1.2;
+  }
+  .oga-mobile-theme-current {
+    color: #4567e8;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 800;
+  }
+  .oga-mobile-theme-card > i:last-child {
+    width: 18px;
+    height: 18px;
+    color: #667085;
+  }
+  .oga-mobile-theme-choices {
+    display: grid;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: #fff;
+  }
+  .oga-mobile-theme-choice {
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid #dbe2eb;
+    border-radius: 10px;
+    background: #f8fafc;
+    color: var(--ink);
+    font: inherit;
+    font-weight: 800;
+    text-align: left;
+    cursor: pointer;
+  }
+  .oga-mobile-theme-choice.is-active {
+    border-color: #93c5fd;
+    background: #eef6ff;
+    color: #1d4ed8;
+  }
+  .oga-mobile-theme-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+  .oga-mobile-theme-dots button {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: #cbd5e1;
+    cursor: pointer;
+  }
+  .oga-mobile-theme-dots button.is-active {
+    background: var(--navy);
+  }
+
   .oga-stage { margin-top: 10px; }
   .oga-stage-bar { padding-inline: 2px; }
   .oga-frame-wrap, #chartFrame { min-height: 360px; }
@@ -627,7 +761,6 @@ html.is-embedded .oga-footnote {
   .oga-brand-mark svg { width: 21px; height: 21px; }
   .oga-brand h1 { font-size: 22px; line-height: 1.08; }
   .oga-brand p { font-size: 11px; }
-  .oga-mobile-select { grid-template-columns: 1fr; gap: 6px; }
   .oga-stage-bar { align-items: flex-start; }
   .oga-stage-bar > div { display: block; }
   .oga-stage-label { display: block; margin-bottom: 2px; }
