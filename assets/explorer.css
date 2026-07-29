@@ -603,11 +603,19 @@ html.is-embedded .oga-footnote {
 }
 
 @media (max-width: 760px) {
-  .oga-portal { padding: 10px 8px 12px; }
-  .oga-header { align-items: flex-start; padding: 0 0 12px; }
-  .oga-brand-mark { flex-basis: 42px; width: 42px; height: 42px; }
-  .oga-brand h1 { font-size: 24px; line-height: 1.1; }
-  .oga-brand p { max-width: 32rem; font-size: 12px; }
+  .oga-portal { padding: 8px 8px 10px; }
+  .oga-header { align-items: flex-start; padding: 0 0 8px; }
+  .oga-brand-mark { flex-basis: 36px; width: 36px; height: 36px; }
+  .oga-brand h1 { font-size: 22px; line-height: 1.1; }
+  .oga-brand p {
+    max-width: 32rem;
+    margin-top: 2px;
+    font-size: 11px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
   .oga-eyebrow, .oga-chart-nav { display: none; }
   .oga-mobile-select { display: none; }
   .oga-open-label--desktop { display: none; }
@@ -616,26 +624,26 @@ html.is-embedded .oga-footnote {
 
   .oga-mobile-theme-nav {
     display: grid;
-    gap: 10px;
-    margin: 0 0 4px;
+    gap: 8px;
+    margin: 0 0 2px;
   }
   .oga-mobile-theme-toolbar {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
   }
   .oga-mobile-theme-status {
     margin: 0;
     text-align: center;
     color: #52637a;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 900;
   }
   .oga-mobile-theme-arrow {
     display: grid;
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     place-items: center;
     border: 1px solid var(--line);
     border-radius: 10px;
@@ -654,10 +662,10 @@ html.is-embedded .oga-footnote {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     width: 100%;
-    min-height: 72px;
-    padding: 12px 14px;
+    min-height: 58px;
+    padding: 10px 12px;
     border: 1px solid var(--line);
     border-radius: 12px;
     background: #fff;
@@ -669,33 +677,33 @@ html.is-embedded .oga-footnote {
   }
   .oga-mobile-theme-card > i,
   .oga-mobile-theme-card > .oga-custom-icon {
-    width: 34px;
-    height: 34px;
+    width: 28px;
+    height: 28px;
     color: var(--navy);
   }
   .oga-mobile-theme-card > i svg,
   .oga-mobile-theme-card > .oga-custom-icon svg {
-    width: 34px;
-    height: 34px;
+    width: 28px;
+    height: 28px;
   }
   .oga-mobile-theme-copy {
     display: grid;
-    gap: 2px;
+    gap: 1px;
     min-width: 0;
   }
   .oga-mobile-theme-copy small {
     color: #667085;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 800;
   }
   .oga-mobile-theme-copy strong {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 900;
     line-height: 1.2;
   }
   .oga-mobile-theme-current {
     color: #4567e8;
-    font-size: 12px;
+    font-size: 11px;
     font-style: normal;
     font-weight: 800;
   }
@@ -748,8 +756,13 @@ html.is-embedded .oga-footnote {
     background: var(--navy);
   }
 
-  .oga-stage { margin-top: 10px; }
-  .oga-stage-bar { padding-inline: 2px; }
+  .oga-stage { margin-top: 6px; }
+  .oga-stage-bar {
+    min-height: 28px;
+    padding: 0 2px 4px;
+  }
+  .oga-stage-label { display: none; }
+  .oga-stage-bar strong { font-size: 14px; }
   .oga-frame-wrap, #chartFrame { min-height: 360px; }
 }
 

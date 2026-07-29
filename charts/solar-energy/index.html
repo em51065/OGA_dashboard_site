@@ -1154,12 +1154,12 @@
     .ga-head {
       flex-direction: column !important;
       align-items: stretch !important;
-      gap: 12px !important;
-      margin-bottom: 12px !important;
+      gap: 8px !important;
+      margin-bottom: 8px !important;
     }
     .ga-head-copy { padding-bottom: 0 !important; }
     .ga-replacement-chart .ga-head-copy {
-      padding-bottom: 12px !important;
+      padding-bottom: 8px !important;
     }
     .ga-head-tools {
       max-width: none !important;
@@ -1167,12 +1167,19 @@
       align-items: stretch !important;
     }
     .ga-head h1 {
-      margin-bottom: 7px !important;
-      font-size: clamp(28px, 9vw, 34px) !important;
+      margin-bottom: 4px !important;
+      font-size: clamp(24px, 7.2vw, 30px) !important;
       line-height: 1.08 !important;
     }
-    .ga-sub {
-      font-size: 13px !important;
+    .ga-sub,
+    .ga-sub-extra,
+    body.ga-has-category-chips .ga-sub,
+    body.ga-has-category-chips .ga-sub-extra {
+      white-space: normal !important;
+      overflow: visible !important;
+      text-overflow: unset !important;
+      max-width: 100% !important;
+      font-size: 12px !important;
       line-height: 1.45 !important;
     }
     .ga-controls {
@@ -1188,6 +1195,21 @@
     }
     .ga-control label { font-size: 11px !important; }
     .ga-control select { font-size: 15px !important; }
+    .ga-category-chips {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 8px !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      flex-wrap: unset !important;
+    }
+    .ga-category-chip {
+      min-height: 42px !important;
+      justify-content: center !important;
+      padding: 10px 12px !important;
+      font-size: 13px !important;
+      white-space: normal !important;
+    }
     .ga-grid {
       grid-template-columns: 1fr !important;
       gap: 12px !important;
@@ -1252,7 +1274,23 @@
       border-bottom: 1px solid var(--line) !important;
       border-radius: 0 0 12px 12px !important;
       box-shadow: 0 10px 24px rgba(15, 23, 42, 0.07) !important;
+      white-space: normal !important;
     }
+    .ga-pr-card > .ga-axis {
+      padding-bottom: 4px !important;
+      overflow: visible !important;
+    }
+    .ga-axis {
+      font-size: 11px !important;
+      gap: 4px !important;
+      padding-inline: 2px !important;
+    }
+    .ga-axis span {
+      flex: 1 1 0 !important;
+      text-align: center !important;
+    }
+    .ga-axis span:first-child { text-align: left !important; }
+    .ga-axis span:last-child { text-align: right !important; }
     .ga-card-title {
       display: grid !important;
       grid-template-columns: 1fr !important;
@@ -1342,17 +1380,27 @@
       font-size: 11px !important;
     }
     .ga-mode-switch { justify-self: start !important; }
-    #overviewChart { height: 260px !important; }
+    #overviewChart { height: 200px !important; width: 100% !important; max-width: 100% !important; }
     .ga-chart-card {
-      padding: 30px 12px 10px !important;
-      overflow: visible !important;
+      padding: 26px 10px 10px !important;
+      overflow: hidden !important;
+      max-width: 100% !important;
     }
     .ga-chart-card::before {
       top: 13px !important;
       left: 12px !important;
     }
-    #trendChart { height: 370px !important; }
-    .ga-replacement-chart #trendChart { height: 440px !important; }
+    #trendChart {
+      height: 340px !important;
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+    .ga-replacement-chart #trendChart { height: 400px !important; }
+    .js-plotly-plot,
+    .plotly-graph-div {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
     .ga-replacement-chart .ga-value-row,
     .ga-replacement-chart .ga-coverage-zone {
       grid-template-columns: 1fr !important;
@@ -1361,8 +1409,27 @@
     .ga-controls {
       width: 100% !important;
     }
-    .ga-category-chip {
+    .ga-toggle-bar {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      justify-content: flex-start !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      padding: 0 0 10px !important;
+      gap: 8px !important;
+      overflow: visible !important;
+    }
+    .ga-icon-toggle {
       min-height: 40px !important;
+      padding: 8px 12px !important;
+      font-size: 13px !important;
+      gap: 6px !important;
+      white-space: nowrap !important;
+    }
+    .ga-trend-line-icon {
+      width: 20px !important;
+      height: 10px !important;
     }
     .ga-quality-head {
       flex-wrap: wrap !important;
@@ -1386,35 +1453,21 @@
       font-size: 10.8px !important;
     }
     .ga-formula-frac { min-width: 72px !important; }
-    .ga-toggle-bar {
-      justify-content: center !important;
-      flex-wrap: nowrap !important;
-      width: 100% !important;
-      max-width: 100% !important;
-      margin: 0 !important;
-      padding: 0 0 10px !important;
-      gap: 4px !important;
-    }
-    .ga-icon-toggle {
-      padding: 5px 7px !important;
-      font-size: 11px !important;
-      gap: 4px !important;
-    }
-    .ga-trend-line-icon {
-      width: 20px !important;
-      height: 10px !important;
-    }
   }
   @media (max-width: 420px) {
     .ga-widget { padding: 10px !important; }
     .ga-head h1 { font-size: clamp(26px, 8.4vw, 31px) !important; }
-    .ga-sub { font-size: 12px !important; }
+    .ga-sub,
+    .ga-sub-extra {
+      font-size: 12px !important;
+      white-space: normal !important;
+    }
     .ga-card-title h2,
     .ga-overview-head h3 { font-size: 19px !important; }
     .ga-pr-score strong { font-size: clamp(44px, 17vw, 62px) !important; }
-    #overviewChart { height: 240px !important; }
-    #trendChart { height: 340px !important; }
-    .ga-replacement-chart #trendChart { height: 410px !important; }
+    #overviewChart { height: 180px !important; }
+    #trendChart { height: 320px !important; }
+    .ga-replacement-chart #trendChart { height: 380px !important; }
   }
 </style>
 </head>
@@ -1611,6 +1664,66 @@ const monthRangeActions = document.getElementById("monthRangeActions");
 const monthPickGrid = document.getElementById("monthPickGrid");
 const yearControlLabel = document.querySelector("#yearControl label[for='yearSelect']");
 const metricSwitch = document.getElementById("metricSwitch");
+
+function isCompactViewport() {
+  return window.matchMedia("(max-width: 760px)").matches;
+}
+
+function schedulePlotResize() {
+  window.requestAnimationFrame(() => {
+    try {
+      const trend = document.getElementById("trendChart");
+      const overview = document.getElementById("overviewChart");
+      if (trend) Plotly.Plots.resize(trend);
+      if (overview) Plotly.Plots.resize(overview);
+    } catch (_error) {
+      /* plot may not be ready */
+    }
+  });
+}
+
+function overviewHBarOptions(maxValue, displayValues) {
+  const peak = Math.max(...displayValues, maxValue, 1);
+  if (isCompactViewport()) {
+    return {
+      margin: { l: 56, r: 8, t: 4, b: 4 },
+      textposition: "inside",
+      textfont: { color: "#ffffff", size: 11 },
+      range: [0, peak * 1.04],
+      barWidth: 0.46,
+      tickfontSize: 11,
+      yPad: 0.55,
+    };
+  }
+  return {
+    margin: { l: 64, r: 102, t: 12, b: 12 },
+    textposition: "outside",
+    textfont: { color: "#253047", size: 12 },
+    range: [0, peak * 1.22],
+    barWidth: 0.58,
+    tickfontSize: 12,
+    yPad: 0.72,
+  };
+}
+
+function compactTrendSup(text) {
+  const raw = String(text || "");
+  if (!isCompactViewport()) return raw;
+  const parts = raw.split("｜").map((part) => part.trim()).filter(Boolean);
+  if (parts.length >= 2) return `${parts[0]}｜點選端點可同步`;
+  return raw.length > 36 ? `${raw.slice(0, 34)}…` : raw;
+}
+
+function trendPlotMargins(kind = "year") {
+  if (!isCompactViewport()) {
+    if (kind === "empty") return { l: 64, r: 28, t: 78, b: 62 };
+    if (kind === "month") return { l: 64, r: 72, t: 78, b: 62 };
+    return { l: 54, r: 28, t: 128, b: 78 };
+  }
+  if (kind === "empty") return { l: 40, r: 10, t: 72, b: 48 };
+  if (kind === "month") return { l: 40, r: 10, t: 84, b: 52 };
+  return { l: 40, r: 10, t: 92, b: 52 };
+}
 
 function isEcocoChart() {
   return GA_DATA.chartType === "ecoco";
@@ -4474,13 +4587,13 @@ function renderTrend() {
 
   Plotly.react("trendChart", traces, {
     title: {
-      text: `${boldTitle(`歷史趨勢-${activeValueNoun()}`)}<br><sup>${activeTrendSubtitle(selectedCategory, `${baseComparison.shortBasisLabel}，每一點代表該比較基準下的累積量｜點選端點可同步選年`)}</sup>`,
+      text: `${boldTitle(`歷史趨勢-${activeValueNoun()}`)}<br><sup>${compactTrendSup(activeTrendSubtitle(selectedCategory, `${baseComparison.shortBasisLabel}，每一點代表該比較基準下的累積量｜點選端點可同步選年`))}</sup>`,
       x: 0,
       xanchor: "left",
       y: 0.974,
       yanchor: "top",
-      pad: { t: 3, b: 0 },
-      font: { size: 19, color: "#101827" },
+      pad: { t: isCompactViewport() ? 0 : 3, b: isCompactViewport() ? 6 : 0 },
+      font: { size: isCompactViewport() ? 16 : 19, color: "#101827" },
     },
     shapes: [
       {
@@ -4505,13 +4618,24 @@ function renderTrend() {
       },
     ],
     annotations,
-    margin: { l: 54, r: 28, t: 128, b: 78 },
+    margin: trendPlotMargins("year"),
+    autosize: true,
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "#ffffff",
     xaxis: { tickmode: "array", tickvals: years, title: "", showgrid: false, zeroline: false },
-    yaxis: { title: activeUnit(), rangemode: "tozero", gridcolor: "#e8eef6", zeroline: false },
+    yaxis: {
+      title: isCompactViewport() ? "" : activeUnit(),
+      rangemode: "tozero",
+      gridcolor: "#e8eef6",
+      zeroline: false,
+      automargin: true,
+      tickfont: { size: isCompactViewport() ? 10 : 12 },
+    },
     showlegend: false,
-  }, { displayModeBar: false, responsive: true }).then(() => bindTrendClick(scope));
+  }, { displayModeBar: false, responsive: true }).then(() => {
+    bindTrendClick(scope);
+    schedulePlotResize();
+  });
 }
 
 function renderLocationOverview(comparison) {
@@ -4563,6 +4687,7 @@ function renderLocationOverview(comparison) {
   const yPositions = sorted.map((_, idx) => idx === 0 ? 0 : idx + 0.42);
   const actualValues = sorted.map((row) => hasLocationData(row) ? row.value : 0);
   const displayValues = visibleBarValues(actualValues);
+  const barOpts = overviewHBarOptions(maxValue, displayValues);
   if (overviewTitle) overviewTitle.textContent = usesLocationRanking()
     ? `${axisName}排名`
     : `${axisName}總覽｜${selectedYear} 年${usesMonthCoverage() ? ` ${comparison.shortBasisLabel}` : ""}`;
@@ -4572,10 +4697,10 @@ function renderLocationOverview(comparison) {
     orientation: "h",
     x: displayValues,
     y: yPositions,
-    width: sorted.map(() => 0.58),
+    width: sorted.map(() => barOpts.barWidth),
     text: sorted.map((row) => hasLocationData(row) ? `${fmt.format(row.value)} ${activeUnit()}` : ""),
-    textposition: "outside",
-    textfont: { color: "#253047", size: 12 },
+    textposition: barOpts.textposition,
+    textfont: barOpts.textfont,
     cliponaxis: false,
     marker: { color: sorted.map((row) => hasLocationData(row) ? colorForPosition(Math.round(row.relativePosition)) : "rgba(148,163,184,0)"), line: { color: "#ffffff", width: 1 } },
     customdata: sorted.map((row) => [row.label, formatMonths(row.months), hasLocationData(row) ? row.value : null]),
@@ -4584,27 +4709,29 @@ function renderLocationOverview(comparison) {
         "<br>資料涵蓋：%{customdata[1]}<extra></extra>"
       : "%{customdata[0]}<br>" + activeValueNoun() + "：%{customdata[2]:,.2f} " + activeUnit() + "<extra></extra>",
   }], {
-    margin: { l: 86, r: 86, t: 18, b: 42 },
+    margin: { ...barOpts.margin, l: isCompactViewport() ? 64 : 86, r: isCompactViewport() ? 8 : 86 },
+    autosize: true,
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "#ffffff",
     xaxis: {
-      title: activeUnit(),
+      title: isCompactViewport() ? "" : activeUnit(),
+      showticklabels: !isCompactViewport(),
       gridcolor: "#edf2f7",
       zeroline: false,
-      range: [0, Math.max(...displayValues, maxValue) * 1.18],
+      range: barOpts.range,
     },
     yaxis: {
       title: "",
       tickmode: "array",
       tickvals: yPositions,
       ticktext: sorted.map((row) => row.label),
-      range: [Math.max(...yPositions) + 0.72, -0.56],
+      range: [Math.max(...yPositions) + barOpts.yPad, -0.56],
       automargin: true,
       showgrid: false,
       zeroline: false,
     },
     showlegend: false,
-  }, { displayModeBar: false, responsive: true });
+  }, { displayModeBar: false, responsive: true }).then(schedulePlotResize);
 }
 
 function renderMonthOverview() {
@@ -4680,6 +4807,7 @@ function renderMonthOverview() {
   const yPositions = bars.map((_, idx) => (idx === 0 ? 0 : idx * 1.08 + 0.42));
   const maxValue = Math.max(...values, 1);
   const colors = bars.map((item) => colorForPosition(Math.round(item.relativePosition)));
+  const barOpts = overviewHBarOptions(maxValue, displayValues);
   if (overviewTitle) overviewTitle.textContent = `月份總覽｜${selectedYear}年`;
 
   Plotly.react("overviewChart", [{
@@ -4687,30 +4815,31 @@ function renderMonthOverview() {
     orientation: "h",
     x: displayValues,
     y: yPositions,
-    width: bars.map(() => 0.84),
+    width: bars.map(() => (isCompactViewport() ? 0.62 : 0.84)),
     text: bars.map((item) => `${fmt.format(item.value)} ${activeUnit()}`),
-    textposition: "outside",
-    textfont: { color: "#253047", size: 13.5 },
+    textposition: barOpts.textposition,
+    textfont: barOpts.textfont,
     cliponaxis: false,
     marker: { color: colors, line: { color: "#ffffff", width: 1 } },
     customdata: bars.map((item) => [item.month, formatMonths(item.comparisonMonths)]),
     hovertemplate: "%{customdata[0]}月<br>" + activeValueNoun() + "：%{x:,.2f} " + activeUnit() + "<extra></extra>",
   }], {
-    margin: { l: 52, r: 102, t: 10, b: 12 },
+    margin: { ...barOpts.margin, l: isCompactViewport() ? 44 : 52 },
+    autosize: true,
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "#ffffff",
-    xaxis: { title: "", showticklabels: false, gridcolor: "#edf2f7", zeroline: false, range: [0, Math.max(...displayValues, maxValue) * 1.22] },
+    xaxis: { title: "", showticklabels: false, gridcolor: "#edf2f7", zeroline: false, range: barOpts.range },
     yaxis: {
       tickmode: "array",
       tickvals: yPositions,
       ticktext: bars.map((item) => `${item.month}月`),
-      tickfont: { size: 12.5, color: "#334155" },
+      tickfont: { size: barOpts.tickfontSize, color: "#334155" },
       range: [Math.max(...yPositions) + 0.58, -0.42],
       showgrid: false,
       zeroline: false,
     },
     showlegend: false,
-  }, { displayModeBar: false, responsive: true });
+  }, { displayModeBar: false, responsive: true }).then(schedulePlotResize);
 
   if (!overview) return;
   overview.removeAllListeners?.("plotly_click");
@@ -4829,6 +4958,7 @@ function renderOverview() {
   const yPositions = bars.map((_, idx) => idx === 0 ? 0 : idx + 0.42);
   const maxValue = Math.max(...values, 1);
   const colors = bars.map((item) => colorForPosition(Math.round(item.relativePosition)));
+  const barOpts = overviewHBarOptions(maxValue, displayValues);
   if (overviewTitle) overviewTitle.textContent = usesMonthCoverage()
     ? `年度總覽｜${comparison.shortBasisLabel}`
     : "年度總覽";
@@ -4838,10 +4968,10 @@ function renderOverview() {
     orientation: "h",
     x: displayValues,
     y: yPositions,
-    width: bars.map(() => 0.58),
+    width: bars.map(() => barOpts.barWidth),
     text: bars.map((item) => `${fmt.format(item.value)} ${activeUnit()}`),
-    textposition: "outside",
-    textfont: { color: "#253047", size: 12 },
+    textposition: barOpts.textposition,
+    textfont: barOpts.textfont,
     cliponaxis: false,
     marker: { color: colors, line: { color: "#ffffff", width: 1 } },
     customdata: bars.map((item) => [
@@ -4861,7 +4991,8 @@ function renderOverview() {
       : "%{customdata[4]}<br>" + activeValueNoun() + "：%{customdata[5]:,.2f} " + activeUnit() +
         "<br>第 %{customdata[0]} / 共 %{customdata[1]} 年<extra></extra>",
   }], {
-    margin: { l: 64, r: 102, t: 12, b: 12 },
+    margin: barOpts.margin,
+    autosize: true,
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "#ffffff",
     xaxis: {
@@ -4869,20 +5000,21 @@ function renderOverview() {
       showticklabels: false,
       gridcolor: "#edf2f7",
       zeroline: false,
-      range: [0, Math.max(...displayValues, maxValue) * 1.22],
+      range: barOpts.range,
     },
     yaxis: {
       title: "",
       tickmode: "array",
       tickvals: yPositions,
       ticktext: labels,
-      range: [Math.max(...yPositions) + 0.72, -0.56],
+      tickfont: { size: barOpts.tickfontSize, color: "#334155" },
+      range: [Math.max(...yPositions) + barOpts.yPad, -0.56],
       automargin: true,
       showgrid: false,
       zeroline: false,
     },
     showlegend: false,
-  }, { displayModeBar: false, responsive: true });
+  }, { displayModeBar: false, responsive: true }).then(schedulePlotResize);
   bindYearOverviewClick();
 }
 
@@ -5537,9 +5669,16 @@ fetch(`./data.json?t=${Date.now()}`)
   .catch(showError);
 
 window.addEventListener("resize", () => {
-  Plotly.Plots.resize(document.getElementById("trendChart"));
-  Plotly.Plots.resize(document.getElementById("overviewChart"));
+  schedulePlotResize();
 });
+
+if (typeof ResizeObserver === "function") {
+  const plotResizeObserver = new ResizeObserver(() => schedulePlotResize());
+  ["trendChart", "overviewChart"].forEach((id) => {
+    const node = document.getElementById(id);
+    if (node) plotResizeObserver.observe(node);
+  });
+}
 </script>
 </body>
 </html>

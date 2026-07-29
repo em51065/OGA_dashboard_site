@@ -568,6 +568,20 @@ function prepareChildFrame() {
       .ga-toggle-bar { padding-bottom: 4px !important; }
       .ga-pr-score { margin: 6px 0 8px !important; }
       ` : ""}
+      @media (max-width: 760px) {
+        body.ga-has-category-chips .ga-sub,
+        body.ga-has-category-chips .ga-sub-extra,
+        .ga-sub,
+        .ga-sub-extra {
+          white-space: normal !important;
+          overflow: visible !important;
+        }
+        #overviewChart { height: 200px !important; width: 100% !important; max-width: 100% !important; }
+        #trendChart { height: 340px !important; width: 100% !important; max-width: 100% !important; }
+        .ga-replacement-chart #trendChart { height: 400px !important; }
+        .ga-toggle-bar { flex-wrap: wrap !important; gap: 8px !important; }
+        .ga-icon-toggle { min-height: 40px !important; padding: 8px 12px !important; font-size: 13px !important; }
+      }
     `;
     doc.head.appendChild(style);
   }
