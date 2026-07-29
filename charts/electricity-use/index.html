@@ -1853,9 +1853,47 @@ function trendPlotMargins(kind = "year") {
     return { l: 54, r: 28, t: 128, b: 78 };
   }
   // Extra top margin so Plotly title + subtitle are not clipped under the card kicker.
+  // Right margin stays tight: mean label sits inside the plot on the left on compact.
   if (kind === "empty") return { l: 40, r: 10, t: 104, b: 48 };
   if (kind === "month") return { l: 40, r: 10, t: 116, b: 52 };
   return { l: 40, r: 10, t: 124, b: 52 };
+}
+
+function meanLineAnnotation({ xMin, xMax, y, unit, yref = "y" }) {
+  if (isCompactViewport()) {
+    return {
+      x: xMin,
+      y,
+      xref: "x",
+      yref,
+      text: `均值 ${fmt.format(y)}`,
+      showarrow: false,
+      xanchor: "left",
+      yanchor: "bottom",
+      xshift: 0,
+      yshift: 7,
+      bgcolor: "rgba(255,255,255,0.88)",
+      bordercolor: "rgba(0,0,0,0)",
+      borderpad: 2,
+      font: { size: 11, color: "#475569" },
+    };
+  }
+  return {
+    x: xMax,
+    y,
+    xref: "x",
+    yref,
+    text: `均值 ${fmt.format(y)} ${unit}`,
+    showarrow: false,
+    xanchor: "left",
+    yanchor: "middle",
+    xshift: 8,
+    yshift: 0,
+    bgcolor: "rgba(0,0,0,0)",
+    bordercolor: "rgba(0,0,0,0)",
+    borderpad: 0,
+    font: { size: 12, color: "#475569" },
+  };
 }
 
 function isEcocoChart() {
@@ -4192,18 +4230,13 @@ function renderDualMetricMonthTrend() {
   const leftTrace = makeTrace(left, leftValues, "y");
   const rightTrace = makeTrace(right, rightValues, "y2");
   const traces = primary === left ? [rightTrace, leftTrace] : [leftTrace, rightTrace];
-  const annotations = [{
-    x: maxMonth,
+  const annotations = [meanLineAnnotation({
+    xMin: minMonth,
+    xMax: maxMonth,
     y: mean,
-    xref: "x",
+    unit: activeUnit(primary),
     yref: primaryYref,
-    text: `均值 ${fmt.format(mean)} ${activeUnit(primary)}`,
-    showarrow: false,
-    xanchor: "left",
-    yanchor: "middle",
-    xshift: 8,
-    font: { size: 12, color: "#475569" },
-  }];
+  })];
   if (focus) {
     annotations.push({
       x: focus.month,
@@ -4373,18 +4406,13 @@ function renderDualMetricYearTrend() {
   const leftTrace = makeTrace(left, leftValues, leftByYear, "y");
   const rightTrace = makeTrace(right, rightValues, rightByYear, "y2");
   const traces = primary === left ? [rightTrace, leftTrace] : [leftTrace, rightTrace];
-  const annotations = [{
-    x: maxYear,
+  const annotations = [meanLineAnnotation({
+    xMin: minYear,
+    xMax: maxYear,
     y: mean,
-    xref: "x",
+    unit: activeUnit(primary),
     yref: primaryYref,
-    text: `均值 ${fmt.format(mean)} ${activeUnit(primary)}`,
-    showarrow: false,
-    xanchor: "left",
-    yanchor: "middle",
-    xshift: 8,
-    font: { size: 12, color: "#475569" },
-  }];
+  })];
   if (focus) {
     annotations.push({
       x: focus.year,
@@ -4514,22 +4542,12 @@ function renderMonthTrend() {
   const minMonth = Math.min(...months);
   const maxMonth = Math.max(...months);
   const maxY = Math.max(...traces.flatMap((trace) => trace.y), mean, 1);
-  const annotations = [{
-    x: maxMonth,
+  const annotations = [meanLineAnnotation({
+    xMin: minMonth,
+    xMax: maxMonth,
     y: mean,
-    xref: "x",
-    yref: "y",
-    text: `均值 ${fmt.format(mean)} ${activeUnit()}`,
-    showarrow: false,
-    xanchor: "left",
-    yanchor: "middle",
-    xshift: 8,
-    yshift: 0,
-    bgcolor: "rgba(0,0,0,0)",
-    bordercolor: "rgba(0,0,0,0)",
-    borderpad: 0,
-    font: { size: 12, color: "#475569" },
-  }];
+    unit: activeUnit(),
+  })];
   if (focus) {
     annotations.push({
       x: focus.month,
@@ -4680,22 +4698,12 @@ function renderTrend() {
   const focusComparison = comparisonByCategory.get(focusCategory) || baseComparison;
   const focusRow = focusComparison.rows.find((item) => String(item.year) === String(selectedYear)) || selected;
   const annotations = [
-    {
-      x: maxYear,
+    meanLineAnnotation({
+      xMin: minYear,
+      xMax: maxYear,
       y: focusComparison.mean,
-      xref: "x",
-      yref: "y",
-      text: `均值 ${fmt.format(focusComparison.mean)} ${activeUnit(focusCategory)}`,
-      showarrow: false,
-      xanchor: "left",
-      yanchor: "middle",
-      xshift: 8,
-      yshift: 0,
-      bgcolor: "rgba(0,0,0,0)",
-      bordercolor: "rgba(0,0,0,0)",
-      borderpad: 0,
-      font: { size: 12, color: "#475569" },
-    },
+      unit: activeUnit(focusCategory),
+    }),
   ];
   if (focusRow) {
     annotations.push({
