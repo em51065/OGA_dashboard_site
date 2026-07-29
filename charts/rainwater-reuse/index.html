@@ -1350,13 +1350,14 @@
       line-height: 1.22 !important;
     }
     .ga-coverage-wrap {
-      width: 100% !important;
+      width: auto !important;
       max-width: 100% !important;
     }
     .ga-coverage {
-      width: 100% !important;
-      justify-content: center !important;
-      white-space: normal !important;
+      width: auto !important;
+      max-width: 100% !important;
+      justify-content: flex-start !important;
+      white-space: nowrap !important;
     }
     .ga-month-popover {
       left: 0 !important;
@@ -1368,19 +1369,22 @@
       min-width: 0 !important;
     }
     .ga-pr-score {
-      justify-content: flex-start !important;
-      gap: 8px !important;
+      justify-content: center !important;
+      align-items: flex-end !important;
+      gap: 6px !important;
       margin: 8px 0 10px !important;
       transform: none !important;
     }
     .ga-pr-score strong {
       max-width: 100% !important;
       font-size: clamp(48px, 18vw, 70px) !important;
+      line-height: 0.92 !important;
     }
     .ga-pr-score span {
       min-width: 0 !important;
+      margin-bottom: 6px !important;
       font-size: 12px !important;
-      white-space: normal !important;
+      white-space: nowrap !important;
     }
     .ga-value-row {
       grid-template-columns: 1fr 1fr !important;
@@ -1440,12 +1444,12 @@
     .ga-mode-switch { justify-self: start !important; }
     #overviewChart { height: 200px !important; width: 100% !important; max-width: 100% !important; }
     .ga-chart-card {
-      padding: 18px 12px 12px !important;
-      overflow: hidden !important;
+      padding: 30px 12px 12px !important;
+      overflow: visible !important;
       max-width: 100% !important;
     }
     .ga-chart-card::before {
-      top: 16px !important;
+      top: 12px !important;
       left: 12px !important;
     }
     #trendChart {

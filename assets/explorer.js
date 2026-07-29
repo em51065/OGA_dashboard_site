@@ -456,12 +456,12 @@ function prepareChildFrame() {
       .ga-widget { margin: 0 auto !important; }
       .oga-block-kicker {
         display: block;
-        margin: 0 0 4px;
+        margin: 0 0 7px;
         color: #7a8798;
         font-size: 9px;
         font-weight: 950;
         letter-spacing: 0.13em;
-        line-height: 1.1;
+        line-height: 1.15;
         text-transform: uppercase;
       }
       .ga-card-title h2, .ga-overview-head h3 { letter-spacing: 0 !important; }
@@ -525,10 +525,10 @@ function prepareChildFrame() {
           max-width: min(330px, 46%) !important;
         }
       }
-      .ga-chart-card { padding-top: 28px !important; }
+      .ga-chart-card { padding-top: 30px !important; }
       .ga-chart-card::before {
         position: absolute;
-        top: 15px;
+        top: 12px;
         left: 12px;
         z-index: 2;
         color: #7a8798;
@@ -575,6 +575,17 @@ function prepareChildFrame() {
         .ga-sub-extra {
           white-space: normal !important;
           overflow: visible !important;
+        }
+        .oga-block-kicker {
+          margin-bottom: 7px !important;
+        }
+        .ga-chart-card {
+          padding-top: 30px !important;
+          overflow: visible !important;
+        }
+        .ga-chart-card::before {
+          top: 12px !important;
+          left: 12px !important;
         }
         #overviewChart { height: 200px !important; width: 100% !important; max-width: 100% !important; }
         #trendChart { height: 340px !important; width: 100% !important; max-width: 100% !important; }
