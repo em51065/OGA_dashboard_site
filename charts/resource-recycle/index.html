@@ -1350,14 +1350,13 @@
       line-height: 1.22 !important;
     }
     .ga-coverage-wrap {
-      width: auto !important;
+      width: 100% !important;
       max-width: 100% !important;
     }
     .ga-coverage {
-      width: auto !important;
-      max-width: 100% !important;
-      justify-content: flex-start !important;
-      white-space: nowrap !important;
+      width: 100% !important;
+      justify-content: center !important;
+      white-space: normal !important;
     }
     .ga-month-popover {
       left: 0 !important;
@@ -1775,6 +1774,28 @@ function withCompactPlotInteraction(layout) {
   return next;
 }
 
+function withCompactTrendTitle(layout) {
+  const next = Object.assign({}, layout || {});
+  if (!isCompactViewport()) return next;
+  if (next.title && typeof next.title === "object") {
+    next.title = Object.assign({}, next.title, {
+      y: 0.99,
+      yanchor: "top",
+      pad: { t: 10, b: 8 },
+      font: Object.assign({}, next.title.font || {}, { size: 16, color: "#101827" }),
+    });
+  }
+  const minTop = 124;
+  if (next.margin) {
+    next.margin = Object.assign({}, next.margin, {
+      t: Math.max(Number(next.margin.t) || 0, minTop),
+    });
+  } else {
+    next.margin = trendPlotMargins("year");
+  }
+  return next;
+}
+
 function plotlyConfig(extra) {
   return Object.assign(
     { displayModeBar: false, responsive: true, scrollZoom: false },
@@ -1786,7 +1807,10 @@ function plotlyConfig(extra) {
   if (!window.Plotly || typeof Plotly.react !== "function") return;
   const originalReact = Plotly.react.bind(Plotly);
   Plotly.react = function patchedReact(gd, data, layout, config) {
-    return originalReact(gd, data, withCompactPlotInteraction(layout), plotlyConfig(config));
+    const id = typeof gd === "string" ? gd : (gd && gd.id);
+    let nextLayout = withCompactPlotInteraction(layout);
+    if (id === "trendChart") nextLayout = withCompactTrendTitle(nextLayout);
+    return originalReact(gd, data, nextLayout, plotlyConfig(config));
   };
 })();
 
@@ -1828,9 +1852,10 @@ function trendPlotMargins(kind = "year") {
     if (kind === "month") return { l: 64, r: 72, t: 78, b: 62 };
     return { l: 54, r: 28, t: 128, b: 78 };
   }
-  if (kind === "empty") return { l: 40, r: 10, t: 72, b: 48 };
-  if (kind === "month") return { l: 40, r: 10, t: 84, b: 52 };
-  return { l: 40, r: 10, t: 92, b: 52 };
+  // Extra top margin so Plotly title + subtitle are not clipped under the card kicker.
+  if (kind === "empty") return { l: 40, r: 10, t: 104, b: 48 };
+  if (kind === "month") return { l: 40, r: 10, t: 116, b: 52 };
+  return { l: 40, r: 10, t: 124, b: 52 };
 }
 
 function isEcocoChart() {
@@ -4118,7 +4143,7 @@ function renderDualMetricMonthTrend() {
         text: `${boldTitle(`逐月趨勢-${activeValueNoun(primary)}`)}<br><sup>${selectedYear}年逐月｜目前沒有資料</sup>`,
         x: 0, xanchor: "left", y: 0.974, yanchor: "top", pad: { t: 3, b: 0 }, font: { size: 19, color: "#101827" },
       },
-      margin: { l: 70, r: 92, t: 78, b: 62 },
+      margin: trendPlotMargins("empty"),
       paper_bgcolor: "rgba(0,0,0,0)",
       plot_bgcolor: "#ffffff",
       xaxis: { visible: false },
@@ -4205,7 +4230,7 @@ function renderDualMetricMonthTrend() {
       text: `${boldTitle(`逐月趨勢-${activeValueNoun(primary)}`)}<br><sup>${selectedYear}年逐月｜亮線為目前指標，淡線為${categoryDisplayName(secondary)}對照｜點選端點可同步左側</sup>`,
       x: 0, xanchor: "left", y: 0.974, yanchor: "top", pad: { t: 3, b: 0 }, font: { size: 19, color: "#101827" },
     },
-    margin: { l: 64, r: 72, t: 78, b: 62 },
+    margin: trendPlotMargins("month"),
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "#ffffff",
     xaxis: {
@@ -4294,7 +4319,7 @@ function renderDualMetricYearTrend() {
         text: `${boldTitle(`歷史趨勢-${activeValueNoun(primary)}`)}<br><sup>${activeTrendSubtitle(primary, "目前篩選條件沒有資料")}</sup>`,
         x: 0, xanchor: "left", y: 0.974, yanchor: "top", pad: { t: 3, b: 0 }, font: { size: 19, color: "#101827" },
       },
-      margin: { l: 70, r: 92, t: 78, b: 62 },
+      margin: trendPlotMargins("empty"),
       paper_bgcolor: "rgba(0,0,0,0)",
       plot_bgcolor: "#ffffff",
       xaxis: { visible: false },
@@ -4387,7 +4412,7 @@ function renderDualMetricYearTrend() {
       text: `${boldTitle(`歷史趨勢-${activeValueNoun(primary)}`)}<br><sup>${primaryComparison.shortBasisLabel}｜亮線為目前指標，淡線為${categoryDisplayName(secondary)}對照｜點選端點可同步選年</sup>`,
       x: 0, xanchor: "left", y: 0.974, yanchor: "top", pad: { t: 3, b: 0 }, font: { size: 19, color: "#101827" },
     },
-    margin: { l: 64, r: 72, t: 96, b: 78 },
+    margin: trendPlotMargins("year"),
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "#ffffff",
     xaxis: { tickmode: "array", tickvals: years, title: "", showgrid: false, zeroline: false },
@@ -4472,7 +4497,7 @@ function renderMonthTrend() {
         text: `${boldTitle(`逐月趨勢-${activeValueNoun()}`)}<br><sup>${selectedYear}年逐月｜目前沒有資料</sup>`,
         x: 0, xanchor: "left", y: 0.974, yanchor: "top", pad: { t: 3, b: 0 }, font: { size: 19, color: "#101827" },
       },
-      margin: { l: 64, r: 28, t: 78, b: 62 },
+      margin: trendPlotMargins("empty"),
       paper_bgcolor: "rgba(0,0,0,0)",
       plot_bgcolor: "#ffffff",
       xaxis: { visible: false },
@@ -4528,7 +4553,7 @@ function renderMonthTrend() {
       text: `${boldTitle(`逐月趨勢-${activeValueNoun()}`)}<br><sup>${selectedYear}年逐月｜點選月份端點可同步左側排名</sup>`,
       x: 0, xanchor: "left", y: 0.974, yanchor: "top", pad: { t: 3, b: 0 }, font: { size: 19, color: "#101827" },
     },
-    margin: { l: 64, r: 28, t: 78, b: 62 },
+    margin: trendPlotMargins("month"),
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "#ffffff",
     xaxis: {
@@ -4629,7 +4654,7 @@ function renderTrend() {
         pad: { t: 3, b: 0 },
         font: { size: 19, color: "#101827" },
       },
-      margin: { l: 64, r: 28, t: 78, b: 62 },
+      margin: trendPlotMargins("empty"),
       paper_bgcolor: "rgba(0,0,0,0)",
       plot_bgcolor: "#ffffff",
       xaxis: { visible: false },
