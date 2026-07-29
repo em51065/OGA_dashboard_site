@@ -47,9 +47,17 @@ let lastFrameHeight = 0;
 let lastOuterHeight = 0;
 /* Match current Wix HTML component on ossd.ncku.edu.tw (comp-mqylfndk). */
 const EMBED_HOST_MAX_HEIGHT = 1159;
+const EMBED_CHART_MAX_DESKTOP = 920;
+/* Align with oga-embed.js MAX_HEIGHT so mobile embed can grow with stacked charts. */
+const EMBED_HOST_MAX_HEIGHT_COMPACT = 2400;
+const EMBED_CHART_MAX_COMPACT = 2200;
 
 function isEmbeddedMode() {
   return document.documentElement.classList.contains("is-embedded");
+}
+
+function isCompactEmbed() {
+  return isEmbeddedMode() && mobileNarrowMq.matches;
 }
 
 function shouldUseMobileFriendlyOpen() {
@@ -208,7 +216,9 @@ function measurePortalHeight() {
   if (!portal) return 560;
   // Measure content box only — never html/body scrollHeight (tracks iframe viewport).
   const HEIGHT_PAD = 4;
-  const MAX_CONTENT_HEIGHT = isEmbeddedMode() ? EMBED_HOST_MAX_HEIGHT : 2400;
+  const MAX_CONTENT_HEIGHT = isEmbeddedMode()
+    ? (isCompactEmbed() ? EMBED_HOST_MAX_HEIGHT_COMPACT : EMBED_HOST_MAX_HEIGHT)
+    : 2400;
   const foot = portal.querySelector(".oga-footnote");
   const portalTop = portal.getBoundingClientRect().top;
   const contentBottom = foot
@@ -302,9 +312,10 @@ function measureChild() {
       Math.ceil(root.offsetHeight || 0)
     ) + CHILD_HEIGHT_PAD;
     if (isEmbeddedMode()) {
-      // Leave room for explorer chrome above/below the chart iframe inside 1159px host.
-      const EMBED_CHART_MAX = 920;
-      height = Math.min(EMBED_CHART_MAX, height);
+      // Desktop embed: leave room for explorer chrome inside ~1159px Wix host.
+      // Compact embed: allow full stacked chart height so the host page can scroll.
+      const embedChartMax = isCompactEmbed() ? EMBED_CHART_MAX_COMPACT : EMBED_CHART_MAX_DESKTOP;
+      height = Math.min(embedChartMax, height);
     }
     if (Math.abs(height - lastFrameHeight) < 2) {
       reportOuterHeight();
@@ -740,7 +751,15 @@ function bindEvents() {
 
   bindMobileThemeNav();
   setMobileThemeIndex(themeIndexForChart(currentChart));
-  const syncOpenMode = () => syncStandaloneLink();
+  const syncOpenMode = () => {
+    syncStandaloneLink();
+    if (!isEmbeddedMode()) return;
+    // Crossing the compact breakpoint changes height caps — force a fresh measure.
+    lastFrameHeight = 0;
+    lastOuterHeight = 0;
+    scheduleFrameMeasure();
+    reportOuterHeight();
+  };
   if (typeof mobileNarrowMq.addEventListener === "function") {
     mobileNarrowMq.addEventListener("change", syncOpenMode);
   } else if (typeof mobileNarrowMq.addListener === "function") {
