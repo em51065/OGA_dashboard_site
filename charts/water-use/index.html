@@ -1151,13 +1151,18 @@
       padding: 12px !important;
       border-radius: 12px !important;
     }
+    body.ga-has-category-chips .ga-head,
     .ga-head {
       flex-direction: column !important;
       align-items: stretch !important;
       gap: 8px !important;
       margin-bottom: 8px !important;
     }
-    .ga-head-copy { padding-bottom: 0 !important; }
+    .ga-head-copy {
+      position: relative !important;
+      padding-bottom: 0 !important;
+      overflow: visible !important;
+    }
     .ga-replacement-chart .ga-head-copy {
       padding-bottom: 8px !important;
     }
@@ -1168,8 +1173,17 @@
     }
     .ga-head h1 {
       margin-bottom: 4px !important;
-      font-size: clamp(24px, 7.2vw, 30px) !important;
+      font-size: clamp(22px, 6.6vw, 28px) !important;
       line-height: 1.08 !important;
+    }
+    .ga-sub-extra:not([hidden]),
+    body.ga-has-category-chips .ga-sub-extra:not([hidden]) {
+      position: static !important;
+      top: auto !important;
+      left: auto !important;
+      right: auto !important;
+      width: auto !important;
+      white-space: normal !important;
     }
     .ga-sub,
     .ga-sub-extra,
@@ -1181,6 +1195,10 @@
       max-width: 100% !important;
       font-size: 12px !important;
       line-height: 1.45 !important;
+    }
+    #overviewChart,
+    #trendChart {
+      touch-action: pan-y !important;
     }
     .ga-controls {
       display: grid !important;
@@ -1202,6 +1220,7 @@
       width: 100% !important;
       max-width: 100% !important;
       flex-wrap: unset !important;
+      justify-items: stretch !important;
     }
     .ga-category-chip {
       min-height: 42px !important;
@@ -1209,6 +1228,9 @@
       padding: 10px 12px !important;
       font-size: 13px !important;
       white-space: normal !important;
+    }
+    .ga-category-chips .ga-category-chip:last-child {
+      grid-column: 1 / -1 !important;
     }
     .ga-grid {
       grid-template-columns: 1fr !important;
@@ -1349,6 +1371,16 @@
     .ga-pr-track {
       height: 24px !important;
       margin: 14px 0 8px !important;
+      overflow: hidden !important;
+    }
+    .ga-pr-pin {
+      top: -2px !important;
+      width: 3px !important;
+      height: 28px !important;
+      box-shadow: none !important;
+      transform: translateX(-50%) !important;
+      max-width: 3px !important;
+      pointer-events: none !important;
     }
     .ga-axis { font-size: 11px !important; }
     .ga-hint {
@@ -1400,6 +1432,7 @@
     .plotly-graph-div {
       width: 100% !important;
       max-width: 100% !important;
+      touch-action: pan-y !important;
     }
     .ga-replacement-chart .ga-value-row,
     .ga-replacement-chart .ga-coverage-zone {
@@ -1669,18 +1702,56 @@ function isCompactViewport() {
   return window.matchMedia("(max-width: 760px)").matches;
 }
 
+let plotResizeTimer = null;
+const lastPlotWidths = { trend: 0, overview: 0 };
+
 function schedulePlotResize() {
-  window.requestAnimationFrame(() => {
+  if (plotResizeTimer !== null) window.clearTimeout(plotResizeTimer);
+  plotResizeTimer = window.setTimeout(() => {
+    plotResizeTimer = null;
     try {
-      const trend = document.getElementById("trendChart");
-      const overview = document.getElementById("overviewChart");
-      if (trend) Plotly.Plots.resize(trend);
-      if (overview) Plotly.Plots.resize(overview);
+      [
+        ["trend", document.getElementById("trendChart")],
+        ["overview", document.getElementById("overviewChart")],
+      ].forEach(([key, node]) => {
+        if (!node) return;
+        const width = Math.round(node.getBoundingClientRect().width);
+        if (width <= 0) return;
+        if (Math.abs(width - (lastPlotWidths[key] || 0)) < 2) return;
+        lastPlotWidths[key] = width;
+        Plotly.Plots.resize(node);
+      });
     } catch (_error) {
       /* plot may not be ready */
     }
-  });
+  }, 160);
 }
+
+function withCompactPlotInteraction(layout) {
+  const next = Object.assign({}, layout || {});
+  if (!isCompactViewport()) return next;
+  next.dragmode = false;
+  next.xaxis = Object.assign({}, next.xaxis || {}, { fixedrange: true });
+  next.yaxis = Object.assign({}, next.yaxis || {}, { fixedrange: true });
+  if (next.xaxis2) next.xaxis2 = Object.assign({}, next.xaxis2, { fixedrange: true });
+  if (next.yaxis2) next.yaxis2 = Object.assign({}, next.yaxis2, { fixedrange: true });
+  return next;
+}
+
+function plotlyConfig(extra) {
+  return Object.assign(
+    { displayModeBar: false, responsive: true, scrollZoom: false },
+    extra || {}
+  );
+}
+
+(function patchPlotlyMobileGestures() {
+  if (!window.Plotly || typeof Plotly.react !== "function") return;
+  const originalReact = Plotly.react.bind(Plotly);
+  Plotly.react = function patchedReact(gd, data, layout, config) {
+    return originalReact(gd, data, withCompactPlotInteraction(layout), plotlyConfig(config));
+  };
+})();
 
 function overviewHBarOptions(maxValue, displayValues) {
   const peak = Math.max(...displayValues, maxValue, 1);
@@ -3652,9 +3723,9 @@ function updateDom() {
   if (meanDiffEl) meanDiffEl.style.color = selectedColor;
   const rankFill = document.getElementById("rankFill");
   if (rankFill) rankFill.style.width = `${width}%`;
-  if (rankFill) rankFill.style.backgroundSize = `${10000 / width}% 100%`;
+  if (rankFill) rankFill.style.backgroundSize = `${10000 / Math.max(width, 0.001)}% 100%`;
   const rankPin = document.getElementById("rankPin");
-  if (rankPin) rankPin.style.left = `${width}%`;
+  if (rankPin) rankPin.style.left = `${Math.min(100, Math.max(0, width))}%`;
   setTextIfExists("rankHint",
     isMonthGrain()
       ? `${selectedYear}年${row.month}月｜${fmt.format(row.value)} ${activeUnit()}｜第 ${row.rankHigh} / 共 ${comparison.rows.length} 月`

@@ -603,7 +603,7 @@ html.is-embedded .oga-footnote {
 }
 
 @media (max-width: 760px) {
-  .oga-portal { padding: 8px 8px 10px; }
+  .oga-portal { padding: 10px 12px 12px; }
   .oga-header { align-items: flex-start; padding: 0 0 8px; }
   .oga-brand-mark { flex-basis: 36px; width: 36px; height: 36px; }
   .oga-brand h1 { font-size: 22px; line-height: 1.1; }
@@ -767,7 +767,7 @@ html.is-embedded .oga-footnote {
 }
 
 @media (max-width: 460px) {
-  .oga-portal { padding-inline: 6px; }
+  .oga-portal { padding-inline: 10px; }
   .oga-header { gap: 9px; }
   .oga-brand { align-items: flex-start; gap: 10px; }
   .oga-brand-mark { display: none; }
@@ -776,7 +776,7 @@ html.is-embedded .oga-footnote {
   .oga-brand p { font-size: 11px; }
   .oga-stage-bar { align-items: flex-start; }
   .oga-stage-bar > div { display: block; }
-  .oga-stage-label { display: block; margin-bottom: 2px; }
+  .oga-stage-label { display: none; }
   .oga-stage-bar a { margin-top: 3px; }
 }
 
