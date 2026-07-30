@@ -1275,7 +1275,7 @@
       font-size: 13px !important;
       white-space: normal !important;
     }
-    .ga-category-chips .ga-category-chip:last-child {
+    .ga-category-chips .ga-category-chip:first-child {
       grid-column: 1 / -1 !important;
     }
     .ga-grid {
@@ -1652,7 +1652,7 @@
       gap: 8px !important;
       overflow: visible !important;
     }
-    .ga-toggle-bar .ga-icon-toggle:last-child {
+    .ga-toggle-bar .ga-icon-toggle:first-child {
       grid-column: 1 / -1 !important;
     }
     .ga-icon-toggle {
@@ -1936,9 +1936,11 @@ function schedulePlotResize() {
   }, 160);
 }
 
-function withCompactPlotInteraction(layout) {
+function withPlotInteractionLock(layout, chartId) {
   const next = Object.assign({}, layout || {});
-  if (!isCompactViewport()) return next;
+  // Overview bars: lock pan/zoom on every viewport so drag never rescales bar length.
+  // Trend: keep compact-only lock (desktop trend may still pan).
+  if (chartId !== "overviewChart" && !isCompactViewport()) return next;
   next.dragmode = false;
   next.xaxis = Object.assign({}, next.xaxis || {}, { fixedrange: true });
   next.yaxis = Object.assign({}, next.yaxis || {}, { fixedrange: true });
@@ -1984,7 +1986,7 @@ function plotlyConfig(extra) {
   const originalReact = Plotly.react.bind(Plotly);
   Plotly.react = function patchedReact(gd, data, layout, config) {
     const id = typeof gd === "string" ? gd : (gd && gd.id);
-    let nextLayout = withCompactPlotInteraction(layout);
+    let nextLayout = withPlotInteractionLock(layout, id);
     if (id === "trendChart") nextLayout = withCompactTrendTitle(nextLayout);
     return originalReact(gd, data, nextLayout, plotlyConfig(config));
   };
