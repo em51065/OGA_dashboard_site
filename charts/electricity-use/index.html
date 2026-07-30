@@ -2058,27 +2058,65 @@ function compactTrendTitleTop(kind = "year") {
 }
 
 function trendPlotMargins(kind = "year") {
+  const dual = typeof usesDualMetricTrend === "function" && usesDualMetricTrend();
   if (!isCompactViewport()) {
-    if (kind === "empty") return { l: 64, r: 28, t: 78, b: 62 };
+    // Dual-metric needs room for left+right tick labels (e.g. 400k / 140M).
+    if (kind === "empty") return { l: 64, r: dual ? 64 : 28, t: 78, b: 62 };
     if (kind === "month") return { l: 64, r: 72, t: 78, b: 62 };
-    return { l: 54, r: 28, t: 128, b: 78 };
+    return { l: dual ? 64 : 54, r: dual ? 68 : 28, t: 128, b: 78 };
   }
   // Compact top margin sized to title length (see compactTrendTitleTop).
-  // Right margin stays tight: mean label sits inside the plot on the left on compact.
   const t = compactTrendTitleTop(kind);
+  if (dual) {
+    if (kind === "empty") return { l: 52, r: 52, t, b: 48 };
+    if (kind === "month") return { l: 52, r: 52, t, b: 52 };
+    return { l: 52, r: 52, t, b: 52 };
+  }
+  // Single-axis: keep right tight (mean label sits inside on the left).
   if (kind === "empty") return { l: 40, r: 14, t, b: 48 };
   if (kind === "month") return { l: 40, r: 14, t, b: 52 };
   return { l: 40, r: 14, t, b: 52 };
 }
 
+function dualMetricYAxisLayout(left, right, leftColor, rightColor, dualRanges) {
+  const compact = isCompactViewport();
+  const tickSize = compact ? 10 : 11;
+  return {
+    yaxis: {
+      // Compact: hide unit titles — legend toggles already show 用水量／金額.
+      title: compact ? "" : activeUnit(left),
+      rangemode: "tozero",
+      range: dualRanges.left,
+      gridcolor: "#e8eef6",
+      zeroline: false,
+      automargin: true,
+      titlefont: { color: leftColor, size: 12 },
+      tickfont: { color: leftColor, size: tickSize },
+    },
+    yaxis2: {
+      title: compact ? "" : activeUnit(right),
+      rangemode: "tozero",
+      range: dualRanges.right,
+      overlaying: "y",
+      side: "right",
+      showgrid: false,
+      zeroline: false,
+      automargin: true,
+      titlefont: { color: hexToRgba(rightColor, 0.72), size: 12 },
+      tickfont: { color: hexToRgba(rightColor, 0.72), size: tickSize },
+    },
+  };
+}
+
 function meanLineAnnotation({ xMin, xMax, y, unit, yref = "y" }) {
-  if (isCompactViewport()) {
+  // Dual-metric: keep mean on the left so it never collides with the right axis.
+  if (isCompactViewport() || usesDualMetricTrend()) {
     return {
       x: xMin,
       y,
       xref: "x",
       yref,
-      text: `均值 ${fmt.format(y)}`,
+      text: isCompactViewport() ? `均值 ${fmt.format(y)}` : `均值 ${fmt.format(y)} ${unit}`,
       showarrow: false,
       xanchor: "left",
       yanchor: "bottom",
@@ -2087,7 +2125,7 @@ function meanLineAnnotation({ xMin, xMax, y, unit, yref = "y" }) {
       bgcolor: "rgba(255,255,255,0.88)",
       bordercolor: "rgba(0,0,0,0)",
       borderpad: 2,
-      font: { size: 11, color: "#475569" },
+      font: { size: isCompactViewport() ? 11 : 12, color: "#475569" },
     };
   }
   return {
@@ -4629,6 +4667,7 @@ function renderDualMetricMonthTrend() {
     });
   }
   const dualRanges = dualMetricAxisRanges(maxLeft, maxRight);
+  const dualAxes = dualMetricYAxisLayout(left, right, leftColor, rightColor, dualRanges);
   Plotly.react("trendChart", traces, {
     title: {
       text: `${boldTitle(`逐月趨勢-${activeValueNoun(primary)}`)}<br><sup>${compactTrendSup(`${selectedYear}年逐月｜亮線為目前指標，淡線為${categoryDisplayName(secondary)}對照｜點選端點可同步左側`)}</sup>`,
@@ -4645,26 +4684,7 @@ function renderDualMetricMonthTrend() {
       showgrid: false,
       zeroline: false,
     },
-    yaxis: {
-      title: activeUnit(left),
-      rangemode: "tozero",
-      range: dualRanges.left,
-      gridcolor: "#e8eef6",
-      zeroline: false,
-      titlefont: { color: leftColor },
-      tickfont: { color: leftColor },
-    },
-    yaxis2: {
-      title: activeUnit(right),
-      rangemode: "tozero",
-      range: dualRanges.right,
-      overlaying: "y",
-      side: "right",
-      showgrid: false,
-      zeroline: false,
-      titlefont: { color: hexToRgba(rightColor, 0.72) },
-      tickfont: { color: hexToRgba(rightColor, 0.72) },
-    },
+    ...dualAxes,
     showlegend: false,
     shapes: [
       ...(focus ? [{
@@ -4806,6 +4826,7 @@ function renderDualMetricYearTrend() {
   }
   const scope = trendDialogScope();
   const dualRanges = dualMetricAxisRanges(maxLeft, maxRight);
+  const dualAxes = dualMetricYAxisLayout(left, right, leftColor, rightColor, dualRanges);
   Plotly.react("trendChart", traces, {
     title: {
       text: `${boldTitle(`歷史趨勢-${activeValueNoun(primary)}`)}<br><sup>${compactTrendSup(`${primaryComparison.shortBasisLabel}｜亮線為目前指標，淡線為${categoryDisplayName(secondary)}對照｜點選端點可同步選年`)}</sup>`,
@@ -4815,26 +4836,7 @@ function renderDualMetricYearTrend() {
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "#ffffff",
     xaxis: { tickmode: "array", tickvals: years, title: "", showgrid: false, zeroline: false },
-    yaxis: {
-      title: activeUnit(left),
-      rangemode: "tozero",
-      range: dualRanges.left,
-      gridcolor: "#e8eef6",
-      zeroline: false,
-      titlefont: { color: leftColor },
-      tickfont: { color: leftColor },
-    },
-    yaxis2: {
-      title: activeUnit(right),
-      rangemode: "tozero",
-      range: dualRanges.right,
-      overlaying: "y",
-      side: "right",
-      showgrid: false,
-      zeroline: false,
-      titlefont: { color: hexToRgba(rightColor, 0.72) },
-      tickfont: { color: hexToRgba(rightColor, 0.72) },
-    },
+    ...dualAxes,
     showlegend: false,
     shapes: [
       {
