@@ -2031,15 +2031,9 @@ function overviewHBarOptions(maxValue, displayValues) {
 
 function compactTrendSup(text) {
   const raw = String(text || "");
+  // Keep desktop wording on compact; shrink type so one line fits without clipping.
   if (!isCompactViewport()) return raw;
-  const parts = raw.split("｜").map((part) => part.trim()).filter(Boolean);
-  if (parts.length >= 2) {
-    // Keep only the short basis before the first comma so the line fits without clipping.
-    let head = parts[0].split(/[，,]/)[0].trim();
-    if (head.length > 14) head = `${head.slice(0, 12)}…`;
-    return `${head}｜點選端點可同步`;
-  }
-  return raw.length > 28 ? `${raw.slice(0, 26)}…` : raw;
+  return `<span style="font-size:8.5px">${raw}</span>`;
 }
 
 function compactTrendNeedsTallTitle(layout) {
@@ -2072,9 +2066,9 @@ function trendPlotMargins(kind = "year") {
   // Compact top margin sized to title length (see compactTrendTitleTop).
   // Right margin stays tight: mean label sits inside the plot on the left on compact.
   const t = compactTrendTitleTop(kind);
-  if (kind === "empty") return { l: 40, r: 10, t, b: 48 };
-  if (kind === "month") return { l: 40, r: 10, t, b: 52 };
-  return { l: 40, r: 10, t, b: 52 };
+  if (kind === "empty") return { l: 40, r: 14, t, b: 48 };
+  if (kind === "month") return { l: 40, r: 14, t, b: 52 };
+  return { l: 40, r: 14, t, b: 52 };
 }
 
 function meanLineAnnotation({ xMin, xMax, y, unit, yref = "y" }) {
@@ -4555,7 +4549,7 @@ function renderDualMetricMonthTrend() {
   if (!months.length || !primaryRows.length) {
     Plotly.react("trendChart", [], {
       title: {
-        text: `${boldTitle(`逐月趨勢-${activeValueNoun(primary)}`)}<br><sup>${selectedYear}年逐月｜目前沒有資料</sup>`,
+        text: `${boldTitle(`逐月趨勢-${activeValueNoun(primary)}`)}<br><sup>${compactTrendSup(`${selectedYear}年逐月｜目前沒有資料`)}</sup>`,
         x: 0, xanchor: "left", y: 0.974, yanchor: "top", pad: { t: 3, b: 0 }, font: { size: 19, color: "#101827" },
       },
       margin: trendPlotMargins("empty"),
@@ -4637,7 +4631,7 @@ function renderDualMetricMonthTrend() {
   const dualRanges = dualMetricAxisRanges(maxLeft, maxRight);
   Plotly.react("trendChart", traces, {
     title: {
-      text: `${boldTitle(`逐月趨勢-${activeValueNoun(primary)}`)}<br><sup>${selectedYear}年逐月｜亮線為目前指標，淡線為${categoryDisplayName(secondary)}對照｜點選端點可同步左側</sup>`,
+      text: `${boldTitle(`逐月趨勢-${activeValueNoun(primary)}`)}<br><sup>${compactTrendSup(`${selectedYear}年逐月｜亮線為目前指標，淡線為${categoryDisplayName(secondary)}對照｜點選端點可同步左側`)}</sup>`,
       x: 0, xanchor: "left", y: 0.974, yanchor: "top", pad: { t: 3, b: 0 }, font: { size: 19, color: "#101827" },
     },
     margin: trendPlotMargins("month"),
@@ -4726,7 +4720,7 @@ function renderDualMetricYearTrend() {
   if (!years.length || !selected || !primaryComparison.rows.length) {
     Plotly.react("trendChart", [], {
       title: {
-        text: `${boldTitle(`歷史趨勢-${activeValueNoun(primary)}`)}<br><sup>${activeTrendSubtitle(primary, "目前篩選條件沒有資料")}</sup>`,
+        text: `${boldTitle(`歷史趨勢-${activeValueNoun(primary)}`)}<br><sup>${compactTrendSup(activeTrendSubtitle(primary, "目前篩選條件沒有資料"))}</sup>`,
         x: 0, xanchor: "left", y: 0.974, yanchor: "top", pad: { t: 3, b: 0 }, font: { size: 19, color: "#101827" },
       },
       margin: trendPlotMargins("empty"),
@@ -4814,7 +4808,7 @@ function renderDualMetricYearTrend() {
   const dualRanges = dualMetricAxisRanges(maxLeft, maxRight);
   Plotly.react("trendChart", traces, {
     title: {
-      text: `${boldTitle(`歷史趨勢-${activeValueNoun(primary)}`)}<br><sup>${primaryComparison.shortBasisLabel}｜亮線為目前指標，淡線為${categoryDisplayName(secondary)}對照｜點選端點可同步選年</sup>`,
+      text: `${boldTitle(`歷史趨勢-${activeValueNoun(primary)}`)}<br><sup>${compactTrendSup(`${primaryComparison.shortBasisLabel}｜亮線為目前指標，淡線為${categoryDisplayName(secondary)}對照｜點選端點可同步選年`)}</sup>`,
       x: 0, xanchor: "left", y: 0.974, yanchor: "top", pad: { t: 3, b: 0 }, font: { size: 19, color: "#101827" },
     },
     margin: trendPlotMargins("year"),
@@ -4899,7 +4893,7 @@ function renderMonthTrend() {
   if (!traces.length || !months.length) {
     Plotly.react("trendChart", [], {
       title: {
-        text: `${boldTitle(`逐月趨勢-${activeValueNoun()}`)}<br><sup>${selectedYear}年逐月｜目前沒有資料</sup>`,
+        text: `${boldTitle(`逐月趨勢-${activeValueNoun()}`)}<br><sup>${compactTrendSup(`${selectedYear}年逐月｜目前沒有資料`)}</sup>`,
         x: 0, xanchor: "left", y: 0.974, yanchor: "top", pad: { t: 3, b: 0 }, font: { size: 19, color: "#101827" },
       },
       margin: trendPlotMargins("empty"),
@@ -4945,7 +4939,7 @@ function renderMonthTrend() {
   }
   Plotly.react("trendChart", traces, {
     title: {
-      text: `${boldTitle(`逐月趨勢-${activeValueNoun()}`)}<br><sup>${selectedYear}年逐月｜點選月份端點可同步左側排名</sup>`,
+      text: `${boldTitle(`逐月趨勢-${activeValueNoun()}`)}<br><sup>${compactTrendSup(`${selectedYear}年逐月｜點選月份端點可同步左側排名`)}</sup>`,
       x: 0, xanchor: "left", y: 0.974, yanchor: "top", pad: { t: 3, b: 0 }, font: { size: 19, color: "#101827" },
     },
     margin: trendPlotMargins("month"),
@@ -5041,7 +5035,7 @@ function renderTrend() {
   if (!traces.length || !years.length || !selected) {
     Plotly.react("trendChart", [], {
       title: {
-        text: `${boldTitle(`歷史趨勢-${activeValueNoun()}`)}<br><sup>${activeTrendSubtitle(selectedCategory, "目前篩選條件沒有資料")}</sup>`,
+        text: `${boldTitle(`歷史趨勢-${activeValueNoun()}`)}<br><sup>${compactTrendSup(activeTrendSubtitle(selectedCategory, "目前篩選條件沒有資料"))}</sup>`,
         x: 0,
         xanchor: "left",
         y: 0.974,
