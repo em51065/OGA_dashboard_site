@@ -2033,7 +2033,7 @@ function compactTrendSup(text) {
   const raw = String(text || "");
   // Keep desktop wording on compact; shrink type so one line fits without clipping.
   if (!isCompactViewport()) return raw;
-  return `<span style="font-size:9.5px">${raw}</span>`;
+  return `<span style="font-size:10px">${raw}</span>`;
 }
 
 function compactTrendNeedsTallTitle(layout) {
