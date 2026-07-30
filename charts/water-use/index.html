@@ -3490,13 +3490,15 @@ function streetlightCampusShortLabel(location) {
   return raw.replace(/校區$/, "");
 }
 
-function streetlightCampusBarYs(rows) {
+function streetlightCampusBarYs(rows, mode = "qty") {
   // Lift 全校 slightly and add a small gap before campus ranking rows.
   // Compact: tighter step so the plot feels denser (less empty vertical air).
+  // Desktop qty (left): roomier step; saving (right): original denser spacing.
   const hasTotalLead = Boolean(rows[0] && rows[0].location === "全校");
   const compact = isCompactViewport();
-  const step = compact ? 0.74 : 1.02;
-  const leadGap = compact ? 0.18 : 0.30;
+  const desktopRoomy = mode !== "saving";
+  const step = compact ? 0.74 : (desktopRoomy ? 1.02 : 0.86);
+  const leadGap = compact ? 0.18 : (desktopRoomy ? 0.30 : 0.28);
   const firstY = hasTotalLead ? (compact ? -0.2 : -0.28) : -0.1;
   return rows.map((_, idx) => {
     if (idx === 0) return firstY;
@@ -3601,8 +3603,9 @@ function replacementDualColumnLayout(labels, mode = "qty") {
     topMargin: 16,
     bottomMargin: 14,
     yDomainEnd: 0.885,
-    yPadTop: 0.14,
-    yPadBottom: 0.68,
+    // qty (left overview): reclaim bottom pad; saving (right): pre-tweak spacing.
+    yPadTop: mode === "saving" ? 0.46 : 0.14,
+    yPadBottom: mode === "saving" ? 0.74 : 0.68,
     headerPaperY: 0.925,
     countHeader: "總汰換量",
     shareHeader: "非LED占比",
@@ -3614,7 +3617,7 @@ function replacementDualColumnLayout(labels, mode = "qty") {
 function paintReplacementQtyShareBars({ sorted, labels, isSelected, hoverLeft, enableCampusClick = false }) {
   const rowHasData = (row) => row.hasData !== false;
   const isTotalRow = (row) => row.location === "全校";
-  const y = streetlightCampusBarYs(sorted);
+  const y = streetlightCampusBarYs(sorted, "qty");
   const selectedIdx = sorted.findIndex((row) => isSelected(row));
   const totals = sorted.map((row) => (rowHasData(row) ? Math.max(0, Number(row.qty || 0)) : 0));
   // Scale by campus rows only so 全校 does not dominate the length axis.
@@ -3941,7 +3944,7 @@ function syncQualityModeControls() {
 function paintReplacementSavingShareBars({ sorted, labels, isSelected, hoverLeft, enableCampusClick = false }) {
   const rowHasData = (row) => row.hasData !== false;
   const isTotalRow = (row) => row.location === "全校";
-  const y = streetlightCampusBarYs(sorted);
+  const y = streetlightCampusBarYs(sorted, "saving");
   const selectedIdx = sorted.findIndex((row) => isSelected(row));
   const totals = sorted.map((row) => (rowHasData(row) ? Math.max(0, Number(row.saving || 0)) : 0));
   const maxSaving = Math.max(
