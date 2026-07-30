@@ -2068,9 +2068,9 @@ function trendPlotMargins(kind = "year") {
   // Compact top margin sized to title length (see compactTrendTitleTop).
   const t = compactTrendTitleTop(kind);
   if (dual) {
-    if (kind === "empty") return { l: 52, r: 52, t, b: 48 };
-    if (kind === "month") return { l: 52, r: 52, t, b: 52 };
-    return { l: 52, r: 52, t, b: 52 };
+    if (kind === "empty") return { l: 36, r: 36, t, b: 48 };
+    if (kind === "month") return { l: 36, r: 36, t, b: 52 };
+    return { l: 36, r: 36, t, b: 52 };
   }
   // Single-axis: keep right tight (mean label sits inside on the left).
   if (kind === "empty") return { l: 40, r: 14, t, b: 48 };
@@ -2089,7 +2089,8 @@ function dualMetricYAxisLayout(left, right, leftColor, rightColor, dualRanges) {
       range: dualRanges.left,
       gridcolor: "#e8eef6",
       zeroline: false,
-      automargin: true,
+      // Compact: fixed margins expand the plot; automargin would re-inflate side gaps.
+      automargin: !compact,
       titlefont: { color: leftColor, size: 12 },
       tickfont: { color: leftColor, size: tickSize },
     },
@@ -2101,7 +2102,7 @@ function dualMetricYAxisLayout(left, right, leftColor, rightColor, dualRanges) {
       side: "right",
       showgrid: false,
       zeroline: false,
-      automargin: true,
+      automargin: !compact,
       titlefont: { color: hexToRgba(rightColor, 0.72), size: 12 },
       tickfont: { color: hexToRgba(rightColor, 0.72), size: tickSize },
     },
