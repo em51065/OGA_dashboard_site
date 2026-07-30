@@ -3497,7 +3497,7 @@ function streetlightCampusBarYs(rows, mode = "qty") {
   const hasTotalLead = Boolean(rows[0] && rows[0].location === "全校");
   const compact = isCompactViewport();
   const desktopRoomy = mode !== "saving";
-  const step = compact ? 0.74 : (desktopRoomy ? 1.02 : 0.86);
+  const step = compact ? 0.74 : (desktopRoomy ? 1.20 : 0.86);
   const leadGap = compact ? 0.18 : (desktopRoomy ? 0.30 : 0.28);
   const firstY = hasTotalLead ? (compact ? -0.2 : -0.28) : -0.1;
   return rows.map((_, idx) => {
@@ -3599,13 +3599,13 @@ function replacementDualColumnLayout(labels, mode = "qty") {
     valueFontSize: 12,
     valueFontSizeFocus: 12.5,
     tickFontSize: 12,
-    barWidth: 0.58,
+    barWidth: mode === "saving" ? 0.58 : 0.72,
     topMargin: 16,
     bottomMargin: 14,
     yDomainEnd: 0.885,
-    // qty (left overview): reclaim bottom pad; saving (right): pre-tweak spacing.
-    yPadTop: mode === "saving" ? 0.46 : 0.14,
-    yPadBottom: mode === "saving" ? 0.74 : 0.68,
+    // qty (left overview): roomier rows + thicker bars; saving (right): pre-tweak spacing.
+    yPadTop: mode === "saving" ? 0.46 : 0.09,
+    yPadBottom: mode === "saving" ? 0.74 : 0.72,
     headerPaperY: 0.925,
     countHeader: "總汰換量",
     shareHeader: "非LED占比",
