@@ -1302,12 +1302,44 @@
     .ga-replacement-chart .ga-rank-block {
       overflow: visible !important;
     }
-    .ga-replacement-chart .ga-replacement-dual-badge {
-      flex-wrap: wrap !important;
-      justify-content: flex-start !important;
+    .ga-replacement-chart .ga-pr-score {
+      flex-direction: column !important;
       align-items: center !important;
-      gap: 4px 6px !important;
-      padding: 4px 8px !important;
+      justify-content: center !important;
+      gap: 4px !important;
+      transform: none !important;
+      width: 100% !important;
+      margin: 8px 0 10px !important;
+    }
+    .ga-replacement-chart .ga-pr-score strong {
+      max-width: 100% !important;
+      flex: 0 0 auto !important;
+    }
+    .ga-replacement-chart .ga-pr-score span {
+      white-space: normal !important;
+      text-align: center !important;
+      max-width: 100% !important;
+      min-width: 0 !important;
+      margin-bottom: 0 !important;
+      font-size: 12px !important;
+      line-height: 1.35 !important;
+    }
+    .ga-replacement-chart .ga-coverage-anchor .ga-coverage-wrap {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      box-sizing: border-box !important;
+    }
+    .ga-replacement-chart .ga-replacement-dual-badge {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      justify-content: center !important;
+      align-items: center !important;
+      gap: 4px 8px !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      padding: 8px 12px !important;
       min-height: 0 !important;
     }
     .ga-replacement-chart .ga-coverage-zone {
@@ -1319,11 +1351,6 @@
       overflow: visible !important;
       text-overflow: unset !important;
       white-space: normal !important;
-    }
-    .ga-replacement-chart .ga-pr-score span {
-      white-space: normal !important;
-      text-align: left !important;
-      max-width: min(46vw, 9.5rem) !important;
     }
     .ga-rank-block .ga-card-title {
       margin: 0 0 12px !important;
@@ -1473,6 +1500,57 @@
       padding: 30px 12px 12px !important;
       overflow: visible !important;
       max-width: 100% !important;
+    }
+    .ga-replacement-chart .ga-chart-card {
+      padding: 30px 14px 12px !important;
+    }
+    .ga-replacement-chart .ga-overview-wrap {
+      padding: 16px 14px !important;
+    }
+    /* After generic compact grid stacking: pin both replacement mode chips to the right. */
+    .ga-replacement-chart .ga-overview-head {
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: nowrap !important;
+      align-items: flex-end !important;
+      justify-content: space-between !important;
+      gap: 8px !important;
+      grid-template-columns: none !important;
+    }
+    .ga-replacement-chart .ga-overview-head h3 {
+      flex: 1 1 auto !important;
+      min-width: 0 !important;
+    }
+    .ga-replacement-chart .ga-overview-head .ga-mode-switch,
+    .ga-replacement-chart .ga-quality-head > .ga-mode-switch {
+      justify-self: end !important;
+      margin-left: auto !important;
+      flex: 0 0 auto !important;
+      align-self: flex-end !important;
+    }
+    .ga-replacement-chart .ga-quality-head {
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      align-items: flex-end !important;
+      justify-content: space-between !important;
+      gap: 8px !important;
+    }
+    .ga-replacement-chart .ga-quality-copy {
+      flex: 1 1 auto !important;
+      min-width: 0 !important;
+    }
+    .ga-replacement-chart .ga-pr-score {
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 4px !important;
+      transform: none !important;
+    }
+    .ga-replacement-chart .ga-pr-score span {
+      white-space: normal !important;
+      text-align: center !important;
+      max-width: 100% !important;
+      margin-bottom: 0 !important;
     }
     .ga-chart-card::before {
       top: 12px !important;
@@ -3231,12 +3309,34 @@ function streetlightCampusBarLeftMargin(labels) {
   return Math.min(62, Math.max(40, maxLabelChars * 8 + 16));
 }
 
-function replacementDualColumnLayout(labels) {
+function replacementDualColumnLayout(labels, mode = "qty") {
   // Count right-aligns into a reserved mid band; share left-aligns after a clear gutter
   // and ends before the plot edge so "非LED占比" neither clips nor collides with 盞/瓦.
+  // Saving values ("26,887 瓦") are wider than qty ("460 盞") — compact uses a roomier band.
   if (isCompactViewport()) {
+    const leftMargin = Math.min(48, streetlightCampusBarLeftMargin(labels));
+    if (mode === "saving") {
+      return {
+        leftMargin,
+        rightMargin: 76,
+        barDomainEnd: 0.40,
+        countPaperX: 0.62,
+        sharePaperX: 0.78,
+        countAnchor: "right",
+        shareAnchor: "left",
+        tickStandoff: 4,
+        headerFontSize: 10,
+        valueFontSize: 10,
+        valueFontSizeFocus: 10.5,
+        tickFontSize: 11,
+        countHeader: "總量",
+        shareHeader: "非LED%",
+        qtyCountHeader: "汰換",
+        savingCountHeader: "省瓦",
+      };
+    }
     return {
-      leftMargin: Math.min(48, streetlightCampusBarLeftMargin(labels)),
+      leftMargin,
       rightMargin: 56,
       barDomainEnd: 0.46,
       countPaperX: 0.66,
@@ -3304,7 +3404,7 @@ function paintReplacementQtyShareBars({ sorted, labels, isSelected, hoverLeft, e
     const minStripe = maxQty * 0.014;
     return Math.min(total, Math.max(rawWidth, minStripe));
   });
-  const layout = replacementDualColumnLayout(labels);
+  const layout = replacementDualColumnLayout(labels, "qty");
   const useFocusChrome = Boolean(enableCampusClick);
   const focusColor = streetlightFocusChromeColor();
   const labelColor = streetlightFocusLabelColor();
@@ -3622,7 +3722,7 @@ function paintReplacementSavingShareBars({ sorted, labels, isSelected, hoverLeft
     const minStripe = maxSaving * 0.014;
     return Math.min(total, Math.max(rawWidth, minStripe));
   });
-  const layout = replacementDualColumnLayout(labels);
+  const layout = replacementDualColumnLayout(labels, "saving");
   const useFocusChrome = Boolean(enableCampusClick);
   const focusColor = streetlightFocusChromeColor();
   const labelColor = streetlightFocusLabelColor();
