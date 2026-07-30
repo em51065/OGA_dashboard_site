@@ -1956,14 +1956,16 @@ function withCompactTrendTitle(layout) {
   const tallTitle = compactTrendNeedsTallTitle(next);
   if (next.title && typeof next.title === "object") {
     next.title = Object.assign({}, next.title, {
-      y: 0.99,
+      // Slightly below paper top + extra pad.t so bold CJK glyphs are not clipped.
+      y: 0.98,
       yanchor: "top",
-      pad: { t: 8, b: tallTitle ? 8 : 4 },
+      pad: { t: 14, b: tallTitle ? 8 : 4 },
       font: Object.assign({}, next.title.font || {}, { size: 16, color: "#101827" }),
     });
   }
-  // Short single-metric titles need less reserve than dual-metric (用水／用電) long subtitles.
-  const minTop = tallTitle ? 118 : 90;
+  // Short single-metric titles need less reserve than dual-metric (用水／用電) long subtitles,
+  // but still enough headroom that Chinese title tops are not cut off.
+  const minTop = tallTitle ? 118 : 100;
   if (next.margin) {
     next.margin = Object.assign({}, next.margin, {
       t: Math.max(Number(next.margin.t) || 0, minTop),
@@ -2039,10 +2041,10 @@ function compactTrendTitleTop(kind = "year") {
     if (kind === "month") return 118;
     return 124;
   }
-  // Short single-metric titles (減廢／雨水／太陽能等): tighter title→plot gap.
-  if (kind === "empty") return 84;
-  if (kind === "month") return 90;
-  return 94;
+  // Short single-metric titles: tighter than dual-metric, with CJK top clearance.
+  if (kind === "empty") return 94;
+  if (kind === "month") return 100;
+  return 102;
 }
 
 function trendPlotMargins(kind = "year") {
