@@ -1275,7 +1275,8 @@
       font-size: 13px !important;
       white-space: normal !important;
     }
-    .ga-category-chips .ga-category-chip:first-child {
+    /* ECOCO only: 全部 spans full row; solar/utility keep equal 2-col chips. */
+    body.ga-ecoco-chart .ga-category-chips .ga-category-chip:first-child {
       grid-column: 1 / -1 !important;
     }
     .ga-grid {
@@ -1664,7 +1665,8 @@
       gap: 8px !important;
       overflow: visible !important;
     }
-    .ga-toggle-bar .ga-icon-toggle:first-child {
+    /* ECOCO only: 全部 spans full row; water/electricity/solar legends stay equal 2-col. */
+    body.ga-ecoco-chart .ga-toggle-bar .ga-icon-toggle:first-child {
       grid-column: 1 / -1 !important;
     }
     .ga-icon-toggle {
@@ -2242,6 +2244,7 @@ function syncGrainBodyClass() {
   document.body.classList.toggle("ga-month-grain", isMonthGrain());
   document.body.classList.toggle("ga-has-metric-switch", usesMetricSwitch());
   document.body.classList.toggle("ga-has-category-chips", usesCategoryChips());
+  document.body.classList.toggle("ga-ecoco-chart", isEcocoChart());
 }
 
 function setOverviewModeButtons(kind) {
@@ -6168,6 +6171,7 @@ fetch(`./data.json?t=${Date.now()}`)
   .then((data) => {
     GA_DATA = data;
     document.body.classList.toggle("ga-replacement-chart", isReplacementChart());
+    document.body.classList.toggle("ga-ecoco-chart", isEcocoChart());
     document.body.classList.toggle("ga-has-category-chips", usesCategoryChips());
     if (isStreetlightChart()) {
       overviewMode = "location";
