@@ -1334,8 +1334,15 @@
       max-width: 100% !important;
       margin: 0 !important;
       box-sizing: border-box !important;
-      overflow-x: auto !important;
-      -webkit-overflow-scrolling: touch;
+      overflow: visible !important;
+      position: relative !important;
+      z-index: 20 !important;
+    }
+    .ga-replacement-chart .ga-coverage-anchor .ga-month-popover,
+    .ga-replacement-chart .ga-coverage-anchor .ga-metric-popover {
+      top: calc(100% + 8px) !important;
+      bottom: auto !important;
+      z-index: 40 !important;
     }
     .ga-replacement-chart .ga-replacement-dual-badge {
       display: inline-flex !important;
@@ -1523,14 +1530,16 @@
       max-width: 100% !important;
     }
     .ga-replacement-chart .ga-chart-card {
-      padding: 24px 14px 12px !important;
+      padding: 12px 14px 12px !important;
     }
     .ga-replacement-chart .ga-overview-wrap {
-      padding: 14px 14px 12px !important;
+      padding: 12px 14px 10px !important;
     }
     .ga-replacement-chart .ga-chart-card::before {
-      top: 10px !important;
-      left: 14px !important;
+      display: none !important;
+    }
+    .ga-replacement-chart .oga-block-kicker {
+      margin-bottom: 2px !important;
     }
     .ga-replacement-chart .ga-quality-head {
       margin-bottom: 0 !important;
@@ -1548,7 +1557,8 @@
       justify-content: space-between !important;
       gap: 8px !important;
       grid-template-columns: none !important;
-      margin-bottom: 2px !important;
+      margin-bottom: 0 !important;
+      min-height: 0 !important;
     }
     .ga-replacement-chart .ga-overview-head h3 {
       flex: 1 1 auto !important;
@@ -1571,6 +1581,9 @@
     .ga-replacement-chart .ga-quality-copy {
       flex: 1 1 auto !important;
       min-width: 0 !important;
+    }
+    .ga-replacement-chart .ga-quality-copy h2 {
+      margin-bottom: 0 !important;
     }
     .ga-replacement-chart .ga-pr-score {
       flex-direction: row !important;
@@ -3374,60 +3387,60 @@ function streetlightCampusBarLeftMargin(labels) {
 function replacementDualColumnLayout(labels, mode = "qty") {
   // Count right-aligns into a reserved mid band; share left-aligns after a clear gutter
   // and ends before the plot edge so "非LED占比" neither clips nor collides with 盞/瓦.
-  // Compact reclaim right whitespace: longer bars + count/share shifted right together.
+  // Compact: full desktop header copy + longer bars; yPadBottom must clear top bar half-width.
   if (isCompactViewport()) {
     const leftMargin = Math.min(48, streetlightCampusBarLeftMargin(labels));
     if (mode === "saving") {
       return {
         leftMargin,
         rightMargin: 56,
-        barDomainEnd: 0.48,
-        countPaperX: 0.70,
-        sharePaperX: 0.84,
+        barDomainEnd: 0.46,
+        countPaperX: 0.68,
+        sharePaperX: 0.82,
         countAnchor: "right",
         shareAnchor: "left",
         tickStandoff: 4,
-        headerFontSize: 10,
+        headerFontSize: 9,
         valueFontSize: 10,
         valueFontSizeFocus: 10.5,
         tickFontSize: 11,
         barWidth: 0.5,
-        topMargin: 6,
+        topMargin: 4,
         bottomMargin: 8,
-        yDomainEnd: 0.94,
-        yPadTop: 0.30,
-        yPadBottom: 0.40,
-        headerPaperY: 0.94,
-        countHeader: "總量",
-        shareHeader: "非LED%",
-        qtyCountHeader: "汰換",
-        savingCountHeader: "省瓦",
+        yDomainEnd: 0.90,
+        yPadTop: 0.28,
+        yPadBottom: 0.58,
+        headerPaperY: 0.92,
+        countHeader: "總節省瓦數",
+        shareHeader: "非LED占比",
+        qtyCountHeader: "總汰換量",
+        savingCountHeader: "總節省瓦數",
       };
     }
     return {
       leftMargin,
-      rightMargin: 48,
-      barDomainEnd: 0.52,
-      countPaperX: 0.72,
-      sharePaperX: 0.84,
+      rightMargin: 52,
+      barDomainEnd: 0.50,
+      countPaperX: 0.70,
+      sharePaperX: 0.82,
       countAnchor: "right",
       shareAnchor: "left",
       tickStandoff: 4,
-      headerFontSize: 10,
+      headerFontSize: 9,
       valueFontSize: 11,
       valueFontSizeFocus: 11.5,
       tickFontSize: 11,
       barWidth: 0.5,
-      topMargin: 6,
+      topMargin: 4,
       bottomMargin: 8,
-      yDomainEnd: 0.94,
-      yPadTop: 0.30,
-      yPadBottom: 0.40,
-      headerPaperY: 0.94,
-      countHeader: "總量",
-      shareHeader: "非LED%",
-      qtyCountHeader: "汰換",
-      savingCountHeader: "省瓦",
+      yDomainEnd: 0.90,
+      yPadTop: 0.28,
+      yPadBottom: 0.58,
+      headerPaperY: 0.92,
+      countHeader: "總汰換量",
+      shareHeader: "非LED占比",
+      qtyCountHeader: "總汰換量",
+      savingCountHeader: "總節省瓦數",
     };
   }
   return {
@@ -3502,6 +3515,7 @@ function paintReplacementQtyShareBars({ sorted, labels, isSelected, hoverLeft, e
       showarrow: false,
       xanchor: layout.countAnchor,
       yanchor: "middle",
+      cliponaxis: false,
       font: {
         size: focused ? layout.valueFontSizeFocus : layout.valueFontSize,
         color: focused ? labelColor : "#253047",
@@ -3519,6 +3533,7 @@ function paintReplacementQtyShareBars({ sorted, labels, isSelected, hoverLeft, e
       showarrow: false,
       xanchor: layout.shareAnchor,
       yanchor: "middle",
+      cliponaxis: false,
       font: {
         size: focused ? layout.valueFontSizeFocus : layout.valueFontSize,
         color: focused ? labelColor : "#253047",
@@ -3535,6 +3550,7 @@ function paintReplacementQtyShareBars({ sorted, labels, isSelected, hoverLeft, e
       showarrow: false,
       xanchor: layout.countAnchor,
       yanchor: "bottom",
+      cliponaxis: false,
       font: { size: layout.headerFontSize, color: "#64748b" },
     },
     {
@@ -3546,6 +3562,7 @@ function paintReplacementQtyShareBars({ sorted, labels, isSelected, hoverLeft, e
       showarrow: false,
       xanchor: layout.shareAnchor,
       yanchor: "bottom",
+      cliponaxis: false,
       font: { size: layout.headerFontSize, color: "#64748b" },
     },
   ];
@@ -3818,6 +3835,7 @@ function paintReplacementSavingShareBars({ sorted, labels, isSelected, hoverLeft
     showarrow: false,
     xanchor: layout.countAnchor,
     yanchor: "middle",
+    cliponaxis: false,
     font: {
       size: isSelected(row) ? layout.valueFontSizeFocus : layout.valueFontSize,
       color: isSelected(row) ? labelColor : "#253047",
@@ -3832,6 +3850,7 @@ function paintReplacementSavingShareBars({ sorted, labels, isSelected, hoverLeft
     showarrow: false,
     xanchor: layout.shareAnchor,
     yanchor: "middle",
+    cliponaxis: false,
     font: {
       size: isSelected(row) ? layout.valueFontSizeFocus : layout.valueFontSize,
       color: isSelected(row) ? labelColor : "#253047",
@@ -3847,6 +3866,7 @@ function paintReplacementSavingShareBars({ sorted, labels, isSelected, hoverLeft
       showarrow: false,
       xanchor: layout.countAnchor,
       yanchor: "bottom",
+      cliponaxis: false,
       font: { size: layout.headerFontSize, color: "#64748b" },
     },
     {
@@ -3858,6 +3878,7 @@ function paintReplacementSavingShareBars({ sorted, labels, isSelected, hoverLeft
       showarrow: false,
       xanchor: layout.shareAnchor,
       yanchor: "bottom",
+      cliponaxis: false,
       font: { size: layout.headerFontSize, color: "#64748b" },
     },
   ];

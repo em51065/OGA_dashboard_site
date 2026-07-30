@@ -590,20 +590,22 @@ function prepareChildFrame() {
         .oga-block-kicker {
           margin-bottom: 7px !important;
         }
+        .ga-replacement-chart .oga-block-kicker {
+          margin-bottom: 2px !important;
+        }
         .ga-chart-card {
           padding-top: 30px !important;
           overflow: visible !important;
         }
         .ga-replacement-chart .ga-chart-card {
-          padding-top: 24px !important;
+          padding-top: 12px !important;
         }
         .ga-chart-card::before {
           top: 12px !important;
           left: 12px !important;
         }
         .ga-replacement-chart .ga-chart-card::before {
-          top: 10px !important;
-          left: 14px !important;
+          display: none !important;
         }
         #overviewChart { height: 200px !important; width: 100% !important; max-width: 100% !important; }
         #trendChart { height: 340px !important; width: 100% !important; max-width: 100% !important; }
