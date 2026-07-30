@@ -946,8 +946,35 @@
     flex: 0 0 auto;
   }
   #overviewChart { height: 260px; }
-  /* Desktop left replacement overview only — enough height for 9 readable dual-column rows. */
-  .ga-replacement-chart #overviewChart { height: 370px; }
+  /* Desktop replacement: left overview grows into grid stretch space so bars use the leftover band. */
+  @media (min-width: 761px) {
+    .ga-replacement-chart .ga-pr-card {
+      display: flex;
+      flex-direction: column;
+      align-self: stretch;
+      min-height: 0;
+      box-sizing: border-box;
+    }
+    .ga-replacement-chart .ga-rank-block {
+      flex: 0 0 auto;
+    }
+    .ga-replacement-chart .ga-overview-wrap {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .ga-replacement-chart .ga-overview-head,
+    .ga-replacement-chart .ga-overview-footnote {
+      flex: 0 0 auto;
+    }
+    .ga-replacement-chart #overviewChart {
+      flex: 1 1 auto;
+      width: 100%;
+      min-height: 370px;
+      height: auto;
+    }
+  }
   .ga-chart-card { padding: 14px 6px 8px 14px; position: relative; overflow: visible; }
   .ga-quality-head {
     display: flex;
@@ -1951,7 +1978,7 @@ function isCompactViewport() {
 }
 
 let plotResizeTimer = null;
-const lastPlotWidths = { trend: 0, overview: 0 };
+const lastPlotSizes = { trend: { w: 0, h: 0 }, overview: { w: 0, h: 0 } };
 
 function schedulePlotResize() {
   if (plotResizeTimer !== null) window.clearTimeout(plotResizeTimer);
@@ -1963,10 +1990,13 @@ function schedulePlotResize() {
         ["overview", document.getElementById("overviewChart")],
       ].forEach(([key, node]) => {
         if (!node) return;
-        const width = Math.round(node.getBoundingClientRect().width);
-        if (width <= 0) return;
-        if (Math.abs(width - (lastPlotWidths[key] || 0)) < 2) return;
-        lastPlotWidths[key] = width;
+        const rect = node.getBoundingClientRect();
+        const width = Math.round(rect.width);
+        const height = Math.round(rect.height);
+        if (width <= 0 || height <= 0) return;
+        const prev = lastPlotSizes[key] || { w: 0, h: 0 };
+        if (Math.abs(width - prev.w) < 2 && Math.abs(height - prev.h) < 2) return;
+        lastPlotSizes[key] = { w: width, h: height };
         Plotly.Plots.resize(node);
       });
     } catch (_error) {
@@ -3802,8 +3832,17 @@ function paintReplacementQtyShareBars({ sorted, labels, isSelected, hoverLeft, e
   const overview = document.getElementById("overviewChart");
   overview?.removeAllListeners?.("plotly_click");
   sizeReplacementCompactChart("overviewChart", sorted.length);
-  if (overview) Plotly.Plots.resize(overview);
   if (enableCampusClick) bindStreetlightCampusBarClicks("overviewChart", sorted);
+  // Flex-filled desktop height settles after layout; resize so bars expand into the leftover band.
+  schedulePlotResize();
+  window.requestAnimationFrame(() => {
+    schedulePlotResize();
+    try {
+      if (overview) Plotly.Plots.resize(overview);
+    } catch (_error) {
+      /* plot may not be ready */
+    }
+  });
 }
 
 function streetlightLocationStructureRows() {
