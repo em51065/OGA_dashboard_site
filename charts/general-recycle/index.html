@@ -946,8 +946,8 @@
     flex: 0 0 auto;
   }
   #overviewChart { height: 260px; }
-  /* Desktop left replacement overview only — room for thicker dual-column bars. */
-  .ga-replacement-chart #overviewChart { height: 310px; }
+  /* Desktop left replacement overview only — enough height for 9 readable dual-column rows. */
+  .ga-replacement-chart #overviewChart { height: 370px; }
   .ga-chart-card { padding: 14px 6px 8px 14px; position: relative; overflow: visible; }
   .ga-quality-head {
     display: flex;
@@ -3603,10 +3603,10 @@ function replacementDualColumnLayout(labels, mode = "qty") {
     tickFontSize: 12,
     barWidth: mode === "saving" ? 0.58 : 0.92,
     topMargin: 16,
-    bottomMargin: 14,
+    bottomMargin: mode === "saving" ? 14 : 8,
     yDomainEnd: 0.885,
     // qty (left overview): taller plot + thicker bars; saving (right): pre-tweak spacing.
-    yPadTop: mode === "saving" ? 0.46 : 0.09,
+    yPadTop: mode === "saving" ? 0.46 : 0.08,
     yPadBottom: mode === "saving" ? 0.74 : 0.78,
     headerPaperY: 0.925,
     countHeader: "總汰換量",
