@@ -1607,8 +1607,14 @@
       width: 100% !important;
       max-width: 100% !important;
     }
-    .ga-replacement-chart #overviewChart { height: 240px !important; }
-    .ga-replacement-chart #trendChart { height: 340px !important; }
+    /* Replacement compact height is set in JS from row count — don't force 340px. */
+    .ga-replacement-chart #overviewChart,
+    .ga-replacement-chart #trendChart {
+      height: auto !important;
+      min-height: 200px !important;
+      width: 100% !important;
+      max-width: 100% !important;
+    }
     .js-plotly-plot,
     .plotly-graph-div {
       width: 100% !important;
@@ -1685,8 +1691,11 @@
     .ga-pr-score strong { font-size: clamp(44px, 17vw, 62px) !important; }
     #overviewChart { height: 180px !important; }
     #trendChart { height: 320px !important; }
-    .ga-replacement-chart #overviewChart { height: 220px !important; }
-    .ga-replacement-chart #trendChart { height: 320px !important; }
+    .ga-replacement-chart #overviewChart,
+    .ga-replacement-chart #trendChart {
+      height: auto !important;
+      min-height: 200px !important;
+    }
   }
 </style>
 </head>
@@ -3113,17 +3122,18 @@ function streetlightFocusLabelColor() {
   return "#b83248";
 }
 
-function streetlightSelectedBarAccent(yVals, selectedIdx) {
+function streetlightSelectedBarAccent(yVals, selectedIdx, barWidth = 0.58) {
   if (!(selectedIdx >= 0) || !yVals.length) return [];
   const y0 = yVals[selectedIdx];
+  const half = Math.max(0.22, Number(barWidth) / 2 + 0.02);
   return [{
     type: "line",
     xref: "paper",
     x0: 0,
     x1: 0,
     yref: "y",
-    y0: y0 - 0.32,
-    y1: y0 + 0.32,
+    y0: y0 - half,
+    y1: y0 + half,
     line: { color: streetlightFocusChromeColor(), width: 3 },
   }];
 }
@@ -3384,19 +3394,34 @@ function streetlightCampusBarLeftMargin(labels) {
   return Math.min(62, Math.max(40, maxLabelChars * 8 + 16));
 }
 
+function replacementCompactChartHeight(rowCount) {
+  const n = Math.max(1, Number(rowCount) || 1);
+  return Math.max(200, Math.min(320, 26 + n * 28));
+}
+
+function sizeReplacementCompactChart(elementId, rowCount) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  if (!isCompactViewport() || !isReplacementChart()) {
+    el.style.removeProperty("height");
+    return;
+  }
+  el.style.setProperty("height", `${replacementCompactChartHeight(rowCount)}px`, "important");
+}
+
 function replacementDualColumnLayout(labels, mode = "qty") {
   // Count right-aligns into a reserved mid band; share left-aligns after a clear gutter
   // and ends before the plot edge so "非LED占比" neither clips nor collides with 盞/瓦.
-  // Compact: full desktop header copy + longer bars; yPadBottom must clear top bar half-width.
+  // Compact: longer bars + columns shifted right; yPadBottom clears top bar half-width.
   if (isCompactViewport()) {
     const leftMargin = Math.min(48, streetlightCampusBarLeftMargin(labels));
     if (mode === "saving") {
       return {
         leftMargin,
-        rightMargin: 56,
-        barDomainEnd: 0.46,
-        countPaperX: 0.68,
-        sharePaperX: 0.82,
+        rightMargin: 40,
+        barDomainEnd: 0.54,
+        countPaperX: 0.76,
+        sharePaperX: 0.90,
         countAnchor: "right",
         shareAnchor: "left",
         tickStandoff: 4,
@@ -3405,12 +3430,12 @@ function replacementDualColumnLayout(labels, mode = "qty") {
         valueFontSizeFocus: 10.5,
         tickFontSize: 11,
         barWidth: 0.5,
-        topMargin: 4,
+        topMargin: 2,
         bottomMargin: 8,
-        yDomainEnd: 0.90,
+        yDomainEnd: 0.96,
         yPadTop: 0.28,
         yPadBottom: 0.58,
-        headerPaperY: 0.92,
+        headerPaperY: 0.975,
         countHeader: "總節省瓦數",
         shareHeader: "非LED占比",
         qtyCountHeader: "總汰換量",
@@ -3419,10 +3444,10 @@ function replacementDualColumnLayout(labels, mode = "qty") {
     }
     return {
       leftMargin,
-      rightMargin: 52,
-      barDomainEnd: 0.50,
-      countPaperX: 0.70,
-      sharePaperX: 0.82,
+      rightMargin: 36,
+      barDomainEnd: 0.56,
+      countPaperX: 0.78,
+      sharePaperX: 0.90,
       countAnchor: "right",
       shareAnchor: "left",
       tickStandoff: 4,
@@ -3431,12 +3456,12 @@ function replacementDualColumnLayout(labels, mode = "qty") {
       valueFontSizeFocus: 11.5,
       tickFontSize: 11,
       barWidth: 0.5,
-      topMargin: 4,
+      topMargin: 2,
       bottomMargin: 8,
-      yDomainEnd: 0.90,
+      yDomainEnd: 0.96,
       yPadTop: 0.28,
       yPadBottom: 0.58,
-      headerPaperY: 0.92,
+      headerPaperY: 0.975,
       countHeader: "總汰換量",
       shareHeader: "非LED占比",
       qtyCountHeader: "總汰換量",
@@ -3504,6 +3529,7 @@ function paintReplacementQtyShareBars({ sorted, labels, isSelected, hoverLeft, e
   const useFocusChrome = Boolean(enableCampusClick);
   const focusColor = streetlightFocusChromeColor();
   const labelColor = streetlightFocusLabelColor();
+  sizeReplacementCompactChart("overviewChart", sorted.length);
   const countAnnotations = sorted.map((row, idx) => {
     const focused = isSelected(row);
     return {
@@ -3648,12 +3674,13 @@ function paintReplacementQtyShareBars({ sorted, labels, isSelected, hoverLeft, e
       zeroline: false,
       fixedrange: true,
     },
-    shapes: useFocusChrome ? streetlightSelectedBarAccent(y, selectedIdx) : [],
+    shapes: useFocusChrome ? streetlightSelectedBarAccent(y, selectedIdx, layout.barWidth) : [],
     showlegend: false,
     annotations: [...columnHeaders, ...shareAnnotations, ...countAnnotations],
   }, { displayModeBar: false, responsive: true });
   const overview = document.getElementById("overviewChart");
   overview?.removeAllListeners?.("plotly_click");
+  if (overview) Plotly.Plots.resize(overview);
   if (enableCampusClick) bindStreetlightCampusBarClicks("overviewChart", sorted);
 }
 
@@ -3826,6 +3853,7 @@ function paintReplacementSavingShareBars({ sorted, labels, isSelected, hoverLeft
   const useFocusChrome = Boolean(enableCampusClick);
   const focusColor = streetlightFocusChromeColor();
   const labelColor = streetlightFocusLabelColor();
+  sizeReplacementCompactChart("trendChart", sorted.length);
   const countAnnotations = sorted.map((row, idx) => ({
     text: rowHasData(row) ? `${fmt.format(row.saving)} 瓦` : "",
     x: layout.countPaperX,
@@ -3970,12 +3998,13 @@ function paintReplacementSavingShareBars({ sorted, labels, isSelected, hoverLeft
       zeroline: false,
       fixedrange: true,
     },
-    shapes: useFocusChrome ? streetlightSelectedBarAccent(y, selectedIdx) : [],
+    shapes: useFocusChrome ? streetlightSelectedBarAccent(y, selectedIdx, layout.barWidth) : [],
     showlegend: false,
     annotations: [...columnHeaders, ...shareAnnotations, ...countAnnotations],
   }, { displayModeBar: false, responsive: true });
   const trend = document.getElementById("trendChart");
   trend?.removeAllListeners?.("plotly_click");
+  if (trend) Plotly.Plots.resize(trend);
   if (enableCampusClick) bindStreetlightCampusBarClicks("trendChart", sorted);
 }
 

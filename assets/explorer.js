@@ -574,8 +574,9 @@ function prepareChildFrame() {
       .ga-chart-card { padding: 8px 12px 4px !important; padding-top: 22px !important; }
       .ga-chart-card::before { top: 10px !important; }
       #trendChart { height: 520px !important; margin-top: 0 !important; }
-      .ga-replacement-chart #trendChart { height: 420px !important; }
+      .ga-replacement-chart #trendChart { height: auto !important; min-height: 280px !important; }
       #overviewChart { height: 220px !important; }
+      .ga-replacement-chart #overviewChart { height: auto !important; min-height: 200px !important; }
       .ga-toggle-bar { padding-bottom: 4px !important; }
       .ga-pr-score { margin: 6px 0 8px !important; }
       ` : ""}
@@ -609,8 +610,13 @@ function prepareChildFrame() {
         }
         #overviewChart { height: 200px !important; width: 100% !important; max-width: 100% !important; }
         #trendChart { height: 340px !important; width: 100% !important; max-width: 100% !important; }
-        .ga-replacement-chart #overviewChart { height: 240px !important; }
-        .ga-replacement-chart #trendChart { height: 340px !important; }
+        .ga-replacement-chart #overviewChart,
+        .ga-replacement-chart #trendChart {
+          height: auto !important;
+          min-height: 200px !important;
+          width: 100% !important;
+          max-width: 100% !important;
+        }
         .ga-toggle-bar { flex-wrap: wrap !important; gap: 8px !important; }
         .ga-icon-toggle { min-height: 40px !important; padding: 8px 12px !important; font-size: 13px !important; }
       }
