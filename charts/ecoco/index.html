@@ -1307,61 +1307,66 @@
       flex-wrap: nowrap !important;
       align-items: flex-end !important;
       justify-content: center !important;
-      gap: 6px !important;
+      gap: 8px !important;
       transform: none !important;
       width: 100% !important;
       margin: 6px 0 8px !important;
     }
     .ga-replacement-chart .ga-pr-score strong {
-      max-width: min(58%, 11.5rem) !important;
+      max-width: none !important;
       flex: 0 1 auto !important;
-      font-size: clamp(42px, 15vw, 62px) !important;
+      font-size: clamp(36px, 12.5vw, 54px) !important;
+      letter-spacing: -0.03em !important;
     }
     .ga-replacement-chart .ga-pr-score span {
-      flex: 0 1 auto !important;
+      flex: 0 0 auto !important;
       white-space: nowrap !important;
       text-align: left !important;
       max-width: none !important;
       min-width: 0 !important;
-      margin-bottom: 6px !important;
-      font-size: 10px !important;
-      line-height: 1.2 !important;
-      letter-spacing: -0.01em !important;
+      margin-bottom: 5px !important;
+      font-size: 9px !important;
+      line-height: 1.15 !important;
+      letter-spacing: -0.02em !important;
     }
     .ga-replacement-chart .ga-coverage-anchor .ga-coverage-wrap {
       width: 100% !important;
       max-width: 100% !important;
       margin: 0 !important;
       box-sizing: border-box !important;
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch;
     }
     .ga-replacement-chart .ga-replacement-dual-badge {
-      display: flex !important;
-      flex-wrap: wrap !important;
+      display: inline-flex !important;
+      flex-wrap: nowrap !important;
       justify-content: center !important;
       align-items: center !important;
-      gap: 2px 6px !important;
-      width: 100% !important;
-      max-width: 100% !important;
+      gap: 2px 4px !important;
+      width: max-content !important;
+      max-width: none !important;
+      min-width: 100% !important;
       box-sizing: border-box !important;
-      padding: 5px 10px !important;
+      padding: 4px 8px !important;
       min-height: 0 !important;
-      line-height: 1.2 !important;
+      line-height: 1.15 !important;
+      white-space: nowrap !important;
     }
     .ga-replacement-chart .ga-coverage-campus,
     .ga-replacement-chart .ga-coverage-zone {
-      font-size: 12px !important;
-      padding-top: 4px !important;
-      padding-bottom: 4px !important;
+      font-size: 11px !important;
+      padding-top: 2px !important;
+      padding-bottom: 2px !important;
+      white-space: nowrap !important;
     }
     .ga-replacement-chart .ga-coverage-zone {
-      white-space: normal !important;
-      max-width: 100% !important;
+      max-width: none !important;
     }
     .ga-replacement-chart .ga-coverage-zone .ga-coverage-range,
     .ga-replacement-chart .ga-coverage-zone .ga-coverage-saving {
       overflow: visible !important;
       text-overflow: unset !important;
-      white-space: normal !important;
+      white-space: nowrap !important;
     }
     .ga-replacement-chart .ga-value-row {
       grid-template-columns: 1fr 1fr !important;
@@ -1518,10 +1523,21 @@
       max-width: 100% !important;
     }
     .ga-replacement-chart .ga-chart-card {
-      padding: 30px 14px 12px !important;
+      padding: 24px 14px 12px !important;
     }
     .ga-replacement-chart .ga-overview-wrap {
-      padding: 16px 14px !important;
+      padding: 14px 14px 12px !important;
+    }
+    .ga-replacement-chart .ga-chart-card::before {
+      top: 10px !important;
+      left: 14px !important;
+    }
+    .ga-replacement-chart .ga-quality-head {
+      margin-bottom: 0 !important;
+      padding-bottom: 0 !important;
+    }
+    .ga-replacement-chart #trendChart {
+      margin-top: 0 !important;
     }
     /* After generic compact grid stacking: pin both replacement mode chips to the right. */
     .ga-replacement-chart .ga-overview-head {
@@ -1532,6 +1548,7 @@
       justify-content: space-between !important;
       gap: 8px !important;
       grid-template-columns: none !important;
+      margin-bottom: 2px !important;
     }
     .ga-replacement-chart .ga-overview-head h3 {
       flex: 1 1 auto !important;
@@ -1559,14 +1576,14 @@
       flex-direction: row !important;
       align-items: flex-end !important;
       justify-content: center !important;
-      gap: 6px !important;
+      gap: 8px !important;
       transform: none !important;
     }
     .ga-replacement-chart .ga-pr-score span {
       white-space: nowrap !important;
       text-align: left !important;
-      font-size: 10px !important;
-      margin-bottom: 6px !important;
+      font-size: 9px !important;
+      margin-bottom: 5px !important;
     }
     .ga-chart-card::before {
       top: 12px !important;
@@ -2768,14 +2785,29 @@ function ensureReplacementScopeLabel() {
 }
 
 function replacementRangeMetricDisplay(metrics) {
+  const compact = isCompactViewport();
   if (replacementRangeMetric === "qty") {
-    return { text: `總計汰換 ${fmt.format(metrics.cumulativeQty)} 盞` };
+    return {
+      text: compact
+        ? `總計 ${fmt.format(metrics.cumulativeQty)} 盞`
+        : `總計汰換 ${fmt.format(metrics.cumulativeQty)} 盞`,
+    };
   }
   if (replacementRangeMetric === "avg") {
-    if (!(metrics.cumulativeQty > 0) || metrics.avgSavingPerLamp == null) return { text: "平均每次節省 --" };
-    return { text: `平均每次節省 ${fmt.format(metrics.avgSavingPerLamp)} 瓦` };
+    if (!(metrics.cumulativeQty > 0) || metrics.avgSavingPerLamp == null) {
+      return { text: compact ? "平均 --" : "平均每次節省 --" };
+    }
+    return {
+      text: compact
+        ? `平均 ${fmt.format(metrics.avgSavingPerLamp)} 瓦`
+        : `平均每次節省 ${fmt.format(metrics.avgSavingPerLamp)} 瓦`,
+    };
   }
-  return { text: `總計節省 ${fmt.format(metrics.cumulativeSaving)} 瓦` };
+  return {
+    text: compact
+      ? `總計 ${fmt.format(metrics.cumulativeSaving)} 瓦`
+      : `總計節省 ${fmt.format(metrics.cumulativeSaving)} 瓦`,
+  };
 }
 
 function renderReplacementMetricOptions() {
@@ -3239,9 +3271,17 @@ function renderReplacementDom() {
         ? "全校"
         : streetlightFocusLocation()
     );
-    setTextIfExists("rankTotal", `瓦｜${selectedYear} 年｜${focusLabel}`);
+    setTextIfExists(
+      "rankTotal",
+      isCompactViewport()
+        ? `瓦｜${selectedYear}｜${focusLabel}`
+        : `瓦｜${selectedYear} 年｜${focusLabel}`,
+    );
   } else {
-    setTextIfExists("rankTotal", `瓦｜${selectedYear} 年`);
+    setTextIfExists(
+      "rankTotal",
+      isCompactViewport() ? `瓦｜${selectedYear}` : `瓦｜${selectedYear} 年`,
+    );
   }
   if (rankNumberEl) rankNumberEl.style.color = accent;
   setTextIfExists("valueMiniLabel", "汰換數量");
@@ -3334,16 +3374,16 @@ function streetlightCampusBarLeftMargin(labels) {
 function replacementDualColumnLayout(labels, mode = "qty") {
   // Count right-aligns into a reserved mid band; share left-aligns after a clear gutter
   // and ends before the plot edge so "非LED占比" neither clips nor collides with 盞/瓦.
-  // Saving values ("26,887 瓦") are wider than qty ("460 盞") — compact uses a roomier band.
+  // Compact reclaim right whitespace: longer bars + count/share shifted right together.
   if (isCompactViewport()) {
     const leftMargin = Math.min(48, streetlightCampusBarLeftMargin(labels));
     if (mode === "saving") {
       return {
         leftMargin,
-        rightMargin: 80,
-        barDomainEnd: 0.34,
-        countPaperX: 0.66,
-        sharePaperX: 0.80,
+        rightMargin: 56,
+        barDomainEnd: 0.48,
+        countPaperX: 0.70,
+        sharePaperX: 0.84,
         countAnchor: "right",
         shareAnchor: "left",
         tickStandoff: 4,
@@ -3352,12 +3392,12 @@ function replacementDualColumnLayout(labels, mode = "qty") {
         valueFontSizeFocus: 10.5,
         tickFontSize: 11,
         barWidth: 0.5,
-        topMargin: 10,
-        bottomMargin: 10,
-        yDomainEnd: 0.92,
-        yPadTop: 0.36,
-        yPadBottom: 0.55,
-        headerPaperY: 0.955,
+        topMargin: 6,
+        bottomMargin: 8,
+        yDomainEnd: 0.94,
+        yPadTop: 0.30,
+        yPadBottom: 0.40,
+        headerPaperY: 0.94,
         countHeader: "總量",
         shareHeader: "非LED%",
         qtyCountHeader: "汰換",
@@ -3366,10 +3406,10 @@ function replacementDualColumnLayout(labels, mode = "qty") {
     }
     return {
       leftMargin,
-      rightMargin: 56,
-      barDomainEnd: 0.44,
-      countPaperX: 0.66,
-      sharePaperX: 0.74,
+      rightMargin: 48,
+      barDomainEnd: 0.52,
+      countPaperX: 0.72,
+      sharePaperX: 0.84,
       countAnchor: "right",
       shareAnchor: "left",
       tickStandoff: 4,
@@ -3378,12 +3418,12 @@ function replacementDualColumnLayout(labels, mode = "qty") {
       valueFontSizeFocus: 11.5,
       tickFontSize: 11,
       barWidth: 0.5,
-      topMargin: 10,
-      bottomMargin: 10,
-      yDomainEnd: 0.92,
-      yPadTop: 0.36,
-      yPadBottom: 0.55,
-      headerPaperY: 0.955,
+      topMargin: 6,
+      bottomMargin: 8,
+      yDomainEnd: 0.94,
+      yPadTop: 0.30,
+      yPadBottom: 0.40,
+      headerPaperY: 0.94,
       countHeader: "總量",
       shareHeader: "非LED%",
       qtyCountHeader: "汰換",

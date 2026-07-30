@@ -594,9 +594,16 @@ function prepareChildFrame() {
           padding-top: 30px !important;
           overflow: visible !important;
         }
+        .ga-replacement-chart .ga-chart-card {
+          padding-top: 24px !important;
+        }
         .ga-chart-card::before {
           top: 12px !important;
           left: 12px !important;
+        }
+        .ga-replacement-chart .ga-chart-card::before {
+          top: 10px !important;
+          left: 14px !important;
         }
         #overviewChart { height: 200px !important; width: 100% !important; max-width: 100% !important; }
         #trendChart { height: 340px !important; width: 100% !important; max-width: 100% !important; }
