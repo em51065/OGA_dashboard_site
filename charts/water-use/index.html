@@ -1298,31 +1298,35 @@
       box-shadow: 0 10px 24px rgba(15, 23, 42, 0.07) !important;
       overflow: hidden !important;
     }
-    /* Replacement dual badge / score meta need room to wrap — don't crop the right edge. */
+    /* Replacement rank: keep score+meta on one row; dual badge slim; don't crop right edge. */
     .ga-replacement-chart .ga-rank-block {
       overflow: visible !important;
     }
     .ga-replacement-chart .ga-pr-score {
-      flex-direction: column !important;
-      align-items: center !important;
+      flex-direction: row !important;
+      flex-wrap: nowrap !important;
+      align-items: flex-end !important;
       justify-content: center !important;
-      gap: 4px !important;
+      gap: 6px !important;
       transform: none !important;
       width: 100% !important;
-      margin: 8px 0 10px !important;
+      margin: 6px 0 8px !important;
     }
     .ga-replacement-chart .ga-pr-score strong {
-      max-width: 100% !important;
-      flex: 0 0 auto !important;
+      max-width: min(58%, 11.5rem) !important;
+      flex: 0 1 auto !important;
+      font-size: clamp(42px, 15vw, 62px) !important;
     }
     .ga-replacement-chart .ga-pr-score span {
-      white-space: normal !important;
-      text-align: center !important;
-      max-width: 100% !important;
+      flex: 0 1 auto !important;
+      white-space: nowrap !important;
+      text-align: left !important;
+      max-width: none !important;
       min-width: 0 !important;
-      margin-bottom: 0 !important;
-      font-size: 12px !important;
-      line-height: 1.35 !important;
+      margin-bottom: 6px !important;
+      font-size: 10px !important;
+      line-height: 1.2 !important;
+      letter-spacing: -0.01em !important;
     }
     .ga-replacement-chart .ga-coverage-anchor .ga-coverage-wrap {
       width: 100% !important;
@@ -1335,12 +1339,19 @@
       flex-wrap: wrap !important;
       justify-content: center !important;
       align-items: center !important;
-      gap: 4px 8px !important;
+      gap: 2px 6px !important;
       width: 100% !important;
       max-width: 100% !important;
       box-sizing: border-box !important;
-      padding: 8px 12px !important;
+      padding: 5px 10px !important;
       min-height: 0 !important;
+      line-height: 1.2 !important;
+    }
+    .ga-replacement-chart .ga-coverage-campus,
+    .ga-replacement-chart .ga-coverage-zone {
+      font-size: 12px !important;
+      padding-top: 4px !important;
+      padding-bottom: 4px !important;
     }
     .ga-replacement-chart .ga-coverage-zone {
       white-space: normal !important;
@@ -1351,6 +1362,11 @@
       overflow: visible !important;
       text-overflow: unset !important;
       white-space: normal !important;
+    }
+    .ga-replacement-chart .ga-value-row {
+      grid-template-columns: 1fr 1fr !important;
+      gap: 8px !important;
+      margin: 10px 0 !important;
     }
     .ga-rank-block .ga-card-title {
       margin: 0 0 12px !important;
@@ -1540,17 +1556,17 @@
       min-width: 0 !important;
     }
     .ga-replacement-chart .ga-pr-score {
-      flex-direction: column !important;
-      align-items: center !important;
+      flex-direction: row !important;
+      align-items: flex-end !important;
       justify-content: center !important;
-      gap: 4px !important;
+      gap: 6px !important;
       transform: none !important;
     }
     .ga-replacement-chart .ga-pr-score span {
-      white-space: normal !important;
-      text-align: center !important;
-      max-width: 100% !important;
-      margin-bottom: 0 !important;
+      white-space: nowrap !important;
+      text-align: left !important;
+      font-size: 10px !important;
+      margin-bottom: 6px !important;
     }
     .ga-chart-card::before {
       top: 12px !important;
@@ -1561,14 +1577,14 @@
       width: 100% !important;
       max-width: 100% !important;
     }
-    .ga-replacement-chart #trendChart { height: 400px !important; }
+    .ga-replacement-chart #overviewChart { height: 240px !important; }
+    .ga-replacement-chart #trendChart { height: 340px !important; }
     .js-plotly-plot,
     .plotly-graph-div {
       width: 100% !important;
       max-width: 100% !important;
       touch-action: pan-y !important;
     }
-    .ga-replacement-chart .ga-value-row,
     .ga-replacement-chart .ga-coverage-zone {
       grid-template-columns: 1fr !important;
     }
@@ -1639,7 +1655,8 @@
     .ga-pr-score strong { font-size: clamp(44px, 17vw, 62px) !important; }
     #overviewChart { height: 180px !important; }
     #trendChart { height: 320px !important; }
-    .ga-replacement-chart #trendChart { height: 380px !important; }
+    .ga-replacement-chart #overviewChart { height: 220px !important; }
+    .ga-replacement-chart #trendChart { height: 320px !important; }
   }
 </style>
 </head>
@@ -3296,10 +3313,15 @@ function streetlightCampusShortLabel(location) {
 
 function streetlightCampusBarYs(rows) {
   // Lift 全校 slightly and add a small gap before campus ranking rows.
+  // Compact: tighter step so the plot feels denser (less empty vertical air).
   const hasTotalLead = Boolean(rows[0] && rows[0].location === "全校");
+  const compact = isCompactViewport();
+  const step = compact ? 0.74 : 0.86;
+  const leadGap = compact ? 0.18 : 0.28;
+  const firstY = hasTotalLead ? (compact ? -0.2 : -0.28) : -0.1;
   return rows.map((_, idx) => {
-    if (idx === 0) return hasTotalLead ? -0.28 : -0.1;
-    return hasTotalLead ? idx * 0.86 + 0.28 : idx * 0.86;
+    if (idx === 0) return firstY;
+    return hasTotalLead ? idx * step + leadGap : idx * step;
   });
 }
 
@@ -3318,10 +3340,10 @@ function replacementDualColumnLayout(labels, mode = "qty") {
     if (mode === "saving") {
       return {
         leftMargin,
-        rightMargin: 76,
-        barDomainEnd: 0.40,
-        countPaperX: 0.62,
-        sharePaperX: 0.78,
+        rightMargin: 80,
+        barDomainEnd: 0.34,
+        countPaperX: 0.66,
+        sharePaperX: 0.80,
         countAnchor: "right",
         shareAnchor: "left",
         tickStandoff: 4,
@@ -3329,6 +3351,13 @@ function replacementDualColumnLayout(labels, mode = "qty") {
         valueFontSize: 10,
         valueFontSizeFocus: 10.5,
         tickFontSize: 11,
+        barWidth: 0.5,
+        topMargin: 10,
+        bottomMargin: 10,
+        yDomainEnd: 0.92,
+        yPadTop: 0.36,
+        yPadBottom: 0.55,
+        headerPaperY: 0.955,
         countHeader: "總量",
         shareHeader: "非LED%",
         qtyCountHeader: "汰換",
@@ -3338,9 +3367,9 @@ function replacementDualColumnLayout(labels, mode = "qty") {
     return {
       leftMargin,
       rightMargin: 56,
-      barDomainEnd: 0.46,
+      barDomainEnd: 0.44,
       countPaperX: 0.66,
-      sharePaperX: 0.72,
+      sharePaperX: 0.74,
       countAnchor: "right",
       shareAnchor: "left",
       tickStandoff: 4,
@@ -3348,6 +3377,13 @@ function replacementDualColumnLayout(labels, mode = "qty") {
       valueFontSize: 11,
       valueFontSizeFocus: 11.5,
       tickFontSize: 11,
+      barWidth: 0.5,
+      topMargin: 10,
+      bottomMargin: 10,
+      yDomainEnd: 0.92,
+      yPadTop: 0.36,
+      yPadBottom: 0.55,
+      headerPaperY: 0.955,
       countHeader: "總量",
       shareHeader: "非LED%",
       qtyCountHeader: "汰換",
@@ -3367,6 +3403,13 @@ function replacementDualColumnLayout(labels, mode = "qty") {
     valueFontSize: 12,
     valueFontSizeFocus: 12.5,
     tickFontSize: 12,
+    barWidth: 0.58,
+    topMargin: 16,
+    bottomMargin: 14,
+    yDomainEnd: 0.885,
+    yPadTop: 0.46,
+    yPadBottom: 0.74,
+    headerPaperY: 0.925,
     countHeader: "總汰換量",
     shareHeader: "非LED占比",
     qtyCountHeader: "總汰換量",
@@ -3446,7 +3489,7 @@ function paintReplacementQtyShareBars({ sorted, labels, isSelected, hoverLeft, e
     {
       text: layout.qtyCountHeader,
       x: layout.countPaperX,
-      y: 0.925,
+      y: layout.headerPaperY,
       xref: "paper",
       yref: "paper",
       showarrow: false,
@@ -3457,7 +3500,7 @@ function paintReplacementQtyShareBars({ sorted, labels, isSelected, hoverLeft, e
     {
       text: layout.shareHeader,
       x: layout.sharePaperX,
-      y: 0.925,
+      y: layout.headerPaperY,
       xref: "paper",
       yref: "paper",
       showarrow: false,
@@ -3474,7 +3517,7 @@ function paintReplacementQtyShareBars({ sorted, labels, isSelected, hoverLeft, e
       name: "年度總汰換量",
       x: displayTotals,
       y,
-      width: sorted.map(() => 0.58),
+      width: sorted.map(() => layout.barWidth),
       marker: {
         color: sorted.map((row) => (rowHasData(row) ? "#e8eef6" : "rgba(0,0,0,0)")),
         line: {
@@ -3501,7 +3544,7 @@ function paintReplacementQtyShareBars({ sorted, labels, isSelected, hoverLeft, e
       name: "非LED原燈具占比",
       x: displayNonLed,
       y,
-      width: sorted.map(() => 0.58),
+      width: sorted.map(() => layout.barWidth),
       marker: {
         color: sorted.map((row) => (
           rowHasData(row) ? (streetlightBarIsHot(row, isSelected(row)) ? "#d43f55" : "#8fa1bb") : "rgba(0,0,0,0)"
@@ -3519,7 +3562,7 @@ function paintReplacementQtyShareBars({ sorted, labels, isSelected, hoverLeft, e
     },
   ], {
     barmode: "overlay",
-    margin: { l: layout.leftMargin, r: layout.rightMargin, t: 16, b: 14 },
+    margin: { l: layout.leftMargin, r: layout.rightMargin, t: layout.topMargin, b: layout.bottomMargin },
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "#ffffff",
     hovermode: "closest",
@@ -3539,8 +3582,8 @@ function paintReplacementQtyShareBars({ sorted, labels, isSelected, hoverLeft, e
       tickmode: "array",
       tickvals: y,
       ticktext: labels,
-      range: [Math.max(...y) + 0.46, -0.74],
-      domain: [0, 0.885],
+      range: [Math.max(...y) + layout.yPadTop, -layout.yPadBottom],
+      domain: [0, layout.yDomainEnd],
       automargin: false,
       ticklabelstandoff: layout.tickStandoff,
       tickfont: { size: layout.tickFontSize, color: "#253047" },
@@ -3758,7 +3801,7 @@ function paintReplacementSavingShareBars({ sorted, labels, isSelected, hoverLeft
     {
       text: layout.savingCountHeader,
       x: layout.countPaperX,
-      y: 0.925,
+      y: layout.headerPaperY,
       xref: "paper",
       yref: "paper",
       showarrow: false,
@@ -3769,7 +3812,7 @@ function paintReplacementSavingShareBars({ sorted, labels, isSelected, hoverLeft
     {
       text: layout.shareHeader,
       x: layout.sharePaperX,
-      y: 0.925,
+      y: layout.headerPaperY,
       xref: "paper",
       yref: "paper",
       showarrow: false,
@@ -3786,7 +3829,7 @@ function paintReplacementSavingShareBars({ sorted, labels, isSelected, hoverLeft
       name: "總節省瓦數",
       x: displayTotals,
       y,
-      width: sorted.map(() => 0.58),
+      width: sorted.map(() => layout.barWidth),
       marker: {
         color: sorted.map((row) => (rowHasData(row) ? "#e8eef6" : "rgba(0,0,0,0)")),
         line: {
@@ -3819,7 +3862,7 @@ function paintReplacementSavingShareBars({ sorted, labels, isSelected, hoverLeft
       name: "非LED來源省瓦",
       x: displayNonLed,
       y,
-      width: sorted.map(() => 0.58),
+      width: sorted.map(() => layout.barWidth),
       marker: {
         color: sorted.map((row) => (
           rowHasData(row) ? (streetlightBarIsHot(row, isSelected(row)) ? "#d43f55" : "#8fa1bb") : "rgba(0,0,0,0)"
@@ -3837,7 +3880,7 @@ function paintReplacementSavingShareBars({ sorted, labels, isSelected, hoverLeft
     },
   ], {
     barmode: "overlay",
-    margin: { l: layout.leftMargin, r: layout.rightMargin, t: 16, b: 14 },
+    margin: { l: layout.leftMargin, r: layout.rightMargin, t: layout.topMargin, b: layout.bottomMargin },
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "#ffffff",
     hovermode: "closest",
@@ -3857,8 +3900,8 @@ function paintReplacementSavingShareBars({ sorted, labels, isSelected, hoverLeft
       tickmode: "array",
       tickvals: y,
       ticktext: labels,
-      range: [Math.max(...y) + 0.46, -0.74],
-      domain: [0, 0.885],
+      range: [Math.max(...y) + layout.yPadTop, -layout.yPadBottom],
+      domain: [0, layout.yDomainEnd],
       automargin: false,
       ticklabelstandoff: layout.tickStandoff,
       tickfont: { size: layout.tickFontSize, color: "#253047" },
