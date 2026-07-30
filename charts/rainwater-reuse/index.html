@@ -1968,15 +1968,14 @@ function withCompactTrendTitle(layout) {
   const tallTitle = compactTrendNeedsTallTitle(next);
   if (next.title && typeof next.title === "object") {
     next.title = Object.assign({}, next.title, {
-      // Slightly below paper top + extra pad.t so bold CJK glyphs are not clipped.
-      y: 0.98,
+      // Match block 1/2 title size; modest pad.t clears CJK tops without widening kicker→title gap.
+      y: 0.99,
       yanchor: "top",
-      pad: { t: 14, b: tallTitle ? 8 : 4 },
-      font: Object.assign({}, next.title.font || {}, { size: 16, color: "#101827" }),
+      pad: { t: 9, b: tallTitle ? 8 : 4 },
+      font: Object.assign({}, next.title.font || {}, { size: 19, color: "#101827" }),
     });
   }
-  // Short single-metric titles need less reserve than dual-metric (用水／用電) long subtitles,
-  // but still enough headroom that Chinese title tops are not cut off.
+  // Short single-metric titles stay below the old 124px dead band; tall dual-metric keeps room.
   const minTop = tallTitle ? 118 : 100;
   if (next.margin) {
     next.margin = Object.assign({}, next.margin, {
