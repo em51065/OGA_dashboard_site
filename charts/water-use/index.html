@@ -1942,7 +1942,8 @@ function withCompactPlotInteraction(layout) {
 
 function withCompactTrendTitle(layout) {
   const next = Object.assign({}, layout || {});
-  if (!isCompactViewport()) return next;
+  // Replacement titles live in HTML (ga-quality-head); do not reserve Plotly title top margin.
+  if (!isCompactViewport() || isReplacementChart()) return next;
   if (next.title && typeof next.title === "object") {
     next.title = Object.assign({}, next.title, {
       y: 0.99,
