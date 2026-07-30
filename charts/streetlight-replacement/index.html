@@ -1951,15 +1951,17 @@ function withCompactTrendTitle(layout) {
   const next = Object.assign({}, layout || {});
   // Replacement titles live in HTML (ga-quality-head); do not reserve Plotly title top margin.
   if (!isCompactViewport() || isReplacementChart()) return next;
+  const tallTitle = compactTrendNeedsTallTitle(next);
   if (next.title && typeof next.title === "object") {
     next.title = Object.assign({}, next.title, {
       y: 0.99,
       yanchor: "top",
-      pad: { t: 10, b: 8 },
+      pad: { t: 8, b: tallTitle ? 8 : 4 },
       font: Object.assign({}, next.title.font || {}, { size: 16, color: "#101827" }),
     });
   }
-  const minTop = 124;
+  // Short single-metric titles need less reserve than dual-metric (用水／用電) long subtitles.
+  const minTop = tallTitle ? 118 : 90;
   if (next.margin) {
     next.margin = Object.assign({}, next.margin, {
       t: Math.max(Number(next.margin.t) || 0, minTop),
@@ -2020,17 +2022,39 @@ function compactTrendSup(text) {
   return raw.length > 36 ? `${raw.slice(0, 34)}…` : raw;
 }
 
+function compactTrendNeedsTallTitle(layout) {
+  // Dual-metric water/electricity subtitles are long; keep the taller Plotly title band.
+  if (typeof usesDualMetricTrend === "function" && usesDualMetricTrend()) return true;
+  const title = layout && layout.title;
+  const text = title && typeof title === "object" ? title.text : title;
+  return /亮線|淡線|對照/.test(String(text || ""));
+}
+
+function compactTrendTitleTop(kind = "year") {
+  const tall = compactTrendNeedsTallTitle();
+  if (tall) {
+    if (kind === "empty") return 112;
+    if (kind === "month") return 118;
+    return 124;
+  }
+  // Short single-metric titles (減廢／雨水／太陽能等): tighter title→plot gap.
+  if (kind === "empty") return 84;
+  if (kind === "month") return 90;
+  return 94;
+}
+
 function trendPlotMargins(kind = "year") {
   if (!isCompactViewport()) {
     if (kind === "empty") return { l: 64, r: 28, t: 78, b: 62 };
     if (kind === "month") return { l: 64, r: 72, t: 78, b: 62 };
     return { l: 54, r: 28, t: 128, b: 78 };
   }
-  // Extra top margin so Plotly title + subtitle are not clipped under the card kicker.
+  // Compact top margin sized to title length (see compactTrendTitleTop).
   // Right margin stays tight: mean label sits inside the plot on the left on compact.
-  if (kind === "empty") return { l: 40, r: 10, t: 104, b: 48 };
-  if (kind === "month") return { l: 40, r: 10, t: 116, b: 52 };
-  return { l: 40, r: 10, t: 124, b: 52 };
+  const t = compactTrendTitleTop(kind);
+  if (kind === "empty") return { l: 40, r: 10, t, b: 48 };
+  if (kind === "month") return { l: 40, r: 10, t, b: 52 };
+  return { l: 40, r: 10, t, b: 52 };
 }
 
 function meanLineAnnotation({ xMin, xMax, y, unit, yref = "y" }) {
