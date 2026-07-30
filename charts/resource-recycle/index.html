@@ -1445,9 +1445,19 @@
       right: auto !important;
       width: min(100%, 284px) !important;
     }
+    /* Side-by-side like desktop: leave room for the metric popover on the right. */
     .ga-replacement-chart .ga-coverage-anchor .ga-month-popover {
-      width: min(calc(100% - 24px), 280px) !important;
+      left: 0 !important;
+      right: auto !important;
+      width: min(calc(100% - 152px), 200px) !important;
       min-width: 0 !important;
+      max-width: calc(100% - 152px) !important;
+    }
+    .ga-replacement-chart .ga-coverage-anchor .ga-metric-popover {
+      left: auto !important;
+      right: 0 !important;
+      width: 140px !important;
+      max-width: 140px !important;
     }
     .ga-pr-score {
       justify-content: center !important;
@@ -1541,10 +1551,6 @@
     .ga-replacement-chart .oga-block-kicker {
       margin-bottom: 2px !important;
     }
-    .ga-replacement-chart .ga-quality-head {
-      margin-bottom: 0 !important;
-      padding-bottom: 0 !important;
-    }
     .ga-replacement-chart #trendChart {
       margin-top: 0 !important;
     }
@@ -1557,7 +1563,7 @@
       justify-content: space-between !important;
       gap: 8px !important;
       grid-template-columns: none !important;
-      margin-bottom: 0 !important;
+      margin-bottom: 10px !important;
       min-height: 0 !important;
     }
     .ga-replacement-chart .ga-overview-head h3 {
@@ -1577,6 +1583,7 @@
       align-items: flex-end !important;
       justify-content: space-between !important;
       gap: 8px !important;
+      margin-bottom: 10px !important;
     }
     .ga-replacement-chart .ga-quality-copy {
       flex: 1 1 auto !important;
@@ -1607,10 +1614,9 @@
       width: 100% !important;
       max-width: 100% !important;
     }
-    /* Replacement compact height is set in JS from row count — don't force 340px. */
+    /* Replacement compact height is set in JS from row count — only min-height here. */
     .ga-replacement-chart #overviewChart,
     .ga-replacement-chart #trendChart {
-      height: auto !important;
       min-height: 200px !important;
       width: 100% !important;
       max-width: 100% !important;
@@ -1693,7 +1699,6 @@
     #trendChart { height: 320px !important; }
     .ga-replacement-chart #overviewChart,
     .ga-replacement-chart #trendChart {
-      height: auto !important;
       min-height: 200px !important;
     }
   }
@@ -3396,7 +3401,7 @@ function streetlightCampusBarLeftMargin(labels) {
 
 function replacementCompactChartHeight(rowCount) {
   const n = Math.max(1, Number(rowCount) || 1);
-  return Math.max(200, Math.min(320, 26 + n * 28));
+  return Math.max(200, Math.min(300, 20 + n * 26));
 }
 
 function sizeReplacementCompactChart(elementId, rowCount) {
@@ -3412,7 +3417,7 @@ function sizeReplacementCompactChart(elementId, rowCount) {
 function replacementDualColumnLayout(labels, mode = "qty") {
   // Count right-aligns into a reserved mid band; share left-aligns after a clear gutter
   // and ends before the plot edge so "非LED占比" neither clips nor collides with 盞/瓦.
-  // Compact: longer bars + columns shifted right; yPadBottom clears top bar half-width.
+  // Compact: longer bars + columns shifted right; top band clear of title/chips.
   if (isCompactViewport()) {
     const leftMargin = Math.min(48, streetlightCampusBarLeftMargin(labels));
     if (mode === "saving") {
@@ -3430,12 +3435,12 @@ function replacementDualColumnLayout(labels, mode = "qty") {
         valueFontSizeFocus: 10.5,
         tickFontSize: 11,
         barWidth: 0.5,
-        topMargin: 2,
+        topMargin: 10,
         bottomMargin: 8,
-        yDomainEnd: 0.96,
+        yDomainEnd: 0.88,
         yPadTop: 0.28,
-        yPadBottom: 0.58,
-        headerPaperY: 0.975,
+        yPadBottom: 0.62,
+        headerPaperY: 0.92,
         countHeader: "總節省瓦數",
         shareHeader: "非LED占比",
         qtyCountHeader: "總汰換量",
@@ -3456,12 +3461,12 @@ function replacementDualColumnLayout(labels, mode = "qty") {
       valueFontSizeFocus: 11.5,
       tickFontSize: 11,
       barWidth: 0.5,
-      topMargin: 2,
+      topMargin: 10,
       bottomMargin: 8,
-      yDomainEnd: 0.96,
+      yDomainEnd: 0.88,
       yPadTop: 0.28,
-      yPadBottom: 0.58,
-      headerPaperY: 0.975,
+      yPadBottom: 0.62,
+      headerPaperY: 0.92,
       countHeader: "總汰換量",
       shareHeader: "非LED占比",
       qtyCountHeader: "總汰換量",
@@ -3680,6 +3685,7 @@ function paintReplacementQtyShareBars({ sorted, labels, isSelected, hoverLeft, e
   }, { displayModeBar: false, responsive: true });
   const overview = document.getElementById("overviewChart");
   overview?.removeAllListeners?.("plotly_click");
+  sizeReplacementCompactChart("overviewChart", sorted.length);
   if (overview) Plotly.Plots.resize(overview);
   if (enableCampusClick) bindStreetlightCampusBarClicks("overviewChart", sorted);
 }
@@ -4004,6 +4010,7 @@ function paintReplacementSavingShareBars({ sorted, labels, isSelected, hoverLeft
   }, { displayModeBar: false, responsive: true });
   const trend = document.getElementById("trendChart");
   trend?.removeAllListeners?.("plotly_click");
+  sizeReplacementCompactChart("trendChart", sorted.length);
   if (trend) Plotly.Plots.resize(trend);
   if (enableCampusClick) bindStreetlightCampusBarClicks("trendChart", sorted);
 }
