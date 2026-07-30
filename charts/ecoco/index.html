@@ -1968,15 +1968,15 @@ function withCompactTrendTitle(layout) {
   const tallTitle = compactTrendNeedsTallTitle(next);
   if (next.title && typeof next.title === "object") {
     next.title = Object.assign({}, next.title, {
-      // Match block 1/2 title size; modest pad.t clears CJK tops without widening kicker→title gap.
-      y: 0.99,
+      // pad.t clears CJK tops; small pad.b + lower minTop reclaim title→plot dead space.
+      y: 0.985,
       yanchor: "top",
-      pad: { t: 9, b: tallTitle ? 8 : 4 },
-      font: Object.assign({}, next.title.font || {}, { size: 19, color: "#101827" }),
+      pad: { t: 12, b: tallTitle ? 6 : 3 },
+      font: Object.assign({}, next.title.font || {}, { size: 18, color: "#101827" }),
     });
   }
-  // Short single-metric titles stay below the old 124px dead band; tall dual-metric keeps room.
-  const minTop = tallTitle ? 118 : 100;
+  // Prefer title clearance over empty band under the subtitle (never restore 124 for short titles).
+  const minTop = tallTitle ? 118 : 92;
   if (next.margin) {
     next.margin = Object.assign({}, next.margin, {
       t: Math.max(Number(next.margin.t) || 0, minTop),
@@ -2033,8 +2033,13 @@ function compactTrendSup(text) {
   const raw = String(text || "");
   if (!isCompactViewport()) return raw;
   const parts = raw.split("｜").map((part) => part.trim()).filter(Boolean);
-  if (parts.length >= 2) return `${parts[0]}｜點選端點可同步`;
-  return raw.length > 36 ? `${raw.slice(0, 34)}…` : raw;
+  if (parts.length >= 2) {
+    // Keep only the short basis before the first comma so the line fits without clipping.
+    let head = parts[0].split(/[，,]/)[0].trim();
+    if (head.length > 14) head = `${head.slice(0, 12)}…`;
+    return `${head}｜點選端點可同步`;
+  }
+  return raw.length > 28 ? `${raw.slice(0, 26)}…` : raw;
 }
 
 function compactTrendNeedsTallTitle(layout) {
@@ -2052,10 +2057,10 @@ function compactTrendTitleTop(kind = "year") {
     if (kind === "month") return 118;
     return 124;
   }
-  // Short single-metric titles: tighter than dual-metric, with CJK top clearance.
-  if (kind === "empty") return 94;
-  if (kind === "month") return 100;
-  return 102;
+  // Short single-metric titles: reclaim title→plot air for CJK/subtitle clearance.
+  if (kind === "empty") return 86;
+  if (kind === "month") return 92;
+  return 94;
 }
 
 function trendPlotMargins(kind = "year") {
