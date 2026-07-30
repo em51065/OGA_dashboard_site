@@ -1525,19 +1525,31 @@
       border-top: 1px solid var(--line) !important;
     }
     .ga-overview-head {
-      display: grid !important;
-      grid-template-columns: 1fr !important;
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: nowrap !important;
+      align-items: flex-end !important;
+      justify-content: space-between !important;
       gap: 8px !important;
-      align-items: start !important;
       min-height: 0 !important;
       margin-bottom: 8px !important;
     }
+    .ga-overview-head h3 {
+      flex: 1 1 auto !important;
+      min-width: 0 !important;
+    }
     .ga-overview-note {
-      justify-self: start !important;
+      flex: 0 1 auto !important;
       margin-left: 0 !important;
-      text-align: left !important;
+      text-align: right !important;
       white-space: normal !important;
       font-size: 11px !important;
+    }
+    /* Match desktop: overview mode switch (bar/pie, 年度/地點) stays top-right. */
+    .ga-overview-head .ga-mode-switch {
+      margin-left: auto !important;
+      flex: 0 0 auto !important;
+      align-self: flex-end !important;
     }
     .ga-mode-switch { justify-self: start !important; }
     #overviewChart { height: 200px !important; width: 100% !important; max-width: 100% !important; }
