@@ -2178,8 +2178,8 @@ function compactTrendTitleTop(kind = "year") {
 
 function trendPlotMargins(kind = "year") {
   const dual = typeof usesDualMetricTrend === "function" && usesDualMetricTrend();
-  // meanBand: extra top space so the mean pill can sit higher in the title→plot band.
-  const meanBand = 50;
+  // meanBand: desktop keeps tuned band; compact gets more room for a higher left pill.
+  const meanBand = isCompactViewport() ? 64 : 50;
   if (!isCompactViewport()) {
     if (kind === "empty") return { l: 64, r: dual ? 64 : 28, t: 78 + meanBand, b: 62 };
     if (kind === "month") return { l: 64, r: 72, t: 78 + meanBand, b: 62 };
@@ -2287,8 +2287,8 @@ function syncTrendMeanLegend({ y, unit, yref = "y" }) {
 
   const pillH = btn.offsetHeight || 24;
   const chartTop = chartEl.offsetTop;
-  // Compact sits higher in the title band; desktop keeps the tuned right-edge gap.
-  const gap = compact ? 48 : 62;
+  // Compact: park higher in the title band; desktop keeps the tuned right-edge gap.
+  const gap = compact ? 64 : 62;
   const topPx = Math.max(4, chartTop + _size.t - pillH - gap);
   row.style.top = `${topPx}px`;
   btn.style.color = MEAN_LINE_COLOR;
@@ -2297,11 +2297,8 @@ function syncTrendMeanLegend({ y, unit, yref = "y" }) {
   const cardWidth = (card && card.clientWidth) || chartEl.clientWidth;
 
   if (compact) {
-    // Mobile: further into the left margin / y-tick band; text grows right.
-    const plotLeft = chartEl.offsetLeft + _size.l;
-    const sizeL = Number(_size.l) || 0;
-    const leftNudge = Math.min(26, Math.max(0, sizeL - 4));
-    const anchorLeft = Math.max(4, plotLeft - leftNudge);
+    // Mobile: sit near the card/chart left edge (deep in the y-tick margin); grows right.
+    const anchorLeft = Math.max(2, chartEl.offsetLeft + 2);
     btn.style.left = `${anchorLeft}px`;
   } else {
     // Desktop: right-anchor into the right margin; text grows left.
