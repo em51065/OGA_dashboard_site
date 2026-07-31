@@ -2287,7 +2287,8 @@ function syncTrendMeanLegend({ y, unit, yref = "y" }) {
 
   const pillH = btn.offsetHeight || 24;
   const chartTop = chartEl.offsetTop;
-  const gap = compact ? 36 : 62;
+  // Compact sits higher in the title band; desktop keeps the tuned right-edge gap.
+  const gap = compact ? 48 : 62;
   const topPx = Math.max(4, chartTop + _size.t - pillH - gap);
   row.style.top = `${topPx}px`;
   btn.style.color = MEAN_LINE_COLOR;
@@ -2296,11 +2297,11 @@ function syncTrendMeanLegend({ y, unit, yref = "y" }) {
   const cardWidth = (card && card.clientWidth) || chartEl.clientWidth;
 
   if (compact) {
-    // Mobile: left-anchor near the plot left / y-tick band; text grows right.
+    // Mobile: further into the left margin / y-tick band; text grows right.
     const plotLeft = chartEl.offsetLeft + _size.l;
     const sizeL = Number(_size.l) || 0;
-    const leftNudge = Math.min(14, Math.max(0, sizeL - 8));
-    const anchorLeft = Math.max(8, plotLeft - leftNudge);
+    const leftNudge = Math.min(26, Math.max(0, sizeL - 4));
+    const anchorLeft = Math.max(4, plotLeft - leftNudge);
     btn.style.left = `${anchorLeft}px`;
   } else {
     // Desktop: right-anchor into the right margin; text grows left.
