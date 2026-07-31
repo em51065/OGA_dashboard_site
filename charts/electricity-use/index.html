@@ -1516,6 +1516,11 @@
       font-size: 20px !important;
       line-height: 1.22 !important;
     }
+    /* Overview titles share the row with mode chips — prefer one line over wrap. */
+    .ga-overview-head h3 {
+      font-size: 16px !important;
+      white-space: nowrap !important;
+    }
     .ga-coverage-wrap {
       width: 100% !important;
       max-width: 100% !important;
@@ -1629,13 +1634,17 @@
       flex-wrap: nowrap !important;
       align-items: flex-end !important;
       justify-content: space-between !important;
-      gap: 8px !important;
+      gap: 6px !important;
       min-height: 0 !important;
       margin-bottom: 8px !important;
     }
     .ga-overview-head h3 {
       flex: 1 1 auto !important;
       min-width: 0 !important;
+      /* Keep "年度總覽｜全年累積" on one line; shrink type slightly instead of wrapping. */
+      white-space: nowrap !important;
+      font-size: 16px !important;
+      line-height: 1.25 !important;
     }
     .ga-overview-note {
       flex: 0 1 auto !important;
@@ -1816,8 +1825,11 @@
       white-space: normal !important;
       position: static !important;
     }
-    .ga-card-title h2,
-    .ga-overview-head h3 { font-size: 19px !important; }
+    .ga-card-title h2 { font-size: 19px !important; }
+    .ga-overview-head h3 {
+      font-size: 15px !important;
+      white-space: nowrap !important;
+    }
     .ga-pr-score strong { font-size: clamp(44px, 17vw, 62px) !important; }
     #overviewChart { height: 180px !important; }
     #trendChart { height: 320px !important; }
