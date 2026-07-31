@@ -2179,7 +2179,7 @@ function compactTrendTitleTop(kind = "year") {
 function trendPlotMargins(kind = "year") {
   const dual = typeof usesDualMetricTrend === "function" && usesDualMetricTrend();
   // meanBand: desktop keeps tuned band; compact gets more room for a higher left pill.
-  const meanBand = isCompactViewport() ? 64 : 50;
+  const meanBand = isCompactViewport() ? 74 : 50;
   if (!isCompactViewport()) {
     if (kind === "empty") return { l: 64, r: dual ? 64 : 28, t: 78 + meanBand, b: 62 };
     if (kind === "month") return { l: 64, r: 72, t: 78 + meanBand, b: 62 };
@@ -2192,10 +2192,45 @@ function trendPlotMargins(kind = "year") {
     if (kind === "month") return { l: 36, r: 36, t: t + meanBand, b: 52 };
     return { l: 36, r: 36, t: t + meanBand, b: 52 };
   }
-  // Single-axis: right is tight; mean pill floats above right edge in HTML.
-  if (kind === "empty") return { l: 40, r: 14, t: t + meanBand, b: 48 };
-  if (kind === "month") return { l: 40, r: 14, t: t + meanBand, b: 52 };
-  return { l: 40, r: 14, t: t + meanBand, b: 52 };
+  // Single-axis compact: no y-unit title, so a slightly tighter left gutter is enough for ticks.
+  if (kind === "empty") return { l: 36, r: 14, t: t + meanBand, b: 48 };
+  if (kind === "month") return { l: 36, r: 14, t: t + meanBand, b: 52 };
+  return { l: 36, r: 14, t: t + meanBand, b: 52 };
+}
+
+function trendXAxisLayout(tickvals, ticktext) {
+  const vals = (tickvals || []).map(Number).filter((v) => Number.isFinite(v));
+  const axis = {
+    title: "",
+    tickmode: "array",
+    tickvals,
+    ticktext: ticktext != null ? ticktext : tickvals,
+    showgrid: false,
+    zeroline: false,
+  };
+  // Compact: shrink category end-padding so the first/last points sit nearer the y-axis / right edge.
+  if (isCompactViewport() && vals.length) {
+    const lo = Math.min(...vals);
+    const hi = Math.max(...vals);
+    const pad = vals.length <= 2 ? 0.28 : 0.42;
+    axis.range = [lo - pad, hi + pad];
+  }
+  return axis;
+}
+
+function trendYAxisLayout({ maxY = null, unit = "" } = {}) {
+  const compact = isCompactViewport();
+  const axis = {
+    // Compact: hide unit title (card title / legend already carry the unit) to avoid crowding ticks.
+    title: compact ? "" : (unit || activeUnit()),
+    rangemode: "tozero",
+    gridcolor: "#e8eef6",
+    zeroline: false,
+    automargin: false,
+    tickfont: { size: compact ? 10 : 12 },
+  };
+  if (maxY != null && Number.isFinite(maxY)) axis.range = [0, maxY * 1.22];
+  return axis;
 }
 
 function dualMetricYAxisLayout(left, right, leftColor, rightColor, dualRanges) {
@@ -2288,7 +2323,7 @@ function syncTrendMeanLegend({ y, unit, yref = "y" }) {
   const pillH = btn.offsetHeight || 24;
   const chartTop = chartEl.offsetTop;
   // Compact: park higher in the title band; desktop keeps the tuned right-edge gap.
-  const gap = compact ? 64 : 62;
+  const gap = compact ? 74 : 62;
   const topPx = Math.max(4, chartTop + _size.t - pillH - gap);
   row.style.top = `${topPx}px`;
   btn.style.color = MEAN_LINE_COLOR;
@@ -4901,14 +4936,7 @@ function renderDualMetricMonthTrend() {
     margin: trendPlotMargins("month"),
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "#ffffff",
-    xaxis: {
-      title: "",
-      tickmode: "array",
-      tickvals: months,
-      ticktext: months.map((month) => `${month}月`),
-      showgrid: false,
-      zeroline: false,
-    },
+    xaxis: trendXAxisLayout(months, months.map((month) => `${month}月`)),
     ...dualAxes,
     showlegend: false,
     shapes: focus ? [{
@@ -5032,7 +5060,7 @@ function renderDualMetricYearTrend() {
     margin: trendPlotMargins("year"),
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "#ffffff",
-    xaxis: { tickmode: "array", tickvals: years, title: "", showgrid: false, zeroline: false },
+    xaxis: trendXAxisLayout(years),
     ...dualAxes,
     showlegend: false,
     shapes: [{
@@ -5122,15 +5150,8 @@ function renderMonthTrend() {
     margin: trendPlotMargins("month"),
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "#ffffff",
-    xaxis: {
-      title: "",
-      tickmode: "array",
-      tickvals: months,
-      ticktext: months.map((month) => `${month}月`),
-      showgrid: false,
-      zeroline: false,
-    },
-    yaxis: { title: activeUnit(), rangemode: "tozero", range: [0, maxY * 1.22], gridcolor: "#e8eef6", zeroline: false, automargin: false },
+    xaxis: trendXAxisLayout(months, months.map((month) => `${month}月`)),
+    yaxis: trendYAxisLayout({ maxY, unit: activeUnit() }),
     showlegend: false,
     shapes: focus ? [{
       type: "line",
@@ -5270,14 +5291,9 @@ function renderTrend() {
     autosize: true,
     paper_bgcolor: "rgba(0,0,0,0)",
     plot_bgcolor: "#ffffff",
-    xaxis: { tickmode: "array", tickvals: years, title: "", showgrid: false, zeroline: false },
+    xaxis: trendXAxisLayout(years),
     yaxis: {
-      title: isCompactViewport() ? "" : activeUnit(),
-      rangemode: "tozero",
-      gridcolor: "#e8eef6",
-      zeroline: false,
-      automargin: false,
-      tickfont: { size: isCompactViewport() ? 10 : 12 },
+      ...trendYAxisLayout({ unit: activeUnit(focusCategory) }),
     },
     showlegend: false,
   }, { displayModeBar: false, responsive: true }).then(() => {
