@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-31 03:55:02",
+  "generatedAt": "2026-08-18 03:04:37",
   "sourceFile": "Total_20260713.xlsx",
   "charts": [
     {
@@ -56,6 +56,13 @@
       "title": "用電量",
       "path": "charts/electricity-use/",
       "sheet": "用電量",
+      "dataVersion": "20260713"
+    },
+    {
+      "id": "ac-replacement",
+      "title": "冷氣汰換",
+      "path": "charts/ac-replacement/",
+      "sheet": "冷氣汰換",
       "dataVersion": "20260713"
     },
     {

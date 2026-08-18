@@ -11,6 +11,7 @@ const CHARTS = {
   "solar-energy": { title: "太陽能" },
   "led-replacement": { title: "LED燈具汰換" },
   "streetlight-replacement": { title: "路燈汰換" },
+  "ac-replacement": { title: "冷氣汰換" },
 };
 
 const frame = document.getElementById("chartFrame");
@@ -32,7 +33,7 @@ const mobileNarrowMq = window.matchMedia("(max-width: 760px)");
 const NAV_THEME_CHARTS = [
   ["ecoco", "general-recycle", "resource-recycle", "food-waste-recycle"],
   ["rainwater-reuse", "water-use", "electricity-use", "solar-energy"],
-  ["led-replacement", "streetlight-replacement"],
+  ["led-replacement", "streetlight-replacement", "ac-replacement"],
 ];
 
 let currentChart = "ecoco";

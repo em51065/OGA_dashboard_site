@@ -1,0 +1,193 @@
+{
+  "dataVersion": "20260713",
+  "generatedAt": "2026-08-18 03:04:35",
+  "sourceFile": "Total_20260713.xlsx",
+  "chartId": "ac-replacement",
+  "sheet": "冷氣汰換",
+  "metric": "冷氣汰換",
+  "valueLabel": "數量(台)",
+  "valueNoun": "汰換量",
+  "unit": "台",
+  "defaultYear": 2026,
+  "supportsMonthGrain": true,
+  "monthGrainMinYear": 2025,
+  "records": [
+    {
+      "year": 2022,
+      "value": 295.0,
+      "months": 1,
+      "monthsList": [
+        12
+      ],
+      "maxMonth": 12,
+      "hasDecember": true,
+      "start": "2022-12",
+      "end": "2022-12"
+    },
+    {
+      "year": 2023,
+      "value": 444.0,
+      "months": 1,
+      "monthsList": [
+        12
+      ],
+      "maxMonth": 12,
+      "hasDecember": true,
+      "start": "2023-12",
+      "end": "2023-12"
+    },
+    {
+      "year": 2024,
+      "value": 1047.0,
+      "months": 1,
+      "monthsList": [
+        12
+      ],
+      "maxMonth": 12,
+      "hasDecember": true,
+      "start": "2024-12",
+      "end": "2024-12"
+    },
+    {
+      "year": 2025,
+      "value": 1208.0,
+      "months": 12,
+      "monthsList": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "maxMonth": 12,
+      "hasDecember": true,
+      "start": "2025-01",
+      "end": "2025-12"
+    },
+    {
+      "year": 2026,
+      "value": 589.0,
+      "months": 5,
+      "monthsList": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "maxMonth": 5,
+      "hasDecember": false,
+      "start": "2026-01",
+      "end": "2026-05"
+    }
+  ],
+  "monthly": [
+    {
+      "year": 2022,
+      "month": 12,
+      "value": 295.0
+    },
+    {
+      "year": 2023,
+      "month": 12,
+      "value": 444.0
+    },
+    {
+      "year": 2024,
+      "month": 12,
+      "value": 1047.0
+    },
+    {
+      "year": 2025,
+      "month": 1,
+      "value": 2.0
+    },
+    {
+      "year": 2025,
+      "month": 2,
+      "value": 3.0
+    },
+    {
+      "year": 2025,
+      "month": 3,
+      "value": 51.0
+    },
+    {
+      "year": 2025,
+      "month": 4,
+      "value": 154.0
+    },
+    {
+      "year": 2025,
+      "month": 5,
+      "value": 341.0
+    },
+    {
+      "year": 2025,
+      "month": 6,
+      "value": 64.0
+    },
+    {
+      "year": 2025,
+      "month": 7,
+      "value": 80.0
+    },
+    {
+      "year": 2025,
+      "month": 8,
+      "value": 57.0
+    },
+    {
+      "year": 2025,
+      "month": 9,
+      "value": 52.0
+    },
+    {
+      "year": 2025,
+      "month": 10,
+      "value": 295.0
+    },
+    {
+      "year": 2025,
+      "month": 11,
+      "value": 100.0
+    },
+    {
+      "year": 2025,
+      "month": 12,
+      "value": 9.0
+    },
+    {
+      "year": 2026,
+      "month": 1,
+      "value": 18.0
+    },
+    {
+      "year": 2026,
+      "month": 2,
+      "value": 29.0
+    },
+    {
+      "year": 2026,
+      "month": 3,
+      "value": 480.0
+    },
+    {
+      "year": 2026,
+      "month": 4,
+      "value": 26.0
+    },
+    {
+      "year": 2026,
+      "month": 5,
+      "value": 36.0
+    }
+  ]
+}
