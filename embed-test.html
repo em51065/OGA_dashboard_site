@@ -89,6 +89,7 @@
       <button type="button" data-width="1024">1024</button>
       <button type="button" data-width="900">900</button>
       <button type="button" data-width="768">768</button>
+      <button type="button" data-width="760" title="Explorer compact breakpoint（config/explorer-layout.json）">760（切換點）</button>
     </div>
 
     <div class="test-toolbar" aria-label="嵌入框高度（對應 Wix HTML 元件高）">
@@ -97,6 +98,19 @@
       <button type="button" data-height="1300" title="建議真站先改到的高度">1300（建議）</button>
       <button type="button" data-height="1400">1400</button>
       <button type="button" data-height="auto" title="僅當真站有 Velo／宿主會跟著長高時才代表真站">自動長高（需 Velo）</button>
+    </div>
+
+    <div class="test-toolbar" aria-label="Layout mode（Phase D1 feature flag）">
+      <strong>Layout mode</strong>
+      <button type="button" id="layoutModeOverflow" class="is-active">overflow（production）</button>
+      <button type="button" id="layoutModeBreakpoint">760 legacy（?layoutMode=breakpoint）</button>
+    </div>
+
+    <div class="test-toolbar" aria-label="Layout shadow（Phase 1 對照 log）">
+      <strong>Layout shadow</strong>
+      <button type="button" id="layoutShadowOff" class="is-active">關閉</button>
+      <button type="button" id="layoutShadowOn">開啟 log</button>
+      <a href="./layout-shadow-probe.html" style="margin-left:8px;font-size:13px;">Phase 2 probe →</a>
     </div>
 
     <p class="test-note" id="profileNote"></p>
@@ -128,6 +142,29 @@
     let boxWidth = PRODUCTION.width;
     let boxHeight = PRODUCTION.height; // number | "auto"
     let contentHeight = 0;
+    let layoutShadow = false;
+    let layoutMode = "overflow";
+
+    function embedExplorerUrl() {
+      const params = new URLSearchParams({ embed: "1" });
+      if (layoutShadow) params.set("layoutShadow", "1");
+      if (layoutMode === "breakpoint") params.set("layoutMode", "breakpoint");
+      return `./explorer/?${params.toString()}`;
+    }
+
+    function syncLayoutModeButtons() {
+      document.getElementById("layoutModeBreakpoint")?.classList.toggle("is-active", layoutMode === "breakpoint");
+      document.getElementById("layoutModeOverflow")?.classList.toggle("is-active", layoutMode === "overflow");
+    }
+
+    function syncLayoutShadowButtons() {
+      document.getElementById("layoutShadowOff")?.classList.toggle("is-active", !layoutShadow);
+      document.getElementById("layoutShadowOn")?.classList.toggle("is-active", layoutShadow);
+    }
+
+    function reloadEmbedFrame() {
+      frame.src = embedExplorerUrl();
+    }
 
     function syncButtons() {
       document.querySelectorAll("[data-width]").forEach((btn) => {
@@ -227,7 +264,31 @@
       updateCopy();
     });
 
+    document.getElementById("layoutShadowOff")?.addEventListener("click", () => {
+      layoutShadow = false;
+      syncLayoutShadowButtons();
+      reloadEmbedFrame();
+    });
+    document.getElementById("layoutShadowOn")?.addEventListener("click", () => {
+      layoutShadow = true;
+      syncLayoutShadowButtons();
+      reloadEmbedFrame();
+    });
+
+    document.getElementById("layoutModeBreakpoint")?.addEventListener("click", () => {
+      layoutMode = "breakpoint";
+      syncLayoutModeButtons();
+      reloadEmbedFrame();
+    });
+    document.getElementById("layoutModeOverflow")?.addEventListener("click", () => {
+      layoutMode = "overflow";
+      syncLayoutModeButtons();
+      reloadEmbedFrame();
+    });
+
     applyProfile();
+    syncLayoutShadowButtons();
+    syncLayoutModeButtons();
   </script>
 </body>
 </html>

@@ -214,6 +214,22 @@ body { overflow-x: hidden; }
   --nav-shadow: rgba(180, 106, 42, 0.17);
 }
 
+.oga-nav-group[data-group="friendly-spaces"] {
+  --nav-bg: #faf7fb;
+  --nav-bg-active: #f3edf8;
+  --nav-border: #e5d9eb;
+  --nav-border-active: #cdb8d4;
+  --nav-ink: #3d2f42;
+  --nav-muted: #7a687f;
+  --nav-accent: #8b5a96;
+  --nav-icon-bg: #f0e8f4;
+  --nav-glow-a: rgba(139, 90, 150, 0.15);
+  --nav-glow-b: rgba(212, 120, 140, 0.10);
+  --nav-glow-active-a: rgba(139, 90, 150, 0.22);
+  --nav-glow-active-b: rgba(212, 120, 140, 0.16);
+  --nav-shadow: rgba(139, 90, 150, 0.16);
+}
+
 .oga-nav-group-trigger svg {
   position: relative;
   z-index: 1;
@@ -222,7 +238,7 @@ body { overflow-x: hidden; }
   color: var(--nav-accent, var(--blue));
 }
 
-.oga-nav-group-trigger svg:first-child {
+.oga-nav-group-trigger > svg:first-child {
   width: 34px;
   height: 34px;
   padding: 7px;
@@ -406,25 +422,40 @@ body { overflow-x: hidden; }
   color: var(--nav-accent, #203754);
 }
 
+.oga-nav-choice.is-soon,
+.oga-mobile-theme-choice.is-soon {
+  cursor: not-allowed;
+  opacity: 0.68;
+}
+
+.oga-nav-choice.is-soon svg {
+  flex-shrink: 0;
+  color: var(--nav-muted, #667085);
+}
+
+.oga-nav-choice.is-soon:hover,
+.oga-mobile-theme-choice.is-soon:hover {
+  background: transparent;
+  transform: none;
+}
+
+.oga-nav-soon {
+  flex-shrink: 0;
+  margin-left: auto;
+  padding-left: 8px;
+  color: var(--nav-muted, #667085);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
 .oga-mobile-select { display: none; }
 
 .oga-open-label--mobile { display: none; }
 
 .oga-mobile-theme-nav {
   display: none;
-}
-
-.oga-mobile-embed-tip {
-  display: none;
-  margin: 0 0 8px;
-  padding: 8px 10px;
-  border: 1px solid #d7e3f4;
-  border-radius: 8px;
-  background: #f3f8ff;
-  color: #334155;
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 1.45;
 }
 
 .oga-stage {
@@ -440,21 +471,87 @@ body { overflow-x: hidden; }
   padding: 0 4px 10px;
 }
 
-.oga-stage-bar > div { display: flex; align-items: baseline; gap: 8px; min-width: 0; }
+.oga-stage-current {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+}
 .oga-stage-label { color: var(--muted); font-size: 11px; font-weight: 800; }
 .oga-stage-bar strong { font-size: 15px; }
+
+.oga-open-nudge {
+  display: none;
+  flex: 0 1 auto;
+  align-items: center;
+  min-width: 0;
+  max-width: min(100%, 24rem);
+  margin: 0 0 0 auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--navy);
+  font-size: 12.5px;
+  font-weight: 800;
+  line-height: 1.3;
+  text-align: right;
+  pointer-events: none;
+  user-select: none;
+}
+.oga-open-nudge[hidden] { display: none !important; }
+.oga-stage-bar--nudge .oga-open-nudge:not([hidden]) {
+  display: inline-flex;
+}
+.oga-stage-bar--nudge {
+  justify-content: flex-start;
+  gap: 8px;
+}
+.oga-stage-bar--nudge a {
+  margin-left: 0;
+}
+.oga-open-nudge span {
+  min-width: 0;
+}
 .oga-stage-bar a {
   display: inline-flex;
   flex: 0 0 auto;
   align-items: center;
-  gap: 5px;
-  color: #4c6079;
-  font-size: 11px;
+  gap: 6px;
+  min-height: 34px;
+  padding: 7px 12px;
+  border: 1px solid var(--blue);
+  border-radius: 999px;
+  background: var(--blue);
+  color: #fff;
+  font-size: 12px;
   font-weight: 800;
+  line-height: 1.2;
   text-decoration: none;
+  box-shadow: 0 1px 2px rgba(32, 55, 84, 0.18);
+  transition: background 120ms ease, border-color 120ms ease, box-shadow 120ms ease, transform 120ms ease;
 }
-.oga-stage-bar a:hover { color: var(--blue); }
-.oga-stage-bar a svg { width: 14px; height: 14px; }
+.oga-stage-bar a:hover {
+  background: color-mix(in srgb, var(--blue) 82%, #0f1b33);
+  border-color: color-mix(in srgb, var(--blue) 82%, #0f1b33);
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(32, 55, 84, 0.22);
+  transform: translateY(-1px);
+}
+.oga-stage-bar a:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--blue) 45%, white);
+  outline-offset: 2px;
+}
+.oga-stage-bar a:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(32, 55, 84, 0.16);
+}
+.oga-stage-bar a svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: #fff;
+  stroke: #fff;
+}
 
 .oga-frame-wrap {
   position: relative;
@@ -570,6 +667,55 @@ html.is-embedded .oga-nav-group-trigger {
   gap: 9px;
 }
 
+/* C1a/C1c: embed desktop nav — fit 4 themes at Wix ~1058 without compact switch.
+   Keep .oga-nav-group overflow visible so .oga-nav-menu dropdowns are not clipped. */
+html.is-embedded:not(.is-layout-compact) .oga-portal {
+  padding-inline: 9px;
+}
+
+html.is-embedded:not(.is-layout-compact) .oga-chart-nav {
+  gap: 1px;
+  padding-inline: 0;
+  overflow: visible;
+}
+
+html.is-embedded:not(.is-layout-compact) .oga-nav-group {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: none;
+  overflow: visible;
+}
+
+html.is-embedded:not(.is-layout-compact) .oga-nav-group-trigger {
+  min-height: 50px;
+  padding: 7px 5px 8px;
+  gap: 3px;
+}
+
+html.is-embedded:not(.is-layout-compact) .oga-nav-group-trigger span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px;
+}
+
+html.is-embedded:not(.is-layout-compact) .oga-nav-group-trigger small {
+  font-size: 9px;
+  margin-bottom: 2px;
+  letter-spacing: 0.04em;
+}
+
+html.is-embedded:not(.is-layout-compact) .oga-nav-group-trigger > svg:first-child {
+  width: 28px;
+  height: 28px;
+  padding: 5px;
+}
+
+html.is-embedded:not(.is-layout-compact) .oga-nav-group-trigger svg:last-child {
+  width: 14px;
+  height: 14px;
+}
+
 html.is-embedded .oga-stage {
   margin-top: 8px;
 }
@@ -577,6 +723,18 @@ html.is-embedded .oga-stage {
 html.is-embedded .oga-stage-bar {
   min-height: 34px;
   padding: 0 4px 6px;
+}
+
+html.is-embedded .oga-stage-bar a {
+  min-height: 32px;
+  padding: 6px 11px;
+  font-size: 12px;
+}
+
+html.is-embedded.is-layout-compact .oga-stage-bar a {
+  min-height: 44px;
+  padding: 10px 16px;
+  font-size: 13.5px;
 }
 
 html.is-embedded .oga-frame-wrap,
@@ -602,7 +760,8 @@ html.is-embedded .oga-footnote {
   .oga-nav-group-trigger { padding-inline: 10px; }
 }
 
-@media (max-width: 760px) {
+/* Phase 3A: compact layout driven by html.is-layout-compact (set from compactMaxWidth via JS). */
+html.is-layout-compact {
   .oga-portal { padding: 14px 12px 14px; }
   .oga-header { align-items: flex-start; padding: 4px 0 10px; }
   .oga-brand-mark { flex-basis: 36px; width: 36px; height: 36px; }
@@ -620,7 +779,6 @@ html.is-embedded .oga-footnote {
   .oga-mobile-select { display: none; }
   .oga-open-label--desktop { display: none; }
   .oga-open-label--mobile { display: inline; }
-  .oga-mobile-embed-tip:not([hidden]) { display: block; }
 
   .oga-mobile-theme-nav {
     display: grid;
@@ -697,6 +855,19 @@ html.is-embedded .oga-footnote {
     --nav-glow-b: rgba(93, 88, 120, 0.12);
     --nav-shadow: rgba(180, 106, 42, 0.17);
   }
+  .oga-mobile-theme-panel[data-group="friendly-spaces"] {
+    --nav-bg: #faf7fb;
+    --nav-bg-active: #f3edf8;
+    --nav-border: #e5d9eb;
+    --nav-border-active: #cdb8d4;
+    --nav-ink: #3d2f42;
+    --nav-muted: #7a687f;
+    --nav-accent: #8b5a96;
+    --nav-icon-bg: #f0e8f4;
+    --nav-glow-a: rgba(139, 90, 150, 0.15);
+    --nav-glow-b: rgba(212, 120, 140, 0.10);
+    --nav-shadow: rgba(139, 90, 150, 0.16);
+  }
   .oga-mobile-theme-card {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
@@ -740,6 +911,20 @@ html.is-embedded .oga-footnote {
   .oga-mobile-theme-card > .oga-custom-icon svg {
     width: 18px;
     height: 18px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.35;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .oga-mobile-theme-card > .oga-custom-icon.oga-circularity-icon svg circle {
+    fill: color-mix(in srgb, var(--nav-accent, #16806e) 16%, white);
+    stroke-width: 1.75;
   }
   .oga-mobile-theme-copy {
     display: grid;
@@ -795,6 +980,12 @@ html.is-embedded .oga-footnote {
     background: var(--nav-icon-bg, #eef6ff);
     color: var(--nav-accent, #1d4ed8);
   }
+  .oga-mobile-theme-choice.is-soon {
+    cursor: not-allowed;
+    opacity: 0.62;
+    background: #f1f5f9;
+    color: var(--nav-muted, #667085);
+  }
   .oga-mobile-theme-dots {
     display: flex;
     justify-content: center;
@@ -815,13 +1006,49 @@ html.is-embedded .oga-footnote {
 
   .oga-stage { margin-top: 6px; }
   .oga-stage-bar {
-    min-height: 28px;
-    padding: 0 0 6px;
+    min-height: 44px;
+    padding: 0 0 8px;
     justify-content: flex-end;
+    gap: 8px;
   }
-  .oga-stage-bar > div:first-child { display: none; }
+  .oga-stage-bar--nudge {
+    justify-content: flex-start;
+    gap: 8px;
+  }
+  .oga-stage-current { display: none; }
   .oga-stage-label { display: none; }
   .oga-stage-bar strong { font-size: 14px; }
+
+  /* Mobile: stronger open cue — same blue family, larger hit target + clearer nudge. */
+  .oga-open-nudge {
+    max-width: min(100%, 12.5rem);
+    padding: 6px 8px;
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--blue) 10%, white);
+    color: color-mix(in srgb, var(--navy) 88%, var(--blue));
+    font-size: 13.5px;
+    font-weight: 900;
+    line-height: 1.25;
+    text-align: left;
+  }
+  .oga-stage-bar a {
+    min-height: 44px;
+    padding: 10px 16px;
+    border-color: color-mix(in srgb, var(--blue) 78%, #0f1b33);
+    background: color-mix(in srgb, var(--blue) 88%, #0f1b33);
+    font-size: 13.5px;
+    box-shadow: 0 2px 8px rgba(32, 55, 84, 0.28);
+  }
+  .oga-stage-bar a:hover {
+    background: color-mix(in srgb, var(--blue) 72%, #0f1b33);
+    border-color: color-mix(in srgb, var(--blue) 72%, #0f1b33);
+    box-shadow: 0 3px 10px rgba(32, 55, 84, 0.32);
+  }
+  .oga-stage-bar a svg {
+    width: 16px;
+    height: 16px;
+  }
+
   .oga-frame-wrap, #chartFrame { min-height: 360px; }
   .oga-footnote {
     padding-inline: 0;
@@ -838,7 +1065,8 @@ html.is-embedded .oga-footnote {
   .oga-brand h1 { font-size: 22px; line-height: 1.08; }
   .oga-brand p { font-size: 11px; }
   .oga-stage-bar { align-items: center; justify-content: flex-end; }
-  .oga-stage-bar > div:first-child { display: none; }
+  .oga-stage-bar--nudge { justify-content: flex-start; }
+  .oga-stage-current { display: none; }
   .oga-stage-label { display: none; }
   .oga-stage-bar a { margin-top: 0; }
 }

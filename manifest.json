@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-18 03:04:37",
+  "generatedAt": "2026-09-10 02:01:05",
   "sourceFile": "Total_20260713.xlsx",
   "charts": [
     {
@@ -77,6 +77,13 @@
       "title": "路燈汰換",
       "path": "charts/streetlight-replacement/",
       "sheet": "路燈汰換 (2)",
+      "dataVersion": "20260713"
+    },
+    {
+      "id": "friendly-spaces",
+      "title": "友善設施",
+      "path": "charts/friendly-spaces/",
+      "sheet": "友善空間(4表)",
       "dataVersion": "20260713"
     }
   ]

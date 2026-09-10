@@ -1,40 +1,111 @@
 "use strict";
 
-const CHARTS = {
-  ecoco: { title: "ECOCO" },
-  "general-recycle": { title: "一般回收" },
-  "resource-recycle": { title: "資源回收" },
-  "food-waste-recycle": { title: "廚餘回收" },
-  "rainwater-reuse": { title: "中軸雨水回收" },
-  "water-use": { title: "用水量" },
-  "electricity-use": { title: "用電量" },
-  "solar-energy": { title: "太陽能" },
-  "led-replacement": { title: "LED燈具汰換" },
-  "streetlight-replacement": { title: "路燈汰換" },
-  "ac-replacement": { title: "冷氣汰換" },
-};
-
 const frame = document.getElementById("chartFrame");
 const stage = document.getElementById("chartStage");
 const loading = document.getElementById("loadingState");
 const activeTitle = document.getElementById("activeChartTitle");
-const mobileSelect = document.getElementById("mobileChartSelect");
 const standaloneLink = document.getElementById("standaloneLink");
 const sourceInfo = document.getElementById("sourceInfo");
 const navDismiss = document.getElementById("navDismiss");
-const mobileThemeNav = document.getElementById("mobileThemeNav");
-const mobileThemePrev = document.getElementById("mobileThemePrev");
-const mobileThemeNext = document.getElementById("mobileThemeNext");
-const mobileThemeStatus = document.getElementById("mobileThemeStatus");
-const mobileThemeViewport = document.getElementById("mobileThemeViewport");
-const mobileEmbedTip = document.getElementById("mobileEmbedTip");
-const mobileNarrowMq = window.matchMedia("(max-width: 760px)");
+const openNudge = document.getElementById("openNudge");
+const openNudgeLabel = document.getElementById("openNudgeLabel");
+const chartStageBar = document.getElementById("chartStageBar");
 
-const NAV_THEME_CHARTS = [
-  ["ecoco", "general-recycle", "resource-recycle", "food-waste-recycle"],
-  ["rainwater-reuse", "water-use", "electricity-use", "solar-energy"],
-  ["led-replacement", "streetlight-replacement", "ac-replacement"],
-];
+const OPEN_NUDGE_DESKTOP = "另開視窗最佳瀏覽請點擊 →";
+const OPEN_NUDGE_MOBILE = "使用手機瀏覽請點擊 →";
+
+function compactMaxWidthPx() {
+  const width = Number(window.OGA_NAV?.COMPACT_MAX_WIDTH);
+  return Number.isFinite(width) && width > 0 ? width : 760;
+}
+
+function compactMinWidthPx() {
+  return compactMaxWidthPx() + 1;
+}
+
+const mobileNarrowMq = window.matchMedia(`(max-width: ${compactMaxWidthPx()}px)`);
+
+function layoutCompactMode() {
+  const params = new URLSearchParams(window.location.search);
+  const fromUrl = params.get("layoutMode");
+  if (fromUrl === "overflow" || fromUrl === "breakpoint") return fromUrl;
+  return "overflow";
+}
+
+/** Legacy 760 breakpoint — shadow probe compares this to overflow production rules. */
+function viewportBreakpointCompact() {
+  return mobileNarrowMq.matches;
+}
+
+/** Nav row overflow only (shadow / debug). */
+function resolveLayoutCompactOverflow() {
+  const overflow = measureDesktopNavWouldCompact();
+  if (overflow) return overflow.wouldCompact;
+  return viewportBreakpointCompact();
+}
+
+/** Explorer-only compact signal (nav overflow or 760 breakpoint rollback). */
+function resolveExplorerCompactSignal() {
+  if (layoutCompactMode() === "breakpoint") {
+    return viewportBreakpointCompact();
+  }
+  return resolveLayoutCompactOverflow();
+}
+
+/** Production: any compact signal → full-page compact (nav, chart iframe, or ≤760). */
+function resolveLayoutCompact() {
+  const doc = frame?.contentDocument;
+  return resolveExplorerCompactSignal() || resolveChartIframeCompact(doc);
+}
+
+function isLayoutCompact() {
+  return document.documentElement.classList.contains("is-layout-compact");
+}
+
+function syncChartLayoutCompact(compact) {
+  const next = Boolean(compact);
+  if (lastChartLayoutCompactSent === next) return;
+  lastChartLayoutCompactSent = next;
+  try {
+    frame?.contentWindow?.postMessage(
+      { type: "oga:layout-compact", compact: next },
+      "*"
+    );
+  } catch (_error) {
+    /* iframe may be unloading */
+  }
+}
+
+/** Chart iframe ≤760 (CSS compact). Estimates from portal when chart not ready. */
+function resolveChartIframeCompact(doc) {
+  if (doc?.documentElement) {
+    const width = doc.documentElement.clientWidth || doc.body?.clientWidth || 0;
+    if (width > 0) return width <= compactMaxWidthPx();
+  }
+  const portal = document.getElementById("ogaPortal");
+  const portalW = portal?.clientWidth ?? document.documentElement.clientWidth ?? 0;
+  if (portalW > 0) {
+    const embedPad = isEmbeddedMode() ? 18 : 24;
+    return portalW - embedPad <= compactMaxWidthPx();
+  }
+  return false;
+}
+
+function syncLayoutCompactClass() {
+  const compact = resolveLayoutCompact();
+  document.documentElement.classList.toggle("is-layout-compact", compact);
+  syncChartLayoutCompact(compact);
+}
+
+let mobileSelect;
+let mobileThemeNav;
+let mobileThemePrev;
+let mobileThemeNext;
+let mobileThemeStatus;
+let mobileThemeViewport;
+
+let CHARTS = {};
+let NAV_THEME_CHARTS = [];
 
 let currentChart = "ecoco";
 let mobileThemeIndex = 0;
@@ -48,8 +119,7 @@ let lastFrameHeight = 0;
 let lastOuterHeight = 0;
 /* Match current Wix HTML component on ossd.ncku.edu.tw (comp-mqylfndk). */
 const EMBED_HOST_MAX_HEIGHT = 1159;
-const EMBED_CHART_MAX_DESKTOP = 920;
-/* Align with oga-embed.js MAX_HEIGHT so mobile embed can grow with stacked charts. */
+/* Compact embed: full stacked chart height so the host page can scroll. */
 const EMBED_HOST_MAX_HEIGHT_COMPACT = 2400;
 const EMBED_CHART_MAX_COMPACT = 2200;
 
@@ -58,12 +128,152 @@ function isEmbeddedMode() {
 }
 
 function isCompactEmbed() {
-  return isEmbeddedMode() && mobileNarrowMq.matches;
+  return isEmbeddedMode() && isLayoutCompact();
+}
+
+function isFriendlySpacesChart() {
+  return currentChart === "friendly-spaces";
+}
+
+function isReplacementChartId(chartId = currentChart) {
+  return chartId === "led-replacement" || chartId === "streetlight-replacement";
+}
+
+const REPLACEMENT_EMBED_MEASURE_EPS = 8;
+let lastChartLayoutCompactSent = null;
+
+function measureEmbedChromeBands() {
+  const portal = document.getElementById("ogaPortal");
+  const wrap = frame?.parentElement;
+  const foot = portal?.querySelector(".oga-footnote");
+  if (!portal || !wrap || !foot) {
+    return { aboveFrame: 240, footnote: 32 };
+  }
+  const aboveFrame = Math.max(
+    0,
+    Math.ceil(wrap.getBoundingClientRect().top - portal.getBoundingClientRect().top)
+  );
+  const footnote = Math.ceil(foot.getBoundingClientRect().height) + 6;
+  return { aboveFrame, footnote };
+}
+
+function embedDesktopChartMaxHeight() {
+  const { aboveFrame, footnote } = measureEmbedChromeBands();
+  return Math.max(360, EMBED_HOST_MAX_HEIGHT - aboveFrame - footnote);
+}
+
+/** Desktop embed chart cap — host remainder, or full measure when content exceeds Wix host. */
+function isChartPortalCompactLayout(doc) {
+  if (!doc?.documentElement) return false;
+  if (doc.documentElement.classList.contains("is-layout-compact")) return true;
+  const width = doc.documentElement.clientWidth || doc.body?.clientWidth || 0;
+  return width > 0 && width <= compactMaxWidthPx();
+}
+
+function embedChartHeightCap(measuredHeight, doc) {
+  if (!isEmbeddedMode()) return measuredHeight;
+  if (isCompactEmbed()) return EMBED_CHART_MAX_COMPACT;
+
+  const hostBudget = embedDesktopChartMaxHeight();
+  const chartMobile = isChartPortalCompactLayout(doc);
+  if (chartMobile || measuredHeight > hostBudget + 2) {
+    return EMBED_CHART_MAX_COMPACT;
+  }
+  return hostBudget;
+}
+
+function measureChartWidgetHeight(doc, root) {
+  const rootRect = root.getBoundingClientRect();
+  const rootTop = rootRect.top;
+  // Widget descendants only — doc scrollHeight tracks iframe viewport and inflates height.
+  let extent = Math.max(root.scrollHeight || 0, root.offsetHeight || 0);
+
+  const bumpBottom = (node) => {
+    if (!node) return;
+    const rect = node.getBoundingClientRect();
+    if (rect.height <= 0 && rect.width <= 0) return;
+    extent = Math.max(extent, rect.bottom - rootTop);
+  };
+
+  root.querySelectorAll(
+    ".ga-pr-card, .ga-chart-card, .ga-toggle-bar, .ga-category-chips, .ga-overview-wrap, #trendChart, #overviewChart, .ga-friendly-map-card, .ga-icon-toggle, .ga-category-chip"
+  ).forEach(bumpBottom);
+
+  const trendToggles = doc.getElementById("trendToggles");
+  if (trendToggles && !trendToggles.hidden) {
+    bumpBottom(trendToggles);
+    trendToggles.querySelectorAll(".ga-icon-toggle").forEach(bumpBottom);
+  }
+
+  bumpBottom(root.lastElementChild);
+
+  try {
+    const style = doc.defaultView.getComputedStyle(root);
+    extent += Math.ceil(
+      parseFloat(style.paddingBottom || 0) + parseFloat(style.marginBottom || 0)
+    );
+  } catch (_error) {
+    /* ignore */
+  }
+
+  const mobileChart = isChartPortalCompactLayout(doc);
+  const pad = isEmbeddedMode() ? (mobileChart ? 20 : 16) : 8;
+  return Math.max(360, Math.ceil(extent) + pad);
+}
+
+const FRIENDLY_SPACES_EMBED_MAP_OVERHEAD_FALLBACK = 108;
+
+function friendlySpacesEmbedMapMaxHeight(doc, chartMaxHeight) {
+  const fallback = Math.max(
+    280,
+    chartMaxHeight - FRIENDLY_SPACES_EMBED_MAP_OVERHEAD_FALLBACK
+  );
+  if (!doc) return fallback;
+
+  const widget = doc.getElementById("gaWidget");
+  const head = doc.querySelector("body.ga-friendly-spaces-chart .ga-head");
+  const mapShell = doc.getElementById("friendlyMapShell");
+  if (!widget) return fallback;
+
+  let overhead = 16;
+  try {
+    const widgetStyle = doc.defaultView?.getComputedStyle(widget);
+    if (widgetStyle) {
+      overhead += Math.ceil(
+        parseFloat(widgetStyle.paddingTop || 0) + parseFloat(widgetStyle.paddingBottom || 0)
+      );
+    }
+  } catch (_error) {
+    /* ignore */
+  }
+  if (head) overhead += Math.ceil(head.getBoundingClientRect().height);
+  if (mapShell) {
+    const mapCard = doc.getElementById("friendlyMapCard");
+    if (mapCard) {
+      const headBottom = head?.getBoundingClientRect().bottom ?? widget.getBoundingClientRect().top;
+      const cardGap = Math.max(0, Math.ceil(mapCard.getBoundingClientRect().top - headBottom));
+      overhead += cardGap + 12;
+    }
+  } else {
+    overhead += 24;
+  }
+  return Math.max(280, Math.floor(chartMaxHeight - overhead));
+}
+
+function applyFriendlySpacesEmbedSizing(doc) {
+  if (!doc?.documentElement) return;
+  if (!isEmbeddedMode() || isCompactEmbed() || !isFriendlySpacesChart()) {
+    doc.documentElement.style.removeProperty("--oga-embed-map-max-h");
+    return;
+  }
+  const chartMax = embedDesktopChartMaxHeight();
+  const mapMax = friendlySpacesEmbedMapMaxHeight(doc, chartMax);
+  doc.documentElement.style.setProperty("--oga-embed-map-max-h", `${mapMax}px`);
 }
 
 function shouldUseMobileFriendlyOpen() {
-  const narrowViewport = mobileNarrowMq.matches;
-  const narrowScreen = Math.min(window.screen.width || 0, window.screen.height || 0) <= 760;
+  const narrowViewport = isLayoutCompact();
+  const narrowScreen = Math.min(window.screen.width || 0, window.screen.height || 0) <= compactMaxWidthPx();
   if (isEmbeddedMode() && narrowScreen) return true;
   return narrowViewport;
 }
@@ -81,9 +291,12 @@ function syncStandaloneLink() {
   }
   // Already on full (non-embed) mobile dashboard — link is redundant.
   standaloneLink.hidden = Boolean(mobileFriendly && !isEmbeddedMode());
-  if (mobileEmbedTip) {
-    mobileEmbedTip.hidden = !(isEmbeddedMode() && mobileFriendly && !standaloneLink.hidden);
+  const showOpenNudge = !standaloneLink.hidden;
+  if (openNudgeLabel) {
+    openNudgeLabel.textContent = mobileFriendly ? OPEN_NUDGE_MOBILE : OPEN_NUDGE_DESKTOP;
   }
+  if (openNudge) openNudge.hidden = !showOpenNudge;
+  if (chartStageBar) chartStageBar.classList.toggle("oga-stage-bar--nudge", showOpenNudge);
 }
 
 function themeIndexForChart(chartId) {
@@ -169,6 +382,7 @@ function bindMobileThemeNav() {
   });
   mobileThemeNav.querySelectorAll(".oga-mobile-theme-choice").forEach((button) => {
     button.addEventListener("click", () => {
+      if (button.disabled || button.classList.contains("is-soon") || button.getAttribute("aria-disabled") === "true") return;
       switchChart(button.dataset.chart);
       closeMobileThemeMenus();
     });
@@ -193,11 +407,137 @@ function bindMobileThemeNav() {
   }
 }
 
+function getNavConfig() {
+  return window.OGA_NAV || { CUSTOM_ICONS: {}, NAV_THEMES: [] };
+}
+
+function renderNavIcon(icon, { customIcons }) {
+  if (!icon) return "";
+  if (icon.type === "custom") {
+    const svg = customIcons[icon.key] || "";
+    const className = icon.className ? ` ${icon.className}` : "";
+    return `<span class="oga-custom-icon${className}" aria-hidden="true">${svg}</span>`;
+  }
+  return `<i data-lucide="${icon.name}" aria-hidden="true"></i>`;
+}
+
+function renderDesktopNav(themes, customIcons) {
+  const root = document.getElementById("desktopChartNav");
+  if (!root) return;
+  root.innerHTML = themes.map((theme) => {
+    const triggerIcon = renderNavIcon(theme.icon, { customIcons });
+    const choices = theme.charts.map((chart) => {
+      const iconHtml = renderNavIcon(chart.icon, { customIcons });
+      if (chart.soon) {
+        return `<button type="button" class="oga-nav-choice is-soon" disabled aria-disabled="true" role="menuitem">${iconHtml}<span>${chart.label}</span><span class="oga-nav-soon">規劃中</span></button>`;
+      }
+      return `<button type="button" class="oga-nav-choice" data-chart="${chart.id}" role="menuitem">${iconHtml}<span>${chart.label}</span></button>`;
+    }).join("");
+    return `<div class="oga-nav-group" data-group="${theme.id}">
+        <button type="button" class="oga-nav-group-trigger" aria-haspopup="true" aria-expanded="false">
+          ${triggerIcon}
+          <span><small>${theme.eyebrow}</small>${theme.title}</span>
+          <i data-lucide="chevron-down" aria-hidden="true"></i>
+        </button>
+        <div class="oga-nav-menu" role="menu">${choices}</div>
+      </div>`;
+  }).join("");
+}
+
+function renderMobileNav(themes) {
+  const root = document.getElementById("mobileThemeNav");
+  if (!root) return;
+  const panels = themes.map((theme, index) => {
+    const triggerIcon = theme.icon.type === "custom"
+      ? renderNavIcon(theme.icon, { customIcons: getNavConfig().CUSTOM_ICONS })
+      : `<i data-lucide="${theme.icon.name}" aria-hidden="true"></i>`;
+    const choices = theme.charts.map((chart) => {
+      if (chart.soon) {
+        return `<button type="button" class="oga-mobile-theme-choice is-soon" disabled aria-disabled="true">${chart.label} <span class="oga-nav-soon">規劃中</span></button>`;
+      }
+      return `<button type="button" class="oga-mobile-theme-choice" data-chart="${chart.id}">${chart.label}</button>`;
+    }).join("");
+    const activeClass = index === 0 ? " is-active" : "";
+    const hiddenAttr = index === 0 ? "" : " hidden";
+    return `<div class="oga-mobile-theme-panel${activeClass}" data-theme-index="${index}" data-group="${theme.id}"${hiddenAttr}>
+          <button type="button" class="oga-mobile-theme-card" aria-expanded="false" aria-controls="mobileThemeChoices${index}">
+            ${triggerIcon}
+            <span class="oga-mobile-theme-copy">
+              <small>${theme.eyebrow}</small>
+              <strong>${theme.title}</strong>
+              <em class="oga-mobile-theme-current" data-theme-current></em>
+            </span>
+            <i data-lucide="chevron-down" aria-hidden="true"></i>
+          </button>
+          <div class="oga-mobile-theme-choices" id="mobileThemeChoices${index}" hidden>${choices}</div>
+        </div>`;
+  }).join("");
+  const dots = themes.map((theme, index) => {
+    const activeClass = index === 0 ? " class=\"is-active\"" : "";
+    const currentAttr = index === 0 ? " aria-current=\"true\"" : "";
+    return `<button type="button"${activeClass} data-theme-dot="${index}" aria-label="${theme.dotLabel}"${currentAttr}></button>`;
+  }).join("");
+  root.innerHTML = `<div class="oga-mobile-theme-toolbar">
+        <button type="button" class="oga-mobile-theme-arrow" id="mobileThemePrev" aria-label="上一個主題">
+          <i data-lucide="chevron-left" aria-hidden="true"></i>
+        </button>
+        <p class="oga-mobile-theme-status" id="mobileThemeStatus" aria-live="polite">1 / ${themes.length}</p>
+        <button type="button" class="oga-mobile-theme-arrow" id="mobileThemeNext" aria-label="下一個主題">
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="oga-mobile-theme-viewport" id="mobileThemeViewport">${panels}</div>
+      <div class="oga-mobile-theme-dots" id="mobileThemeDots" role="tablist" aria-label="主題位置">${dots}</div>`;
+}
+
+function renderMobileSelect(themes) {
+  const select = document.getElementById("mobileChartSelect");
+  if (!select) return;
+  select.innerHTML = themes.map((theme) => {
+    const options = theme.charts
+      .filter((chart) => chart.id && !chart.soon)
+      .map((chart) => `<option value="${chart.id}">${chart.label}</option>`)
+      .join("");
+    return `<optgroup label="${theme.title}">${options}</optgroup>`;
+  }).join("");
+}
+
+function renderNav() {
+  const { CUSTOM_ICONS, NAV_THEMES } = getNavConfig();
+  renderDesktopNav(NAV_THEMES, CUSTOM_ICONS);
+  renderMobileNav(NAV_THEMES);
+  renderMobileSelect(NAV_THEMES);
+}
+
+function cacheNavDomRefs() {
+  mobileSelect = document.getElementById("mobileChartSelect");
+  mobileThemeNav = document.getElementById("mobileThemeNav");
+  mobileThemePrev = document.getElementById("mobileThemePrev");
+  mobileThemeNext = document.getElementById("mobileThemeNext");
+  mobileThemeStatus = document.getElementById("mobileThemeStatus");
+  mobileThemeViewport = document.getElementById("mobileThemeViewport");
+}
+
+function deriveChartsFromNavConfig() {
+  const { NAV_THEMES } = getNavConfig();
+  CHARTS = {};
+  NAV_THEME_CHARTS = NAV_THEMES.map((theme) => {
+    const activeIds = [];
+    theme.charts.forEach((chart) => {
+      if (chart.id && !chart.soon) {
+        CHARTS[chart.id] = { title: chart.label };
+        activeIds.push(chart.id);
+      }
+    });
+    return activeIds;
+  });
+}
+
 function parseInitialChart() {
   const params = new URLSearchParams(window.location.search);
   const requested = params.get("chart");
-  if (requested && CHARTS[requested]) currentChart = requested;
   if (params.get("embed") === "1") document.documentElement.classList.add("is-embedded");
+  return requested;
 }
 
 function renderIcons() {
@@ -217,21 +557,22 @@ function measurePortalHeight() {
   if (!portal) return 560;
   // Measure content box only — never html/body scrollHeight (tracks iframe viewport).
   const HEIGHT_PAD = 4;
-  const MAX_CONTENT_HEIGHT = isEmbeddedMode()
-    ? (isCompactEmbed() ? EMBED_HOST_MAX_HEIGHT_COMPACT : EMBED_HOST_MAX_HEIGHT)
-    : 2400;
   const foot = portal.querySelector(".oga-footnote");
   const portalTop = portal.getBoundingClientRect().top;
   const contentBottom = foot
     ? foot.getBoundingClientRect().bottom
     : portal.getBoundingClientRect().bottom;
   const fromEdges = Math.ceil(contentBottom - portalTop + (window.scrollY || 0));
-  const height = Math.max(
-    560,
-    Math.ceil(portal.scrollHeight || 0),
-    fromEdges
-  ) + HEIGHT_PAD;
-  return Math.min(MAX_CONTENT_HEIGHT, height);
+  const height = Math.max(560, fromEdges) + HEIGHT_PAD;
+  let maxCap = 2400;
+  if (isEmbeddedMode()) {
+    maxCap = isCompactEmbed() ? EMBED_HOST_MAX_HEIGHT_COMPACT : EMBED_HOST_MAX_HEIGHT;
+    /* Report honest height when desktop embed exceeds fixed Wix host — parent can scroll. */
+    if (!isCompactEmbed() && height > EMBED_HOST_MAX_HEIGHT) {
+      maxCap = EMBED_HOST_MAX_HEIGHT_COMPACT;
+    }
+  }
+  return Math.min(maxCap, height);
 }
 
 function reportOuterHeight() {
@@ -250,6 +591,15 @@ function reportOuterHeight() {
   });
 }
 
+function schedulePortalRemeasure() {
+  scheduleFrameMeasure();
+  window.setTimeout(scheduleFrameMeasure, 120);
+  window.setTimeout(scheduleFrameMeasure, 400);
+  window.setTimeout(scheduleFrameMeasure, 900);
+  window.setTimeout(scheduleFrameMeasure, 1600);
+  window.setTimeout(scheduleFrameMeasure, 2500);
+}
+
 // Parent pages may load `oga-embed.js` with `async`, potentially missing the first
 // `oga:resize` message. Support a request/response handshake to re-measure.
 window.addEventListener("message", (event) => {
@@ -263,6 +613,11 @@ window.addEventListener("message", (event) => {
   }
   if (event.data.type === "oga:chart-ready") {
     revealChartFrame();
+    schedulePortalRemeasure();
+    return;
+  }
+  if (event.data.type === "oga:chart-layout") {
+    schedulePortalRemeasure();
   }
 });
 
@@ -300,25 +655,29 @@ function measureChild() {
   try {
     const doc = frame.contentDocument;
     if (!doc) return;
+    syncLayoutCompactClass();
+    applyFriendlySpacesEmbedSizing(doc);
     const root = doc.getElementById("gaWidget") || doc.body?.firstElementChild || doc.body;
     if (!root) return;
-    const rootRect = root.getBoundingClientRect();
-    // Measure only the chart widget. Including body/html scrollHeight creates a
-    // feedback loop with the iframe's own min-height and leaves a dead gap above the footnote.
-    const CHILD_HEIGHT_PAD = 2;
-    let height = Math.max(
-      360,
-      Math.ceil(rootRect.height + Math.max(0, rootRect.top) + 2),
-      Math.ceil(root.scrollHeight || 0),
-      Math.ceil(root.offsetHeight || 0)
-    ) + CHILD_HEIGHT_PAD;
+    let height = measureChartWidgetHeight(doc, root);
     if (isEmbeddedMode()) {
-      // Desktop embed: leave room for explorer chrome inside ~1159px Wix host.
-      // Compact embed: allow full stacked chart height so the host page can scroll.
-      const embedChartMax = isCompactEmbed() ? EMBED_CHART_MAX_COMPACT : EMBED_CHART_MAX_DESKTOP;
-      height = Math.min(embedChartMax, height);
+      const hostBudget = embedDesktopChartMaxHeight();
+      let cap = embedChartHeightCap(height, doc);
+      // Break clip feedback: trust widget scrollHeight when iframe is pinned at host budget.
+      if (!isCompactEmbed() && cap === hostBudget) {
+        const scrollEstimate = Math.max(
+          height,
+          Math.ceil(root.scrollHeight || 0) + 16
+        );
+        if (scrollEstimate > hostBudget + 8) {
+          height = scrollEstimate;
+          cap = embedChartHeightCap(height, doc);
+        }
+      }
+      height = Math.min(cap, height);
     }
-    if (Math.abs(height - lastFrameHeight) < 2) {
+    const measureEpsilon = isEmbeddedMode() && isReplacementChartId() ? REPLACEMENT_EMBED_MEASURE_EPS : 4;
+    if (Math.abs(height - lastFrameHeight) < measureEpsilon) {
       reportOuterHeight();
       return;
     }
@@ -477,7 +836,7 @@ function prepareChildFrame() {
         text-transform: uppercase;
       }
       .ga-card-title h2, .ga-overview-head h3 { letter-spacing: 0 !important; }
-      @media (min-width: 761px) {
+      @media (min-width: ${compactMinWidthPx()}px) {
         .ga-head {
           flex-direction: row !important;
           align-items: flex-end !important;
@@ -518,6 +877,29 @@ function prepareChildFrame() {
         }
         body.ga-has-category-chips .ga-control {
           min-width: 160px !important;
+        }
+        /* Friendly-spaces head row lives in chart.css (standalone + embed share one source). */
+        body.ga-friendly-spaces-chart.ga-has-category-chips .ga-head-copy {
+          min-width: 0 !important;
+          max-width: 13.5rem !important;
+          flex: 0 1 auto !important;
+        }
+        body.ga-friendly-spaces-chart.ga-has-category-chips .ga-sub {
+          white-space: normal !important;
+        }
+        body.ga-friendly-spaces-chart .ga-category-chips,
+        body.ga-friendly-spaces-chart.ga-has-category-chips .ga-category-chips {
+          justify-content: flex-end !important;
+          flex: 1 1 auto !important;
+          min-width: 0 !important;
+          overflow-x: hidden !important;
+          padding: 2px 4px 4px !important;
+          scroll-padding-inline: 0 !important;
+          gap: 5px !important;
+        }
+        body.ga-friendly-spaces-chart .ga-category-chip {
+          padding: 6px 9px !important;
+          flex: 0 0 auto !important;
         }
         .ga-pr-card .ga-card-title {
           position: relative !important;
@@ -572,16 +954,54 @@ function prepareChildFrame() {
       .ga-head { margin-bottom: 8px !important; gap: 10px !important; }
       .ga-head-copy { padding-bottom: 8px !important; align-self: flex-start !important; margin-top: 10px !important; }
       .ga-pr-card { padding: 12px !important; }
+      body.ga-friendly-spaces-chart .ga-pr-card { padding: 0 0 12px !important; }
+      /* Friendly-spaces embed: size map from remaining iframe height, not viewport vh. */
+      body.ga-friendly-spaces-chart .ga-friendly-map-shell {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: flex-start !important;
+        height: auto !important;
+        overflow: visible !important;
+      }
+      body.ga-friendly-spaces-chart .ga-friendly-map {
+        width: min(100%, calc(var(--oga-embed-map-max-h, 720px) * 7128 / 8192)) !important;
+        max-width: 100% !important;
+        max-height: var(--oga-embed-map-max-h, 720px) !important;
+        height: auto !important;
+        aspect-ratio: 7128 / 8192 !important;
+        flex: 0 0 auto !important;
+      }
       .ga-chart-card { padding: 8px 12px 4px !important; padding-top: 22px !important; }
       .ga-chart-card::before { top: 10px !important; }
       #trendChart { height: 520px !important; margin-top: 0 !important; }
-      .ga-replacement-chart #trendChart { min-height: 200px !important; }
       #overviewChart { height: 220px !important; }
-      .ga-replacement-chart #overviewChart { min-height: 200px !important; }
+      /* Replacement embed: fixed bands — disable desktop flex fill (iframe measure loop). */
+      body.ga-replacement-chart .ga-pr-card {
+        display: block !important;
+        align-self: auto !important;
+      }
+      body.ga-replacement-chart .ga-overview-wrap {
+        flex: 0 0 auto !important;
+        display: block !important;
+        min-height: 0 !important;
+      }
+      body.ga-replacement-chart #overviewChart {
+        flex: 0 0 auto !important;
+        width: 100% !important;
+        height: 260px !important;
+        min-height: 260px !important;
+        max-height: 260px !important;
+      }
+      body.ga-replacement-chart #trendChart {
+        flex: 0 0 auto !important;
+        height: 500px !important;
+        min-height: 500px !important;
+        max-height: 500px !important;
+      }
       .ga-toggle-bar { padding-bottom: 4px !important; }
       .ga-pr-score { margin: 6px 0 8px !important; }
       ` : ""}
-      @media (max-width: 760px) {
+      @media (max-width: ${compactMaxWidthPx()}px) {
         body.ga-has-category-chips .ga-sub,
         body.ga-has-category-chips .ga-sub-extra,
         .ga-sub,
@@ -618,7 +1038,8 @@ function prepareChildFrame() {
           max-width: 100% !important;
         }
         .ga-toggle-bar { flex-wrap: wrap !important; gap: 8px !important; }
-        .ga-icon-toggle { min-height: 40px !important; padding: 8px 12px !important; font-size: 13px !important; }
+        .ga-icon-toggle { min-height: 40px !important; padding: 9px 12px !important; font-size: 13px !important; line-height: 1.35 !important; overflow: visible !important; }
+        .ga-icon-toggle span { line-height: 1.35 !important; overflow: visible !important; }
       }
     `;
     doc.head.appendChild(style);
@@ -636,6 +1057,8 @@ function prepareChildFrame() {
   // Clicks inside the chart iframe never bubble to the explorer document.
   doc.addEventListener("pointerdown", closePinnedNavFromOutside, true);
 
+  applyFriendlySpacesEmbedSizing(doc);
+  syncLayoutCompactClass();
   scheduleFrameMeasure();
   window.setTimeout(scheduleFrameMeasure, 120);
   window.setTimeout(scheduleFrameMeasure, 500);
@@ -695,6 +1118,7 @@ function switchChart(chartId, historyMode = "push") {
   clearChartReadyFallback();
   lastFrameHeight = 0;
   lastOuterHeight = 0;
+  lastChartLayoutCompactSent = null;
   stage.setAttribute("aria-busy", "true");
   loading.hidden = false;
   frame.title = `${CHARTS[chartId].title}互動圖表`;
@@ -728,7 +1152,10 @@ function bindEvents() {
   });
 
   document.querySelectorAll("[data-chart]").forEach((button) => {
-    button.addEventListener("click", () => switchChart(button.dataset.chart));
+    button.addEventListener("click", () => {
+      if (button.disabled || button.classList.contains("is-soon") || button.getAttribute("aria-disabled") === "true") return;
+      switchChart(button.dataset.chart);
+    });
     button.addEventListener("mouseenter", () => {
       const chartId = button.dataset.chart;
       fetch(`../charts/${chartId}/data.json`, { cache: "force-cache" }).catch(() => {});
@@ -763,25 +1190,33 @@ function bindEvents() {
     }
   });
 
-  mobileSelect.addEventListener("change", (event) => switchChart(event.target.value));
+  if (mobileSelect) {
+    mobileSelect.addEventListener("change", (event) => switchChart(event.target.value));
+  }
 
   bindMobileThemeNav();
   setMobileThemeIndex(themeIndexForChart(currentChart));
-  const syncOpenMode = () => {
+  const syncLayoutMode = () => {
+    syncLayoutCompactClass();
     syncStandaloneLink();
     if (!isEmbeddedMode()) return;
     // Crossing the compact breakpoint changes height caps — force a fresh measure.
     lastFrameHeight = 0;
     lastOuterHeight = 0;
-    scheduleFrameMeasure();
+    try {
+      applyFriendlySpacesEmbedSizing(frame.contentDocument);
+    } catch (_error) {
+      /* iframe may be unloading */
+    }
+    schedulePortalRemeasure();
     reportOuterHeight();
   };
   if (typeof mobileNarrowMq.addEventListener === "function") {
-    mobileNarrowMq.addEventListener("change", syncOpenMode);
+    mobileNarrowMq.addEventListener("change", syncLayoutMode);
   } else if (typeof mobileNarrowMq.addListener === "function") {
-    mobileNarrowMq.addListener(syncOpenMode);
+    mobileNarrowMq.addListener(syncLayoutMode);
   }
-  window.addEventListener("resize", syncOpenMode);
+  window.addEventListener("resize", syncLayoutMode);
 
   frame.addEventListener("load", () => {
     prepareChildFrame();
@@ -794,9 +1229,296 @@ function bindEvents() {
     switchChart(CHARTS[params.get("chart")] ? params.get("chart") : "ecoco", "replace");
   });
   new ResizeObserver(reportOuterHeight).observe(document.body);
+
+  if (layoutCompactMode() === "overflow" && typeof ResizeObserver === "function") {
+    const portal = document.getElementById("ogaPortal");
+    const nav = document.getElementById("desktopChartNav");
+    const layoutObserver = new ResizeObserver(() => syncLayoutMode());
+    if (portal) layoutObserver.observe(portal);
+    if (nav) layoutObserver.observe(nav);
+  }
 }
 
-parseInitialChart();
-bindEvents();
-renderIcons();
-switchChart(currentChart, "replace");
+function initExplorer() {
+  renderNav();
+  cacheNavDomRefs();
+  deriveChartsFromNavConfig();
+  const requested = parseInitialChart();
+  if (requested && CHARTS[requested]) {
+    currentChart = requested;
+  } else {
+    currentChart = NAV_THEME_CHARTS[0]?.[0] || "ecoco";
+  }
+  bindEvents();
+  renderIcons();
+  switchChart(currentChart, "replace");
+  syncLayoutCompactClass();
+  startLayoutShadowObserver();
+}
+
+const layoutShadowState = {
+  lastMismatchKey: "",
+  observer: null,
+};
+
+function isLayoutShadowProbeEnabled() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("layoutShadowProbe") === "1";
+}
+
+function isLayoutShadowEnabled() {
+  if (isLayoutShadowProbeEnabled()) return true;
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("layoutShadow") === "1") return true;
+  try {
+    return window.localStorage?.getItem("oga:layoutShadow") === "1";
+  } catch (_error) {
+    return false;
+  }
+}
+
+function measureDesktopNavTriggerOverflow(nav) {
+  const triggers = nav.querySelectorAll(".oga-nav-group-trigger");
+  if (!triggers.length) return null;
+
+  let wouldCompact = false;
+  let reportScroll = 0;
+  let reportClient = 0;
+  triggers.forEach((trigger) => {
+    const scroll = trigger.scrollWidth;
+    const client = trigger.clientWidth;
+    if (scroll > client + 1) wouldCompact = true;
+    trigger.querySelectorAll("span, small").forEach((el) => {
+      if (el.scrollWidth > el.clientWidth + 1) wouldCompact = true;
+    });
+    if (scroll >= reportScroll) {
+      reportScroll = scroll;
+      reportClient = client;
+    }
+  });
+
+  return {
+    wouldCompact,
+    navScrollWidth: reportScroll,
+    navClientWidth: reportClient,
+  };
+}
+
+/** Sum natural theme-card widths (flex released) vs nav row client width. */
+function measureDesktopNavRowIntrinsic(nav) {
+  const groups = Array.from(nav.querySelectorAll(".oga-nav-group"));
+  if (!groups.length) return null;
+
+  const navStyle = window.getComputedStyle(nav);
+  const gap = Number.parseFloat(navStyle.columnGap || navStyle.gap) || 0;
+  const saved = groups.map((group) => ({
+    group,
+    flex: group.style.flex,
+    minWidth: group.style.minWidth,
+    maxWidth: group.style.maxWidth,
+    width: group.style.width,
+  }));
+
+  let requiredWidth = 0;
+  try {
+    saved.forEach(({ group }) => {
+      group.style.flex = "0 0 auto";
+      group.style.minWidth = "max-content";
+      group.style.maxWidth = "none";
+      group.style.width = "auto";
+    });
+    groups.forEach((group, index) => {
+      requiredWidth += group.getBoundingClientRect().width;
+      if (index > 0) requiredWidth += gap;
+    });
+  } finally {
+    saved.forEach(({ group, flex, minWidth, maxWidth, width }) => {
+      group.style.flex = flex;
+      group.style.minWidth = minWidth;
+      group.style.maxWidth = maxWidth;
+      group.style.width = width;
+    });
+  }
+
+  return {
+    requiredWidth,
+    availableWidth: nav.clientWidth,
+    wouldCompact: requiredWidth > nav.clientWidth + 1,
+  };
+}
+
+/** When compact CSS hides desktop nav, measure off-screen so width can recover on expand. */
+function measureDesktopNavWhileHidden(nav, portalWidth) {
+  const saved = {
+    display: nav.style.display,
+    visibility: nav.style.visibility,
+    position: nav.style.position,
+    left: nav.style.left,
+    top: nav.style.top,
+    width: nav.style.width,
+    maxWidth: nav.style.maxWidth,
+    pointerEvents: nav.style.pointerEvents,
+  };
+  nav.style.display = "flex";
+  nav.style.visibility = "hidden";
+  nav.style.position = "fixed";
+  nav.style.left = "-10000px";
+  nav.style.top = "0";
+  nav.style.width = `${portalWidth}px`;
+  nav.style.maxWidth = `${portalWidth}px`;
+  nav.style.pointerEvents = "none";
+  try {
+    return {
+      rowIntrinsic: measureDesktopNavRowIntrinsic(nav),
+      triggerOverflow: measureDesktopNavTriggerOverflow(nav),
+    };
+  } finally {
+    nav.style.display = saved.display;
+    nav.style.visibility = saved.visibility;
+    nav.style.position = saved.position;
+    nav.style.left = saved.left;
+    nav.style.top = saved.top;
+    nav.style.width = saved.width;
+    nav.style.maxWidth = saved.maxWidth;
+    nav.style.pointerEvents = saved.pointerEvents;
+  }
+}
+
+function measureDesktopNavWouldCompact() {
+  const nav = document.getElementById("desktopChartNav");
+  const portal = document.getElementById("ogaPortal");
+  if (!nav || !portal) return null;
+  if (!nav.querySelector(".oga-nav-group")) return null;
+
+  const portalWidth = portal.clientWidth;
+  if (portalWidth <= 0) return null;
+
+  const wasHidden = window.getComputedStyle(nav).display === "none";
+  let rowIntrinsic;
+  let triggerOverflow;
+  if (wasHidden) {
+    ({ rowIntrinsic, triggerOverflow } = measureDesktopNavWhileHidden(nav, portalWidth));
+  } else {
+    rowIntrinsic = measureDesktopNavRowIntrinsic(nav);
+    triggerOverflow = measureDesktopNavTriggerOverflow(nav);
+  }
+  if (!rowIntrinsic && !triggerOverflow) return null;
+
+  const wouldCompact = Boolean(
+    rowIntrinsic?.wouldCompact || triggerOverflow?.wouldCompact
+  );
+
+  return {
+    wouldCompact,
+    portalWidth,
+    navScrollWidth: rowIntrinsic?.requiredWidth ?? triggerOverflow?.navScrollWidth ?? 0,
+    navClientWidth: rowIntrinsic?.availableWidth ?? triggerOverflow?.navClientWidth ?? 0,
+    viewportWidth: document.documentElement.clientWidth,
+    measuredWhileHidden: wasHidden,
+  };
+}
+
+function collectLayoutShadowReport() {
+  const overflow = measureDesktopNavWouldCompact();
+  const navOverflowCompact = resolveLayoutCompactOverflow();
+  const chartIframeCompact = resolveChartIframeCompact(frame?.contentDocument);
+  const breakpointCompact = viewportBreakpointCompact();
+  const productionCompact = resolveLayoutCompact();
+
+  if (!overflow && !navOverflowCompact && !breakpointCompact && !chartIframeCompact) {
+    return { ok: false, error: "measure unavailable" };
+  }
+
+  const mismatch = breakpointCompact !== productionCompact;
+
+  return {
+    ok: true,
+    mismatch,
+    viewportWidth: overflow?.viewportWidth ?? document.documentElement.clientWidth,
+    portalWidth: overflow?.portalWidth ?? document.getElementById("ogaPortal")?.clientWidth ?? 0,
+    compactMaxWidth: compactMaxWidthPx(),
+    productionCompact: breakpointCompact,
+    overflowWouldCompact: productionCompact,
+    navOverflowWouldCompact: navOverflowCompact,
+    chartIframeWouldCompact: chartIframeCompact,
+    adaptiveCompact: productionCompact,
+    breakpointCompact,
+    productionModeCompact: productionCompact,
+    navScrollWidth: overflow?.navScrollWidth ?? 0,
+    navClientWidth: overflow?.navClientWidth ?? 0,
+    measuredWhileHidden: overflow?.measuredWhileHidden ?? breakpointCompact,
+    hint: mismatch
+      ? breakpointCompact
+        ? "760 insurance says compact; unified production differs"
+        : "760 insurance says desktop; unified production differs"
+      : null,
+  };
+}
+
+function runLayoutShadowCheck() {
+  if (!isLayoutShadowEnabled()) return;
+  const overflow = measureDesktopNavWouldCompact();
+
+  const viewportCompact = viewportBreakpointCompact();
+  const overflowCompact = resolveLayoutCompactOverflow();
+  if (viewportCompact === overflowCompact) {
+    layoutShadowState.lastMismatchKey = "";
+    return;
+  }
+
+  const key = [
+    overflow?.viewportWidth ?? document.documentElement.clientWidth,
+    overflow?.portalWidth ?? 0,
+    viewportCompact,
+    overflowCompact,
+  ].join(":");
+  if (layoutShadowState.lastMismatchKey === key) return;
+  layoutShadowState.lastMismatchKey = key;
+
+  console.warn("[oga:layout-shadow] 760 insurance vs adaptive mismatch", {
+    viewportWidth: overflow?.viewportWidth ?? document.documentElement.clientWidth,
+    portalWidth: overflow?.portalWidth ?? 0,
+    compactMaxWidth: compactMaxWidthPx(),
+    breakpointCompact: viewportCompact,
+    adaptiveCompact: overflowCompact,
+    navScrollWidth: overflow?.navScrollWidth ?? 0,
+    navClientWidth: overflow?.navClientWidth ?? 0,
+    measuredWhileHidden: overflow?.measuredWhileHidden ?? viewportCompact,
+    hint: viewportCompact
+      ? "760 insurance says compact; adaptive says desktop"
+      : "760 insurance says desktop; adaptive says compact",
+  });
+}
+
+function startLayoutShadowObserver() {
+  if (!isLayoutShadowEnabled()) return;
+
+  console.info(
+    "[oga:layout-shadow] enabled — logging mismatches only; layout unchanged. Disable: remove ?layoutShadow=1 or localStorage oga:layoutShadow"
+  );
+
+  const portal = document.getElementById("ogaPortal");
+  const nav = document.getElementById("desktopChartNav");
+  const schedule = () => window.requestAnimationFrame(runLayoutShadowCheck);
+
+  schedule();
+  window.addEventListener("resize", schedule);
+  if (typeof ResizeObserver === "function") {
+    layoutShadowState.observer = new ResizeObserver(schedule);
+    if (portal) layoutShadowState.observer.observe(portal);
+    if (nav) layoutShadowState.observer.observe(nav);
+  }
+
+  window.OGA_LAYOUT_SHADOW = {
+    check: runLayoutShadowCheck,
+    measure: measureDesktopNavWouldCompact,
+    probeReport: collectLayoutShadowReport,
+    isEnabled: isLayoutShadowEnabled,
+    resolveLayoutCompact,
+    resolveLayoutCompactOverflow,
+    viewportBreakpointCompact,
+    layoutCompactMode,
+  };
+}
+
+initExplorer();

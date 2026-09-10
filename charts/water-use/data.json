@@ -1,6 +1,6 @@
 {
   "dataVersion": "20260713",
-  "generatedAt": "2026-08-18 03:04:34",
+  "generatedAt": "2026-09-10 02:01:03",
   "sourceFile": "Total_20260713.xlsx",
   "chartId": "water-use",
   "chartType": "utility",
@@ -13,7 +13,7 @@
   "defaultCategory": "用水量",
   "categories": [
     "用水量",
-    "金額"
+    "水費"
   ],
   "categoryMeta": {
     "用水量": {
@@ -21,9 +21,9 @@
       "valueNoun": "用水量",
       "agg": "sum"
     },
-    "金額": {
+    "水費": {
       "unit": "元",
-      "valueNoun": "金額",
+      "valueNoun": "水費",
       "agg": "sum"
     }
   },
@@ -418,7 +418,7 @@
         }
       ]
     },
-    "金額": {
+    "水費": {
       "defaultYear": 2026,
       "records": [
         {

@@ -12,6 +12,13 @@
     --paper: #f5f7fb;
     --blue: #2563eb;
     --red: #d43f55;
+    --ga-theme-accent: #2563eb;
+  }
+  body.ga-friendly-spaces-chart {
+    --ga-theme-accent: #8b5a96;
+  }
+  body.ga-friendly-spaces-chart .ga-widget {
+    padding-bottom: 8px;
   }
   * { box-sizing: border-box; }
   body {
@@ -159,6 +166,183 @@
     justify-content: flex-end;
     flex-wrap: wrap;
   }
+  /* Streetlight: campus range chip — hug content; align with year select (not same width). */
+  .ga-campus-dock {
+    position: relative;
+    z-index: 35;
+    flex: 0 0 auto;
+    align-self: flex-end;
+    width: auto;
+    min-width: 0;
+    max-width: min(12.5rem, 100%);
+    /* Lift past .ga-control bottom padding so trigger lines up with the year <select>. */
+    margin-bottom: 12px;
+    /* Clear separation from year (controls gap 10px + 22px → ~32px). */
+    margin-inline-end: 22px;
+  }
+  .ga-campus-dock[hidden] {
+    display: none !important;
+  }
+  /* Match .ga-control label row so trigger aligns with the year <select>. */
+  .ga-campus-dock-align {
+    height: 18px;
+    margin-bottom: 6px;
+  }
+  .ga-campus-dock-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    width: auto;
+    max-width: 100%;
+    box-sizing: border-box;
+    min-height: 42px;
+    padding: 8px 10px;
+    border: 1px solid #e8a838;
+    border-radius: 8px;
+    background:
+      linear-gradient(180deg, #fffdf8, #fff6e8);
+    color: #9a3412;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      0 4px 12px rgba(232, 168, 56, 0.18);
+    font: inherit;
+    font-size: 15px;
+    font-weight: 900;
+    text-align: left;
+    cursor: pointer;
+  }
+  .ga-campus-dock-trigger:hover,
+  .ga-campus-dock.is-open .ga-campus-dock-trigger {
+    border-color: #d4921f;
+    background: linear-gradient(180deg, #ffffff, #ffefd4);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.95),
+      0 6px 16px rgba(232, 168, 56, 0.28);
+  }
+  .ga-campus-dock-mark {
+    flex: 0 0 auto;
+    display: grid;
+    width: 22px;
+    height: 22px;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(232, 168, 56, 0.22);
+    color: #b45309;
+  }
+  .ga-campus-dock-mark svg {
+    width: 13px;
+    height: 13px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .ga-campus-dock-current {
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 950;
+    letter-spacing: 0.01em;
+  }
+  .ga-campus-dock-caret {
+    flex: 0 0 auto;
+    color: #b45309;
+    font-size: 11px;
+    line-height: 1;
+    opacity: 0.85;
+    transition: transform 140ms ease;
+  }
+  .ga-campus-dock:hover .ga-campus-dock-caret,
+  .ga-campus-dock:focus-within .ga-campus-dock-caret,
+  .ga-campus-dock.is-open .ga-campus-dock-caret {
+    transform: rotate(180deg);
+  }
+  .ga-campus-dock-panel {
+    position: absolute;
+    right: calc(100% + 8px);
+    top: 0;
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: min(268px, 70vw);
+    padding: 10px;
+    border: 1px solid #f0d9a8;
+    border-radius: 12px;
+    background: #fffdf8;
+    box-shadow: 0 22px 46px rgba(120, 70, 10, 0.16);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(6px);
+    transition: opacity 120ms ease, transform 120ms ease, visibility 120ms ease;
+    pointer-events: none;
+  }
+  .ga-campus-dock-heading {
+    margin: 0;
+    color: #9a3412;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+  }
+  .ga-campus-dock-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  /* Hover bridge so the panel does not flash-close while moving left. */
+  .ga-campus-dock-panel::before {
+    position: absolute;
+    top: 0;
+    right: -12px;
+    width: 12px;
+    height: 100%;
+    content: "";
+  }
+  .ga-campus-dock:hover .ga-campus-dock-panel,
+  .ga-campus-dock:focus-within .ga-campus-dock-panel,
+  .ga-campus-dock.is-open .ga-campus-dock-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+  /* After a pick: force-hide even if :hover / :focus-within remain. */
+  .ga-campus-dock.is-closing .ga-campus-dock-panel,
+  .ga-campus-dock.is-closing:hover .ga-campus-dock-panel,
+  .ga-campus-dock.is-closing:focus-within .ga-campus-dock-panel,
+  .ga-campus-dock.is-closing.is-open .ga-campus-dock-panel {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transform: translateX(6px) !important;
+  }
+  .ga-campus-dock-choice {
+    min-height: 36px;
+    padding: 7px 8px;
+    border: 1px solid #ead9b8;
+    border-radius: 8px;
+    background: #fff;
+    color: #334155;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 850;
+    cursor: pointer;
+  }
+  .ga-campus-dock-choice:hover {
+    border-color: #e8a838;
+    background: #fff8eb;
+  }
+  .ga-campus-dock-choice.is-active {
+    border-color: #e8a838;
+    background: #fff8eb;
+    color: #9a3412;
+    font-weight: 950;
+    box-shadow: inset 3px 0 0 #e8a838;
+  }
   .ga-control[hidden] {
     display: none;
   }
@@ -275,7 +459,7 @@
   .ga-coverage:hover,
   .ga-coverage[aria-expanded="true"] {
     border-color: #60a5fa;
-    background: #dbeafe;
+   background: #dbeafe;
     box-shadow: 0 4px 12px rgba(29, 78, 216, 0.16);
   }
   .ga-coverage:active {
@@ -790,12 +974,21 @@
   .ga-replacement-chart .ga-coverage-anchor .ga-month-fields {
     gap: 10px;
   }
+  /* Custom caret: native arrow can clip YYYY on the right (desktop + compact). */
   .ga-replacement-chart .ga-coverage-anchor .ga-month-fields select {
-    padding: 8px 22px 8px 8px;
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: #fff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='none' stroke='%2364748b' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round' d='M1.2 1.2L6 6l4.8-4.8'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 10px 7px;
+    padding: 8px 26px 8px 8px;
     font-size: 13px;
     font-weight: 800;
     line-height: 1.25;
     min-height: 36px;
+    box-sizing: border-box;
     text-align: left;
     text-align-last: left;
   }
@@ -1238,6 +1431,645 @@
     .ga-toggle-bar { padding-left: 4px; }
     #trendChart { height: 506px; }
   }
+  /* Friendly desktop (standalone + embed): ECOCO-like title | chips | campus — one source of truth. */
+  @media (min-width: 761px) {
+    body.ga-friendly-spaces-chart .ga-head,
+    body.ga-friendly-spaces-chart.ga-has-category-chips .ga-head {
+      flex-direction: row;
+      align-items: flex-end;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    body.ga-friendly-spaces-chart .ga-head-copy,
+    body.ga-friendly-spaces-chart.ga-has-category-chips .ga-head-copy {
+      flex: 0 1 auto;
+      align-self: flex-start;
+      width: auto;
+      min-width: 0;
+      max-width: 13.5rem;
+      margin-top: 10px;
+      padding-bottom: 8px;
+    }
+    body.ga-friendly-spaces-chart.ga-has-category-chips .ga-sub,
+    body.ga-friendly-spaces-chart.ga-has-category-chips .ga-sub-extra {
+      white-space: normal;
+    }
+    body.ga-friendly-spaces-chart .ga-head-tools {
+      max-width: none;
+      width: auto;
+      flex: 1 1 auto;
+      min-width: 0;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: flex-end;
+      align-items: flex-end;
+      gap: 8px;
+    }
+    body.ga-friendly-spaces-chart .ga-category-chips,
+    body.ga-friendly-spaces-chart.ga-has-category-chips .ga-category-chips {
+      display: flex;
+      flex: 1 1 auto;
+      flex-wrap: nowrap;
+      justify-content: flex-end;
+      min-width: 0;
+      overflow-x: hidden;
+      overflow-y: hidden;
+      gap: 5px;
+      padding: 2px 4px 4px;
+      scroll-padding-inline: 0;
+    }
+    body.ga-friendly-spaces-chart .ga-category-chip {
+      flex: 0 0 auto;
+      white-space: nowrap;
+      padding: 6px 9px;
+    }
+    body.ga-friendly-spaces-chart .ga-friendly-campus-control {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 0 0 auto;
+      align-self: flex-end;
+      min-width: 160px;
+      margin: 0;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.86);
+      box-sizing: border-box;
+    }
+  }
+  body.ga-friendly-spaces-chart .ga-category-chip.is-active {
+    /* Soft shadow that fits within chips padding (avoid left-edge “clip” look). */
+    box-shadow: 0 4px 10px rgba(139, 90, 150, 0.22);
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-campus-control[hidden] {
+    display: none !important;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-campus-control label {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 700;
+    color: #64748b;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-campus-control select {
+    min-width: 0;
+    width: 100%;
+    padding: 7px 10px;
+    border: 1px solid #d9e1ec;
+    border-radius: 10px;
+    background: #fff;
+    color: #1e293b;
+    font-size: 13px;
+  }
+  body.ga-friendly-spaces-chart .ga-controls,
+  body.ga-friendly-spaces-chart #yearControl,
+  body.ga-friendly-spaces-chart #timeGrainSwitch,
+  body.ga-friendly-spaces-chart #locationControl,
+  body.ga-friendly-spaces-chart #categoryControl,
+  body.ga-friendly-spaces-chart .ga-rank-block,
+  body.ga-friendly-spaces-chart .ga-pr-track,
+  body.ga-friendly-spaces-chart .ga-axis,
+  body.ga-friendly-spaces-chart .ga-hint,
+  body.ga-friendly-spaces-chart .ga-coverage-wrap,
+  body.ga-friendly-spaces-chart .ga-overview-icon-switch,
+  body.ga-friendly-spaces-chart .ga-overview-wrap,
+  body.ga-friendly-spaces-chart #trendMeanRow,
+  body.ga-friendly-spaces-chart #trendChart,
+  body.ga-friendly-spaces-chart #trendHoverTip,
+  body.ga-friendly-spaces-chart #trendToggles {
+    display: none !important;
+  }
+  body.ga-friendly-spaces-chart .ga-card-title h2 {
+    font-size: 19px;
+  }
+  body.ga-friendly-spaces-chart .ga-overview-head h3 {
+    font-size: 16px;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-summary {
+    display: none !important;
+  }
+  body.ga-friendly-spaces-chart .ga-category-chip.is-active {
+    color: #fff !important;
+    border-color: transparent !important;
+  }
+  body.ga-friendly-spaces-chart .ga-grid {
+    grid-template-columns: 1fr;
+  }
+  body.ga-friendly-spaces-chart .ga-chart-card,
+  body.ga-friendly-spaces-chart .ga-friendly-panel {
+    display: none !important;
+  }
+  body.ga-friendly-spaces-chart .ga-pr-card {
+    grid-column: 1 / -1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 0;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-map-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-map-shell {
+    position: relative;
+    width: 100%;
+    height: auto;
+    border-radius: 0 0 14px 14px;
+    overflow: hidden;
+    background: #f8f8f8;
+    border: 1px solid rgba(139, 90, 150, 0.12);
+    border-top: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-map-card:has(.ga-friendly-campus-panel:not(.is-collapsed)) .ga-friendly-map-shell {
+    border-radius: 14px;
+    border-top: 1px solid rgba(139, 90, 150, 0.12);
+  }
+  /* Width-driven map: never lock shell to 100vh (breaks Explorer autoheight iframe).
+     Cap size with max-width from viewport height so aspect-ratio stays intact. */
+  body.ga-friendly-spaces-chart .ga-friendly-map {
+    position: relative;
+    width: min(100%, calc(min(95vh, 1080px) * 7128 / 8192));
+    max-width: 100%;
+    aspect-ratio: 7128 / 8192;
+    height: auto;
+    flex: 0 0 auto;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-map img {
+    display: block;
+    width: 100%;
+    height: auto;
+    user-select: none;
+    pointer-events: none;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-markers {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-marker {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    transform: translate(-50%, -50%);
+    border: 2px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.28);
+    pointer-events: auto;
+    cursor: pointer;
+    padding: 0;
+    z-index: 5;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+  body.ga-friendly-spaces-chart.is-pick-mode .ga-friendly-marker {
+    cursor: grab;
+    touch-action: none;
+  }
+  body.ga-friendly-spaces-chart.is-pick-mode .ga-friendly-marker.is-dragging {
+    cursor: grabbing;
+    z-index: 16;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-marker.is-dimmed {
+    opacity: 0.2;
+    filter: grayscale(0.35);
+    box-shadow: none;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-marker.is-planned {
+    background: transparent !important;
+    border-width: 2.5px;
+    box-shadow: none;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-marker.is-selected {
+    width: 24px;
+    height: 24px;
+    z-index: 4;
+    box-shadow: 0 0 0 3px rgba(139, 90, 150, 0.28), 0 2px 8px rgba(15, 23, 42, 0.35);
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-marker svg {
+    width: 15px;
+    height: 15px;
+    display: block;
+    pointer-events: none;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-marker.is-selected svg {
+    width: 18px;
+    height: 18px;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-tip {
+    position: absolute;
+    z-index: 5;
+    min-width: 160px;
+    max-width: 240px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid rgba(148, 163, 184, 0.4);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.14);
+    transform: translate(-50%, calc(-100% - 14px));
+    pointer-events: none;
+  }
+  /* campus panel: collapsed above shell, expanded overlay */
+  body.ga-friendly-spaces-chart .ga-friendly-campus-panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 6;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: none;
+    padding: 8px 12px;
+    border-radius: 12px;
+    max-height: min(42%, 220px);
+    overflow-y: auto;
+    background: rgba(255, 255, 255, 0.98);
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-campus-panel.is-collapsed {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    z-index: auto;
+    width: 100%;
+    max-width: none;
+    padding: 6px 12px;
+    max-height: none;
+    overflow: hidden;
+    box-shadow: none;
+    border-radius: 12px 12px 0 0;
+    border-bottom: none;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-campus-panel[hidden] {
+    display: none !important;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-campus-panel-head {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    column-gap: 8px;
+    box-sizing: border-box;
+    width: 100%;
+    margin-bottom: 6px;
+    cursor: pointer;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-campus-panel.is-collapsed .ga-friendly-campus-panel-head {
+    margin-bottom: 0;
+  }
+  /* Center title+meta as one cluster; avoids margin-left squeeze that wrapped 全部校區. */
+  body.ga-friendly-spaces-chart .ga-friendly-campus-panel-head-main {
+    grid-column: 2;
+    justify-self: center;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    max-width: 100%;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-campus-panel-head strong {
+    flex: 0 0 auto;
+    min-width: 0;
+    white-space: nowrap;
+    font-size: 13px;
+    font-weight: 700;
+    color: #1e293b;
+    cursor: pointer;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-campus-panel-head-meta {
+    flex: 0 1 auto;
+    min-width: 0;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: #64748b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-campus-panel-head-meta .is-active {
+    color: #64748b;
+    font-weight: 500;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-campus-panel-head-meta .is-sep {
+    color: #94a3b8;
+    font-weight: 500;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-campus-panel-head-meta .is-planned {
+    color: #94a3b8;
+    font-weight: 500;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-campus-panel-toggle {
+    grid-column: 3;
+    justify-self: end;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: #334155;
+    cursor: pointer;
+    padding: 0;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-campus-panel-toggle:hover {
+    background: rgba(148, 163, 184, 0.18);
+    color: #0f172a;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-campus-panel-toggle svg {
+    width: 14px;
+    height: 14px;
+    display: block;
+    transition: transform 0.15s ease;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-campus-panel-toggle[aria-expanded="true"] svg {
+    transform: rotate(180deg);
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-campus-panel-content {
+    display: grid;
+    grid-template-rows: 1fr;
+    width: fit-content;
+    max-width: min(100%, 320px);
+    margin-left: auto;
+    margin-right: auto;
+    transition: grid-template-rows 180ms ease;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-campus-panel.is-collapsed .ga-friendly-campus-panel-content {
+    grid-template-rows: 0fr;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-campus-panel-content-inner {
+    width: fit-content;
+    max-width: 100%;
+    margin-inline: auto;
+    overflow: hidden;
+    min-height: 0;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-campus-panel-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    margin: 0 0 4px;
+    padding: 6px 8px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    font-size: 13px;
+    color: #334155;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-campus-panel-row:hover {
+    background: rgba(139, 90, 150, 0.06);
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-campus-panel-row.is-focus {
+    background: rgba(139, 90, 150, 0.1);
+    border-color: rgba(139, 90, 150, 0.22);
+    font-weight: 700;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-campus-panel-row .ga-friendly-legend-swatch {
+    flex: 0 0 auto;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-campus-panel-label {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-campus-panel-count {
+    flex: 0 0 auto;
+    margin-left: 14px;
+    font-variant-numeric: tabular-nums;
+    color: #475569;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-campus-panel-meta {
+    display: none;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-tip strong {
+    display: block;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #1e293b;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-tip-meta {
+    margin-top: 4px;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #64748b;
+  }
+  /* Anchor legend inside basemap bottom-left gray reserve (south of 大學路). */
+  body.ga-friendly-spaces-chart .ga-friendly-map-legend {
+    position: absolute;
+    left: 8%;
+    bottom: 0.8%;
+    width: min(32%, 280px);
+    box-sizing: border-box;
+    padding: 12px 14px 12px;
+    border-radius: 6px;
+    background: transparent;
+    border: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+    z-index: 3;
+    overflow: visible;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-map-legend h3 {
+    margin: 0 0 10px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #475569;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-legend-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 9px;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #334155;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-legend-row.is-spacer {
+    visibility: hidden;
+    pointer-events: none;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-legend-label {
+    flex: 0 1 auto;
+    min-width: 0;
+    white-space: nowrap;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-legend-count {
+    flex: 0 0 auto;
+    margin-left: 6px;
+    font-variant-numeric: tabular-nums;
+    color: #475569;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-legend-swatch {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 auto;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.12);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-legend-swatch svg {
+    width: 15px;
+    height: 15px;
+    display: block;
+    pointer-events: none;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-symbol-mask {
+    width: 15px;
+    height: 15px;
+    display: block;
+    flex: 0 0 auto;
+    background: currentColor;
+    -webkit-mask: url("./inclusive-restroom.png") center / contain no-repeat;
+    mask: url("./inclusive-restroom.png") center / contain no-repeat;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-marker.is-selected .ga-friendly-symbol-mask {
+    width: 18px;
+    height: 18px;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-legend-swatch.is-planned {
+    background: transparent !important;
+    border: 2px solid currentColor;
+    box-shadow: none;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-map-credit {
+    position: absolute;
+    left: 12px;
+    right: auto;
+    bottom: 4px;
+    margin: 0;
+    z-index: 4;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.25;
+    color: #475569;
+    pointer-events: none;
+    white-space: nowrap;
+    overflow: visible;
+    text-align: left;
+  }
+  /* Dev/calibration only: visible when ?pick=1 */
+  body.ga-friendly-spaces-chart .ga-friendly-pick-panel {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 20;
+    width: min(320px, calc(100% - 24px));
+    max-height: min(70%, 420px);
+    overflow: auto;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid rgba(15, 23, 42, 0.16);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.18);
+    font-size: 12px;
+    line-height: 1.45;
+    color: #1e293b;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-pick-panel[hidden] {
+    display: none !important;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-pick-panel h3 {
+    margin: 0 0 6px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-pick-panel .ga-friendly-pick-hint {
+    margin: 0 0 8px;
+    color: #64748b;
+    font-size: 11px;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-pick-panel .ga-friendly-pick-row {
+    margin: 0 0 6px;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-pick-panel code {
+    font-size: 11px;
+    word-break: break-all;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-pick-panel ul {
+    margin: 8px 0;
+    padding: 0;
+    list-style: none;
+    max-height: 160px;
+    overflow: auto;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-pick-panel li {
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+    margin: 0 0 6px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-pick-panel li span {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 10px;
+    word-break: break-all;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-pick-panel .ga-friendly-pick-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-pick-panel button {
+    appearance: none;
+    border: 1px solid #cbd5e1;
+    background: #fff;
+    color: #334155;
+    border-radius: 6px;
+    padding: 5px 8px;
+    font-size: 11px;
+    cursor: pointer;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-pick-panel button:hover {
+    background: #f1f5f9;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-pick-panel button.is-primary {
+    background: #8b5a96;
+    border-color: #8b5a96;
+    color: #fff;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-pick-mark {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    margin: -7px 0 0 -7px;
+    border-radius: 50%;
+    background: #ef4444;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.35);
+    pointer-events: none;
+    z-index: 15;
+  }
+  body.ga-friendly-spaces-chart.ga-has-category-chips .ga-head {
+    gap: 12px;
+  }
+  body.ga-friendly-spaces-chart.ga-has-category-chips .ga-head-copy {
+    flex: 0 1 auto;
+  }
   @media (max-width: 760px) {
     .ga-widget {
       width: 100% !important;
@@ -1278,6 +2110,12 @@
       flex-direction: column !important;
       align-items: stretch !important;
       margin-top: 0 !important;
+    }
+    /* Lift above coverage / formula pills (z-index ~20) while campus panel is up. */
+    .ga-head-tools:has(.ga-campus-dock:hover),
+    .ga-head-tools:has(.ga-campus-dock:focus-within),
+    .ga-head-tools:has(.ga-campus-dock.is-open) {
+      z-index: 60 !important;
     }
     body.ga-has-category-chips .ga-head-tools {
       flex-wrap: wrap !important;
@@ -1324,6 +2162,87 @@
       grid-template-columns: 1fr !important;
       gap: 9px !important;
       justify-content: stretch !important;
+    }
+    /* Compact: year first; campus full content width (align with summary card); caret flush right. */
+    #yearControl {
+      order: 1 !important;
+      width: 100% !important;
+    }
+    .ga-campus-dock {
+      order: 2 !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 0 !important;
+      margin-bottom: 0 !important;
+      margin-inline-end: 0 !important;
+      z-index: 36 !important;
+      justify-self: stretch !important;
+    }
+    .ga-campus-dock-align {
+      display: none !important;
+    }
+    .ga-campus-dock-trigger {
+      width: 100% !important;
+      max-width: none !important;
+      justify-content: flex-start !important;
+    }
+    .ga-campus-dock-caret {
+      margin-left: auto !important;
+    }
+    .ga-campus-dock-panel {
+      right: 0 !important;
+      left: 0 !important;
+      top: calc(100% + 6px) !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      max-width: none !important;
+      max-height: min(52vh, 320px) !important;
+      margin: 0 !important;
+      background: #fffdf8 !important;
+      transform: translateY(-4px) !important;
+      overflow: hidden !important;
+    }
+    .ga-campus-dock-heading {
+      font-size: 11px !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.03em !important;
+      color: #a16207 !important;
+      opacity: 0.88;
+      padding-bottom: 2px !important;
+      flex: 0 0 auto !important;
+    }
+    .ga-campus-dock-options {
+      display: grid !important;
+      grid-template-columns: 1fr !important;
+      gap: 8px !important;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      max-height: calc(min(52vh, 320px) - 36px) !important;
+    }
+    .ga-campus-dock-choice {
+      min-height: 44px !important;
+      padding: 10px 12px !important;
+      font-size: 14px !important;
+      text-align: left !important;
+    }
+    .ga-campus-dock:hover .ga-campus-dock-panel,
+    .ga-campus-dock:focus-within .ga-campus-dock-panel,
+    .ga-campus-dock.is-open .ga-campus-dock-panel {
+      transform: translateY(0) !important;
+    }
+    .ga-campus-dock.is-closing .ga-campus-dock-panel,
+    .ga-campus-dock.is-closing:hover .ga-campus-dock-panel,
+    .ga-campus-dock.is-closing:focus-within .ga-campus-dock-panel,
+    .ga-campus-dock.is-closing.is-open .ga-campus-dock-panel {
+      transform: translateY(-4px) !important;
+    }
+    .ga-campus-dock-panel::before {
+      top: -8px !important;
+      right: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: 8px !important;
     }
     .ga-control {
       width: 100% !important;
@@ -1381,7 +2300,7 @@
       border-radius: 12px !important;
       background: rgba(255,255,255,0.94) !important;
       box-shadow: 0 10px 24px rgba(15, 23, 42, 0.07) !important;
-      overflow: hidden !important;
+      overflow: visible !important;
     }
     /* Replacement rank: keep score+meta on one row; dual badge slim; don't crop right edge. */
     .ga-replacement-chart .ga-rank-block {
@@ -1514,7 +2433,7 @@
     .ga-card-title h2,
     .ga-overview-head h3 {
       font-size: 20px !important;
-      line-height: 1.22 !important;
+      line-height: 1.28 !important;
     }
     /* Overview titles share the row with mode chips — prefer one line over wrap. */
     .ga-overview-head h3 {
@@ -1546,23 +2465,14 @@
     .ga-replacement-chart .ga-coverage-anchor .ga-month-fields {
       gap: 8px !important;
     }
-    /* Compact only: custom caret so YYYY is not clipped by the native arrow. */
+    /* Compact: keep custom caret; tighten type for narrow popover. */
     .ga-replacement-chart .ga-coverage-anchor .ga-month-fields select {
-      -webkit-appearance: none !important;
-      appearance: none !important;
-      background-color: #fff !important;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='none' stroke='%2364748b' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round' d='M1.2 1.2L6 6l4.8-4.8'/%3E%3C/svg%3E") !important;
-      background-repeat: no-repeat !important;
       background-position: right 5px center !important;
-      background-size: 10px 7px !important;
       padding: 6px 18px 6px 7px !important;
       font-size: 11px !important;
       font-weight: 700 !important;
-      text-align: left !important;
-      text-align-last: left !important;
       min-width: 0 !important;
       width: 100% !important;
-      box-sizing: border-box !important;
     }
     .ga-replacement-chart .ga-coverage-anchor .ga-metric-popover {
       left: auto !important;
@@ -1779,10 +2689,16 @@
     .ga-icon-toggle {
       min-height: 40px !important;
       justify-content: center !important;
-      padding: 8px 12px !important;
+      padding: 9px 12px !important;
       font-size: 13px !important;
+      line-height: 1.35 !important;
       gap: 6px !important;
       white-space: nowrap !important;
+      overflow: visible !important;
+    }
+    .ga-icon-toggle span {
+      line-height: 1.35 !important;
+      overflow: visible !important;
     }
     .ga-trend-line-icon {
       width: 20px !important;
@@ -1815,9 +2731,85 @@
       font-size: 10.8px !important;
     }
     .ga-formula-frac { min-width: 72px !important; }
+    body.ga-friendly-spaces-chart .ga-grid {
+      grid-template-columns: 1fr !important;
+    }
+    body.ga-friendly-spaces-chart .ga-friendly-map-shell {
+      height: auto;
+      overflow: hidden;
+    }
+    body.ga-friendly-spaces-chart .ga-friendly-map {
+      width: min(100%, calc(min(88vh, 920px) * 7128 / 8192));
+      max-width: 100%;
+      height: auto;
+    }
+    body.ga-friendly-spaces-chart .ga-friendly-map-legend {
+      left: 8%;
+      bottom: 0.8%;
+      width: min(34%, 260px);
+      padding: 10px 12px 10px;
+    }
+    body.ga-friendly-spaces-chart .ga-friendly-map-credit {
+      left: 10px;
+      bottom: 3px;
+      font-size: 12px;
+    }
+    /* Friendly-spaces compact: ECOCO-like 2-col chips + full-width campus control. */
+    body.ga-friendly-spaces-chart .ga-head-tools,
+    body.ga-friendly-spaces-chart.ga-has-category-chips .ga-head-tools {
+      flex-direction: column !important;
+      flex-wrap: nowrap !important;
+      align-items: stretch !important;
+      justify-content: flex-start !important;
+      gap: 10px !important;
+    }
+    body.ga-friendly-spaces-chart .ga-category-chips,
+    body.ga-friendly-spaces-chart.ga-has-category-chips .ga-category-chips {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      flex-wrap: unset !important;
+      justify-content: stretch !important;
+      justify-items: stretch !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 0 !important;
+      flex: 0 0 auto !important;
+      overflow: visible !important;
+      gap: 8px !important;
+      padding: 0 !important;
+      scroll-padding-inline: 0 !important;
+    }
+    body.ga-friendly-spaces-chart .ga-category-chips .ga-category-chip:first-child {
+      grid-column: 1 / -1 !important;
+    }
+    body.ga-friendly-spaces-chart .ga-category-chip {
+      min-height: 42px !important;
+      white-space: normal !important;
+      flex: unset !important;
+      width: auto !important;
+      justify-content: center !important;
+      padding: 10px 12px !important;
+      font-size: 13px !important;
+    }
+    body.ga-friendly-spaces-chart .ga-friendly-campus-control {
+      display: flex !important;
+      flex-direction: column !important;
+      flex: 0 0 auto !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      box-sizing: border-box !important;
+    }
+    body.ga-friendly-spaces-chart .ga-friendly-campus-control select {
+      width: 100% !important;
+      min-width: 0 !important;
+      box-sizing: border-box !important;
+    }
   }
   @media (max-width: 420px) {
     .ga-widget { padding: 14px 12px 16px !important; }
+    body.ga-friendly-spaces-chart .ga-widget {
+      padding-bottom: 6px !important;
+    }
     .ga-head h1 { font-size: clamp(22px, 6.8vw, 28px) !important; }
     .ga-sub,
     .ga-sub-extra {
@@ -1845,33 +2837,52 @@
   <div class="ga-head">
     <div class="ga-head-copy">
       <div class="ga-title-row">
-        <h1>太陽能</h1>
+      <h1>太陽能</h1>
         <span class="ga-location-meta" id="locationScope" hidden aria-live="polite"></span>
-      </div>
+    </div>
       <div class="ga-sub" id="chartSubtitle">用年度排名呈現太陽能的歷史位置；</div>
       <div class="ga-sub-extra" id="chartSubtitleExtra" >完整年只比完整年，未滿年只比同期累積。</div>
+      <div class="ga-friendly-summary" id="friendlySummary" hidden>已啟用 <strong id="friendlySummaryCount">--</strong> 處</div>
     </div>
     <div class="ga-mode-switch ga-metric-switch" id="metricSwitch" hidden aria-label="選擇指標"></div>
     <div class="ga-head-tools">
       <div class="ga-category-chips" id="categoryChips" hidden role="listbox" aria-label="類別"></div>
-      <div class="ga-controls">
-        <div class="ga-control" id="locationControl" hidden>
-          <label for="locationSelect" id="locationLabel">選擇地點</label>
-          <select id="locationSelect"></select>
+      <div class="ga-control ga-friendly-campus-control" id="friendlyCampusControl" hidden>
+        <label for="friendlyCampusSelect">選擇校區</label>
+        <select id="friendlyCampusSelect" aria-label="選擇校區"></select>
+    </div>
+    <div class="ga-controls">
+      <div class="ga-control" id="locationControl" hidden>
+        <label for="locationSelect" id="locationLabel">選擇地點</label>
+        <select id="locationSelect"></select>
+      </div>
+      <div class="ga-control" id="categoryControl" hidden>
+        <label for="categorySelect" id="categoryLabel">選擇類別</label>
+        <select id="categorySelect"></select>
+      </div>
+      <div class="ga-campus-dock" id="campusDock" hidden>
+        <div class="ga-campus-dock-align" aria-hidden="true"></div>
+        <button type="button" class="ga-campus-dock-trigger" id="campusDockTrigger" aria-label="校區範圍" aria-expanded="false" aria-haspopup="listbox" aria-controls="campusDockOptions">
+          <span class="ga-campus-dock-mark" aria-hidden="true">
+            <svg viewBox="0 0 16 16" focusable="false"><path d="M8 14s5-4.2 5-7.2A5 5 0 0 0 3 6.8C3 9.8 8 14 8 14z"/><circle cx="8" cy="6.6" r="1.6"/></svg>
+          </span>
+          <strong class="ga-campus-dock-current" id="campusDockCurrent">全校</strong>
+          <span class="ga-campus-dock-caret" aria-hidden="true">▾</span>
+        </button>
+        <div class="ga-campus-dock-panel" id="campusDockPanel">
+          <p class="ga-campus-dock-heading">校區</p>
+          <div class="ga-campus-dock-options" id="campusDockOptions" role="listbox" aria-label="校區範圍"></div>
         </div>
-        <div class="ga-control" id="categoryControl" hidden>
-          <label for="categorySelect" id="categoryLabel">選擇類別</label>
-          <select id="categorySelect"></select>
-        </div>
+      </div>
         <div class="ga-control" id="yearControl">
           <div class="ga-year-label-row">
-            <label for="yearSelect">選擇年份</label>
+        <label for="yearSelect">選擇年份</label>
             <div class="ga-mode-switch ga-timegrain-switch" id="timeGrainSwitch" hidden>
               <button type="button" data-time-grain="year" class="active">年</button>
               <button type="button" data-time-grain="month">月</button>
             </div>
           </div>
-          <select id="yearSelect"></select>
+        <select id="yearSelect"></select>
         </div>
       </div>
     </div>
@@ -1941,6 +2952,56 @@
         <div id="overviewChart"></div>
         <div class="ga-overview-footnote" id="overviewFootNote" hidden></div>
       </div>
+      <div class="ga-friendly-map-card" id="friendlyMapCard" hidden>
+          <!-- campus panel: collapsed above shell, expanded overlay -->
+          <!-- dismiss: collapse panel only, keep campus -->
+          <aside class="ga-friendly-campus-panel" id="friendlyCampusPanel" hidden aria-live="polite">
+            <div class="ga-friendly-campus-panel-head">
+              <div class="ga-friendly-campus-panel-head-main">
+                <strong id="friendlyCampusPanelTitle"></strong>
+                <span id="friendlyCampusPanelHeadMeta" class="ga-friendly-campus-panel-head-meta"></span>
+              </div>
+              <button type="button" class="ga-friendly-campus-panel-toggle" id="friendlyCampusPanelToggle" aria-label="展開校區資訊" aria-expanded="false">
+                <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                  <path d="M3.5 6.2L8 10.7L12.5 6.2" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+            <div class="ga-friendly-campus-panel-content">
+              <div class="ga-friendly-campus-panel-content-inner">
+                <div id="friendlyCampusPanelBody"></div>
+                <div class="ga-friendly-campus-panel-meta" id="friendlyCampusPanelMeta"></div>
+              </div>
+            </div>
+          </aside>
+        <div class="ga-friendly-map-shell" id="friendlyMapShell">
+          <div class="ga-friendly-map" id="friendlyMap">
+            <img id="friendlyBasemap" src="./campus-base.png" alt="國立成功大學校本部平面圖" />
+            <div class="ga-friendly-markers" id="friendlyMarkers"></div>
+            <div class="ga-friendly-tip" id="friendlyTip" hidden>
+              <strong id="friendlyTipTitle"></strong>
+              <div class="ga-friendly-tip-meta" id="friendlyTipMeta"></div>
+            </div>
+            <aside class="ga-friendly-map-legend" id="friendlyMapLegend" aria-label="設施圖例"></aside>
+          </div>
+          <p class="ga-friendly-map-credit" id="friendlyMapCredit"></p>
+          <aside class="ga-friendly-pick-panel" id="friendlyPickPanel" hidden aria-label="地圖取點模式">
+            <h3>取點模式 ON</h3>
+            <p class="ga-friendly-pick-hint">獨立 URL：…/friendly-spaces/?pick=1。拖曳綠釘到位後按「儲存」，請存成專案內 config/maps/friendly_spaces_pick_export.json（覆寫即可）。空白底圖不取點。</p>
+            <div class="ga-friendly-pick-row">選中：<code id="friendlyPickSelected">未選中（請拖曳綠釘）</code></div>
+            <div class="ga-friendly-pick-row">最近：<code id="friendlyPickLast">—</code></div>
+            <div class="ga-friendly-pick-row" id="friendlyPickSaveStatus" hidden></div>
+            <ul id="friendlyPickList"></ul>
+            <div class="ga-friendly-pick-actions">
+              <button type="button" class="is-primary" id="friendlyPickSaveBtn">儲存</button>
+              <button type="button" id="friendlyPickCopyBtn">複製全部</button>
+              <button type="button" id="friendlyPickClearPreviewBtn">清除預覽</button>
+              <button type="button" id="friendlyPickClearListBtn">清空列表</button>
+              <button type="button" id="friendlyPickClearSelectBtn">取消選中</button>
+            </div>
+          </aside>
+        </div>
+      </div>
     </section>
     <section class="ga-card ga-chart-card">
       <div class="ga-quality-head" id="qualityHead" hidden>
@@ -1984,6 +3045,7 @@ let customMonthRange = null;
 let customReplacementYearRange = null;
 let replacementRangeMetric = "saving";
 let focusedCampus = null;
+let campusPickedThisOpen = false;
 let replacementMetricPopoverPinned = false;
 let replacementMetricPopoverCloseTimer = null;
 let draftMonthRange = null;
@@ -2003,6 +3065,11 @@ const locationSelect = document.getElementById("locationSelect");
 const locationControl = document.getElementById("locationControl");
 const locationLabel = document.getElementById("locationLabel");
 const locationScope = document.getElementById("locationScope");
+const campusDock = document.getElementById("campusDock");
+const campusDockTrigger = document.getElementById("campusDockTrigger");
+const campusDockCurrent = document.getElementById("campusDockCurrent");
+const campusDockPanel = document.getElementById("campusDockPanel");
+const campusDockOptions = document.getElementById("campusDockOptions");
 const trendChart = document.getElementById("trendChart");
 const trendHoverTip = document.getElementById("trendHoverTip");
 const trendToggles = document.getElementById("trendToggles");
@@ -2040,12 +3107,96 @@ const monthEndField = document.getElementById("monthEndField");
 const monthRangeFields = document.getElementById("monthRangeFields");
 const monthRangeActions = document.getElementById("monthRangeActions");
 const monthPickGrid = document.getElementById("monthPickGrid");
+const friendlySummary = document.getElementById("friendlySummary");
+const friendlySummaryCount = document.getElementById("friendlySummaryCount");
+const friendlyMapCard = document.getElementById("friendlyMapCard");
+const friendlyMapShell = document.getElementById("friendlyMapShell");
+const friendlyMarkers = document.getElementById("friendlyMarkers");
+const friendlyCampusControl = document.getElementById("friendlyCampusControl");
+const friendlyCampusSelect = document.getElementById("friendlyCampusSelect");
+const friendlyMapLegend = document.getElementById("friendlyMapLegend");
+const friendlyMapCredit = document.getElementById("friendlyMapCredit");
+const friendlyTip = document.getElementById("friendlyTip");
+const friendlyTipTitle = document.getElementById("friendlyTipTitle");
+const friendlyTipMeta = document.getElementById("friendlyTipMeta");
+const friendlyCampusPanel = document.getElementById("friendlyCampusPanel");
+const friendlyCampusPanelTitle = document.getElementById("friendlyCampusPanelTitle");
+const friendlyCampusPanelBody = document.getElementById("friendlyCampusPanelBody");
+const friendlyCampusPanelMeta = document.getElementById("friendlyCampusPanelMeta");
+const friendlyCampusPanelHeadMeta = document.getElementById("friendlyCampusPanelHeadMeta");
+const friendlyCampusPanelToggle = document.getElementById("friendlyCampusPanelToggle");
+const friendlyMapEl = document.getElementById("friendlyMap");
+const friendlyPickPanel = document.getElementById("friendlyPickPanel");
+const friendlyPickSelected = document.getElementById("friendlyPickSelected");
+const friendlyPickLast = document.getElementById("friendlyPickLast");
+const friendlyPickList = document.getElementById("friendlyPickList");
+const friendlyPickSaveBtn = document.getElementById("friendlyPickSaveBtn");
+const friendlyPickSaveStatus = document.getElementById("friendlyPickSaveStatus");
+const friendlyPickCopyBtn = document.getElementById("friendlyPickCopyBtn");
+const friendlyPickClearPreviewBtn = document.getElementById("friendlyPickClearPreviewBtn");
+const friendlyPickClearListBtn = document.getElementById("friendlyPickClearListBtn");
+const friendlyPickClearSelectBtn = document.getElementById("friendlyPickClearSelectBtn");
+let friendlySelectedCampus = null;
+let friendlySelectedItemId = null;
+let friendlyCampusPanelDismissed = false;
+let friendlyCampusPanelCollapsed = true;
+let friendlyCampusPanelPinned = false;
+let friendlyMapShellBound = false;
+let friendlyCampusKeysBound = false;
+let friendlyCampusSelectBound = false;
+let friendlyPickModeBound = false;
+const friendlyPickRecords = [];
+const friendlyPickPreviewById = new Map();
+let friendlyPickMarkEl = null;
+let friendlyPickDragState = null;
+const FRIENDLY_PICK_DRAG_THRESHOLD_PX = 5;
+const FRIENDLY_PICK_EXPORT_FILENAME = "friendly_spaces_pick_export.json";
+const FRIENDLY_PICK_EXPORT_RELPATH = "config/maps/friendly_spaces_pick_export.json";
 const yearControlLabel = document.querySelector("#yearControl label[for='yearSelect']");
+const yearControl = document.getElementById("yearControl");
 const metricSwitch = document.getElementById("metricSwitch");
 
-function isCompactViewport() {
-  return window.matchMedia("(max-width: 760px)").matches;
+function isPortalChart() {
+  return new URLSearchParams(window.location.search).get("portal") === "1";
 }
+
+let portalLayoutCompactOverride = null;
+
+function applyPortalLayoutCompact(compact) {
+  if (!isPortalChart()) return;
+  const next = Boolean(compact);
+  if (portalLayoutCompactOverride === next) return;
+  portalLayoutCompactOverride = next;
+  document.documentElement.classList.toggle("is-layout-compact", portalLayoutCompactOverride);
+  schedulePlotResize();
+  if (typeof GA_DATA !== "undefined" && GA_DATA && GA_DATA.chartId) {
+    try {
+      updateAll();
+    } catch (_error) {
+      /* chart may still be initializing */
+    }
+  }
+}
+
+function resolveLayoutCompact() {
+  const mediaCompact = window.matchMedia("(max-width: 760px)").matches;
+  if (isPortalChart() && portalLayoutCompactOverride !== null) {
+    // Portal embed: CSS @media follows iframe width — never run desktop Plotly in compact CSS.
+    return portalLayoutCompactOverride || mediaCompact;
+  }
+  return mediaCompact;
+}
+
+function isCompactViewport() {
+  return resolveLayoutCompact();
+}
+
+window.addEventListener("message", (event) => {
+  if (!event.data) return;
+  if (event.data.type === "oga:layout-compact") {
+    applyPortalLayoutCompact(event.data.compact);
+  }
+});
 
 let plotResizeTimer = null;
 const lastPlotSizes = { trend: { w: 0, h: 0 }, overview: { w: 0, h: 0 } };
@@ -2076,6 +3227,7 @@ function schedulePlotResize() {
     if (lastTrendMeanLegend.y != null) {
       syncTrendMeanLegend(lastTrendMeanLegend);
     }
+    schedulePortalLayoutNotify();
   }, 160);
 }
 
@@ -2132,7 +3284,9 @@ function plotlyConfig(extra) {
     const id = typeof gd === "string" ? gd : (gd && gd.id);
     let nextLayout = withPlotInteractionLock(layout, id);
     if (id === "trendChart") nextLayout = withCompactTrendTitle(nextLayout);
-    return originalReact(gd, data, nextLayout, plotlyConfig(config));
+    const result = originalReact(gd, data, nextLayout, plotlyConfig(config));
+    schedulePortalLayoutNotify();
+    return result;
   };
 })();
 
@@ -2250,7 +3404,7 @@ function dualMetricYAxisLayout(left, right, leftColor, rightColor, dualRanges) {
   const tickSize = compact ? 10 : 11;
   return {
     yaxis: {
-      // Compact: hide unit titles — legend toggles already show 用水量／金額.
+      // Compact: hide unit titles — legend toggles already show 用水量／水費 (or 用電量／電費).
       title: compact ? "" : activeUnit(left),
       rangemode: "tozero",
       range: dualRanges.left,
@@ -2493,8 +3647,9 @@ function updateYearControlLabel() {
 function syncGrainBodyClass() {
   document.body.classList.toggle("ga-month-grain", isMonthGrain());
   document.body.classList.toggle("ga-has-metric-switch", usesMetricSwitch());
-  document.body.classList.toggle("ga-has-category-chips", usesCategoryChips());
+  document.body.classList.toggle("ga-has-category-chips", usesCategoryChips() || isFriendlySpacesChart());
   document.body.classList.toggle("ga-ecoco-chart", isEcocoChart());
+  document.body.classList.toggle("ga-friendly-spaces-chart", isFriendlySpacesChart());
 }
 
 function setOverviewModeButtons(kind) {
@@ -2562,6 +3717,10 @@ function isStreetlightChart() {
 
 function isReplacementChart() {
   return GA_DATA.chartType === "streetlight" || GA_DATA.chartType === "led_replacement";
+}
+
+function isFriendlySpacesChart() {
+  return GA_DATA.chartType === "friendly_spaces";
 }
 
 function usesMonthCoverage() {
@@ -3380,12 +4539,137 @@ function isStreetlightFocusRow(row) {
   return streetlightRowLocationKey(row) === streetlightFocusLocation();
 }
 
-function selectStreetlightCampusFocus(locationKey) {
+function selectStreetlightCampusFocus(locationKey, { fromDock = false } = {}) {
   if (!isStreetlightChart() || !locationKey) return;
   const next = String(locationKey);
-  if (focusedCampus === next) return;
-  focusedCampus = next;
-  updateAll();
+  if (fromDock) campusPickedThisOpen = true;
+  if (focusedCampus !== next) {
+    focusedCampus = next;
+    updateAll();
+  } else {
+    syncCampusDockUi();
+  }
+  // Touch / coarse pointer: close immediately (no stable :hover).
+  // Fine pointer: keep panel while hovered; close on mouseleave via campusPickedThisOpen.
+  if (fromDock && !prefersMonthPopoverHover()) {
+    forceCloseCampusDockUi();
+    return;
+  }
+  closeCampusDockPin();
+  blurCampusDockFocus();
+}
+
+function blurCampusDockFocus() {
+  const active = document.activeElement;
+  if (active && campusDock && campusDock.contains(active) && typeof active.blur === "function") {
+    active.blur();
+  }
+}
+
+function setCampusDockClosing(on) {
+  if (!campusDock) return;
+  campusDock.classList.toggle("is-closing", Boolean(on));
+}
+
+function closeCampusDockPin() {
+  if (!campusDock) return;
+  campusDock.classList.remove("is-open");
+  if (campusDockTrigger) campusDockTrigger.setAttribute("aria-expanded", "false");
+}
+
+/** Unpin + defeat :hover/:focus-within so mutex / Esc / outside always hide the panel. */
+function forceCloseCampusDockUi() {
+  if (!campusDock) return;
+  campusPickedThisOpen = false;
+  closeCampusDockPin();
+  blurCampusDockFocus();
+  setCampusDockClosing(true);
+}
+
+function syncCampusDockUi() {
+  if (!campusDock) return;
+  if (!isStreetlightChart()) {
+    campusDock.hidden = true;
+    closeCampusDockPin();
+    setCampusDockClosing(false);
+    return;
+  }
+  campusDock.hidden = false;
+  const defaultLoc = GA_DATA.defaultLocation || "全校區";
+  const focus = streetlightFocusLocation();
+  if (campusDockCurrent) {
+    campusDockCurrent.textContent = streetlightCampusShortLabel(
+      focus === defaultLoc ? "全校" : focus
+    );
+  }
+  if (!campusDockOptions) return;
+  campusDockOptions.querySelectorAll("[data-campus]").forEach((button) => {
+    const key = streetlightRowLocationKey({ location: button.dataset.campus });
+    button.classList.toggle("is-active", key === focus);
+    button.setAttribute("aria-selected", key === focus ? "true" : "false");
+  });
+}
+
+function renderCampusDockOptions() {
+  if (!campusDockOptions || !isStreetlightChart()) return;
+  const defaultLoc = GA_DATA.defaultLocation || "全校區";
+  const locations = Array.isArray(GA_DATA.locations) ? GA_DATA.locations : [];
+  const ordered = [
+    defaultLoc,
+    ...locations.filter((location) => location && location !== defaultLoc),
+  ];
+  campusDockOptions.innerHTML = ordered.map((location) => {
+    const label = streetlightCampusShortLabel(location === defaultLoc ? "全校" : location);
+    const safe = String(location).replace(/"/g, "&quot;");
+    return `<button type="button" role="option" class="ga-campus-dock-choice" data-campus="${safe}">${label}</button>`;
+  }).join("");
+  syncCampusDockUi();
+}
+
+function initCampusDock() {
+  if (!campusDock || !campusDockTrigger || !campusDockPanel || !campusDockOptions) return;
+  if (!isStreetlightChart()) {
+    campusDock.hidden = true;
+    return;
+  }
+  renderCampusDockOptions();
+  campusDock.addEventListener("pointerenter", () => {
+    setCampusDockClosing(false);
+  });
+  campusDock.addEventListener("mouseleave", () => {
+    if (campusPickedThisOpen || campusDock.classList.contains("is-closing")) {
+      campusPickedThisOpen = false;
+      closeCampusDockPin();
+      blurCampusDockFocus();
+      setCampusDockClosing(true);
+      return;
+    }
+    if (campusDock.classList.contains("is-open")) return;
+    blurCampusDockFocus();
+  });
+  campusDockTrigger.addEventListener("click", (event) => {
+    event.stopPropagation();
+    const willOpen = !campusDock.classList.contains("is-open");
+    closeMonthPopover();
+    closeReplacementMetricPopover();
+    if (willOpen) {
+      campusPickedThisOpen = false;
+      setCampusDockClosing(false);
+      campusDock.classList.add("is-open");
+      campusDockTrigger.setAttribute("aria-expanded", "true");
+    } else {
+      closeCampusDockPin();
+    }
+  });
+  campusDockOptions.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-campus]");
+    if (!button) return;
+    event.stopPropagation();
+    selectStreetlightCampusFocus(button.dataset.campus, { fromDock: true });
+  });
+  campusDock.addEventListener("click", (event) => {
+    event.stopPropagation();
+  });
 }
 
 function streetlightSeriesAt(location, category) {
@@ -3628,6 +4912,7 @@ function renderReplacementDom() {
     : replacementMetrics(selectedYear);
   const accent = "#d43f55";
   renderReplacementCoverageBadge(rangeMetrics);
+  syncCampusDockUi();
 
   setTextIfExists("rankTitle", "節省瓦數");
   setTextIfExists("rankNumber", fmt.format(yearMetrics.annualSaving));
@@ -3899,12 +5184,12 @@ function paintReplacementQtyShareBars({ sorted, labels, isSelected, hoverLeft, e
     return {
       text: rowHasData(row) ? `${pctFmt.format(shares[idx])}%` : "",
       x: layout.sharePaperX,
-      y: y[idx],
+    y: y[idx],
       xref: "paper",
-      yref: "y",
-      showarrow: false,
+    yref: "y",
+    showarrow: false,
       xanchor: layout.shareAnchor,
-      yanchor: "middle",
+    yanchor: "middle",
       cliponaxis: false,
       font: {
         size: focused ? layout.valueFontSizeFocus : layout.valueFontSize,
@@ -4111,7 +5396,7 @@ function streetlightCampusSavingRows() {
     const ledOriginSaving = Number(yearRow?.ledOriginSaving || 0);
     const nonLedSavingShare = Number(yearRow?.nonLedSavingShare || 0);
     const hasData = Boolean(yearRow) && saving > 0;
-    return {
+  return {
       location: displayLocation || location,
       order,
       hasData,
@@ -4147,7 +5432,7 @@ function yearSavingRows() {
       const ledOriginSaving = Number(row.ledOriginSaving || 0);
       const nonLedSavingShare = Number(row.nonLedSavingShare || 0);
       const hasData = Number.isFinite(year) && saving > 0;
-      return {
+  return {
         year,
         hasData,
         saving: hasData ? saving : 0,
@@ -4215,8 +5500,8 @@ function paintReplacementSavingShareBars({ sorted, labels, isSelected, hoverLeft
     x: layout.countPaperX,
     y: y[idx],
     xref: "paper",
-    yref: "y",
-    showarrow: false,
+      yref: "y",
+      showarrow: false,
     xanchor: layout.countAnchor,
     yanchor: "middle",
     cliponaxis: false,
@@ -4228,12 +5513,12 @@ function paintReplacementSavingShareBars({ sorted, labels, isSelected, hoverLeft
   const shareAnnotations = sorted.map((row, idx) => ({
     text: rowHasData(row) ? `${pctFmt.format(shares[idx])}%` : "",
     x: layout.sharePaperX,
-    y: y[idx],
+        y: y[idx],
     xref: "paper",
-    yref: "y",
-    showarrow: false,
+        yref: "y",
+        showarrow: false,
     xanchor: layout.shareAnchor,
-    yanchor: "middle",
+        yanchor: "middle",
     cliponaxis: false,
     font: {
       size: isSelected(row) ? layout.valueFontSizeFocus : layout.valueFontSize,
@@ -4247,7 +5532,7 @@ function paintReplacementSavingShareBars({ sorted, labels, isSelected, hoverLeft
       y: layout.headerPaperY,
       xref: "paper",
       yref: "paper",
-      showarrow: false,
+        showarrow: false,
       xanchor: layout.countAnchor,
       yanchor: "bottom",
       cliponaxis: false,
@@ -4444,7 +5729,931 @@ function renderYearSavingOverview() {
   });
 }
 
+function friendlyThemeAccent() {
+  return GA_DATA.themeAccent || "#8b5a96";
+}
+
+function friendlyCategoryEntries() {
+  return Array.isArray(GA_DATA.categories) ? GA_DATA.categories : [];
+}
+
+function friendlyStyleForCategory(categoryId) {
+  const entry = friendlyCategoryEntries().find((item) => (item.id || item) === categoryId);
+  if (entry && typeof entry === "object") {
+    return {
+      color: entry.color || friendlyThemeAccent(),
+      icon: entry.icon || "",
+      label: entry.label || categoryId,
+    };
+  }
+  return { color: friendlyThemeAccent(), icon: "", label: categoryId };
+}
+
+const FRIENDLY_ICON_SVG = {
+  pad: '<svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 2.5c1.8 0 3.2 1.3 3.2 3v5c0 1.7-1.4 3-3.2 3s-3.2-1.3-3.2-3v-5c0-1.7 1.4-3 3.2-3zm-4.8 3.2c-.9.5-1.4 1.3-1.4 2.3s.5 1.8 1.4 2.3l1.5.8V5.9l-1.5.8zm9.6 0l-1.5-.8v4.7l1.5.8c.9-.5 1.4-1.3 1.4-2.3s-.5-1.8-1.4-2.3z"/></svg>',
+  bottle: '<svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M6.2 1.2h3.6v1.8H9.2v1.1h2.1l.5 1.2v7.2c0 1-.8 1.8-1.8 1.8H6c-1 0-1.8-.8-1.8-1.8V5.3l.5-1.2h2.1V3H6.2V1.2zm1.6 5.2c-.5 0-.9.4-.9.9v2.2c0 .5.4.9.9.9s.9-.4.9-.9V7.3c0-.5-.4-.9-.9-.9z"/></svg>',
+  parking: '<svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M5 2.2h4.2c2.1 0 3.6 1.3 3.6 3.4S11.3 9 9.2 9H7.2v4.8H5V2.2zm2.2 2.1v2.6h1.8c.9 0 1.5-.5 1.5-1.3s-.6-1.3-1.5-1.3H7.2z"/></svg>',
+};
+
+function applyFriendlySymbol(el, { color, icon, planned = false } = {}) {
+  if (!el) return;
+  delete el.dataset.shape;
+  el.innerHTML = "";
+  if (icon === "toilet") {
+    el.dataset.icon = "toilet";
+    const glyph = document.createElement("span");
+    glyph.className = "ga-friendly-symbol-mask";
+    glyph.setAttribute("aria-hidden", "true");
+    el.appendChild(glyph);
+  } else if (icon && FRIENDLY_ICON_SVG[icon]) {
+    el.dataset.icon = icon;
+    el.innerHTML = FRIENDLY_ICON_SVG[icon];
+  } else {
+    delete el.dataset.icon;
+  }
+  const tone = color || "#64748b";
+  if (planned || el.classList.contains("is-planned")) {
+    el.style.background = "transparent";
+    el.style.borderColor = tone;
+    el.style.color = tone;
+  } else {
+    el.style.background = tone;
+    el.style.color = "#fff";
+  }
+}
+
+function friendlyItemsForCategory(category = selectedCategory) {
+  return (GA_DATA.items || []).filter((item) => category === "all" || item.category === category);
+}
+
+function friendlyActiveItems(category = selectedCategory) {
+  return friendlyItemsForCategory(category).filter((item) => item.status === "active");
+}
+
+function friendlyPlannedItems(category = selectedCategory) {
+  return friendlyItemsForCategory(category).filter((item) => item.status === "planned");
+}
+
+function friendlyVisibleItems(category = selectedCategory) {
+  return friendlyItemsForCategory(category).slice().sort((a, b) => {
+    const statusCmp = String(a.status).localeCompare(String(b.status));
+    if (statusCmp !== 0) return statusCmp;
+    const campusCmp = String(a.campus).localeCompare(String(b.campus), "zh-Hant");
+    if (campusCmp !== 0) return campusCmp;
+    return String(a.location).localeCompare(String(b.location), "zh-Hant");
+  });
+}
+
+function friendlyItemById(itemId) {
+  return (GA_DATA.items || []).find((item) => item.id === itemId) || null;
+}
+
+function friendlyCoordKey(item) {
+  if (!item) return "_unbound";
+  return `${item.category}|${item.campus}|${item.location}`;
+}
+
+function isFriendlyPickMode() {
+  try {
+    return new URLSearchParams(window.location.search).get("pick") === "1";
+  } catch (_) {
+    return false;
+  }
+}
+
+function friendlyMapPctFromEvent(event) {
+  if (!friendlyMapEl) return null;
+  const rect = friendlyMapEl.getBoundingClientRect();
+  if (!rect.width || !rect.height) return null;
+  const mapX = Number((((event.clientX - rect.left) / rect.width) * 100).toFixed(2));
+  const mapY = Number((((event.clientY - rect.top) / rect.height) * 100).toFixed(2));
+  return { mapX, mapY };
+}
+
+function ensureFriendlyPickMark() {
+  if (!friendlyMapEl) return null;
+  if (friendlyPickMarkEl && friendlyPickMarkEl.isConnected) return friendlyPickMarkEl;
+  friendlyPickMarkEl = document.createElement("div");
+  friendlyPickMarkEl.className = "ga-friendly-pick-mark";
+  friendlyPickMarkEl.setAttribute("aria-hidden", "true");
+  friendlyMapEl.appendChild(friendlyPickMarkEl);
+  return friendlyPickMarkEl;
+}
+
+function updateFriendlyPickMark(mapX, mapY) {
+  const mark = ensureFriendlyPickMark();
+  if (!mark) return;
+  mark.style.left = `${mapX}%`;
+  mark.style.top = `${mapY}%`;
+  mark.hidden = false;
+}
+
+function friendlyPickExportText() {
+  const rows = friendlyPickRecords.filter((row) => row.key && row.key.includes("|"));
+  if (!rows.length) return "";
+  return rows.map((row) => `${row.key}: ${row.mapX}, ${row.mapY}`).join("\n");
+}
+
+function friendlyPickExportPayload() {
+  const points = {};
+  friendlyPickRecords.forEach((row) => {
+    if (!row.key || !row.key.includes("|") || row.key.startsWith("_")) return;
+    points[row.key] = { mapX: row.mapX, mapY: row.mapY };
+  });
+  return {
+    version: 1,
+    savedAt: new Date().toISOString(),
+    sourceUrl: String(window.location.href || ""),
+    points,
+  };
+}
+
+function setFriendlyPickSaveStatus(message, isError) {
+  if (!friendlyPickSaveStatus) return;
+  friendlyPickSaveStatus.hidden = !message;
+  friendlyPickSaveStatus.textContent = message || "";
+  friendlyPickSaveStatus.style.color = isError ? "#b91c1c" : "#166534";
+}
+
+async function saveFriendlyPickExport() {
+  const payload = friendlyPickExportPayload();
+  const keys = Object.keys(payload.points);
+  if (!keys.length) {
+    setFriendlyPickSaveStatus("列表為空：請先拖曳至少一顆綠釘。", true);
+    return;
+  }
+  const jsonText = `${JSON.stringify(payload, null, 2)}\n`;
+  const blob = new Blob([jsonText], { type: "application/json" });
+  try {
+    if (window.showSaveFilePicker) {
+      const handle = await window.showSaveFilePicker({
+        suggestedName: FRIENDLY_PICK_EXPORT_FILENAME,
+        types: [{ description: "JSON", accept: { "application/json": [".json"] } }],
+      });
+      const writable = await handle.createWritable();
+      await writable.write(blob);
+      await writable.close();
+      setFriendlyPickSaveStatus(
+        `已儲存 ${keys.length} 點。請確認檔案為 ${FRIENDLY_PICK_EXPORT_RELPATH}，然後請 Agent「讀取 pick export 並寫入」。`,
+        false
+      );
+      return;
+    }
+  } catch (err) {
+    if (err && err.name === "AbortError") {
+      setFriendlyPickSaveStatus("已取消儲存。", true);
+      return;
+    }
+  }
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = FRIENDLY_PICK_EXPORT_FILENAME;
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  URL.revokeObjectURL(url);
+  setFriendlyPickSaveStatus(
+    `已下載 ${FRIENDLY_PICK_EXPORT_FILENAME}（${keys.length} 點）。請移到／覆寫專案內 ${FRIENDLY_PICK_EXPORT_RELPATH}，再請 Agent 讀取寫入。`,
+    false
+  );
+}
+
+function renderFriendlyPickPanel() {
+  if (!isFriendlyPickMode() || !friendlyPickPanel) return;
+  document.body.classList.add("is-pick-mode");
+  friendlyPickPanel.hidden = false;
+  const selected = friendlyItemById(friendlySelectedItemId);
+  if (friendlyPickSelected) {
+    friendlyPickSelected.textContent = selected
+      ? friendlyCoordKey(selected)
+      : "未選中（請拖曳綠釘）";
+  }
+  if (friendlyPickList) {
+    friendlyPickList.innerHTML = "";
+    friendlyPickRecords.forEach((row, index) => {
+      const li = document.createElement("li");
+      const span = document.createElement("span");
+      span.textContent = `${row.key}: ${row.mapX}, ${row.mapY}`;
+      const del = document.createElement("button");
+      del.type = "button";
+      del.textContent = "刪";
+      del.addEventListener("click", (event) => {
+        event.stopPropagation();
+        friendlyPickRecords.splice(index, 1);
+        renderFriendlyPickPanel();
+      });
+      li.appendChild(span);
+      li.appendChild(del);
+      friendlyPickList.appendChild(li);
+    });
+  }
+}
+
+function clearFriendlyPickPreview() {
+  friendlyPickPreviewById.forEach((coords, itemId) => {
+    const item = friendlyItemById(itemId);
+    if (!item || !coords) return;
+    if (Number.isFinite(coords.originalMapX)) item.mapX = coords.originalMapX;
+    if (Number.isFinite(coords.originalMapY)) item.mapY = coords.originalMapY;
+  });
+  friendlyPickPreviewById.clear();
+  renderFriendlySpacesMap();
+  renderFriendlyPickPanel();
+}
+
+function recordFriendlyPickForItem(item, mapX, mapY) {
+  if (!item || !item.category || !item.campus || !item.location) return;
+  const key = friendlyCoordKey(item);
+  if (!key.includes("|")) return;
+  const existingIdx = friendlyPickRecords.findIndex((row) => row.key === key);
+  const row = { key, mapX, mapY, itemId: item.id || null };
+  if (existingIdx >= 0) friendlyPickRecords[existingIdx] = row;
+  else friendlyPickRecords.push(row);
+  if (friendlyPickLast) friendlyPickLast.textContent = `${mapX}, ${mapY}`;
+  updateFriendlyPickMark(mapX, mapY);
+  const prev = friendlyPickPreviewById.get(item.id);
+  const originalMapX = prev && Number.isFinite(prev.originalMapX)
+    ? prev.originalMapX
+    : Number(item.mapX);
+  const originalMapY = prev && Number.isFinite(prev.originalMapY)
+    ? prev.originalMapY
+    : Number(item.mapY);
+  friendlyPickPreviewById.set(item.id, {
+    mapX,
+    mapY,
+    originalMapX,
+    originalMapY,
+  });
+  item.mapX = mapX;
+  item.mapY = mapY;
+  friendlySelectedItemId = item.id;
+  updateFriendlyTip(item);
+  renderFriendlyPickPanel();
+}
+
+function bindFriendlyMarkerPickDrag(btn, item) {
+  if (!isFriendlyPickMode() || !btn || !item) return;
+  btn.addEventListener("pointerdown", (event) => {
+    if (!isFriendlyPickMode()) return;
+    if (event.button !== undefined && event.button !== 0) return;
+    event.preventDefault();
+    event.stopPropagation();
+    friendlySelectedItemId = item.id;
+    renderFriendlyPickPanel();
+    updateFriendlyTip(item);
+    friendlyPickDragState = {
+      itemId: item.id,
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      dragging: false,
+      btn,
+    };
+    try { btn.setPointerCapture(event.pointerId); } catch (_) {}
+  });
+}
+
+function onFriendlyPickPointerMove(event) {
+  const state = friendlyPickDragState;
+  if (!state || state.pointerId !== event.pointerId) return;
+  const dx = event.clientX - state.startX;
+  const dy = event.clientY - state.startY;
+  if (!state.dragging) {
+    if ((dx * dx + dy * dy) < (FRIENDLY_PICK_DRAG_THRESHOLD_PX * FRIENDLY_PICK_DRAG_THRESHOLD_PX)) return;
+    state.dragging = true;
+    if (state.btn) state.btn.classList.add("is-dragging");
+  }
+  const pct = friendlyMapPctFromEvent(event);
+  if (!pct || !state.btn) return;
+  state.btn.style.left = `${pct.mapX}%`;
+  state.btn.style.top = `${pct.mapY}%`;
+  updateFriendlyPickMark(pct.mapX, pct.mapY);
+  if (friendlyTip && !friendlyTip.hidden) {
+    friendlyTip.style.left = `${pct.mapX}%`;
+    friendlyTip.style.top = `${pct.mapY}%`;
+  }
+  state.lastMapX = pct.mapX;
+  state.lastMapY = pct.mapY;
+}
+
+function onFriendlyPickPointerUp(event) {
+  const state = friendlyPickDragState;
+  if (!state || state.pointerId !== event.pointerId) return;
+  friendlyPickDragState = null;
+  if (state.btn) {
+    state.btn.classList.remove("is-dragging");
+    try { state.btn.releasePointerCapture(event.pointerId); } catch (_) {}
+  }
+  const item = friendlyItemById(state.itemId);
+  if (!item) return;
+  if (state.dragging && Number.isFinite(state.lastMapX) && Number.isFinite(state.lastMapY)) {
+    recordFriendlyPickForItem(item, state.lastMapX, state.lastMapY);
+    renderFriendlySpacesMap();
+    return;
+  }
+  /* Short press: select this pin (do not toggle off if already selected in pointerdown). */
+  friendlySelectedItemId = item.id;
+  updateFriendlyTip(item);
+  renderFriendlySpacesMap();
+  renderFriendlyPickPanel();
+}
+
+function bindFriendlyPickModeOnce() {
+  if (friendlyPickModeBound || !isFriendlyPickMode()) return;
+  friendlyPickModeBound = true;
+  document.body.classList.add("is-pick-mode");
+  if (friendlyPickPanel) friendlyPickPanel.hidden = false;
+  renderFriendlyPickPanel();
+  document.addEventListener("pointermove", onFriendlyPickPointerMove);
+  document.addEventListener("pointerup", onFriendlyPickPointerUp);
+  document.addEventListener("pointercancel", onFriendlyPickPointerUp);
+  if (friendlyMapEl) {
+    friendlyMapEl.addEventListener("click", (event) => {
+      if (!isFriendlyPickMode()) return;
+      if (event.target.closest(".ga-friendly-marker")) return;
+      if (event.target.closest(".ga-friendly-map-legend")) return;
+      if (event.target.closest(".ga-friendly-pick-panel")) return;
+      /* Blank map: no unbound records. Optional red-mark preview only. */
+      const pct = friendlyMapPctFromEvent(event);
+      if (!pct) return;
+      event.stopPropagation();
+      updateFriendlyPickMark(pct.mapX, pct.mapY);
+      if (friendlyPickLast) friendlyPickLast.textContent = `${pct.mapX}, ${pct.mapY}（未綁定，不進列表）`;
+    });
+  }
+  if (friendlyPickSaveBtn) {
+    friendlyPickSaveBtn.addEventListener("click", async (event) => {
+      event.stopPropagation();
+      await saveFriendlyPickExport();
+    });
+  }
+  if (friendlyPickCopyBtn) {
+    friendlyPickCopyBtn.addEventListener("click", async (event) => {
+      event.stopPropagation();
+      const text = friendlyPickExportText();
+      if (!text) return;
+      try {
+        await navigator.clipboard.writeText(text);
+        friendlyPickCopyBtn.textContent = "已複製";
+        window.setTimeout(() => { friendlyPickCopyBtn.textContent = "複製全部"; }, 1200);
+      } catch (_) {
+        window.prompt("複製以下文字：", text);
+      }
+    });
+  }
+  if (friendlyPickClearPreviewBtn) {
+    friendlyPickClearPreviewBtn.addEventListener("click", (event) => {
+      event.stopPropagation();
+      clearFriendlyPickPreview();
+    });
+  }
+  if (friendlyPickClearListBtn) {
+    friendlyPickClearListBtn.addEventListener("click", (event) => {
+      event.stopPropagation();
+      friendlyPickRecords.length = 0;
+      if (friendlyPickLast) friendlyPickLast.textContent = "—";
+      if (friendlyPickMarkEl) friendlyPickMarkEl.hidden = true;
+      setFriendlyPickSaveStatus("", false);
+      renderFriendlyPickPanel();
+    });
+  }
+  if (friendlyPickClearSelectBtn) {
+    friendlyPickClearSelectBtn.addEventListener("click", (event) => {
+      event.stopPropagation();
+      friendlySelectedItemId = null;
+      updateFriendlyTip(null);
+      renderFriendlySpacesMap();
+      renderFriendlyPickPanel();
+    });
+  }
+}
+
+function friendlyCampusZoneEntries() {
+  return Array.isArray(GA_DATA.campusZones) ? GA_DATA.campusZones : [];
+}
+
+function friendlyCampusZoneById(campusId) {
+  return friendlyCampusZoneEntries().find((zone) => zone.id === campusId) || null;
+}
+
+function syncFriendlyCampusSelect() {
+  if (!friendlyCampusSelect) return;
+  const next = friendlySelectedCampus || "";
+  if (friendlyCampusSelect.value !== next) friendlyCampusSelect.value = next;
+}
+
+function populateFriendlyCampusSelect() {
+  if (!friendlyCampusSelect || !friendlyCampusControl) return;
+  const campuses = Array.isArray(GA_DATA.campuses) && GA_DATA.campuses.length
+    ? GA_DATA.campuses
+    : friendlyCampusZoneEntries().map((zone) => zone.id);
+  friendlyCampusSelect.innerHTML = "";
+  const allOpt = document.createElement("option");
+  allOpt.value = "";
+  allOpt.textContent = "全部校區";
+  friendlyCampusSelect.appendChild(allOpt);
+  campuses.forEach((campus) => {
+    const id = String(campus || "").trim();
+    if (!id) return;
+    const opt = document.createElement("option");
+    opt.value = id;
+    const zone = friendlyCampusZoneById(id);
+    opt.textContent = (zone && zone.label) || `${id}校區`;
+    friendlyCampusSelect.appendChild(opt);
+  });
+  syncFriendlyCampusSelect();
+}
+
+function bindFriendlyCampusSelectOnce() {
+  if (friendlyCampusSelectBound || !friendlyCampusSelect) return;
+  friendlyCampusSelectBound = true;
+  friendlyCampusSelect.addEventListener("change", () => {
+    const value = String(friendlyCampusSelect.value || "").trim();
+    if (!value) {
+      clearFriendlyCampusSelection();
+      return;
+    }
+    if (value && value === friendlySelectedCampus && friendlyCampusPanelDismissed) {
+      friendlyCampusPanelDismissed = false;
+      renderFriendlySpacesMap();
+      return;
+    }
+    selectFriendlyCampus(value);
+  });
+}
+
+function clearFriendlyCampusSelection() {
+  friendlyCampusPanelDismissed = false;
+  friendlySelectedCampus = null;
+  friendlySelectedItemId = null;
+  updateFriendlyTip(null);
+  syncFriendlyCampusSelect();
+  renderFriendlySpaces();
+}
+
+function selectFriendlyCampus(campusId) {
+  if (!campusId) {
+    clearFriendlyCampusSelection();
+    return;
+  }
+  friendlyCampusPanelDismissed = false;
+  friendlySelectedCampus = campusId;
+  friendlySelectedItemId = null;
+  updateFriendlyTip(null);
+  syncFriendlyCampusSelect();
+  renderFriendlySpaces();
+}
+
+function dismissFriendlyCampusPanel() {
+  friendlyCampusPanelDismissed = true;
+  friendlyCampusPanelCollapsed = true;
+  friendlyCampusPanelPinned = false;
+  friendlySelectedItemId = null;
+  updateFriendlyTip(null);
+  renderFriendlyCampusPanel();
+  renderFriendlySpacesMap();
+}
+
+function pinFriendlyCampusPanel() {
+  friendlyCampusPanelDismissed = false;
+  friendlyCampusPanelPinned = true;
+  friendlyCampusPanelCollapsed = false;
+  if (friendlyCampusPanel) friendlyCampusPanel.classList.add("is-pinned");
+  renderFriendlyCampusPanel();
+}
+
+function unpinFriendlyCampusPanel() {
+  friendlyCampusPanelPinned = false;
+  friendlyCampusPanelCollapsed = true;
+  if (friendlyCampusPanel) friendlyCampusPanel.classList.remove("is-pinned");
+  renderFriendlyCampusPanel();
+}
+
+/** Head click: pin open, or unpin+collapse if already pinned. */
+function toggleFriendlyCampusPanelCollapsed() {
+  if (friendlyCampusPanelDismissed || !friendlyCampusPanelPinned) {
+    pinFriendlyCampusPanel();
+    return;
+  }
+  unpinFriendlyCampusPanel();
+}
+
+function prefersFriendlyCampusPanelHover() {
+  return window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+}
+
+function openFriendlyCampusPanelFromHover() {
+  if (friendlyCampusPanelDismissed) friendlyCampusPanelDismissed = false;
+  if (!friendlyCampusPanelCollapsed) return;
+  friendlyCampusPanelCollapsed = false;
+  renderFriendlyCampusPanel();
+}
+
+function closeFriendlyCampusPanelFromHover() {
+  if (friendlyCampusPanelPinned) return;
+  if (friendlyCampusPanelCollapsed) return;
+  friendlyCampusPanelCollapsed = true;
+  renderFriendlyCampusPanel();
+}
+
+function bindFriendlyMapShellOnce() {
+  if (friendlyMapShellBound || !friendlyMapShell) return;
+  friendlyMapShellBound = true;
+  friendlyMapShell.addEventListener("click", (event) => {
+    if (event.target.closest(".ga-friendly-marker")) return;
+    if (event.target.closest(".ga-friendly-map-legend")) return;
+    if (event.target.closest(".ga-friendly-campus-panel")) return;
+    if (event.target.closest(".ga-friendly-pick-panel")) return;
+    /* Pick mode: blank-map clicks are handled by #friendlyMap; do not clear selection. */
+    if (isFriendlyPickMode()) return;
+    if (!friendlySelectedItemId && !friendlySelectedCampus) return;
+    if (friendlySelectedItemId && !friendlySelectedCampus) {
+      friendlySelectedItemId = null;
+      updateFriendlyTip(null);
+      renderFriendlySpacesMap();
+      return;
+    }
+    /* Keep campus filter when clicking map blank; only clear pin tip selection. */
+    if (friendlySelectedItemId) {
+      friendlySelectedItemId = null;
+      updateFriendlyTip(null);
+      renderFriendlySpacesMap();
+    }
+  });
+  const panelHead = friendlyCampusPanel && friendlyCampusPanel.querySelector(".ga-friendly-campus-panel-head");
+  if (panelHead) {
+    panelHead.addEventListener("click", (event) => {
+      event.stopPropagation();
+      toggleFriendlyCampusPanelCollapsed();
+    });
+  }
+  if (friendlyCampusPanel) {
+    friendlyCampusPanel.addEventListener("pointerenter", () => {
+      if (!prefersFriendlyCampusPanelHover()) return;
+      openFriendlyCampusPanelFromHover();
+    });
+    friendlyCampusPanel.addEventListener("pointerleave", () => {
+      if (!prefersFriendlyCampusPanelHover()) return;
+      closeFriendlyCampusPanelFromHover();
+    });
+  }
+}
+
+function bindFriendlyCampusKeysOnce() {
+  if (friendlyCampusKeysBound) return;
+  friendlyCampusKeysBound = true;
+  document.addEventListener("click", (event) => {
+    if (!isFriendlySpacesChart()) return;
+    if (!friendlyCampusPanelPinned) return;
+    if (event.target.closest("#friendlyCampusPanel")) return;
+    unpinFriendlyCampusPanel();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape" || !isFriendlySpacesChart()) return;
+    if (isFriendlyPickMode() && friendlySelectedItemId) {
+      friendlySelectedItemId = null;
+      updateFriendlyTip(null);
+      renderFriendlySpacesMap();
+      renderFriendlyPickPanel();
+      return;
+    }
+    const isCollapsed = friendlyCampusPanelCollapsed || friendlyCampusPanelDismissed;
+    if (isCollapsed && !friendlySelectedItemId && !friendlyCampusPanelPinned) return;
+    if (isCollapsed && friendlySelectedItemId) {
+      friendlySelectedItemId = null;
+      updateFriendlyTip(null);
+      renderFriendlySpacesMap();
+      return;
+    }
+    dismissFriendlyCampusPanel();
+  });
+}
+
+function updateFriendlyTip(item) {
+  if (!friendlyTip || !friendlyTipTitle || !friendlyTipMeta) return;
+  if (!item) {
+    friendlyTip.hidden = true;
+    friendlyTipTitle.textContent = "";
+    friendlyTipMeta.textContent = "";
+    return;
+  }
+  const qtyText = item.status === "planned"
+    ? (item.quantity > 0 ? `${fmt.format(item.quantity)} 處 · 規劃中` : "規劃中")
+    : `${fmt.format(item.quantity)} 處`;
+  friendlyTipTitle.textContent = item.location;
+  friendlyTipMeta.textContent = [item.campus, item.categoryLabel, qtyText].filter(Boolean).join(" · ");
+  const preview = friendlyPickPreviewById.get(item.id);
+  const tipX = preview ? preview.mapX : item.mapX;
+  const tipY = preview ? preview.mapY : item.mapY;
+  friendlyTip.style.left = `${Number(tipX) || 50}%`;
+  friendlyTip.style.top = `${Number(tipY) || 50}%`;
+  friendlyTip.hidden = false;
+}
+
+function selectFriendlyItem(itemId) {
+  friendlySelectedItemId = friendlySelectedItemId === itemId ? null : itemId;
+  if (friendlySelectedItemId) {
+    updateFriendlyTip(friendlyItemById(friendlySelectedItemId));
+  } else {
+    updateFriendlyTip(null);
+  }
+  renderFriendlySpacesMap();
+  if (isFriendlyPickMode()) renderFriendlyPickPanel();
+}
+
+function renderFriendlyCategoryChips() {
+  if (!categoryChips || !isFriendlySpacesChart()) {
+    if (categoryChips) categoryChips.hidden = true;
+    return;
+  }
+  categoryChips.hidden = false;
+  categoryChips.setAttribute("aria-label", "選擇設施類型");
+  categoryChips.innerHTML = "";
+  friendlyCategoryEntries().forEach((entry) => {
+    const category = entry.id || entry;
+    const label = entry.label || entry;
+    const style = friendlyStyleForCategory(category);
+    const active = category === selectedCategory;
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = `ga-category-chip${active ? " is-active" : ""}`;
+    btn.dataset.category = category;
+    btn.setAttribute("role", "option");
+    btn.setAttribute("aria-selected", active ? "true" : "false");
+    btn.textContent = label;
+    if (active) {
+      btn.style.background = style.color;
+      btn.style.color = "#fff";
+      btn.style.borderColor = "transparent";
+      btn.style.boxShadow = `0 4px 10px ${hexToRgba(style.color, 0.22)}`;
+    }
+    btn.addEventListener("click", () => {
+      if (category === selectedCategory) return;
+      friendlySelectedItemId = null;
+      selectCategoryFocus(category);
+    });
+    categoryChips.appendChild(btn);
+  });
+  categoryChips.scrollLeft = 0;
+}
+
+function updateFriendlySummary() {
+  if (friendlySummary) friendlySummary.hidden = true;
+}
+
+function renderFriendlyCampusPanel() {
+  if (!friendlyCampusPanel || !friendlyCampusPanelBody || !friendlyCampusPanelTitle) return;
+  const isCollapsed = friendlyCampusPanelCollapsed || friendlyCampusPanelDismissed;
+  const zone = friendlySelectedCampus ? friendlyCampusZoneById(friendlySelectedCampus) : null;
+  const campusLabel = friendlySelectedCampus
+    ? ((zone && zone.label) || `${friendlySelectedCampus}校區`)
+    : "全部校區";
+  friendlyCampusPanel.hidden = false;
+  friendlyCampusPanel.classList.toggle("is-collapsed", isCollapsed);
+  friendlyCampusPanel.classList.toggle("is-pinned", friendlyCampusPanelPinned && !isCollapsed);
+  friendlyCampusPanelTitle.textContent = campusLabel;
+  if (friendlyCampusPanelToggle) {
+    friendlyCampusPanelToggle.setAttribute("aria-expanded", isCollapsed ? "false" : "true");
+    friendlyCampusPanelToggle.setAttribute(
+      "aria-label",
+      isCollapsed ? "展開校區資訊" : "收合校區資訊"
+    );
+  }
+
+  const typeEntries = friendlyCategoryEntries().filter((entry) => (entry.id || entry) !== "all");
+  const campusItems = friendlySelectedCampus
+    ? (GA_DATA.items || []).filter((item) => item.campus === friendlySelectedCampus)
+    : (GA_DATA.items || []);
+  let rows = typeEntries.map((entry) => {
+    const id = entry.id;
+    const active = campusItems.filter((item) => item.category === id && item.status === "active").length;
+    const planned = campusItems.filter((item) => item.category === id && item.status === "planned").length;
+    return { id, label: entry.label || id, active, planned, style: friendlyStyleForCategory(id) };
+  });
+  if (selectedCategory && selectedCategory !== "all") {
+    rows = [
+      ...rows.filter((row) => row.id === selectedCategory),
+      ...rows.filter((row) => row.id !== selectedCategory),
+    ];
+  }
+
+  friendlyCampusPanelBody.innerHTML = "";
+  rows.forEach((row) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "ga-friendly-campus-panel-row" + (row.id === selectedCategory ? " is-focus" : "");
+    const swatch = document.createElement("span");
+    swatch.className = "ga-friendly-legend-swatch";
+    applyFriendlySymbol(swatch, { color: row.style.color, icon: row.style.icon });
+    const label = document.createElement("span");
+    label.className = "ga-friendly-campus-panel-label";
+    label.textContent = row.label;
+    const count = document.createElement("span");
+    count.className = "ga-friendly-campus-panel-count";
+    count.textContent = `${row.active} 處`;
+    btn.appendChild(swatch);
+    btn.appendChild(label);
+    btn.appendChild(count);
+    btn.addEventListener("click", (event) => {
+      event.stopPropagation();
+      if (row.id === selectedCategory) return;
+      friendlySelectedItemId = null;
+      selectCategoryFocus(row.id);
+    });
+    friendlyCampusPanelBody.appendChild(btn);
+  });
+
+  const scopedItems = (selectedCategory && selectedCategory !== "all")
+    ? campusItems.filter((item) => item.category === selectedCategory)
+    : campusItems;
+  const activeTotal = scopedItems.filter((item) => item.status === "active").length;
+  const plannedTotal = scopedItems.filter((item) => item.status === "planned").length;
+  const fillCampusMeta = (el) => {
+    if (!el) return;
+    el.textContent = "";
+    const active = document.createElement("span");
+    active.className = "is-active";
+    active.textContent = `已啟用 ${activeTotal} 處`;
+    el.appendChild(active);
+    if (plannedTotal) {
+      const sep = document.createElement("span");
+      sep.className = "is-sep";
+      sep.textContent = " · ";
+      const planned = document.createElement("span");
+      planned.className = "is-planned";
+      planned.textContent = `規劃中 ${plannedTotal} 處`;
+      el.appendChild(sep);
+      el.appendChild(planned);
+    }
+  };
+  fillCampusMeta(friendlyCampusPanelMeta);
+  fillCampusMeta(friendlyCampusPanelHeadMeta);
+}
+
+function renderFriendlyMapLegend() {
+  if (!friendlyMapLegend) return;
+  const allEntries = friendlyCategoryEntries().filter((entry) => (entry.id || entry) !== "all");
+  const entries = selectedCategory === "all"
+    ? allEntries
+    : allEntries.filter((entry) => (entry.id || entry) === selectedCategory);
+  const campusItems = friendlySelectedCampus
+    ? (GA_DATA.items || []).filter((item) => item.campus === friendlySelectedCampus)
+    : (GA_DATA.items || []);
+  const campusLabel = friendlySelectedCampus
+    ? ((friendlyCampusZoneById(friendlySelectedCampus) || {}).label || `${friendlySelectedCampus}校區`)
+    : "全部校區";
+  const scopedItems = selectedCategory === "all"
+    ? campusItems
+    : campusItems.filter((item) => item.category === selectedCategory);
+  const plannedTotal = scopedItems.filter((item) => item.status === "planned").length;
+  const campusPlannedTotal = campusItems.filter((item) => item.status === "planned").length;
+  friendlyMapLegend.innerHTML = "";
+  const title = document.createElement("h3");
+  title.textContent = campusLabel;
+  friendlyMapLegend.appendChild(title);
+  entries.forEach((entry) => {
+    const style = friendlyStyleForCategory(entry.id);
+    const row = document.createElement("div");
+    row.className = "ga-friendly-legend-row";
+    const swatch = document.createElement("span");
+    swatch.className = "ga-friendly-legend-swatch";
+    applyFriendlySymbol(swatch, { color: style.color, icon: style.icon });
+    const label = document.createElement("span");
+    label.className = "ga-friendly-legend-label";
+    label.textContent = entry.label || entry.id;
+    const count = document.createElement("span");
+    count.className = "ga-friendly-legend-count";
+    count.textContent = String(
+      campusItems.filter((item) => item.category === entry.id && item.status === "active").length
+    );
+    row.appendChild(swatch);
+    row.appendChild(label);
+    row.appendChild(count);
+    friendlyMapLegend.appendChild(row);
+  });
+  if (plannedTotal > 0) {
+    const plannedRow = document.createElement("div");
+    plannedRow.className = "ga-friendly-legend-row";
+    const plannedSwatch = document.createElement("span");
+    plannedSwatch.className = "ga-friendly-legend-swatch is-planned";
+    applyFriendlySymbol(plannedSwatch, { color: "#64748b", planned: true });
+    const plannedLabel = document.createElement("span");
+    plannedLabel.className = "ga-friendly-legend-label";
+    plannedLabel.textContent = "規劃中";
+    const plannedCount = document.createElement("span");
+    plannedCount.className = "ga-friendly-legend-count";
+    plannedCount.textContent = String(plannedTotal);
+    plannedRow.appendChild(plannedSwatch);
+    plannedRow.appendChild(plannedLabel);
+    plannedRow.appendChild(plannedCount);
+    friendlyMapLegend.appendChild(plannedRow);
+  }
+  const targetRows = allEntries.length + (campusPlannedTotal > 0 ? 1 : 0);
+  let rowCount = entries.length + (plannedTotal > 0 ? 1 : 0);
+  while (rowCount < targetRows) {
+    const spacer = document.createElement("div");
+    spacer.className = "ga-friendly-legend-row is-spacer";
+    spacer.setAttribute("aria-hidden", "true");
+    const swatch = document.createElement("span");
+    swatch.className = "ga-friendly-legend-swatch";
+    spacer.appendChild(swatch);
+    friendlyMapLegend.appendChild(spacer);
+    rowCount += 1;
+  }
+}
+
+function renderFriendlySpacesMap() {
+  if (!friendlyMapCard || !friendlyMarkers) return;
+  bindFriendlyMapShellOnce();
+  bindFriendlyCampusKeysOnce();
+  bindFriendlyPickModeOnce();
+  friendlyMapCard.hidden = false;
+  if (friendlyMapCredit) {
+    friendlyMapCredit.textContent = GA_DATA.basemapCredit || "國立成功大學校園平面圖";
+  }
+  renderFriendlyMapLegend();
+  renderFriendlyCampusPanel();
+  const items = friendlyVisibleItems();
+  friendlyMarkers.innerHTML = "";
+  items.forEach((item) => {
+    const style = friendlyStyleForCategory(item.category);
+    const planned = item.status === "planned";
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "ga-friendly-marker" + (planned ? " is-planned" : "");
+    if (item.id && item.id === friendlySelectedItemId) btn.classList.add("is-selected");
+    if (friendlySelectedCampus && item.campus !== friendlySelectedCampus) btn.classList.add("is-dimmed");
+    btn.dataset.itemId = item.id || "";
+    btn.title = `${item.categoryLabel || ""} · ${item.campus} · ${item.location}`;
+    btn.setAttribute("aria-label", btn.title);
+    const preview = friendlyPickPreviewById.get(item.id);
+    const mapX = preview ? preview.mapX : item.mapX;
+    const mapY = preview ? preview.mapY : item.mapY;
+    btn.style.left = `${Number(mapX) || 50}%`;
+    btn.style.top = `${Number(mapY) || 50}%`;
+    applyFriendlySymbol(btn, { color: style.color, icon: style.icon, planned });
+    if (isFriendlyPickMode()) {
+      bindFriendlyMarkerPickDrag(btn, item);
+    } else {
+      btn.addEventListener("click", (event) => {
+        event.stopPropagation();
+        selectFriendlyItem(item.id);
+      });
+    }
+    btn.addEventListener("mouseenter", () => {
+      if (friendlySelectedItemId) return;
+      if (friendlyPickDragState) return;
+      updateFriendlyTip(item);
+    });
+    btn.addEventListener("mouseleave", () => {
+      if (friendlySelectedItemId) return;
+      if (friendlyPickDragState) return;
+      updateFriendlyTip(null);
+    });
+    friendlyMarkers.appendChild(btn);
+  });
+  updateFriendlyTip(friendlyItemById(friendlySelectedItemId));
+  if (isFriendlyPickMode()) renderFriendlyPickPanel();
+}
+
+function paintFriendlySpacesCampusBars() {
+  renderFriendlySpacesMap();
+}
+
+function renderFriendlySpaces() {
+  renderFriendlyCategoryChips();
+  updateFriendlySummary();
+  syncFriendlyCampusSelect();
+  renderFriendlySpacesMap();
+}
+
+function initFriendlySpacesSelect() {
+  selectedCategory = GA_DATA.defaultCategory || "all";
+  friendlySelectedCampus = null;
+  friendlySelectedItemId = null;
+  friendlyCampusPanelDismissed = false;
+  friendlyCampusPanelCollapsed = true;
+  visibleTrendCategories = new Set([selectedCategory]);
+  if (locationControl) locationControl.hidden = true;
+  if (categoryControl) categoryControl.hidden = true;
+  if (metricSwitch) metricSwitch.hidden = true;
+  if (yearControl) yearControl.hidden = true;
+  if (timeGrainSwitch) timeGrainSwitch.hidden = true;
+  if (qualityHead) qualityHead.hidden = true;
+  if (friendlySummary) friendlySummary.hidden = true;
+  if (friendlyMapCard) friendlyMapCard.hidden = false;
+  if (friendlyCampusControl) friendlyCampusControl.hidden = false;
+  populateFriendlyCampusSelect();
+  bindFriendlyCampusSelectOnce();
+  renderFriendlyCategoryChips();
+}
+
 function updateDom() {
+  if (isFriendlySpacesChart()) {
+    renderFriendlySpaces();
+    return;
+  }
   if (isReplacementChart()) {
     renderReplacementDom();
     return;
@@ -4456,7 +6665,7 @@ function updateDom() {
     ? `${locationAxisName()}排名-${activeValueNoun()}`
     : isMonthGrain()
       ? `月份排名-${activeValueNoun()}`
-      : `歷史排名-${activeValueNoun()}`);
+    : `歷史排名-${activeValueNoun()}`);
   if (!row) {
     setTextIfExists("rankNumber", "--");
     setTextIfExists("rankTotal", `/ 共 ${comparison.rows.length} ${rankingUnit}`);
@@ -4542,7 +6751,8 @@ const CATEGORY_COLOR_MAP = {
   "機台數": "#ca8a04",
   "用水量": "#2563eb",
   "用電量": "#0f766e",
-  "金額": "#b45309",
+  "水費": "#b45309",
+  "電費": "#b45309",
   "每度成本": "#0f766e",
 };
 
@@ -4566,9 +6776,9 @@ function avoidMeanLineColorConflict(color) {
 function categoryColor(category) {
   const base = CATEGORY_COLOR_MAP[category]
     || (() => {
-      const list = hasCategoryControl() ? GA_DATA.categories : [GA_DATA.metric];
-      const idx = Math.max(0, list.indexOf(category));
-      return CATEGORY_COLORS[idx % CATEGORY_COLORS.length];
+  const list = hasCategoryControl() ? GA_DATA.categories : [GA_DATA.metric];
+  const idx = Math.max(0, list.indexOf(category));
+  return CATEGORY_COLORS[idx % CATEGORY_COLORS.length];
     })();
   return avoidMeanLineColorConflict(base);
 }
@@ -4583,6 +6793,13 @@ function hexToRgba(hex, alpha) {
 }
 
 function selectCategoryFocus(category) {
+  if (isFriendlySpacesChart()) {
+    selectedCategory = category;
+    friendlySelectedItemId = null;
+    renderFriendlyCategoryChips();
+    updateAll();
+    return;
+  }
   selectedCategory = category;
   // Dual-metric: top switch sets which line stays bright; secondary resets to dim.
   visibleTrendCategories = new Set([selectedCategory]);
@@ -4704,6 +6921,7 @@ function renderCategoryChips() {
     });
     categoryChips.appendChild(btn);
   });
+  notifyPortalLayoutNow();
 }
 
 function trendLineLegendIcon() {
@@ -4739,6 +6957,7 @@ function renderTrendToggles() {
       });
       trendToggles.appendChild(btn);
     });
+    notifyPortalLayoutNow();
     return;
   }
   if (!hasTrendToggles()) {
@@ -4765,6 +6984,7 @@ function renderTrendToggles() {
     });
     trendToggles.appendChild(btn);
   });
+  notifyPortalLayoutNow();
 }
 
 function trendDialogScope() {
@@ -5035,7 +7255,7 @@ function renderDualMetricYearTrend() {
       y: values,
       yaxis,
       line: { color: bright ? color : hexToRgba(color, 0.26), width: 3.4 },
-      marker: {
+    marker: {
         color: years.map((year) => (focusPoint && String(year) === String(selectedYear) ? color : "#ffffff")),
         size: years.map((year) => (focusPoint && String(year) === String(selectedYear) ? 13 : 8)),
         line: { color: bright ? color : hexToRgba(color, 0.32), width: 2 },
@@ -5133,8 +7353,8 @@ function renderMonthTrend() {
       xaxis: { visible: false },
       yaxis: { visible: false },
       annotations: [{ text: "目前沒有可繪製的月趨勢資料", x: 0.5, y: 0.5, xref: "paper", yref: "paper", showarrow: false, font: { size: 14, color: "#64748b" } }],
-      showlegend: false,
-    }, { displayModeBar: false, responsive: true });
+    showlegend: false,
+  }, { displayModeBar: false, responsive: true });
     return;
   }
   const focusRows = monthlyRowsForYear(selectedYear, selectedCategory);
@@ -5190,6 +7410,7 @@ function renderMonthTrend() {
 }
 
 function renderTrend() {
+  if (isFriendlySpacesChart()) return;
   if (qualityFormula) qualityFormula.hidden = true;
   if (isReplacementChart()) {
     renderReplacementTrend();
@@ -5289,14 +7510,14 @@ function renderTrend() {
       font: { size: isCompactViewport() ? 16 : 19, color: "#101827" },
     },
     shapes: [{
-      type: "line",
-      x0: selected.year,
-      x1: selected.year,
-      y0: 0,
-      y1: 1,
-      xref: "x",
-      yref: "paper",
-      line: { color: "#d43f55", width: 2, dash: "dot" },
+        type: "line",
+        x0: selected.year,
+        x1: selected.year,
+        y0: 0,
+        y1: 1,
+        xref: "x",
+        yref: "paper",
+        line: { color: "#d43f55", width: 2, dash: "dot" },
     }],
     annotations,
     margin: trendPlotMargins("year"),
@@ -5453,8 +7674,8 @@ function renderMonthOverview() {
       margin: { l: 28, r: 28, t: 38, b: 18 },
       paper_bgcolor: "rgba(0,0,0,0)",
       plot_bgcolor: "#ffffff",
-      showlegend: false,
-    }, { displayModeBar: false, responsive: true });
+    showlegend: false,
+  }, { displayModeBar: false, responsive: true });
     bindAggregatePieCategoryClick();
     return;
   }
@@ -5532,6 +7753,7 @@ function renderMonthOverview() {
 }
 
 function renderOverview() {
+  if (isFriendlySpacesChart()) return;
   if (isReplacementChart()) {
     renderReplacementOverview();
     return;
@@ -5922,11 +8144,12 @@ function closeMonthPopover() {
 
 function openMonthPopover({ pin = false } = {}) {
   if (!canOpenMonthPopover()) return;
+  forceCloseCampusDockUi();
   const alreadyOpen = monthPopover && !monthPopover.hidden;
   clearMonthPopoverCloseTimer();
   // Native <select> + hover reopen: never resync while already open or mid-edit.
   if (!alreadyOpen) {
-    syncMonthRangeControls();
+  syncMonthRangeControls();
   }
   if (pin) monthPopoverPinned = true;
   if (monthPopover) monthPopover.hidden = false;
@@ -5953,6 +8176,7 @@ function closeReplacementMetricPopover() {
 
 function openReplacementMetricPopover({ pin = false } = {}) {
   if (!isReplacementChart() || !replacementMetricPopover || !replacementMetricTop) return;
+  forceCloseCampusDockUi();
   clearReplacementMetricPopoverCloseTimer();
   renderReplacementMetricOptions();
   if (pin) replacementMetricPopoverPinned = true;
@@ -5985,12 +8209,17 @@ function scheduleCloseMonthPopover() {
     if (monthPopoverPinned || monthRangeSelectActive) return;
     if (monthPopover && monthPopover.contains(document.activeElement)) return;
     if (coverageWrap && coverageWrap.matches(":hover")) return;
-    closeMonthPopover();
+  closeMonthPopover();
   }, 240);
 }
 
 function updateAll() {
   updateChartSubtitle();
+  if (isFriendlySpacesChart()) {
+    syncGrainBodyClass();
+    renderFriendlySpaces();
+    return;
+  }
   updateLocationScopeMeta();
   updateYearControlLabel();
   syncGrainBodyClass();
@@ -5999,6 +8228,27 @@ function updateAll() {
   renderTrendToggles();
   renderTrend();
   renderOverview();
+  schedulePortalLayoutNotify();
+}
+
+let portalLayoutNotifyTimer = null;
+
+function notifyPortalLayoutNow() {
+  if (new URLSearchParams(window.location.search).get("portal") !== "1") return;
+  try {
+    window.parent.postMessage({ type: "oga:chart-layout" }, "*");
+  } catch (_error) {
+    /* ignore cross-origin */
+  }
+}
+
+function schedulePortalLayoutNotify() {
+  if (new URLSearchParams(window.location.search).get("portal") !== "1") return;
+  if (portalLayoutNotifyTimer !== null) window.clearTimeout(portalLayoutNotifyTimer);
+  portalLayoutNotifyTimer = window.setTimeout(() => {
+    portalLayoutNotifyTimer = null;
+    notifyPortalLayoutNow();
+  }, 180);
 }
 
 function notifyPortalReady() {
@@ -6008,6 +8258,7 @@ function notifyPortalReady() {
   } catch (_error) {
     /* ignore cross-origin */
   }
+  schedulePortalLayoutNotify();
 }
 
 function populateYearSelect() {
@@ -6053,6 +8304,10 @@ function populateYearSelect() {
 }
 
 function initSelect() {
+  if (isFriendlySpacesChart()) {
+    initFriendlySpacesSelect();
+    return;
+  }
   if (GA_DATA.locations && GA_DATA.locations.length) {
     selectedLocation = GA_DATA.defaultLocation || GA_DATA.locations[0];
     const singleLocation = GA_DATA.locations.length <= 1;
@@ -6068,27 +8323,27 @@ function initSelect() {
         selectedLocation = GA_DATA.defaultLocation || "全校區";
       }
     } else {
-      locationControl.hidden = false;
+    locationControl.hidden = false;
       if (locationLabel) {
         locationLabel.textContent = GA_DATA.locationLabel || "選擇地點";
         locationLabel.setAttribute("for", "locationSelect");
       }
       locationSelect.hidden = false;
       locationSelect.disabled = false;
-      locationSelect.innerHTML = "";
-      GA_DATA.locations.forEach((location) => {
-        const opt = document.createElement("option");
-        opt.value = location;
-        opt.textContent = location;
-        locationSelect.appendChild(opt);
-      });
-      locationSelect.value = selectedLocation;
-      locationSelect.addEventListener("change", (event) => {
-        selectedLocation = event.target.value;
-        resetMonthRange();
-        populateYearSelect();
-        updateAll();
-      });
+    locationSelect.innerHTML = "";
+    GA_DATA.locations.forEach((location) => {
+      const opt = document.createElement("option");
+      opt.value = location;
+      opt.textContent = location;
+      locationSelect.appendChild(opt);
+    });
+    locationSelect.value = selectedLocation;
+    locationSelect.addEventListener("change", (event) => {
+      selectedLocation = event.target.value;
+      resetMonthRange();
+      populateYearSelect();
+      updateAll();
+    });
     }
     updateLocationScopeMeta();
   } else {
@@ -6127,15 +8382,15 @@ function initSelect() {
       }
       if (categorySelect) {
         categorySelect.hidden = false;
-        categorySelect.innerHTML = "";
-        GA_DATA.categories.forEach((category) => {
-          const opt = document.createElement("option");
-          opt.value = category;
+    categorySelect.innerHTML = "";
+    GA_DATA.categories.forEach((category) => {
+      const opt = document.createElement("option");
+      opt.value = category;
           opt.textContent = categoryDisplayName(category);
-          categorySelect.appendChild(opt);
-        });
-        categorySelect.value = selectedCategory;
-        categorySelect.addEventListener("change", (event) => {
+      categorySelect.appendChild(opt);
+    });
+    categorySelect.value = selectedCategory;
+    categorySelect.addEventListener("change", (event) => {
           selectCategoryFocus(event.target.value);
         });
       }
@@ -6193,10 +8448,10 @@ function initSelect() {
           item.classList.toggle("active", item.dataset.timeGrain === timeGrain);
         });
         closeMonthPopover();
-        populateYearSelect();
+  populateYearSelect();
         if (isMonthGrain()) ensureSelectedMonth();
-        updateAll();
-      });
+    updateAll();
+  });
     });
   } else if (timeGrainSwitch) {
     timeGrainSwitch.hidden = true;
@@ -6207,8 +8462,8 @@ function initSelect() {
     selectYearFocus(event.target.value);
   });
   if (yearMonthsTop && !isReplacementChart()) {
-    yearMonthsTop.addEventListener("click", (event) => {
-      event.stopPropagation();
+  yearMonthsTop.addEventListener("click", (event) => {
+    event.stopPropagation();
       if (!canOpenMonthPopover()) return;
       if (monthPopoverPinned) {
         closeMonthPopover();
@@ -6291,14 +8546,16 @@ function initSelect() {
     resetMonthRange();
     updateAll();
   });
-  document.addEventListener("click", () => {
+  document.addEventListener("click", (event) => {
     closeMonthPopover();
     closeReplacementMetricPopover();
+    if (!event.target.closest("#campusDock")) forceCloseCampusDockUi();
   });
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
       closeMonthPopover();
       closeReplacementMetricPopover();
+      forceCloseCampusDockUi();
     }
   });
   // Embed host clicks never reach this document; close pinned menus on blur / parent signal.
@@ -6307,14 +8564,17 @@ function initSelect() {
       if (monthRangeSelectActive) return;
       if (monthPopover && monthPopover.contains(document.activeElement)) return;
       if (replacementMetricPopover && replacementMetricPopover.contains(document.activeElement)) return;
+      if (campusDock && campusDock.contains(document.activeElement)) return;
       closeMonthPopover();
       closeReplacementMetricPopover();
+      forceCloseCampusDockUi();
     }, 0);
   });
   window.addEventListener("message", (event) => {
     if (!event.data || event.data.type !== "oga:close-popovers") return;
     closeMonthPopover();
     closeReplacementMetricPopover();
+    forceCloseCampusDockUi();
   });
 }
 
@@ -6331,7 +8591,8 @@ fetch(`./data.json?t=${Date.now()}`)
     GA_DATA = data;
     document.body.classList.toggle("ga-replacement-chart", isReplacementChart());
     document.body.classList.toggle("ga-ecoco-chart", isEcocoChart());
-    document.body.classList.toggle("ga-has-category-chips", usesCategoryChips());
+    document.body.classList.toggle("ga-friendly-spaces-chart", isFriendlySpacesChart());
+    document.body.classList.toggle("ga-has-category-chips", usesCategoryChips() || isFriendlySpacesChart());
     if (isStreetlightChart()) {
       overviewMode = "location";
       overviewModeTouched = false;
@@ -6341,6 +8602,7 @@ fetch(`./data.json?t=${Date.now()}`)
     }
     placeReplacementCoverageControl();
     initSelect();
+    initCampusDock();
     bindMeanLegendToggle();
     updateAll();
     notifyPortalReady();
