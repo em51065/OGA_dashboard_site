@@ -176,6 +176,10 @@ function embedChartHeightCap(measuredHeight, doc) {
 
   const hostBudget = embedDesktopChartMaxHeight();
   const chartMobile = isChartPortalCompactLayout(doc);
+  // Fixed host cannot grow: keep friendly-spaces inside budget (map shrinks instead).
+  if (isFriendlySpacesChart() && !chartMobile) {
+    return hostBudget;
+  }
   if (chartMobile || measuredHeight > hostBudget + 2) {
     return EMBED_CHART_MAX_COMPACT;
   }
@@ -222,12 +226,14 @@ function measureChartWidgetHeight(doc, root) {
   return Math.max(360, Math.ceil(extent) + pad);
 }
 
-const FRIENDLY_SPACES_EMBED_MAP_OVERHEAD_FALLBACK = 108;
+const FRIENDLY_SPACES_EMBED_MAP_OVERHEAD_FALLBACK = 168;
+const FRIENDLY_EMBED_MAP_SAFETY_PX = 24;
+const FRIENDLY_EMBED_COLLAPSED_PANEL_FALLBACK = 48;
 
 function friendlySpacesEmbedMapMaxHeight(doc, chartMaxHeight) {
   const fallback = Math.max(
-    280,
-    chartMaxHeight - FRIENDLY_SPACES_EMBED_MAP_OVERHEAD_FALLBACK
+    240,
+    chartMaxHeight - FRIENDLY_SPACES_EMBED_MAP_OVERHEAD_FALLBACK - FRIENDLY_EMBED_MAP_SAFETY_PX
   );
   if (!doc) return fallback;
 
@@ -253,12 +259,28 @@ function friendlySpacesEmbedMapMaxHeight(doc, chartMaxHeight) {
     if (mapCard) {
       const headBottom = head?.getBoundingClientRect().bottom ?? widget.getBoundingClientRect().top;
       const cardGap = Math.max(0, Math.ceil(mapCard.getBoundingClientRect().top - headBottom));
-      overhead += cardGap + 12;
+      overhead += cardGap + 8;
     }
   } else {
     overhead += 24;
   }
-  return Math.max(280, Math.floor(chartMaxHeight - overhead));
+
+  // Collapsed campus panel sits in document flow above the map; expanded overlays.
+  // Always reserve the collapsed strip so open→close cannot overflow the fixed host.
+  const campusPanel = doc.getElementById("friendlyCampusPanel");
+  if (campusPanel && !campusPanel.hidden) {
+    if (campusPanel.classList.contains("is-collapsed")) {
+      overhead += Math.ceil(campusPanel.getBoundingClientRect().height);
+    } else {
+      const panelHead = campusPanel.querySelector(".ga-friendly-campus-panel-head");
+      overhead += Math.max(
+        FRIENDLY_EMBED_COLLAPSED_PANEL_FALLBACK,
+        Math.ceil(panelHead?.getBoundingClientRect().height || 0) + 12
+      );
+    }
+  }
+
+  return Math.max(240, Math.floor(chartMaxHeight - overhead - FRIENDLY_EMBED_MAP_SAFETY_PX));
 }
 
 function applyFriendlySpacesEmbedSizing(doc) {
@@ -267,6 +289,8 @@ function applyFriendlySpacesEmbedSizing(doc) {
     doc.documentElement.style.removeProperty("--oga-embed-map-max-h");
     return;
   }
+  // Host HTML component is fixed (~1159) and cannot grow — shrink map uniformly
+  // (aspect-ratio + %-pins) so collapsed chrome + map fits without nested scroll.
   const chartMax = embedDesktopChartMaxHeight();
   const mapMax = friendlySpacesEmbedMapMaxHeight(doc, chartMax);
   doc.documentElement.style.setProperty("--oga-embed-map-max-h", `${mapMax}px`);
@@ -568,8 +592,9 @@ function measurePortalHeight() {
   let maxCap = 2400;
   if (isEmbeddedMode()) {
     maxCap = isCompactEmbed() ? EMBED_HOST_MAX_HEIGHT_COMPACT : EMBED_HOST_MAX_HEIGHT;
-    /* Report honest height when desktop embed exceeds fixed Wix host — parent can scroll. */
-    if (!isCompactEmbed() && height > EMBED_HOST_MAX_HEIGHT) {
+    /* Report honest height when desktop embed exceeds fixed Wix host — parent can scroll.
+       Friendly-spaces stays capped: host embed code cannot grow the HTML component. */
+    if (!isCompactEmbed() && height > EMBED_HOST_MAX_HEIGHT && !isFriendlySpacesChart()) {
       maxCap = EMBED_HOST_MAX_HEIGHT_COMPACT;
     }
   }
@@ -663,9 +688,25 @@ function measureChild() {
     let height = measureChartWidgetHeight(doc, root);
     if (isEmbeddedMode()) {
       const hostBudget = embedDesktopChartMaxHeight();
+      // If collapsed chrome still overflows, tighten map max once more (uniform scale; pins stay %-based).
+      if (
+        isFriendlySpacesChart() &&
+        !isCompactEmbed() &&
+        !isChartPortalCompactLayout(doc) &&
+        height > hostBudget + 2
+      ) {
+        const currentMax = Number.parseFloat(
+          doc.documentElement.style.getPropertyValue("--oga-embed-map-max-h")
+        );
+        if (Number.isFinite(currentMax) && currentMax > 240) {
+          const nextMax = Math.max(240, Math.floor(currentMax - (height - hostBudget) - 8));
+          doc.documentElement.style.setProperty("--oga-embed-map-max-h", `${nextMax}px`);
+          height = measureChartWidgetHeight(doc, root);
+        }
+      }
       let cap = embedChartHeightCap(height, doc);
       // Break clip feedback: trust widget scrollHeight when iframe is pinned at host budget.
-      if (!isCompactEmbed() && cap === hostBudget) {
+      if (!isCompactEmbed() && !isFriendlySpacesChart() && cap === hostBudget) {
         const scrollEstimate = Math.max(
           height,
           Math.ceil(root.scrollHeight || 0) + 16
