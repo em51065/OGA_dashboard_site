@@ -1582,14 +1582,15 @@
     --ga-friendly-pin-icon: clamp(9px, 2.1cqw, 15px);
     --ga-friendly-pin-icon-selected: clamp(11px, 2.55cqw, 18px);
     --ga-friendly-pin-border: clamp(1px, 0.28cqw, 2px);
-    --ga-friendly-legend-title: clamp(11px, 2.15cqw, 15px);
-    --ga-friendly-legend-text: clamp(10px, 1.95cqw, 14px);
-    --ga-friendly-legend-gap: clamp(4px, 1.05cqw, 8px);
-    --ga-friendly-legend-row-mb: clamp(4px, 1.15cqw, 9px);
-    --ga-friendly-legend-pad-block: clamp(6px, 1.4cqw, 12px);
-    --ga-friendly-legend-pad-inline: clamp(8px, 1.65cqw, 14px);
-    --ga-friendly-legend-title-mb: clamp(4px, 1.2cqw, 10px);
-    --ga-friendly-credit-size: clamp(10px, 1.7cqw, 13px);
+    /* Legend/credit read as map meta — scale smaller than pins on narrow cards. */
+    --ga-friendly-legend-title: clamp(9.5px, 1.65cqw, 13px);
+    --ga-friendly-legend-text: clamp(8.5px, 1.45cqw, 12px);
+    --ga-friendly-legend-gap: clamp(3px, 0.85cqw, 7px);
+    --ga-friendly-legend-row-mb: clamp(2px, 0.9cqw, 7px);
+    --ga-friendly-legend-pad-block: clamp(4px, 1.05cqw, 10px);
+    --ga-friendly-legend-pad-inline: clamp(6px, 1.25cqw, 12px);
+    --ga-friendly-legend-title-mb: clamp(3px, 0.95cqw, 8px);
+    --ga-friendly-credit-size: clamp(8px, 1.25cqw, 11px);
   }
   body.ga-friendly-spaces-chart .ga-friendly-map-shell {
     position: relative;
@@ -1902,7 +1903,7 @@
   }
   body.ga-friendly-spaces-chart .ga-friendly-map-legend h3 {
     margin: 0 0 var(--ga-friendly-legend-title-mb, 10px);
-    font-size: var(--ga-friendly-legend-title, 15px);
+    font-size: var(--ga-friendly-legend-title, 13px);
     font-weight: 700;
     color: #475569;
   }
@@ -1911,7 +1912,7 @@
     align-items: center;
     gap: var(--ga-friendly-legend-gap, 8px);
     margin: 0 0 var(--ga-friendly-legend-row-mb, 9px);
-    font-size: var(--ga-friendly-legend-text, 14px);
+    font-size: var(--ga-friendly-legend-text, 12px);
     line-height: 1.35;
     color: #334155;
   }
@@ -1973,7 +1974,7 @@
     bottom: 4px;
     margin: 0;
     z-index: 4;
-    font-size: var(--ga-friendly-credit-size, 13px);
+    font-size: var(--ga-friendly-credit-size, 11px);
     font-weight: 600;
     line-height: 1.25;
     color: #475569;
