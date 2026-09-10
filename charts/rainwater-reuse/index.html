@@ -1574,6 +1574,22 @@
     gap: 0;
     min-width: 0;
     flex: 1 1 auto;
+    /* Scale pins/legend with map card width; %-coords on markers stay fixed. */
+    container-type: inline-size;
+    container-name: ga-friendly-map-card;
+    --ga-friendly-pin: clamp(12px, 2.85cqw, 20px);
+    --ga-friendly-pin-selected: clamp(14px, 3.4cqw, 24px);
+    --ga-friendly-pin-icon: clamp(9px, 2.1cqw, 15px);
+    --ga-friendly-pin-icon-selected: clamp(11px, 2.55cqw, 18px);
+    --ga-friendly-pin-border: clamp(1px, 0.28cqw, 2px);
+    --ga-friendly-legend-title: clamp(11px, 2.15cqw, 15px);
+    --ga-friendly-legend-text: clamp(10px, 1.95cqw, 14px);
+    --ga-friendly-legend-gap: clamp(4px, 1.05cqw, 8px);
+    --ga-friendly-legend-row-mb: clamp(4px, 1.15cqw, 9px);
+    --ga-friendly-legend-pad-block: clamp(6px, 1.4cqw, 12px);
+    --ga-friendly-legend-pad-inline: clamp(8px, 1.65cqw, 14px);
+    --ga-friendly-legend-title-mb: clamp(4px, 1.2cqw, 10px);
+    --ga-friendly-credit-size: clamp(10px, 1.7cqw, 13px);
   }
   body.ga-friendly-spaces-chart .ga-friendly-map-shell {
     position: relative;
@@ -1617,10 +1633,10 @@
   }
   body.ga-friendly-spaces-chart .ga-friendly-marker {
     position: absolute;
-    width: 20px;
-    height: 20px;
+    width: var(--ga-friendly-pin, 20px);
+    height: var(--ga-friendly-pin, 20px);
     transform: translate(-50%, -50%);
-    border: 2px solid #fff;
+    border: var(--ga-friendly-pin-border, 2px) solid #fff;
     border-radius: 50%;
     box-shadow: 0 1px 4px rgba(15, 23, 42, 0.28);
     pointer-events: auto;
@@ -1647,24 +1663,24 @@
   }
   body.ga-friendly-spaces-chart .ga-friendly-marker.is-planned {
     background: transparent !important;
-    border-width: 2.5px;
+    border-width: clamp(1.5px, 0.35cqw, 2.5px);
     box-shadow: none;
   }
   body.ga-friendly-spaces-chart .ga-friendly-marker.is-selected {
-    width: 24px;
-    height: 24px;
+    width: var(--ga-friendly-pin-selected, 24px);
+    height: var(--ga-friendly-pin-selected, 24px);
     z-index: 4;
     box-shadow: 0 0 0 3px rgba(139, 90, 150, 0.28), 0 2px 8px rgba(15, 23, 42, 0.35);
   }
   body.ga-friendly-spaces-chart .ga-friendly-marker svg {
-    width: 15px;
-    height: 15px;
+    width: var(--ga-friendly-pin-icon, 15px);
+    height: var(--ga-friendly-pin-icon, 15px);
     display: block;
     pointer-events: none;
   }
   body.ga-friendly-spaces-chart .ga-friendly-marker.is-selected svg {
-    width: 18px;
-    height: 18px;
+    width: var(--ga-friendly-pin-icon-selected, 18px);
+    height: var(--ga-friendly-pin-icon-selected, 18px);
   }
   body.ga-friendly-spaces-chart .ga-friendly-tip {
     position: absolute;
@@ -1874,7 +1890,7 @@
     bottom: 0.8%;
     width: min(32%, 280px);
     box-sizing: border-box;
-    padding: 12px 14px 12px;
+    padding: var(--ga-friendly-legend-pad-block, 12px) var(--ga-friendly-legend-pad-inline, 14px);
     border-radius: 6px;
     background: transparent;
     border: none;
@@ -1885,18 +1901,18 @@
     overflow: visible;
   }
   body.ga-friendly-spaces-chart .ga-friendly-map-legend h3 {
-    margin: 0 0 10px;
-    font-size: 15px;
+    margin: 0 0 var(--ga-friendly-legend-title-mb, 10px);
+    font-size: var(--ga-friendly-legend-title, 15px);
     font-weight: 700;
     color: #475569;
   }
   body.ga-friendly-spaces-chart .ga-friendly-legend-row {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin: 0 0 9px;
-    font-size: 14px;
-    line-height: 1.4;
+    gap: var(--ga-friendly-legend-gap, 8px);
+    margin: 0 0 var(--ga-friendly-legend-row-mb, 9px);
+    font-size: var(--ga-friendly-legend-text, 14px);
+    line-height: 1.35;
     color: #334155;
   }
   body.ga-friendly-spaces-chart .ga-friendly-legend-row.is-spacer {
@@ -1915,10 +1931,10 @@
     color: #475569;
   }
   body.ga-friendly-spaces-chart .ga-friendly-legend-swatch {
-    width: 20px;
-    height: 20px;
+    width: var(--ga-friendly-pin, 20px);
+    height: var(--ga-friendly-pin, 20px);
     flex: 0 0 auto;
-    border: 2px solid #fff;
+    border: var(--ga-friendly-pin-border, 2px) solid #fff;
     border-radius: 50%;
     box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.12);
     display: inline-flex;
@@ -1927,14 +1943,14 @@
     box-sizing: border-box;
   }
   body.ga-friendly-spaces-chart .ga-friendly-legend-swatch svg {
-    width: 15px;
-    height: 15px;
+    width: var(--ga-friendly-pin-icon, 15px);
+    height: var(--ga-friendly-pin-icon, 15px);
     display: block;
     pointer-events: none;
   }
   body.ga-friendly-spaces-chart .ga-friendly-symbol-mask {
-    width: 15px;
-    height: 15px;
+    width: var(--ga-friendly-pin-icon, 15px);
+    height: var(--ga-friendly-pin-icon, 15px);
     display: block;
     flex: 0 0 auto;
     background: currentColor;
@@ -1942,12 +1958,12 @@
     mask: url("./inclusive-restroom.png") center / contain no-repeat;
   }
   body.ga-friendly-spaces-chart .ga-friendly-marker.is-selected .ga-friendly-symbol-mask {
-    width: 18px;
-    height: 18px;
+    width: var(--ga-friendly-pin-icon-selected, 18px);
+    height: var(--ga-friendly-pin-icon-selected, 18px);
   }
   body.ga-friendly-spaces-chart .ga-friendly-legend-swatch.is-planned {
     background: transparent !important;
-    border: 2px solid currentColor;
+    border: var(--ga-friendly-pin-border, 2px) solid currentColor;
     box-shadow: none;
   }
   body.ga-friendly-spaces-chart .ga-friendly-map-credit {
@@ -1957,7 +1973,7 @@
     bottom: 4px;
     margin: 0;
     z-index: 4;
-    font-size: 13px;
+    font-size: var(--ga-friendly-credit-size, 13px);
     font-weight: 600;
     line-height: 1.25;
     color: #475569;
@@ -2747,12 +2763,10 @@
       left: 8%;
       bottom: 0.8%;
       width: min(34%, 260px);
-      padding: 10px 12px 10px;
     }
     body.ga-friendly-spaces-chart .ga-friendly-map-credit {
       left: 10px;
       bottom: 3px;
-      font-size: 12px;
     }
     /* Friendly-spaces compact: ECOCO-like 2-col chips + full-width campus control. */
     body.ga-friendly-spaces-chart .ga-head-tools,
