@@ -153,7 +153,7 @@ function measureEmbedChromeBands() {
     0,
     Math.ceil(wrap.getBoundingClientRect().top - portal.getBoundingClientRect().top)
   );
-  const footnote = Math.ceil(foot.getBoundingClientRect().height) + 2;
+  const footnote = Math.ceil(foot.getBoundingClientRect().height) + 1;
   return { aboveFrame, footnote };
 }
 
@@ -218,7 +218,7 @@ function measureChartWidgetHeight(doc, root) {
 
   const mobileChart = isChartPortalCompactLayout(doc);
   /* Keep pad small: excess iframe height shows as empty band above the footnote. */
-  const pad = isEmbeddedMode() ? (mobileChart ? 8 : 5) : 4;
+  const pad = isEmbeddedMode() ? (mobileChart ? 4 : 2) : 2;
   return Math.max(360, Math.ceil(extent) + pad);
 }
 
@@ -557,7 +557,7 @@ function measurePortalHeight() {
   const portal = document.getElementById("ogaPortal");
   if (!portal) return 560;
   // Measure content box only — never html/body scrollHeight (tracks iframe viewport).
-  const HEIGHT_PAD = 2;
+  const HEIGHT_PAD = 1;
   const foot = portal.querySelector(".oga-footnote");
   const portalTop = portal.getBoundingClientRect().top;
   const contentBottom = foot
@@ -951,12 +951,12 @@ function prepareChildFrame() {
       }
       ${isEmbeddedMode() ? `
       /* Fit inside fixed Wix host (~1159px) without nested scroll. */
-      .ga-widget { padding: 12px 12px 4px !important; }
-      body.ga-friendly-spaces-chart .ga-widget { padding-bottom: 2px !important; }
+      .ga-widget { padding: 12px 12px 2px !important; }
+      body.ga-friendly-spaces-chart .ga-widget { padding-bottom: 0 !important; }
       .ga-head { margin-bottom: 8px !important; gap: 10px !important; }
       .ga-head-copy { padding-bottom: 8px !important; align-self: flex-start !important; margin-top: 10px !important; }
       .ga-pr-card { padding: 12px !important; }
-      body.ga-friendly-spaces-chart .ga-pr-card { padding: 0 0 2px !important; }
+      body.ga-friendly-spaces-chart .ga-pr-card { padding: 0 !important; }
       /* Friendly-spaces embed: size map from remaining iframe height, not viewport vh. */
       body.ga-friendly-spaces-chart .ga-friendly-map-shell {
         display: flex !important;

@@ -26,7 +26,7 @@ body { overflow-x: hidden; }
 .oga-portal {
   width: min(1280px, 100%);
   margin: 0 auto;
-  padding: 22px 24px 6px;
+  padding: 22px 24px 2px;
 }
 
 .oga-header {
@@ -348,8 +348,10 @@ body { overflow-x: hidden; }
   top: calc(100% + 5px);
   left: 0;
   z-index: 40;
-  width: max(100%, 274px);
-  padding: 9px;
+  /* Match theme card width so the rightmost menu is not clipped past the portal. */
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
   border: 1px solid var(--nav-border, #dce3ed);
   border-radius: 10px;
   background:
@@ -387,10 +389,10 @@ body { overflow-x: hidden; }
   position: relative;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
   min-height: 44px;
-  padding: 9px 11px;
+  padding: 8px 10px;
   border: 0;
   border-radius: 8px;
   background: transparent;
@@ -401,6 +403,13 @@ body { overflow-x: hidden; }
   text-align: left;
   cursor: pointer;
   transition: background 120ms ease, color 120ms ease, transform 120ms ease;
+}
+
+.oga-nav-choice > span:not(.oga-custom-icon):not(.oga-nav-soon) {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .oga-nav-choice svg {
@@ -598,25 +607,35 @@ body { overflow-x: hidden; }
 
 
 .oga-footnote {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px 16px;
   margin-top: 0;
   padding: 0 4px;
   border-top: none;
   color: var(--muted);
   font-size: 11px;
-  line-height: 1.35;
+  line-height: 1.15;
 }
 
 .oga-footnote p {
   margin: 0;
-}
-
-.oga-footnote p + p {
-  margin-top: 2px;
+  min-width: 0;
 }
 
 #sourceInfo {
+  flex: 0 1 auto;
   color: #52637a;
   font-weight: 700;
+  white-space: nowrap;
+}
+
+.oga-footnote-note {
+  flex: 1 1 auto;
+  text-align: right;
+  font-weight: 500;
+  color: var(--muted);
 }
 
 /* Embedded mode: opaque background prevents host-page decorations bleeding through,
@@ -630,14 +649,28 @@ html.is-embedded body {
 }
 
 html.is-embedded .oga-portal {
-  padding: 8px 14px 2px;
+  padding: 8px 14px 0;
   background: var(--paper);
   min-height: 0;
 }
 
 /* Compact nest must not restore a tall portal bottom under the footnote. */
 html.is-embedded.is-layout-compact .oga-portal {
-  padding: 8px 12px 2px;
+  padding: 8px 12px 0;
+}
+
+html.is-layout-compact .oga-footnote {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2px;
+}
+
+html.is-layout-compact .oga-footnote-note {
+  text-align: left;
+}
+
+html.is-layout-compact #sourceInfo {
+  white-space: normal;
 }
 
 html.is-embedded .oga-header {
@@ -750,12 +783,13 @@ html.is-embedded #chartFrame {
 html.is-embedded .oga-footnote {
   margin-top: 0;
   padding: 0 4px;
+  gap: 8px 12px;
   font-size: 10px;
-  line-height: 1.3;
+  line-height: 1.15;
 }
 
-html.is-embedded .oga-footnote p + p {
-  margin-top: 1px;
+html.is-embedded .oga-footnote-note {
+  font-size: 9.5px;
 }
 
 @keyframes oga-spin { to { transform: rotate(360deg); } }
@@ -1061,7 +1095,7 @@ html.is-layout-compact {
   .oga-frame-wrap, #chartFrame { min-height: 360px; }
   .oga-footnote {
     padding-inline: 0;
-    margin-top: 4px;
+    margin-top: 0;
   }
 }
 
