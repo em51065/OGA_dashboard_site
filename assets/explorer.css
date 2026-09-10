@@ -26,7 +26,7 @@ body { overflow-x: hidden; }
 .oga-portal {
   width: min(1280px, 100%);
   margin: 0 auto;
-  padding: 22px 24px 10px;
+  padding: 22px 24px 6px;
 }
 
 .oga-header {
@@ -599,11 +599,11 @@ body { overflow-x: hidden; }
 
 .oga-footnote {
   margin-top: 0;
-  padding: 2px 4px 0;
+  padding: 0 4px;
   border-top: none;
   color: var(--muted);
   font-size: 11px;
-  line-height: 1.55;
+  line-height: 1.35;
 }
 
 .oga-footnote p {
@@ -611,7 +611,7 @@ body { overflow-x: hidden; }
 }
 
 .oga-footnote p + p {
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 #sourceInfo {
@@ -630,9 +630,14 @@ html.is-embedded body {
 }
 
 html.is-embedded .oga-portal {
-  padding: 8px 14px 4px;
+  padding: 8px 14px 2px;
   background: var(--paper);
   min-height: 0;
+}
+
+/* Compact nest must not restore a tall portal bottom under the footnote. */
+html.is-embedded.is-layout-compact .oga-portal {
+  padding: 8px 12px 2px;
 }
 
 html.is-embedded .oga-header {
@@ -744,9 +749,13 @@ html.is-embedded #chartFrame {
 
 html.is-embedded .oga-footnote {
   margin-top: 0;
-  padding: 0 4px 0;
+  padding: 0 4px;
   font-size: 10px;
-  line-height: 1.4;
+  line-height: 1.3;
+}
+
+html.is-embedded .oga-footnote p + p {
+  margin-top: 1px;
 }
 
 @keyframes oga-spin { to { transform: rotate(360deg); } }
@@ -1052,7 +1061,7 @@ html.is-layout-compact {
   .oga-frame-wrap, #chartFrame { min-height: 360px; }
   .oga-footnote {
     padding-inline: 0;
-    margin-top: 10px;
+    margin-top: 4px;
   }
 }
 
