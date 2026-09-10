@@ -1582,18 +1582,18 @@
     --ga-friendly-pin-icon: clamp(9px, 2.1cqw, 15px);
     --ga-friendly-pin-icon-selected: clamp(11px, 2.55cqw, 18px);
     --ga-friendly-pin-border: clamp(1px, 0.28cqw, 2px);
-    /* Legend/credit read as map meta — denser and smaller than map pins. */
-    --ga-friendly-legend-swatch: clamp(9px, 1.9cqw, 14px);
-    --ga-friendly-legend-icon: clamp(7px, 1.4cqw, 11px);
-    --ga-friendly-legend-swatch-border: clamp(1px, 0.22cqw, 1.5px);
-    --ga-friendly-legend-title: clamp(8.5px, 1.4cqw, 12px);
-    --ga-friendly-legend-text: clamp(7.5px, 1.25cqw, 11px);
-    --ga-friendly-legend-gap: clamp(2px, 0.7cqw, 5px);
-    --ga-friendly-legend-row-mb: clamp(1px, 0.65cqw, 5px);
-    --ga-friendly-legend-pad-block: clamp(2px, 0.85cqw, 8px);
-    --ga-friendly-legend-pad-inline: clamp(4px, 1cqw, 10px);
-    --ga-friendly-legend-title-mb: clamp(2px, 0.75cqw, 6px);
-    --ga-friendly-credit-size: clamp(7.5px, 1.1cqw, 10px);
+    /* Legend/credit: low floor for narrow cards, higher ceiling for desktop readability. */
+    --ga-friendly-legend-swatch: clamp(9px, 2.2cqw, 16px);
+    --ga-friendly-legend-icon: clamp(7px, 1.65cqw, 12px);
+    --ga-friendly-legend-swatch-border: clamp(1px, 0.24cqw, 2px);
+    --ga-friendly-legend-title: clamp(8.5px, 1.85cqw, 15px);
+    --ga-friendly-legend-text: clamp(7.5px, 1.7cqw, 14px);
+    --ga-friendly-legend-gap: clamp(2px, 0.85cqw, 8px);
+    --ga-friendly-legend-row-mb: clamp(1px, 0.8cqw, 8px);
+    --ga-friendly-legend-pad-block: clamp(2px, 1cqw, 12px);
+    --ga-friendly-legend-pad-inline: clamp(4px, 1.2cqw, 14px);
+    --ga-friendly-legend-title-mb: clamp(2px, 0.9cqw, 10px);
+    --ga-friendly-credit-size: clamp(7.5px, 1.45cqw, 13px);
   }
   body.ga-friendly-spaces-chart .ga-friendly-map-shell {
     position: relative;
@@ -1887,11 +1887,12 @@
     line-height: 1.4;
     color: #64748b;
   }
-  /* Anchor legend inside basemap bottom-left gray reserve (south of 大學路). */
+  /* Anchor legend inside basemap bottom-left gray reserve (south of 大學路).
+     Keep bottom above map-credit so the last legend row does not collide. */
   body.ga-friendly-spaces-chart .ga-friendly-map-legend {
     position: absolute;
     left: 8%;
-    bottom: 0.8%;
+    bottom: max(1.15rem, calc(0.8% + 0.95rem));
     width: min(32%, 280px);
     box-sizing: border-box;
     padding: var(--ga-friendly-legend-pad-block, 12px) var(--ga-friendly-legend-pad-inline, 14px);
@@ -1906,7 +1907,7 @@
   }
   body.ga-friendly-spaces-chart .ga-friendly-map-legend h3 {
     margin: 0 0 var(--ga-friendly-legend-title-mb, 6px);
-    font-size: var(--ga-friendly-legend-title, 12px);
+    font-size: var(--ga-friendly-legend-title, 15px);
     font-weight: 700;
     color: #475569;
   }
@@ -1915,7 +1916,7 @@
     align-items: center;
     gap: var(--ga-friendly-legend-gap, 5px);
     margin: 0 0 var(--ga-friendly-legend-row-mb, 5px);
-    font-size: var(--ga-friendly-legend-text, 11px);
+    font-size: var(--ga-friendly-legend-text, 14px);
     line-height: 1.25;
     color: #334155;
   }
@@ -1981,7 +1982,7 @@
     bottom: 4px;
     margin: 0;
     z-index: 4;
-    font-size: var(--ga-friendly-credit-size, 10px);
+    font-size: var(--ga-friendly-credit-size, 13px);
     font-weight: 600;
     line-height: 1.2;
     color: #475569;
@@ -2769,7 +2770,8 @@
     }
     body.ga-friendly-spaces-chart .ga-friendly-map-legend {
       left: 8%;
-      bottom: 0.8%;
+      /* Compact credit sits near bottom: 3px — lift legend clear of that line. */
+      bottom: max(1.35rem, calc(0.8% + 1.15rem));
       width: min(34%, 260px);
     }
     body.ga-friendly-spaces-chart .ga-friendly-map-credit {
