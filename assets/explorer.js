@@ -13,7 +13,8 @@ const chartStageBar = document.getElementById("chartStageBar");
 
 const OPEN_NUDGE_DESKTOP = "另開視窗最佳瀏覽請點擊 →";
 const OPEN_NUDGE_MOBILE = "使用手機瀏覽請點擊 →";
-const OPEN_NUDGE_CONTENT = "另開完整畫面請點擊 →";
+const OPEN_IN_NEW_TAB_LABEL = "在新分頁開啟";
+const OPEN_IN_NEW_TAB_ARIA = "在新分頁開啟完整儀表板";
 
 function compactMaxWidthPx() {
   const width = Number(window.OGA_NAV?.COMPACT_MAX_WIDTH);
@@ -167,6 +168,111 @@ function buildFullExplorerHref() {
   params.set("chart", currentChart);
   const query = params.toString();
   return query ? `?${query}` : "?";
+}
+
+/** Chart-iframe density overrides for ?embed=1&layout=content only (iframe viewport). */
+function contentModeChartDensityCss() {
+  if (!isLayoutContentMode()) return "";
+  // Stack summary/trend only through ~1024; restore side-by-side from ~1100–1220.
+  const stackMaxPx = 1024;
+  return `
+      /* Content embed: denser mid-width KPIs; keep pair side-by-side until phone. */
+      @media (max-width: ${stackMaxPx}px) and (min-width: 641px) {
+        .ga-grid {
+          grid-template-columns: 1fr !important;
+          gap: 10px !important;
+        }
+        .ga-value-row {
+          grid-template-columns: 1fr 1fr !important;
+          gap: 8px !important;
+          margin: 8px 0 10px !important;
+        }
+        .ga-pr-card { padding: 12px !important; }
+        body.ga-friendly-spaces-chart .ga-pr-card { padding: 0 !important; }
+        .ga-pr-card .ga-card-title {
+          min-height: 0 !important;
+          margin-bottom: 8px !important;
+          padding-right: min(300px, 42%) !important;
+        }
+        .ga-pr-score {
+          margin: 0 0 6px !important;
+          transform: none !important;
+        }
+        .ga-pr-score strong {
+          font-size: clamp(40px, 6.5vw, 56px) !important;
+          line-height: 0.92 !important;
+        }
+        .ga-pr-score span {
+          margin-bottom: 4px !important;
+          font-size: 12px !important;
+        }
+        .ga-mini { padding: 8px 10px !important; }
+        .ga-rank-block .ga-hint { margin-top: 6px !important; font-size: 11px !important; }
+        .ga-overview-wrap { margin-top: 2px !important; }
+        #overviewChart { height: 200px !important; }
+        #trendChart { height: 480px !important; }
+      }
+      /* Mid desktop (above stack, below wide): keep KPI pair dense without forcing single-column grid. */
+      @media (min-width: ${stackMaxPx + 1}px) and (max-width: 1220px) {
+        .ga-value-row {
+          gap: 8px !important;
+          margin: 10px 0 12px !important;
+        }
+        .ga-pr-score {
+          margin: 2px 0 8px !important;
+        }
+        .ga-pr-score strong {
+          font-size: clamp(48px, 6vw, 72px) !important;
+        }
+        .ga-pr-card { padding: 14px !important; }
+        body.ga-friendly-spaces-chart .ga-pr-card { padding: 0 !important; }
+      }
+      @media (max-width: ${compactMaxWidthPx()}px) {
+        .ga-pr-card { gap: 8px !important; }
+        .ga-rank-block { padding: 12px !important; }
+        .ga-pr-score {
+          margin: 2px 0 6px !important;
+        }
+        .ga-pr-score strong {
+          font-size: clamp(34px, 9.5vw, 48px) !important;
+        }
+        .ga-mini { padding: 8px 10px !important; }
+      }
+      @media (max-width: ${compactMaxWidthPx()}px) and (min-width: 641px) {
+        .ga-value-row {
+          grid-template-columns: 1fr 1fr !important;
+          gap: 8px !important;
+          margin: 8px 0 !important;
+        }
+        #overviewChart { height: 180px !important; }
+        #trendChart { height: 320px !important; }
+      }
+      @media (max-width: 640px) {
+        .ga-value-row {
+          grid-template-columns: 1fr !important;
+        }
+        .ga-pr-score strong {
+          font-size: clamp(32px, 12vw, 44px) !important;
+        }
+      }
+  `;
+}
+
+function bindContentModeLayoutWatchers() {
+  if (!isLayoutContentMode() || window.__ogaContentLayoutWatch) return;
+  window.__ogaContentLayoutWatch = true;
+  const remasure = () => {
+    schedulePortalRemeasure();
+    reportOuterHeight();
+  };
+  ["(max-width: 1220px)", "(max-width: 1024px)", "(max-width: 900px)", "(max-width: 640px)"].forEach((query) => {
+    const mq = window.matchMedia(query);
+    if (typeof mq.addEventListener === "function") {
+      mq.addEventListener("change", remasure);
+    } else if (typeof mq.addListener === "function") {
+      mq.addListener(remasure);
+    }
+  });
 }
 
 function isCompactEmbed() {
@@ -358,16 +464,18 @@ function syncStandaloneLink() {
   standaloneLink.target = "_blank";
 
   if (contentMode) {
-    // Content embed: open full explorer (drop embed + layout), keep chart and other state.
+    // Content embed: one quiet CTA — full explorer without embed/layout params.
     standaloneLink.href = buildFullExplorerHref();
-    standaloneLink.setAttribute("aria-label", `另開完整畫面（目前：${title}）`);
+    standaloneLink.setAttribute("aria-label", `${OPEN_IN_NEW_TAB_ARIA}（目前：${title}）`);
     standaloneLink.hidden = false;
     if (desktopLabel) desktopLabel.hidden = true;
     if (mobileLabel) mobileLabel.hidden = true;
-    if (contentLabel) contentLabel.hidden = false;
-    if (openNudgeLabel) openNudgeLabel.textContent = OPEN_NUDGE_CONTENT;
-    if (openNudge) openNudge.hidden = false;
-    if (chartStageBar) chartStageBar.classList.toggle("oga-stage-bar--nudge", true);
+    if (contentLabel) {
+      contentLabel.hidden = false;
+      contentLabel.textContent = OPEN_IN_NEW_TAB_LABEL;
+    }
+    if (openNudge) openNudge.hidden = true;
+    if (chartStageBar) chartStageBar.classList.toggle("oga-stage-bar--nudge", false);
     syncContentModeChrome();
     return;
   }
@@ -1153,8 +1261,11 @@ function prepareChildFrame() {
         .ga-icon-toggle { min-height: 40px !important; padding: 9px 12px !important; font-size: 13px !important; line-height: 1.35 !important; overflow: visible !important; }
         .ga-icon-toggle span { line-height: 1.35 !important; overflow: visible !important; }
       }
+      ${contentModeChartDensityCss()}
     `;
     doc.head.appendChild(style);
+  } else if (isLayoutContentMode() && !style.textContent.includes("Content embed: denser mid-width KPIs")) {
+    style.textContent += contentModeChartDensityCss();
   }
 
   decorateBlockTitles(doc);
@@ -1370,6 +1481,7 @@ function initExplorer() {
   if (isLayoutContentMode()) {
     schedulePortalRemeasure();
     reportOuterHeight();
+    bindContentModeLayoutWatchers();
   }
 }
 

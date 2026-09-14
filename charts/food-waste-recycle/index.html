@@ -1629,11 +1629,30 @@
     user-select: none;
     pointer-events: none;
   }
+  body.ga-friendly-spaces-chart .ga-friendly-map.is-basemap-loading::after {
+    content: "地圖載入中…";
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    margin: 0;
+    padding: 0;
+    background: rgba(245, 247, 250, 0.28);
+    color: #5b6577;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    pointer-events: none;
+  }
   body.ga-friendly-spaces-chart .ga-friendly-markers {
     position: absolute;
     inset: 0;
     pointer-events: none;
     z-index: 2;
+  }
+  body.ga-friendly-spaces-chart .ga-friendly-markers.is-awaiting-basemap {
+    opacity: 0;
   }
   body.ga-friendly-spaces-chart .ga-friendly-marker {
     position: absolute;
@@ -3000,7 +3019,7 @@
           </aside>
         <div class="ga-friendly-map-shell" id="friendlyMapShell">
           <div class="ga-friendly-map" id="friendlyMap">
-            <img id="friendlyBasemap" src="./campus-base.png" alt="國立成功大學校本部平面圖" />
+            <img id="friendlyBasemap" src="./campus-base-display.webp" alt="國立成功大學校本部平面圖" decoding="async" />
             <div class="ga-friendly-markers" id="friendlyMarkers"></div>
             <div class="ga-friendly-tip" id="friendlyTip" hidden>
               <strong id="friendlyTipTitle"></strong>
@@ -3150,6 +3169,7 @@ const friendlyCampusPanelMeta = document.getElementById("friendlyCampusPanelMeta
 const friendlyCampusPanelHeadMeta = document.getElementById("friendlyCampusPanelHeadMeta");
 const friendlyCampusPanelToggle = document.getElementById("friendlyCampusPanelToggle");
 const friendlyMapEl = document.getElementById("friendlyMap");
+const friendlyBasemap = document.getElementById("friendlyBasemap");
 const friendlyPickPanel = document.getElementById("friendlyPickPanel");
 const friendlyPickSelected = document.getElementById("friendlyPickSelected");
 const friendlyPickLast = document.getElementById("friendlyPickLast");
@@ -3176,6 +3196,10 @@ let friendlyPickDragState = null;
 const FRIENDLY_PICK_DRAG_THRESHOLD_PX = 5;
 const FRIENDLY_PICK_EXPORT_FILENAME = "friendly_spaces_pick_export.json";
 const FRIENDLY_PICK_EXPORT_RELPATH = "config/maps/friendly_spaces_pick_export.json";
+const FRIENDLY_BASEMAP_DISPLAY_SRC = "./campus-base-display.webp";
+const FRIENDLY_BASEMAP_FULL_SRC = "./campus-base.png";
+let friendlyBasemapReadyPromise = null;
+let friendlyBasemapPaintToken = 0;
 const yearControlLabel = document.querySelector("#yearControl label[for='yearSelect']");
 const yearControl = document.getElementById("yearControl");
 const metricSwitch = document.getElementById("metricSwitch");
@@ -6587,18 +6611,44 @@ function renderFriendlyMapLegend() {
   }
 }
 
-function renderFriendlySpacesMap() {
-  if (!friendlyMapCard || !friendlyMarkers) return;
-  bindFriendlyMapShellOnce();
-  bindFriendlyCampusKeysOnce();
-  bindFriendlyPickModeOnce();
-  friendlyMapCard.hidden = false;
-  if (friendlyMapCredit) {
-    friendlyMapCredit.textContent = GA_DATA.basemapCredit || "國立成功大學校園平面圖";
+function friendlyBasemapFileForMode() {
+  return isFriendlyPickMode() ? FRIENDLY_BASEMAP_FULL_SRC : FRIENDLY_BASEMAP_DISPLAY_SRC;
+}
+
+function syncFriendlyBasemapSrc() {
+  if (!friendlyBasemap) return false;
+  const next = friendlyBasemapFileForMode();
+  const current = friendlyBasemap.getAttribute("src") || "";
+  const nextName = next.split("/").pop();
+  if (current === next || current.endsWith(nextName)) return false;
+  friendlyBasemapReadyPromise = null;
+  friendlyBasemap.setAttribute("src", next);
+  return true;
+}
+
+function whenFriendlyBasemapReady() {
+  if (!friendlyBasemap) return Promise.resolve();
+  if (friendlyBasemap.complete && friendlyBasemap.naturalWidth > 0) {
+    return Promise.resolve();
   }
-  renderFriendlyMapLegend();
-  renderFriendlyCampusPanel();
-  const items = friendlyVisibleItems();
+  if (!friendlyBasemapReadyPromise) {
+    friendlyBasemapReadyPromise = new Promise((resolve) => {
+      const done = () => {
+        friendlyBasemap.removeEventListener("load", done);
+        friendlyBasemap.removeEventListener("error", done);
+        resolve();
+      };
+      friendlyBasemap.addEventListener("load", done);
+      friendlyBasemap.addEventListener("error", done);
+    }).finally(() => {
+      friendlyBasemapReadyPromise = null;
+    });
+  }
+  return friendlyBasemapReadyPromise;
+}
+
+function paintFriendlySpaceMarkers(items) {
+  if (!friendlyMarkers) return;
   friendlyMarkers.innerHTML = "";
   items.forEach((item) => {
     const style = friendlyStyleForCategory(item.category);
@@ -6641,6 +6691,37 @@ function renderFriendlySpacesMap() {
   if (isFriendlyPickMode()) renderFriendlyPickPanel();
 }
 
+function renderFriendlySpacesMap() {
+  if (!friendlyMapCard || !friendlyMarkers) return;
+  bindFriendlyMapShellOnce();
+  bindFriendlyCampusKeysOnce();
+  bindFriendlyPickModeOnce();
+  friendlyMapCard.hidden = false;
+  if (friendlyMapCredit) {
+    friendlyMapCredit.textContent = GA_DATA.basemapCredit || "國立成功大學校園平面圖";
+  }
+  renderFriendlyMapLegend();
+  renderFriendlyCampusPanel();
+  syncFriendlyBasemapSrc();
+  const items = friendlyVisibleItems();
+  const token = ++friendlyBasemapPaintToken;
+  const basemapPending = Boolean(
+    friendlyBasemap && !(friendlyBasemap.complete && friendlyBasemap.naturalWidth > 0)
+  );
+  if (basemapPending) {
+    friendlyMarkers.innerHTML = "";
+    friendlyMarkers.classList.add("is-awaiting-basemap");
+    if (friendlyMapEl) friendlyMapEl.classList.add("is-basemap-loading");
+  }
+  whenFriendlyBasemapReady().then(() => {
+    if (token !== friendlyBasemapPaintToken) return;
+    friendlyMarkers.classList.remove("is-awaiting-basemap");
+    if (friendlyMapEl) friendlyMapEl.classList.remove("is-basemap-loading");
+    paintFriendlySpaceMarkers(items);
+    schedulePortalLayoutNotify();
+  });
+}
+
 function paintFriendlySpacesCampusBars() {
   renderFriendlySpacesMap();
 }
@@ -6659,6 +6740,7 @@ function initFriendlySpacesSelect() {
   friendlyCampusPanelDismissed = false;
   friendlyCampusPanelCollapsed = true;
   visibleTrendCategories = new Set([selectedCategory]);
+  syncFriendlyBasemapSrc();
   if (locationControl) locationControl.hidden = true;
   if (categoryControl) categoryControl.hidden = true;
   if (metricSwitch) metricSwitch.hidden = true;

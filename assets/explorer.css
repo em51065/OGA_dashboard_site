@@ -838,10 +838,26 @@ html.is-embedded.is-layout-content .oga-open-label--content {
   display: inline;
 }
 
+html.is-embedded.is-layout-content .oga-open-nudge {
+  display: none !important;
+}
+
+html.is-embedded.is-layout-content .oga-stage-bar {
+  justify-content: space-between;
+  gap: 8px;
+}
+
 html.is-embedded.is-layout-content .oga-stage-bar a {
   font-size: 12px;
-  padding: 6px 10px;
-  min-height: 30px;
+  padding: 5px 10px;
+  min-height: 28px;
+  font-weight: 700;
+  opacity: 0.92;
+}
+
+html.is-embedded.is-layout-content .oga-stage-bar a:hover,
+html.is-embedded.is-layout-content .oga-stage-bar a:focus-visible {
+  opacity: 1;
 }
 
 @keyframes oga-spin { to { transform: rotate(360deg); } }
