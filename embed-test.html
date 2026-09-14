@@ -106,6 +106,12 @@
       <button type="button" id="layoutModeBreakpoint">760 legacy（?layoutMode=breakpoint）</button>
     </div>
 
+    <div class="test-toolbar" aria-label="Embed chrome（layout=content）">
+      <strong>Embed chrome</strong>
+      <button type="button" id="embedChromeDefault" class="is-active">預設（?embed=1）</button>
+      <button type="button" id="embedChromeContent">精簡內容（?embed=1&amp;layout=content）</button>
+    </div>
+
     <div class="test-toolbar" aria-label="Layout shadow（Phase 1 對照 log）">
       <strong>Layout shadow</strong>
       <button type="button" id="layoutShadowOff" class="is-active">關閉</button>
@@ -144,9 +150,11 @@
     let contentHeight = 0;
     let layoutShadow = false;
     let layoutMode = "overflow";
+    let embedChrome = "default"; // default | content
 
     function embedExplorerUrl() {
       const params = new URLSearchParams({ embed: "1" });
+      if (embedChrome === "content") params.set("layout", "content");
       if (layoutShadow) params.set("layoutShadow", "1");
       if (layoutMode === "breakpoint") params.set("layoutMode", "breakpoint");
       return `./explorer/?${params.toString()}`;
@@ -155,6 +163,11 @@
     function syncLayoutModeButtons() {
       document.getElementById("layoutModeBreakpoint")?.classList.toggle("is-active", layoutMode === "breakpoint");
       document.getElementById("layoutModeOverflow")?.classList.toggle("is-active", layoutMode === "overflow");
+    }
+
+    function syncEmbedChromeButtons() {
+      document.getElementById("embedChromeDefault")?.classList.toggle("is-active", embedChrome === "default");
+      document.getElementById("embedChromeContent")?.classList.toggle("is-active", embedChrome === "content");
     }
 
     function syncLayoutShadowButtons() {
@@ -286,9 +299,21 @@
       reloadEmbedFrame();
     });
 
+    document.getElementById("embedChromeDefault")?.addEventListener("click", () => {
+      embedChrome = "default";
+      syncEmbedChromeButtons();
+      reloadEmbedFrame();
+    });
+    document.getElementById("embedChromeContent")?.addEventListener("click", () => {
+      embedChrome = "content";
+      syncEmbedChromeButtons();
+      reloadEmbedFrame();
+    });
+
     applyProfile();
     syncLayoutShadowButtons();
     syncLayoutModeButtons();
+    syncEmbedChromeButtons();
   </script>
 </body>
 </html>

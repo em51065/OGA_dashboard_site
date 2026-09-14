@@ -1,7 +1,7 @@
 {
-  "dataVersion": "20260713",
-  "generatedAt": "2026-09-10 06:50:51",
-  "sourceFile": "Total_20260713.xlsx",
+  "dataVersion": "20260911",
+  "generatedAt": "2026-09-14 02:45:36",
+  "sourceFile": "Total_20260911.xlsx",
   "chartId": "solar-energy",
   "chartType": "solar",
   "sheet": "太陽能",
@@ -124,19 +124,22 @@
         },
         {
           "year": 2026,
-          "value": 1198313.98,
-          "months": 5,
+          "value": 1903513.05,
+          "months": 8,
           "monthsList": [
             1,
             2,
             3,
             4,
-            5
+            5,
+            6,
+            7,
+            8
           ],
-          "maxMonth": 5,
+          "maxMonth": 8,
           "hasDecember": false,
           "start": "2026-01",
-          "end": "2026-05"
+          "end": "2026-08"
         }
       ],
       "monthly": [
@@ -404,6 +407,21 @@
           "year": 2026,
           "month": 5,
           "value": 307888.56
+        },
+        {
+          "year": 2026,
+          "month": 6,
+          "value": 221926.85
+        },
+        {
+          "year": 2026,
+          "month": 7,
+          "value": 283683.47
+        },
+        {
+          "year": 2026,
+          "month": 8,
+          "value": 199588.75
         }
       ]
     },
@@ -504,19 +522,22 @@
         },
         {
           "year": 2026,
-          "value": 1089553.0,
-          "months": 5,
+          "value": 1722982.0,
+          "months": 8,
           "monthsList": [
             1,
             2,
             3,
             4,
-            5
+            5,
+            6,
+            7,
+            8
           ],
-          "maxMonth": 5,
+          "maxMonth": 8,
           "hasDecember": false,
           "start": "2026-01",
-          "end": "2026-05"
+          "end": "2026-08"
         }
       ],
       "monthly": [
@@ -784,6 +805,21 @@
           "year": 2026,
           "month": 5,
           "value": 276349.0
+        },
+        {
+          "year": 2026,
+          "month": 6,
+          "value": 199024.0
+        },
+        {
+          "year": 2026,
+          "month": 7,
+          "value": 254923.0
+        },
+        {
+          "year": 2026,
+          "month": 8,
+          "value": 179482.0
         }
       ]
     },
@@ -838,19 +874,22 @@
         },
         {
           "year": 2026,
-          "value": 106196.0,
-          "months": 5,
+          "value": 176832.0,
+          "months": 8,
           "monthsList": [
             1,
             2,
             3,
             4,
-            5
+            5,
+            6,
+            7,
+            8
           ],
-          "maxMonth": 5,
+          "maxMonth": 8,
           "hasDecember": false,
           "start": "2026-01",
-          "end": "2026-05"
+          "end": "2026-08"
         }
       ],
       "monthly": [
@@ -998,6 +1037,21 @@
           "year": 2026,
           "month": 5,
           "value": 30547.0
+        },
+        {
+          "year": 2026,
+          "month": 6,
+          "value": 22460.0
+        },
+        {
+          "year": 2026,
+          "month": 7,
+          "value": 28368.0
+        },
+        {
+          "year": 2026,
+          "month": 8,
+          "value": 19808.0
         }
       ]
     },
@@ -1098,19 +1152,22 @@
         },
         {
           "year": 2026,
-          "value": 2564.98,
-          "months": 5,
+          "value": 3699.05,
+          "months": 8,
           "monthsList": [
             1,
             2,
             3,
             4,
-            5
+            5,
+            6,
+            7,
+            8
           ],
-          "maxMonth": 5,
+          "maxMonth": 8,
           "hasDecember": false,
           "start": "2026-01",
-          "end": "2026-05"
+          "end": "2026-08"
         }
       ],
       "monthly": [
@@ -1378,6 +1435,21 @@
           "year": 2026,
           "month": 5,
           "value": 992.56
+        },
+        {
+          "year": 2026,
+          "month": 6,
+          "value": 442.85
+        },
+        {
+          "year": 2026,
+          "month": 7,
+          "value": 392.47
+        },
+        {
+          "year": 2026,
+          "month": 8,
+          "value": 298.75
         }
       ]
     }

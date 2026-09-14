@@ -1,90 +1,90 @@
 {
-  "generatedAt": "2026-09-10 06:50:54",
-  "sourceFile": "Total_20260713.xlsx",
+  "generatedAt": "2026-09-14 02:45:39",
+  "sourceFile": "Total_20260911.xlsx",
   "charts": [
     {
       "id": "general-recycle",
       "title": "一般回收",
       "path": "charts/general-recycle/",
       "sheet": "一般回收",
-      "dataVersion": "20260713"
+      "dataVersion": "20260911"
     },
     {
       "id": "food-waste-recycle",
       "title": "廚餘回收",
       "path": "charts/food-waste-recycle/",
       "sheet": "廚餘回收",
-      "dataVersion": "20260713"
+      "dataVersion": "20260911"
     },
     {
       "id": "resource-recycle",
       "title": "資源回收",
       "path": "charts/resource-recycle/",
       "sheet": "資源回收",
-      "dataVersion": "20260713"
+      "dataVersion": "20260911"
     },
     {
       "id": "rainwater-reuse",
       "title": "中軸雨水回收",
       "path": "charts/rainwater-reuse/",
       "sheet": "中軸雨水回收",
-      "dataVersion": "20260713"
+      "dataVersion": "20260911"
     },
     {
       "id": "ecoco",
       "title": "ECOCO",
       "path": "charts/ecoco/",
       "sheet": "ECOCO (2)",
-      "dataVersion": "20260713"
+      "dataVersion": "20260911"
     },
     {
       "id": "solar-energy",
       "title": "太陽能",
       "path": "charts/solar-energy/",
       "sheet": "太陽能",
-      "dataVersion": "20260713"
+      "dataVersion": "20260911"
     },
     {
       "id": "water-use",
       "title": "用水量",
       "path": "charts/water-use/",
       "sheet": "用水量",
-      "dataVersion": "20260713"
+      "dataVersion": "20260911"
     },
     {
       "id": "electricity-use",
       "title": "用電量",
       "path": "charts/electricity-use/",
       "sheet": "用電量",
-      "dataVersion": "20260713"
+      "dataVersion": "20260911"
     },
     {
       "id": "ac-replacement",
       "title": "冷氣汰換",
       "path": "charts/ac-replacement/",
       "sheet": "冷氣汰換",
-      "dataVersion": "20260713"
+      "dataVersion": "20260911"
     },
     {
       "id": "led-replacement",
       "title": "LED燈具汰換",
       "path": "charts/led-replacement/",
       "sheet": "LED汰換 (2)",
-      "dataVersion": "20260713"
+      "dataVersion": "20260911"
     },
     {
       "id": "streetlight-replacement",
       "title": "路燈汰換",
       "path": "charts/streetlight-replacement/",
       "sheet": "路燈汰換 (2)",
-      "dataVersion": "20260713"
+      "dataVersion": "20260911"
     },
     {
       "id": "friendly-spaces",
       "title": "友善設施",
       "path": "charts/friendly-spaces/",
       "sheet": "友善空間(4表)",
-      "dataVersion": "20260713"
+      "dataVersion": "20260911"
     }
   ]
 }

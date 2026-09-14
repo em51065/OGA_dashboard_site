@@ -9,9 +9,16 @@
   <script>
     (function () {
       "use strict";
+      var params = new URLSearchParams(window.location.search);
+      var embedded = params.get("embed") === "1";
+      // Content chrome mode: only with embed=1&layout=content (not layout alone).
+      var layoutContent = embedded && params.get("layout") === "content";
+      if (embedded) document.documentElement.classList.add("is-embedded");
+      if (layoutContent) document.documentElement.classList.add("is-layout-content");
       var width = Number(window.OGA_NAV && window.OGA_NAV.COMPACT_MAX_WIDTH);
       if (!Number.isFinite(width) || width <= 0) width = 760;
       // FOUC guard — index.html hint only; explorer.js re-syncs via adaptive measure after nav render.
+      // Independent of is-layout-content (URL chrome) vs is-layout-compact (responsive width).
       document.documentElement.classList.toggle(
         "is-layout-compact",
         window.matchMedia("(max-width: " + width + "px)").matches
@@ -23,6 +30,7 @@
 </head>
 <body>
   <main class="oga-portal" id="ogaPortal">
+    <h1 class="oga-sr-only" id="contentModePageTitle" hidden>永續數據儀表板</h1>
     <header class="oga-header">
       <div class="oga-brand">
         <span class="oga-brand-mark" aria-hidden="true"><i data-lucide="chart-no-axes-combined"></i></span>
@@ -53,9 +61,10 @@
         <p class="oga-open-nudge" id="openNudge" hidden>
           <span id="openNudgeLabel">另開視窗最佳瀏覽請點擊 →</span>
         </p>
-        <a id="standaloneLink" href="../charts/ecoco/" target="_blank" rel="noopener">
+        <a id="standaloneLink" href="../charts/ecoco/" target="_blank" rel="noopener noreferrer">
           <span class="oga-open-label oga-open-label--desktop">在新視窗開啟</span>
           <span class="oga-open-label oga-open-label--mobile">開啟手機友善版</span>
+          <span class="oga-open-label oga-open-label--content" hidden>另開完整畫面</span>
           <i data-lucide="external-link" aria-hidden="true"></i>
         </a>
       </div>

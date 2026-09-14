@@ -1,7 +1,7 @@
 {
-  "dataVersion": "20260713",
-  "generatedAt": "2026-09-10 06:50:52",
-  "sourceFile": "Total_20260713.xlsx",
+  "dataVersion": "20260911",
+  "generatedAt": "2026-09-14 02:45:37",
+  "sourceFile": "Total_20260911.xlsx",
   "chartId": "led-replacement",
   "chartType": "led_replacement",
   "sheet": "LED汰換 (2)",
@@ -118,8 +118,8 @@
         },
         {
           "year": 2026,
-          "value": 32204.9,
-          "months": 7,
+          "value": 32425.9,
+          "months": 8,
           "monthsList": [
             1,
             2,
@@ -127,12 +127,13 @@
             4,
             5,
             6,
-            7
+            7,
+            8
           ],
-          "maxMonth": 7,
+          "maxMonth": 8,
           "hasDecember": false,
           "start": "2026-01",
-          "end": "2026-07"
+          "end": "2026-08"
         }
       ],
       "monthly": [
@@ -269,7 +270,12 @@
         {
           "year": 2026,
           "month": 7,
-          "value": 0.0
+          "value": 113.0
+        },
+        {
+          "year": 2026,
+          "month": 8,
+          "value": 108.0
         }
       ]
     },
@@ -331,8 +337,8 @@
         },
         {
           "year": 2026,
-          "value": 3157.0,
-          "months": 7,
+          "value": 3202.0,
+          "months": 9,
           "monthsList": [
             1,
             2,
@@ -340,12 +346,14 @@
             4,
             5,
             6,
-            7
+            7,
+            8,
+            9
           ],
-          "maxMonth": 7,
+          "maxMonth": 9,
           "hasDecember": false,
           "start": "2026-01",
-          "end": "2026-07"
+          "end": "2026-09"
         }
       ],
       "monthly": [
@@ -477,12 +485,22 @@
         {
           "year": 2026,
           "month": 6,
-          "value": 152.0
+          "value": 162.0
         },
         {
           "year": 2026,
           "month": 7,
-          "value": 31.0
+          "value": 42.0
+        },
+        {
+          "year": 2026,
+          "month": 8,
+          "value": 18.0
+        },
+        {
+          "year": 2026,
+          "month": 9,
+          "value": 6.0
         }
       ]
     },
@@ -544,8 +562,8 @@
         },
         {
           "year": 2026,
-          "value": 10.292,
-          "months": 7,
+          "value": 10.245,
+          "months": 8,
           "monthsList": [
             1,
             2,
@@ -553,12 +571,13 @@
             4,
             5,
             6,
-            7
+            7,
+            8
           ],
-          "maxMonth": 7,
+          "maxMonth": 8,
           "hasDecember": false,
           "start": "2026-01",
-          "end": "2026-07"
+          "end": "2026-08"
         }
       ],
       "monthly": [
@@ -740,16 +759,23 @@
         {
           "year": 2026,
           "month": 6,
-          "value": 9.211,
+          "value": 8.805,
           "numerator": 1400.0,
-          "denominator": 152.0
+          "denominator": 159.0
         },
         {
           "year": 2026,
           "month": 7,
-          "value": 0.0,
-          "numerator": 0.0,
-          "denominator": 31.0
+          "value": 2.69,
+          "numerator": 113.0,
+          "denominator": 42.0
+        },
+        {
+          "year": 2026,
+          "month": 8,
+          "value": 6.0,
+          "numerator": 108.0,
+          "denominator": 18.0
         }
       ]
     },
@@ -810,8 +836,8 @@
         },
         {
           "year": 2026,
-          "value": 46.339,
-          "months": 7,
+          "value": 46.181,
+          "months": 8,
           "monthsList": [
             1,
             2,
@@ -819,12 +845,13 @@
             4,
             5,
             6,
-            7
+            7,
+            8
           ],
-          "maxMonth": 7,
+          "maxMonth": 8,
           "hasDecember": false,
           "start": "2026-01",
-          "end": "2026-07"
+          "end": "2026-08"
         }
       ],
       "monthly": [
@@ -999,16 +1026,23 @@
         {
           "year": 2026,
           "month": 6,
-          "value": 31.306,
+          "value": 30.554,
           "numerator": 140000.0,
-          "denominator": 4472.0
+          "denominator": 4582.0
         },
         {
           "year": 2026,
           "month": 7,
-          "value": 0.0,
-          "numerator": 0.0,
-          "denominator": 775.0
+          "value": 10.681,
+          "numerator": 11300.0,
+          "denominator": 1058.0
+        },
+        {
+          "year": 2026,
+          "month": 8,
+          "value": 33.333,
+          "numerator": 10800.0,
+          "denominator": 324.0
         }
       ]
     },
@@ -1070,8 +1104,8 @@
         },
         {
           "year": 2026,
-          "value": 3032.0,
-          "months": 7,
+          "value": 3067.0,
+          "months": 9,
           "monthsList": [
             1,
             2,
@@ -1079,12 +1113,14 @@
             4,
             5,
             6,
-            7
+            7,
+            8,
+            9
           ],
-          "maxMonth": 7,
+          "maxMonth": 9,
           "hasDecember": false,
           "start": "2026-01",
-          "end": "2026-07"
+          "end": "2026-09"
         }
       ],
       "monthly": [
@@ -1221,7 +1257,17 @@
         {
           "year": 2026,
           "month": 7,
-          "value": 0.0
+          "value": 11.0
+        },
+        {
+          "year": 2026,
+          "month": 8,
+          "value": 18.0
+        },
+        {
+          "year": 2026,
+          "month": 9,
+          "value": 6.0
         }
       ]
     }
@@ -1259,13 +1305,13 @@
     },
     {
       "year": 2026,
-      "qty": 3157.0,
-      "nonLedQty": 3032.0,
-      "nonLedShare": 96.04054482103263,
-      "saving": 32204.9,
-      "nonLedSaving": 31888.9,
+      "qty": 3202.0,
+      "nonLedQty": 3067.0,
+      "nonLedShare": 95.78388507183011,
+      "saving": 32425.9,
+      "nonLedSaving": 32109.9,
       "ledOriginSaving": 316.0,
-      "nonLedSavingShare": 99.01878285602501
+      "nonLedSavingShare": 99.02547038015908
     }
   ],
   "defaultYear": 2026

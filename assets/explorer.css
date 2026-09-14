@@ -792,6 +792,58 @@ html.is-embedded .oga-footnote-note {
   font-size: 9.5px;
 }
 
+/* Embed content layout (?embed=1&layout=content): chrome-free shell for host iframes.
+   Independent of is-layout-compact (responsive). Must not alter plain ?embed=1. */
+.oga-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.oga-open-label--content {
+  display: none;
+}
+
+html.is-embedded.is-layout-content .oga-portal {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 4px 8px 0;
+}
+
+html.is-embedded.is-layout-content .oga-header {
+  display: none;
+}
+
+html.is-embedded.is-layout-content .oga-chart-nav {
+  padding-top: 0;
+}
+
+html.is-embedded.is-layout-content .oga-stage {
+  margin-top: 4px;
+}
+
+html.is-embedded.is-layout-content .oga-open-label--desktop,
+html.is-embedded.is-layout-content .oga-open-label--mobile {
+  display: none;
+}
+
+html.is-embedded.is-layout-content .oga-open-label--content {
+  display: inline;
+}
+
+html.is-embedded.is-layout-content .oga-stage-bar a {
+  font-size: 12px;
+  padding: 6px 10px;
+  min-height: 30px;
+}
+
 @keyframes oga-spin { to { transform: rotate(360deg); } }
 
 @media (max-width: 1040px) {

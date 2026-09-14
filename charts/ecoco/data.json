@@ -1,7 +1,7 @@
 {
-  "dataVersion": "20260713",
-  "generatedAt": "2026-09-10 06:50:51",
-  "sourceFile": "Total_20260713.xlsx",
+  "dataVersion": "20260911",
+  "generatedAt": "2026-09-14 02:45:36",
+  "sourceFile": "Total_20260911.xlsx",
   "chartId": "ecoco",
   "chartType": "ecoco",
   "sheet": "ECOCO (2)",
@@ -81,19 +81,22 @@
         },
         {
           "year": 2026,
-          "value": 28684.0,
-          "months": 5,
+          "value": 58897.0,
+          "months": 8,
           "monthsList": [
             1,
             2,
             3,
             4,
-            5
+            5,
+            6,
+            7,
+            8
           ],
-          "maxMonth": 5,
+          "maxMonth": 8,
           "hasDecember": false,
           "start": "2026-01",
-          "end": "2026-05"
+          "end": "2026-08"
         }
       ],
       "monthly": [
@@ -201,6 +204,21 @@
           "year": 2026,
           "month": 5,
           "value": 7310.0
+        },
+        {
+          "year": 2026,
+          "month": 6,
+          "value": 8682.0
+        },
+        {
+          "year": 2026,
+          "month": 7,
+          "value": 10861.0
+        },
+        {
+          "year": 2026,
+          "month": 8,
+          "value": 10670.0
         }
       ]
     },
@@ -247,19 +265,22 @@
         },
         {
           "year": 2026,
-          "value": 19821.0,
-          "months": 5,
+          "value": 41580.0,
+          "months": 8,
           "monthsList": [
             1,
             2,
             3,
             4,
-            5
+            5,
+            6,
+            7,
+            8
           ],
-          "maxMonth": 5,
+          "maxMonth": 8,
           "hasDecember": false,
           "start": "2026-01",
-          "end": "2026-05"
+          "end": "2026-08"
         }
       ],
       "monthly": [
@@ -367,6 +388,21 @@
           "year": 2026,
           "month": 5,
           "value": 5363.0
+        },
+        {
+          "year": 2026,
+          "month": 6,
+          "value": 6215.0
+        },
+        {
+          "year": 2026,
+          "month": 7,
+          "value": 7798.0
+        },
+        {
+          "year": 2026,
+          "month": 8,
+          "value": 7746.0
         }
       ]
     },
@@ -413,19 +449,22 @@
         },
         {
           "year": 2026,
-          "value": 3390.0,
-          "months": 5,
+          "value": 6959.0,
+          "months": 8,
           "monthsList": [
             1,
             2,
             3,
             4,
-            5
+            5,
+            6,
+            7,
+            8
           ],
-          "maxMonth": 5,
+          "maxMonth": 8,
           "hasDecember": false,
           "start": "2026-01",
-          "end": "2026-05"
+          "end": "2026-08"
         }
       ],
       "monthly": [
@@ -533,6 +572,21 @@
           "year": 2026,
           "month": 5,
           "value": 973.0
+        },
+        {
+          "year": 2026,
+          "month": 6,
+          "value": 1250.0
+        },
+        {
+          "year": 2026,
+          "month": 7,
+          "value": 1146.0
+        },
+        {
+          "year": 2026,
+          "month": 8,
+          "value": 1173.0
         }
       ]
     },
@@ -579,19 +633,22 @@
         },
         {
           "year": 2026,
-          "value": 942.0,
-          "months": 5,
+          "value": 1774.0,
+          "months": 8,
           "monthsList": [
             1,
             2,
             3,
             4,
-            5
+            5,
+            6,
+            7,
+            8
           ],
-          "maxMonth": 5,
+          "maxMonth": 8,
           "hasDecember": false,
           "start": "2026-01",
-          "end": "2026-05"
+          "end": "2026-08"
         }
       ],
       "monthly": [
@@ -699,6 +756,21 @@
           "year": 2026,
           "month": 5,
           "value": 209.0
+        },
+        {
+          "year": 2026,
+          "month": 6,
+          "value": 184.0
+        },
+        {
+          "year": 2026,
+          "month": 7,
+          "value": 317.0
+        },
+        {
+          "year": 2026,
+          "month": 8,
+          "value": 331.0
         }
       ]
     },
@@ -745,19 +817,22 @@
         },
         {
           "year": 2026,
-          "value": 2929.0,
-          "months": 5,
+          "value": 4761.0,
+          "months": 8,
           "monthsList": [
             1,
             2,
             3,
             4,
-            5
+            5,
+            6,
+            7,
+            8
           ],
-          "maxMonth": 5,
+          "maxMonth": 8,
           "hasDecember": false,
           "start": "2026-01",
-          "end": "2026-05"
+          "end": "2026-08"
         }
       ],
       "monthly": [
@@ -865,6 +940,21 @@
           "year": 2026,
           "month": 5,
           "value": 364.0
+        },
+        {
+          "year": 2026,
+          "month": 6,
+          "value": 466.0
+        },
+        {
+          "year": 2026,
+          "month": 7,
+          "value": 794.0
+        },
+        {
+          "year": 2026,
+          "month": 8,
+          "value": 572.0
         }
       ]
     },
@@ -911,19 +1001,22 @@
         },
         {
           "year": 2026,
-          "value": 1602.0,
-          "months": 5,
+          "value": 3823.0,
+          "months": 8,
           "monthsList": [
             1,
             2,
             3,
             4,
-            5
+            5,
+            6,
+            7,
+            8
           ],
-          "maxMonth": 5,
+          "maxMonth": 8,
           "hasDecember": false,
           "start": "2026-01",
-          "end": "2026-05"
+          "end": "2026-08"
         }
       ],
       "monthly": [
@@ -1031,6 +1124,21 @@
           "year": 2026,
           "month": 5,
           "value": 401.0
+        },
+        {
+          "year": 2026,
+          "month": 6,
+          "value": 567.0
+        },
+        {
+          "year": 2026,
+          "month": 7,
+          "value": 806.0
+        },
+        {
+          "year": 2026,
+          "month": 8,
+          "value": 848.0
         }
       ]
     },
@@ -1078,18 +1186,21 @@
         {
           "year": 2026,
           "value": 0.0,
-          "months": 5,
+          "months": 8,
           "monthsList": [
             1,
             2,
             3,
             4,
-            5
+            5,
+            6,
+            7,
+            8
           ],
-          "maxMonth": 5,
+          "maxMonth": 8,
           "hasDecember": false,
           "start": "2026-01",
-          "end": "2026-05"
+          "end": "2026-08"
         }
       ],
       "monthly": [
@@ -1196,6 +1307,21 @@
         {
           "year": 2026,
           "month": 5,
+          "value": 0.0
+        },
+        {
+          "year": 2026,
+          "month": 6,
+          "value": 0.0
+        },
+        {
+          "year": 2026,
+          "month": 7,
+          "value": 0.0
+        },
+        {
+          "year": 2026,
+          "month": 8,
           "value": 0.0
         }
       ]
@@ -1329,6 +1455,24 @@
       "value": 209.0
     },
     {
+      "category": "PP杯",
+      "year": 2026,
+      "month": 6,
+      "value": 184.0
+    },
+    {
+      "category": "PP杯",
+      "year": 2026,
+      "month": 7,
+      "value": 317.0
+    },
+    {
+      "category": "PP杯",
+      "year": 2026,
+      "month": 8,
+      "value": 331.0
+    },
+    {
       "category": "寶特瓶",
       "year": 2024,
       "month": 9,
@@ -1455,6 +1599,24 @@
       "value": 5363.0
     },
     {
+      "category": "寶特瓶",
+      "year": 2026,
+      "month": 6,
+      "value": 6215.0
+    },
+    {
+      "category": "寶特瓶",
+      "year": 2026,
+      "month": 7,
+      "value": 7798.0
+    },
+    {
+      "category": "寶特瓶",
+      "year": 2026,
+      "month": 8,
+      "value": 7746.0
+    },
+    {
       "category": "機台數",
       "year": 2024,
       "month": 9,
@@ -1578,6 +1740,24 @@
       "category": "機台數",
       "year": 2026,
       "month": 5,
+      "value": 0.0
+    },
+    {
+      "category": "機台數",
+      "year": 2026,
+      "month": 6,
+      "value": 0.0
+    },
+    {
+      "category": "機台數",
+      "year": 2026,
+      "month": 7,
+      "value": 0.0
+    },
+    {
+      "category": "機台數",
+      "year": 2026,
+      "month": 8,
       "value": 0.0
     },
     {
@@ -1707,6 +1887,24 @@
       "value": 401.0
     },
     {
+      "category": "牛奶瓶",
+      "year": 2026,
+      "month": 6,
+      "value": 567.0
+    },
+    {
+      "category": "牛奶瓶",
+      "year": 2026,
+      "month": 7,
+      "value": 806.0
+    },
+    {
+      "category": "牛奶瓶",
+      "year": 2026,
+      "month": 8,
+      "value": 848.0
+    },
+    {
       "category": "鋁罐",
       "year": 2024,
       "month": 9,
@@ -1833,6 +2031,24 @@
       "value": 973.0
     },
     {
+      "category": "鋁罐",
+      "year": 2026,
+      "month": 6,
+      "value": 1250.0
+    },
+    {
+      "category": "鋁罐",
+      "year": 2026,
+      "month": 7,
+      "value": 1146.0
+    },
+    {
+      "category": "鋁罐",
+      "year": 2026,
+      "month": 8,
+      "value": 1173.0
+    },
+    {
       "category": "電池",
       "year": 2024,
       "month": 9,
@@ -1957,6 +2173,24 @@
       "year": 2026,
       "month": 5,
       "value": 364.0
+    },
+    {
+      "category": "電池",
+      "year": 2026,
+      "month": 6,
+      "value": 466.0
+    },
+    {
+      "category": "電池",
+      "year": 2026,
+      "month": 7,
+      "value": 794.0
+    },
+    {
+      "category": "電池",
+      "year": 2026,
+      "month": 8,
+      "value": 572.0
     }
   ]
 }

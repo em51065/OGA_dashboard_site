@@ -13,6 +13,7 @@ const chartStageBar = document.getElementById("chartStageBar");
 
 const OPEN_NUDGE_DESKTOP = "另開視窗最佳瀏覽請點擊 →";
 const OPEN_NUDGE_MOBILE = "使用手機瀏覽請點擊 →";
+const OPEN_NUDGE_CONTENT = "另開完整畫面請點擊 →";
 
 function compactMaxWidthPx() {
   const width = Number(window.OGA_NAV?.COMPACT_MAX_WIDTH);
@@ -125,6 +126,47 @@ const EMBED_CHART_MAX_COMPACT = 2200;
 
 function isEmbeddedMode() {
   return document.documentElement.classList.contains("is-embedded");
+}
+
+/** Embed chrome-free shell: requires embed=1 AND layout=content (independent of is-layout-compact). */
+function isLayoutContentMode() {
+  return document.documentElement.classList.contains("is-layout-content");
+}
+
+function applyEmbedLayoutClasses() {
+  const params = new URLSearchParams(window.location.search);
+  const embedded = params.get("embed") === "1";
+  const layoutContent = embedded && params.get("layout") === "content";
+  document.documentElement.classList.toggle("is-embedded", embedded);
+  document.documentElement.classList.toggle("is-layout-content", layoutContent);
+  syncContentModeChrome();
+}
+
+function syncContentModeChrome() {
+  const content = isLayoutContentMode();
+  const pageTitle = document.getElementById("contentModePageTitle");
+  if (pageTitle) {
+    const chartTitle = CHARTS[currentChart]?.title || currentChart || "永續數據儀表板";
+    pageTitle.textContent = content
+      ? `永續數據儀表板：${chartTitle}`
+      : "永續數據儀表板";
+    pageTitle.hidden = !content;
+  }
+  const brandHeading = document.querySelector(".oga-brand h1");
+  if (brandHeading) {
+    // Avoid duplicate accessible h1 when the visual header is display:none.
+    if (content) brandHeading.setAttribute("aria-hidden", "true");
+    else brandHeading.removeAttribute("aria-hidden");
+  }
+}
+
+function buildFullExplorerHref() {
+  const params = new URLSearchParams(window.location.search);
+  params.delete("embed");
+  params.delete("layout");
+  params.set("chart", currentChart);
+  const query = params.toString();
+  return query ? `?${query}` : "?";
 }
 
 function isCompactEmbed() {
@@ -307,6 +349,33 @@ function syncStandaloneLink() {
   if (!standaloneLink) return;
   const mobileFriendly = shouldUseMobileFriendlyOpen();
   const title = CHARTS[currentChart]?.title || currentChart;
+  const contentMode = isLayoutContentMode();
+  const desktopLabel = standaloneLink.querySelector(".oga-open-label--desktop");
+  const mobileLabel = standaloneLink.querySelector(".oga-open-label--mobile");
+  const contentLabel = standaloneLink.querySelector(".oga-open-label--content");
+
+  standaloneLink.rel = "noopener noreferrer";
+  standaloneLink.target = "_blank";
+
+  if (contentMode) {
+    // Content embed: open full explorer (drop embed + layout), keep chart and other state.
+    standaloneLink.href = buildFullExplorerHref();
+    standaloneLink.setAttribute("aria-label", `另開完整畫面（目前：${title}）`);
+    standaloneLink.hidden = false;
+    if (desktopLabel) desktopLabel.hidden = true;
+    if (mobileLabel) mobileLabel.hidden = true;
+    if (contentLabel) contentLabel.hidden = false;
+    if (openNudgeLabel) openNudgeLabel.textContent = OPEN_NUDGE_CONTENT;
+    if (openNudge) openNudge.hidden = false;
+    if (chartStageBar) chartStageBar.classList.toggle("oga-stage-bar--nudge", true);
+    syncContentModeChrome();
+    return;
+  }
+
+  if (desktopLabel) desktopLabel.hidden = false;
+  if (mobileLabel) mobileLabel.hidden = false;
+  if (contentLabel) contentLabel.hidden = true;
+
   if (mobileFriendly) {
     standaloneLink.href = `?chart=${encodeURIComponent(currentChart)}`;
     standaloneLink.setAttribute("aria-label", `開啟手機友善版完整儀表板（目前：${title}）`);
@@ -322,6 +391,7 @@ function syncStandaloneLink() {
   }
   if (openNudge) openNudge.hidden = !showOpenNudge;
   if (chartStageBar) chartStageBar.classList.toggle("oga-stage-bar--nudge", showOpenNudge);
+  syncContentModeChrome();
 }
 
 function themeIndexForChart(chartId) {
@@ -560,9 +630,8 @@ function deriveChartsFromNavConfig() {
 
 function parseInitialChart() {
   const params = new URLSearchParams(window.location.search);
-  const requested = params.get("chart");
-  if (params.get("embed") === "1") document.documentElement.classList.add("is-embedded");
-  return requested;
+  applyEmbedLayoutClasses();
+  return params.get("chart");
 }
 
 function renderIcons() {
@@ -1292,11 +1361,16 @@ function initExplorer() {
   } else {
     currentChart = NAV_THEME_CHARTS[0]?.[0] || "ecoco";
   }
+  syncContentModeChrome();
   bindEvents();
   renderIcons();
   switchChart(currentChart, "replace");
   syncLayoutCompactClass();
   startLayoutShadowObserver();
+  if (isLayoutContentMode()) {
+    schedulePortalRemeasure();
+    reportOuterHeight();
+  }
 }
 
 const layoutShadowState = {
