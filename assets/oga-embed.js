@@ -10,7 +10,7 @@
   }
 
   function notifyHostHeight(height) {
-    // Single message type to the direct parent only — avoids Wix growth loops.
+    // Single message type to the direct parent only - avoids Wix growth loops.
     try {
       window.parent.postMessage({ type: "oga:resize", height }, "*");
     } catch (_error) {

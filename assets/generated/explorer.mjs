@@ -1,3 +1,6 @@
+export function mount(scope, loadChart) {
+const {document, window, fetch, Plotly, ResizeObserver, MutationObserver, setTimeout, clearTimeout, requestAnimationFrame, cancelAnimationFrame} = scope;
+const escapeText = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 "use strict";
 
 const frame = document.getElementById("chartFrame");
@@ -56,7 +59,7 @@ function resolveExplorerCompactSignal() {
 
 /** Production: any compact signal → full-page compact (nav, chart iframe, or ≤760). */
 function resolveLayoutCompact() {
-  const doc = frame?.contentDocument;
+  const doc = frame?.sustainabilitySurface?.document;
   return resolveExplorerCompactSignal() || resolveChartIframeCompact(doc);
 }
 
@@ -69,7 +72,7 @@ function syncChartLayoutCompact(compact) {
   if (lastChartLayoutCompactSent === next) return;
   lastChartLayoutCompactSent = next;
   try {
-    frame?.contentWindow?.postMessage(
+    frame?.sustainabilitySurface?.window?.postMessage(
       { type: "oga:layout-compact", compact: next },
       "*"
     );
@@ -167,7 +170,7 @@ function buildFullExplorerHref() {
   params.delete("layout");
   params.set("chart", currentChart);
   const query = params.toString();
-  return query ? `?${query}` : "?";
+  return `${scope.fullUrl || ""}?${query}`;
 }
 
 /** Chart-iframe density overrides for ?embed=1&layout=content only (iframe viewport). */
@@ -488,7 +491,7 @@ function syncStandaloneLink() {
     standaloneLink.href = `?chart=${encodeURIComponent(currentChart)}`;
     standaloneLink.setAttribute("aria-label", `開啟手機友善版完整儀表板（目前：${title}）`);
   } else {
-    standaloneLink.href = `../charts/${currentChart}/`;
+    standaloneLink.href = scope.chartHref(currentChart);
     standaloneLink.setAttribute("aria-label", `在新視窗開啟${title}`);
   }
   // Already on full (non-embed) mobile dashboard — link is redundant.
@@ -856,7 +859,7 @@ function scheduleFrameMeasure() {
 
 function measureChild() {
   try {
-    const doc = frame.contentDocument;
+    const doc = frame.sustainabilitySurface?.document;
     if (!doc) return;
     syncLayoutCompactClass();
     applyFriendlySpacesEmbedSizing(doc);
@@ -956,7 +959,7 @@ function closePinnedNavFromOutside() {
 
 function closeChildChartPopovers() {
   try {
-    frame.contentWindow?.postMessage({ type: "oga:close-popovers" }, "*");
+    frame.sustainabilitySurface?.window?.postMessage({ type: "oga:close-popovers" }, "*");
   } catch (_error) {
     /* iframe may be cross-origin or unloading */
   }
@@ -1031,8 +1034,8 @@ function scheduleChildDecoration(doc) {
 
 function prepareChildFrame() {
   detachChildObservers();
-  const doc = frame.contentDocument;
-  const win = frame.contentWindow;
+  const doc = frame.sustainabilitySurface?.document;
+  const win = frame.sustainabilitySurface?.window;
   if (!doc || !win) return;
   frame.setAttribute("scrolling", "no");
 
@@ -1269,7 +1272,7 @@ function prepareChildFrame() {
   }
 
   decorateBlockTitles(doc);
-  childMutationObserver = new MutationObserver(() => scheduleChildDecoration(doc));
+  childMutationObserver = new MutationObserver(() => decorateBlockTitles(doc));
   childMutationObserver.observe(doc.body, { childList: true, subtree: true, characterData: true });
 
   const root = doc.getElementById("gaWidget") || doc.body;
@@ -1344,8 +1347,9 @@ function switchChart(chartId, historyMode = "push") {
   lastChartLayoutCompactSent = null;
   stage.setAttribute("aria-busy", "true");
   loading.hidden = false;
-  frame.title = `${CHARTS[chartId].title}互動圖表`;
-  frame.src = `../charts/${chartId}/?portal=1&t=${Date.now()}`;
+  frame.removeAttribute("title");
+  frame.setAttribute("aria-label", `${CHARTS[chartId].title}互動圖表`);
+  loadChart(chartId);
   updateSourceInfo(chartId);
   reportOuterHeight();
 }
@@ -1427,7 +1431,7 @@ function bindEvents() {
     lastFrameHeight = 0;
     lastOuterHeight = 0;
     try {
-      applyFriendlySpacesEmbedSizing(frame.contentDocument);
+      applyFriendlySpacesEmbedSizing(frame.sustainabilitySurface?.document);
     } catch (_error) {
       /* iframe may be unloading */
     }
@@ -1650,7 +1654,7 @@ function measureDesktopNavWouldCompact() {
 function collectLayoutShadowReport() {
   const overflow = measureDesktopNavWouldCompact();
   const navOverflowCompact = resolveLayoutCompactOverflow();
-  const chartIframeCompact = resolveChartIframeCompact(frame?.contentDocument);
+  const chartIframeCompact = resolveChartIframeCompact(frame?.sustainabilitySurface?.document);
   const breakpointCompact = viewportBreakpointCompact();
   const productionCompact = resolveLayoutCompact();
 
@@ -1751,3 +1755,5 @@ function startLayoutShadowObserver() {
 }
 
 initExplorer();
+
+}

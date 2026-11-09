@@ -1,7 +1,6 @@
 {
-  "dataVersion": "20260911",
-  "generatedAt": "2026-09-14 03:23:42",
-  "sourceFile": "Total_20260911.xlsx",
+  "dataVersion": "20261109",
+  "sourceFile": "Total_20261109.xlsx",
   "chartId": "electricity-use",
   "chartType": "utility",
   "sheet": "用電量",
@@ -135,20 +134,23 @@
           },
           {
             "year": 2026,
-            "value": 32619263.0,
-            "months": 6,
+            "value": 52833644.0,
+            "months": 9,
             "monthsList": [
               1,
               2,
               3,
               4,
               5,
-              6
+              6,
+              7,
+              8,
+              9
             ],
-            "maxMonth": 6,
+            "maxMonth": 9,
             "hasDecember": false,
             "start": "2026-01",
-            "end": "2026-06"
+            "end": "2026-09"
           }
         ],
         "monthly": [
@@ -421,6 +423,21 @@
             "year": 2026,
             "month": 6,
             "value": 7092104.0
+          },
+          {
+            "year": 2026,
+            "month": 7,
+            "value": 6858943.0
+          },
+          {
+            "year": 2026,
+            "month": 8,
+            "value": 6963715.0
+          },
+          {
+            "year": 2026,
+            "month": 9,
+            "value": 6391723.0
           }
         ]
       },
@@ -452,20 +469,23 @@
           },
           {
             "year": 2026,
-            "value": 102992262.0,
-            "months": 6,
+            "value": 171734446.0,
+            "months": 9,
             "monthsList": [
               1,
               2,
               3,
               4,
               5,
-              6
+              6,
+              7,
+              8,
+              9
             ],
-            "maxMonth": 6,
+            "maxMonth": 9,
             "hasDecember": false,
             "start": "2026-01",
-            "end": "2026-06"
+            "end": "2026-09"
           }
         ],
         "monthly": [
@@ -558,10 +578,26 @@
             "year": 2026,
             "month": 6,
             "value": 21045546.0
+          },
+          {
+            "year": 2026,
+            "month": 7,
+            "value": 23247041.0
+          },
+          {
+            "year": 2026,
+            "month": 8,
+            "value": 23965527.0
+          },
+          {
+            "year": 2026,
+            "month": 9,
+            "value": 21529616.0
           }
         ]
       }
     }
   },
-  "defaultYear": 2026
+  "defaultYear": 2026,
+  "batchId": "20261109_092354_784132"
 }

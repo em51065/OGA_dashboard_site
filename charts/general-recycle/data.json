@@ -1,7 +1,6 @@
 {
-  "dataVersion": "20260911",
-  "generatedAt": "2026-09-14 03:23:41",
-  "sourceFile": "Total_20260911.xlsx",
+  "dataVersion": "20261109",
+  "sourceFile": "Total_20261109.xlsx",
   "chartId": "general-recycle",
   "sheet": "一般回收",
   "metric": "一般回收",
@@ -105,8 +104,8 @@
     },
     {
       "year": 2026,
-      "value": 272.13,
-      "months": 8,
+      "value": 308.95,
+      "months": 9,
       "monthsList": [
         1,
         2,
@@ -115,12 +114,13 @@
         5,
         6,
         7,
-        8
+        8,
+        9
       ],
-      "maxMonth": 8,
+      "maxMonth": 9,
       "hasDecember": false,
       "start": "2026-01",
-      "end": "2026-08"
+      "end": "2026-09"
     }
   ],
   "monthly": [
@@ -403,6 +403,12 @@
       "year": 2026,
       "month": 8,
       "value": 31.15
+    },
+    {
+      "year": 2026,
+      "month": 9,
+      "value": 36.82
     }
-  ]
+  ],
+  "batchId": "20261109_092354_784132"
 }

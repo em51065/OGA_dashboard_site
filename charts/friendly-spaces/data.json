@@ -1,7 +1,6 @@
 {
-  "dataVersion": "20260911",
-  "generatedAt": "2026-09-14 03:23:45",
-  "sourceFile": "Total_20260911.xlsx",
+  "dataVersion": "20261109",
+  "sourceFile": "Total_20261109.xlsx",
   "chartId": "friendly-spaces",
   "chartType": "friendly_spaces",
   "sheet": "友善空間(4表)",
@@ -471,48 +470,6 @@
     {
       "category": "lactation",
       "categoryLabel": "哺集乳室",
-      "campus": "力行",
-      "location": "生科大樓北棟1樓",
-      "quantity": 1.0,
-      "year": 112,
-      "month": 12,
-      "date": "20231231",
-      "status": "active",
-      "mapX": 28.9,
-      "mapY": 15.33,
-      "id": "fs-25"
-    },
-    {
-      "category": "lactation",
-      "categoryLabel": "哺集乳室",
-      "campus": "力行",
-      "location": "社科院大樓南棟3樓",
-      "quantity": 1.0,
-      "year": 112,
-      "month": 12,
-      "date": "20231231",
-      "status": "active",
-      "mapX": 26.97,
-      "mapY": 24.37,
-      "id": "fs-26"
-    },
-    {
-      "category": "lactation",
-      "categoryLabel": "哺集乳室",
-      "campus": "力行",
-      "location": "台文系館",
-      "quantity": 1.0,
-      "year": 112,
-      "month": 12,
-      "date": "20231231",
-      "status": "active",
-      "mapX": 23.3,
-      "mapY": 20.65,
-      "id": "fs-27"
-    },
-    {
-      "category": "lactation",
-      "categoryLabel": "哺集乳室",
       "campus": "光復",
       "location": "國際會議廳B1",
       "quantity": 1.0,
@@ -522,7 +479,7 @@
       "status": "active",
       "mapX": 25.34,
       "mapY": 53.37,
-      "id": "fs-28"
+      "id": "fs-25"
     },
     {
       "category": "lactation",
@@ -536,7 +493,7 @@
       "status": "active",
       "mapX": 36.14,
       "mapY": 46.99,
-      "id": "fs-29"
+      "id": "fs-26"
     },
     {
       "category": "lactation",
@@ -550,133 +507,49 @@
       "status": "active",
       "mapX": 40.62,
       "mapY": 46.9,
+      "id": "fs-27"
+    },
+    {
+      "category": "lactation",
+      "categoryLabel": "哺集乳室",
+      "campus": "力行",
+      "location": "生科大樓北棟1樓",
+      "quantity": 1.0,
+      "year": 112,
+      "month": 12,
+      "date": "20231231",
+      "status": "active",
+      "mapX": 28.9,
+      "mapY": 15.33,
+      "id": "fs-28"
+    },
+    {
+      "category": "lactation",
+      "categoryLabel": "哺集乳室",
+      "campus": "力行",
+      "location": "社科院大樓南棟3樓",
+      "quantity": 1.0,
+      "year": 112,
+      "month": 12,
+      "date": "20231231",
+      "status": "active",
+      "mapX": 26.97,
+      "mapY": 24.37,
+      "id": "fs-29"
+    },
+    {
+      "category": "lactation",
+      "categoryLabel": "哺集乳室",
+      "campus": "力行",
+      "location": "台文系館",
+      "quantity": 1.0,
+      "year": 112,
+      "month": 12,
+      "date": "20231231",
+      "status": "active",
+      "mapX": 23.3,
+      "mapY": 20.65,
       "id": "fs-30"
-    },
-    {
-      "category": "lactation",
-      "categoryLabel": "哺集乳室",
-      "campus": "成功",
-      "location": "理學大樓化學棟1樓",
-      "quantity": 1.0,
-      "year": 112,
-      "month": 12,
-      "date": "20231231",
-      "status": "active",
-      "mapX": 51.63,
-      "mapY": 33.33,
-      "id": "fs-31"
-    },
-    {
-      "category": "lactation",
-      "categoryLabel": "哺集乳室",
-      "campus": "成功",
-      "location": "理學大樓物理棟3樓",
-      "quantity": 1.0,
-      "year": 112,
-      "month": 12,
-      "date": "20231231",
-      "status": "active",
-      "mapX": 50.1,
-      "mapY": 39.01,
-      "id": "fs-32"
-    },
-    {
-      "category": "lactation",
-      "categoryLabel": "哺集乳室",
-      "campus": "成功",
-      "location": "圖書館B1",
-      "quantity": 1.0,
-      "year": 112,
-      "month": 12,
-      "date": "20231231",
-      "status": "active",
-      "mapX": 57.85,
-      "mapY": 38.03,
-      "id": "fs-33"
-    },
-    {
-      "category": "lactation",
-      "categoryLabel": "哺集乳室",
-      "campus": "成功",
-      "location": "博物館(整修中)",
-      "quantity": 1.0,
-      "year": 112,
-      "month": 12,
-      "date": "20231231",
-      "status": "active",
-      "mapX": 56.52,
-      "mapY": 64.9,
-      "id": "fs-34"
-    },
-    {
-      "category": "lactation",
-      "categoryLabel": "哺集乳室",
-      "campus": "成杏",
-      "location": "護理系館２樓",
-      "quantity": 1.0,
-      "year": 112,
-      "month": 12,
-      "date": "20231231",
-      "status": "active",
-      "mapX": 65.19,
-      "mapY": 24.55,
-      "id": "fs-35"
-    },
-    {
-      "category": "lactation",
-      "categoryLabel": "哺集乳室",
-      "campus": "成杏",
-      "location": "生醫卓群大樓1樓",
-      "quantity": 1.0,
-      "year": 113,
-      "month": 12,
-      "date": "20241231",
-      "status": "active",
-      "mapX": 71.4,
-      "mapY": 19.5,
-      "id": "fs-36"
-    },
-    {
-      "category": "lactation",
-      "categoryLabel": "哺集乳室",
-      "campus": "自強",
-      "location": "系統系6樓",
-      "quantity": 1.0,
-      "year": 112,
-      "month": 12,
-      "date": "20231231",
-      "status": "active",
-      "mapX": 91.68,
-      "mapY": 61.53,
-      "id": "fs-37"
-    },
-    {
-      "category": "lactation",
-      "categoryLabel": "哺集乳室",
-      "campus": "自強",
-      "location": "啟端館4樓",
-      "quantity": 1.0,
-      "year": 113,
-      "month": 12,
-      "date": "20241231",
-      "status": "active",
-      "mapX": 82.61,
-      "mapY": 59.31,
-      "id": "fs-38"
-    },
-    {
-      "category": "lactation",
-      "categoryLabel": "哺集乳室",
-      "campus": "東寧",
-      "location": "東寧新學舍",
-      "quantity": 1.0,
-      "year": 114,
-      "month": 12,
-      "date": "20251231",
-      "status": "active",
-      "mapX": 83.12,
-      "mapY": 89.2,
-      "id": "fs-39"
     },
     {
       "category": "lactation",
@@ -690,35 +563,133 @@
       "status": "active",
       "mapX": 50.82,
       "mapY": 75.54,
-      "id": "fs-40"
+      "id": "fs-31"
     },
     {
-      "category": "inclusive-restroom",
-      "categoryLabel": "性別友善廁所",
-      "campus": "力行",
-      "location": "生科大樓1樓",
+      "category": "lactation",
+      "categoryLabel": "哺集乳室",
+      "campus": "成功",
+      "location": "理學大樓化學棟1樓",
       "quantity": 1.0,
       "year": 112,
       "month": 12,
       "date": "20231231",
       "status": "active",
-      "mapX": 28.8,
-      "mapY": 16.3,
-      "id": "fs-41"
+      "mapX": 51.63,
+      "mapY": 33.33,
+      "id": "fs-32"
     },
     {
-      "category": "inclusive-restroom",
-      "categoryLabel": "性別友善廁所",
-      "campus": "力行",
-      "location": "社科院南側1樓(預計)",
-      "quantity": 0.0,
+      "category": "lactation",
+      "categoryLabel": "哺集乳室",
+      "campus": "成功",
+      "location": "理學大樓物理棟3樓",
+      "quantity": 1.0,
+      "year": 112,
+      "month": 12,
+      "date": "20231231",
+      "status": "active",
+      "mapX": 50.1,
+      "mapY": 39.01,
+      "id": "fs-33"
+    },
+    {
+      "category": "lactation",
+      "categoryLabel": "哺集乳室",
+      "campus": "成功",
+      "location": "圖書館B1",
+      "quantity": 1.0,
+      "year": 112,
+      "month": 12,
+      "date": "20231231",
+      "status": "active",
+      "mapX": 57.85,
+      "mapY": 38.03,
+      "id": "fs-34"
+    },
+    {
+      "category": "lactation",
+      "categoryLabel": "哺集乳室",
+      "campus": "成功",
+      "location": "博物館(整修中)",
+      "quantity": 1.0,
+      "year": 112,
+      "month": 12,
+      "date": "20231231",
+      "status": "active",
+      "mapX": 56.52,
+      "mapY": 64.9,
+      "id": "fs-35"
+    },
+    {
+      "category": "lactation",
+      "categoryLabel": "哺集乳室",
+      "campus": "成杏",
+      "location": "護理系館２樓",
+      "quantity": 1.0,
+      "year": 112,
+      "month": 12,
+      "date": "20231231",
+      "status": "active",
+      "mapX": 65.19,
+      "mapY": 24.55,
+      "id": "fs-36"
+    },
+    {
+      "category": "lactation",
+      "categoryLabel": "哺集乳室",
+      "campus": "成杏",
+      "location": "生醫卓群大樓1樓",
+      "quantity": 1.0,
+      "year": 113,
+      "month": 12,
+      "date": "20241231",
+      "status": "active",
+      "mapX": 71.4,
+      "mapY": 19.5,
+      "id": "fs-37"
+    },
+    {
+      "category": "lactation",
+      "categoryLabel": "哺集乳室",
+      "campus": "東寧",
+      "location": "東寧新學舍",
+      "quantity": 1.0,
       "year": 114,
-      "month": 7,
-      "date": "20250731",
-      "status": "planned",
-      "mapX": 26.05,
-      "mapY": 23.75,
-      "id": "fs-42"
+      "month": 12,
+      "date": "20251231",
+      "status": "active",
+      "mapX": 83.12,
+      "mapY": 89.2,
+      "id": "fs-38"
+    },
+    {
+      "category": "lactation",
+      "categoryLabel": "哺集乳室",
+      "campus": "自強",
+      "location": "系統系6樓",
+      "quantity": 1.0,
+      "year": 112,
+      "month": 12,
+      "date": "20231231",
+      "status": "active",
+      "mapX": 91.68,
+      "mapY": 61.53,
+      "id": "fs-39"
+    },
+    {
+      "category": "lactation",
+      "categoryLabel": "哺集乳室",
+      "campus": "自強",
+      "location": "啟端館4樓",
+      "quantity": 1.0,
+      "year": 113,
+      "month": 12,
+      "date": "20241231",
+      "status": "active",
+      "mapX": 82.61,
+      "mapY": 59.31,
+      "id": "fs-40"
     },
     {
       "category": "inclusive-restroom",
@@ -732,7 +703,7 @@
       "status": "active",
       "mapX": 25.95,
       "mapY": 53.82,
-      "id": "fs-43"
+      "id": "fs-41"
     },
     {
       "category": "inclusive-restroom",
@@ -746,7 +717,7 @@
       "status": "active",
       "mapX": 22.58,
       "mapY": 50.09,
-      "id": "fs-44"
+      "id": "fs-42"
     },
     {
       "category": "inclusive-restroom",
@@ -760,7 +731,7 @@
       "status": "active",
       "mapX": 18.51,
       "mapY": 56.12,
-      "id": "fs-45"
+      "id": "fs-43"
     },
     {
       "category": "inclusive-restroom",
@@ -774,7 +745,7 @@
       "status": "active",
       "mapX": 28.6,
       "mapY": 31.38,
-      "id": "fs-46"
+      "id": "fs-44"
     },
     {
       "category": "inclusive-restroom",
@@ -788,7 +759,7 @@
       "status": "active",
       "mapX": 41.85,
       "mapY": 33.24,
-      "id": "fs-47"
+      "id": "fs-45"
     },
     {
       "category": "inclusive-restroom",
@@ -802,7 +773,7 @@
       "status": "active",
       "mapX": 38.59,
       "mapY": 61.71,
-      "id": "fs-48"
+      "id": "fs-46"
     },
     {
       "category": "inclusive-restroom",
@@ -816,7 +787,49 @@
       "status": "active",
       "mapX": 17.9,
       "mapY": 31.91,
+      "id": "fs-47"
+    },
+    {
+      "category": "inclusive-restroom",
+      "categoryLabel": "性別友善廁所",
+      "campus": "力行",
+      "location": "生科大樓1樓",
+      "quantity": 1.0,
+      "year": 112,
+      "month": 12,
+      "date": "20231231",
+      "status": "active",
+      "mapX": 28.8,
+      "mapY": 16.3,
+      "id": "fs-48"
+    },
+    {
+      "category": "inclusive-restroom",
+      "categoryLabel": "性別友善廁所",
+      "campus": "力行",
+      "location": "社科院南側1樓(預計)",
+      "quantity": 0.0,
+      "year": 114,
+      "month": 7,
+      "date": "20250731",
+      "status": "planned",
+      "mapX": 26.05,
+      "mapY": 23.75,
       "id": "fs-49"
+    },
+    {
+      "category": "inclusive-restroom",
+      "categoryLabel": "性別友善廁所",
+      "campus": "勝利",
+      "location": "游泳池與球類場館",
+      "quantity": 1.0,
+      "year": 112,
+      "month": 12,
+      "date": "20231231",
+      "status": "active",
+      "mapX": 50.92,
+      "mapY": 75.19,
+      "id": "fs-50"
     },
     {
       "category": "inclusive-restroom",
@@ -830,7 +843,7 @@
       "status": "active",
       "mapX": 52.55,
       "mapY": 36.88,
-      "id": "fs-50"
+      "id": "fs-51"
     },
     {
       "category": "inclusive-restroom",
@@ -844,7 +857,7 @@
       "status": "active",
       "mapX": 66.82,
       "mapY": 33.15,
-      "id": "fs-51"
+      "id": "fs-52"
     },
     {
       "category": "inclusive-restroom",
@@ -858,7 +871,7 @@
       "status": "active",
       "mapX": 56.42,
       "mapY": 64.99,
-      "id": "fs-52"
+      "id": "fs-53"
     },
     {
       "category": "inclusive-restroom",
@@ -872,7 +885,7 @@
       "status": "active",
       "mapX": 60.4,
       "mapY": 37.85,
-      "id": "fs-53"
+      "id": "fs-54"
     },
     {
       "category": "inclusive-restroom",
@@ -886,7 +899,7 @@
       "status": "active",
       "mapX": 64.57,
       "mapY": 24.82,
-      "id": "fs-54"
+      "id": "fs-55"
     },
     {
       "category": "inclusive-restroom",
@@ -900,34 +913,20 @@
       "status": "active",
       "mapX": 72.73,
       "mapY": 19.76,
-      "id": "fs-55"
-    },
-    {
-      "category": "inclusive-restroom",
-      "categoryLabel": "性別友善廁所",
-      "campus": "自強",
-      "location": "器材室西南角",
-      "quantity": 1.0,
-      "year": 112,
-      "month": 12,
-      "date": "20231231",
-      "status": "active",
-      "mapX": 81.59,
-      "mapY": 33.07,
       "id": "fs-56"
     },
     {
       "category": "inclusive-restroom",
       "categoryLabel": "性別友善廁所",
-      "campus": "自強",
-      "location": "化工系館2樓(預計)",
-      "quantity": 0.0,
-      "year": 114,
+      "campus": "敬業",
+      "location": "敬三舍新館2樓",
+      "quantity": 1.0,
+      "year": 112,
       "month": 12,
-      "date": "20251231",
-      "status": "planned",
-      "mapX": 81.19,
-      "mapY": 53.73,
+      "date": "20231231",
+      "status": "active",
+      "mapX": 83.02,
+      "mapY": 18.08,
       "id": "fs-57"
     },
     {
@@ -947,58 +946,30 @@
     {
       "category": "inclusive-restroom",
       "categoryLabel": "性別友善廁所",
-      "campus": "勝利",
-      "location": "游泳池與球類場館",
+      "campus": "自強",
+      "location": "器材室西南角",
       "quantity": 1.0,
       "year": 112,
       "month": 12,
       "date": "20231231",
       "status": "active",
-      "mapX": 50.92,
-      "mapY": 75.19,
+      "mapX": 81.59,
+      "mapY": 33.07,
       "id": "fs-59"
     },
     {
       "category": "inclusive-restroom",
       "categoryLabel": "性別友善廁所",
-      "campus": "敬業",
-      "location": "敬三舍新館2樓",
-      "quantity": 1.0,
-      "year": 112,
+      "campus": "自強",
+      "location": "化工系館2樓(預計)",
+      "quantity": 0.0,
+      "year": 114,
       "month": 12,
-      "date": "20231231",
-      "status": "active",
-      "mapX": 83.02,
-      "mapY": 18.08,
+      "date": "20251231",
+      "status": "planned",
+      "mapX": 81.19,
+      "mapY": 53.73,
       "id": "fs-60"
-    },
-    {
-      "category": "family-parking",
-      "categoryLabel": "婦幼優先停車位",
-      "campus": "力行",
-      "location": "生科大樓B2",
-      "quantity": 2.0,
-      "year": 112,
-      "month": 12,
-      "date": "20231231",
-      "status": "active",
-      "mapX": 27.99,
-      "mapY": 15.15,
-      "id": "fs-61"
-    },
-    {
-      "category": "family-parking",
-      "categoryLabel": "婦幼優先停車位",
-      "campus": "力行",
-      "location": "社科大樓B1",
-      "quantity": 1.0,
-      "year": 112,
-      "month": 12,
-      "date": "20231231",
-      "status": "active",
-      "mapX": 26.56,
-      "mapY": 24.29,
-      "id": "fs-62"
     },
     {
       "category": "family-parking",
@@ -1012,7 +983,7 @@
       "status": "active",
       "mapX": 36.65,
       "mapY": 47.34,
-      "id": "fs-63"
+      "id": "fs-61"
     },
     {
       "category": "family-parking",
@@ -1026,7 +997,7 @@
       "status": "active",
       "mapX": 27.88,
       "mapY": 46.28,
-      "id": "fs-64"
+      "id": "fs-62"
     },
     {
       "category": "family-parking",
@@ -1040,7 +1011,7 @@
       "status": "active",
       "mapX": 11.58,
       "mapY": 50.27,
-      "id": "fs-65"
+      "id": "fs-63"
     },
     {
       "category": "family-parking",
@@ -1054,7 +1025,7 @@
       "status": "active",
       "mapX": 26.05,
       "mapY": 31.74,
-      "id": "fs-66"
+      "id": "fs-64"
     },
     {
       "category": "family-parking",
@@ -1068,91 +1039,35 @@
       "status": "active",
       "mapX": 36.45,
       "mapY": 32.53,
+      "id": "fs-65"
+    },
+    {
+      "category": "family-parking",
+      "categoryLabel": "婦幼優先停車位",
+      "campus": "力行",
+      "location": "生科大樓B2",
+      "quantity": 2.0,
+      "year": 112,
+      "month": 12,
+      "date": "20231231",
+      "status": "active",
+      "mapX": 27.99,
+      "mapY": 15.15,
+      "id": "fs-66"
+    },
+    {
+      "category": "family-parking",
+      "categoryLabel": "婦幼優先停車位",
+      "campus": "力行",
+      "location": "社科大樓B1",
+      "quantity": 1.0,
+      "year": 112,
+      "month": 12,
+      "date": "20231231",
+      "status": "active",
+      "mapX": 26.56,
+      "mapY": 24.29,
       "id": "fs-67"
-    },
-    {
-      "category": "family-parking",
-      "categoryLabel": "婦幼優先停車位",
-      "campus": "成功",
-      "location": "理學大道物理二館旁",
-      "quantity": 1.0,
-      "year": 112,
-      "month": 12,
-      "date": "20231231",
-      "status": "active",
-      "mapX": 53.36,
-      "mapY": 61.98,
-      "id": "fs-68"
-    },
-    {
-      "category": "family-parking",
-      "categoryLabel": "婦幼優先停車位",
-      "campus": "成杏",
-      "location": "物治系南側",
-      "quantity": 1.0,
-      "year": 112,
-      "month": 12,
-      "date": "20231231",
-      "status": "active",
-      "mapX": 71.1,
-      "mapY": 23.67,
-      "id": "fs-69"
-    },
-    {
-      "category": "family-parking",
-      "categoryLabel": "婦幼優先停車位",
-      "campus": "成杏",
-      "location": "物治系北側",
-      "quantity": 1.0,
-      "year": 112,
-      "month": 12,
-      "date": "20231231",
-      "status": "active",
-      "mapX": 69.16,
-      "mapY": 27.3,
-      "id": "fs-70"
-    },
-    {
-      "category": "family-parking",
-      "categoryLabel": "婦幼優先停車位",
-      "campus": "成杏",
-      "location": "生醫卓群B2",
-      "quantity": 1.0,
-      "year": 113,
-      "month": 12,
-      "date": "20241231",
-      "status": "active",
-      "mapX": 73.03,
-      "mapY": 18.97,
-      "id": "fs-71"
-    },
-    {
-      "category": "family-parking",
-      "categoryLabel": "婦幼優先停車位",
-      "campus": "自強",
-      "location": "奇美大樓B2",
-      "quantity": 1.0,
-      "year": 112,
-      "month": 12,
-      "date": "20231231",
-      "status": "active",
-      "mapX": 82.82,
-      "mapY": 55.32,
-      "id": "fs-72"
-    },
-    {
-      "category": "family-parking",
-      "categoryLabel": "婦幼優先停車位",
-      "campus": "自強",
-      "location": "化工館B2",
-      "quantity": 1.0,
-      "year": 112,
-      "month": 12,
-      "date": "20231231",
-      "status": "active",
-      "mapX": 83.23,
-      "mapY": 65.43,
-      "id": "fs-73"
     },
     {
       "category": "family-parking",
@@ -1166,6 +1081,90 @@
       "status": "active",
       "mapX": 56.01,
       "mapY": 83.7,
+      "id": "fs-68"
+    },
+    {
+      "category": "family-parking",
+      "categoryLabel": "婦幼優先停車位",
+      "campus": "成功",
+      "location": "理學大道物理二館旁",
+      "quantity": 1.0,
+      "year": 112,
+      "month": 12,
+      "date": "20231231",
+      "status": "active",
+      "mapX": 53.36,
+      "mapY": 61.98,
+      "id": "fs-69"
+    },
+    {
+      "category": "family-parking",
+      "categoryLabel": "婦幼優先停車位",
+      "campus": "成杏",
+      "location": "物治系南側",
+      "quantity": 1.0,
+      "year": 112,
+      "month": 12,
+      "date": "20231231",
+      "status": "active",
+      "mapX": 71.1,
+      "mapY": 23.67,
+      "id": "fs-70"
+    },
+    {
+      "category": "family-parking",
+      "categoryLabel": "婦幼優先停車位",
+      "campus": "成杏",
+      "location": "物治系北側",
+      "quantity": 1.0,
+      "year": 112,
+      "month": 12,
+      "date": "20231231",
+      "status": "active",
+      "mapX": 69.16,
+      "mapY": 27.3,
+      "id": "fs-71"
+    },
+    {
+      "category": "family-parking",
+      "categoryLabel": "婦幼優先停車位",
+      "campus": "成杏",
+      "location": "生醫卓群B2",
+      "quantity": 1.0,
+      "year": 113,
+      "month": 12,
+      "date": "20241231",
+      "status": "active",
+      "mapX": 73.03,
+      "mapY": 18.97,
+      "id": "fs-72"
+    },
+    {
+      "category": "family-parking",
+      "categoryLabel": "婦幼優先停車位",
+      "campus": "自強",
+      "location": "奇美大樓B2",
+      "quantity": 1.0,
+      "year": 112,
+      "month": 12,
+      "date": "20231231",
+      "status": "active",
+      "mapX": 82.82,
+      "mapY": 55.32,
+      "id": "fs-73"
+    },
+    {
+      "category": "family-parking",
+      "categoryLabel": "婦幼優先停車位",
+      "campus": "自強",
+      "location": "化工館B2",
+      "quantity": 1.0,
+      "year": 112,
+      "month": 12,
+      "date": "20231231",
+      "status": "active",
+      "mapX": 83.23,
+      "mapY": 65.43,
       "id": "fs-74"
     }
   ],
@@ -1187,5 +1186,6 @@
       "力行": 7,
       "東寧": 1
     }
-  }
+  },
+  "batchId": "20261109_092354_784132"
 }

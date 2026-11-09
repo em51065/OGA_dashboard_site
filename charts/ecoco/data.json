@@ -1,7 +1,6 @@
 {
-  "dataVersion": "20260911",
-  "generatedAt": "2026-09-14 03:23:42",
-  "sourceFile": "Total_20260911.xlsx",
+  "dataVersion": "20261109",
+  "sourceFile": "Total_20261109.xlsx",
   "chartId": "ecoco",
   "chartType": "ecoco",
   "sheet": "ECOCO (2)",
@@ -2192,5 +2191,6 @@
       "month": 8,
       "value": 572.0
     }
-  ]
+  ],
+  "batchId": "20261109_092354_784132"
 }

@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "version": "68727bdbb76687949cbff0c28b6105dd45fc2693cf9370346ab6591048e64cfa",
+  "files": {
+    "assets/campus-base-display.webp": "46649c3891a0b7cfaaac7f6a58f62e5631c55f2b37fd4ee1cf05bffd5df94fa5",
+    "assets/campus-base.png": "2f89bffaa0abe14d0402941324ec100b018df4b9175287daee8fb209c24cc2f6",
+    "assets/inclusive-restroom.png": "cffb7906f4b28f6d1b3a60d37e2a159c2538e191369b25ec50f76a9237d87473",
+    "dashboard.mjs": "e5c7a42754a8bcbfe7fc1b24c64f56e436d1d1c619a0a0c9276a60d6c8ee2c49",
+    "generated/catalog.json": "199ba0543d0567363cd46d23c07b5482a448d6db8a06922d37a0e78902a18ddb",
+    "generated/chart.mjs": "4f627dd9e361273166e177f53c4cdea5baa381a081bf44e3ad640e1e9c410e7d",
+    "generated/explorer.mjs": "dc8591fdf39448096d64e57381fc790a6619465ee965c007ef63de55c5b50e38",
+    "generated/lucide.mjs": "3a62b34ec0c6991243d1aa066d4f7a5d64d0470237c16c05673ae7780118acae",
+    "generated/nav-config.mjs": "b7843da546e78b02deb5e032fb8a246d318463bb11480c5b6f4c9457f046edfa",
+    "generated/plotly.mjs": "338b0b2358f8bdd93c14e492554a0686e337014048ba035523d6b215e0ecd380",
+    "generated/templates.json": "00a1b53fbd97cad090166f06d712112bcfcd8936e93a619f7d01a980b66dc52c",
+    "oga-embed.js": "5a4ab12a7b5a25192c19ab583e3a51cfe7462dc6cdec5a8f57f161aa59e47ede",
+    "surface.mjs": "1ed2971d4ca55c69bbd58187439a0fe2827c60f3af3e50c2ff47e69d903e8524"
+  }
+}

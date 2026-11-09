@@ -1,7 +1,6 @@
 {
-  "dataVersion": "20260911",
-  "generatedAt": "2026-09-14 03:23:44",
-  "sourceFile": "Total_20260911.xlsx",
+  "dataVersion": "20261109",
+  "sourceFile": "Total_20261109.xlsx",
   "chartId": "streetlight-replacement",
   "chartType": "streetlight",
   "sheet": "路燈汰換 (2)",
@@ -2230,5 +2229,6 @@
       }
     ]
   },
-  "defaultYear": 2025
+  "defaultYear": 2025,
+  "batchId": "20261109_092354_784132"
 }

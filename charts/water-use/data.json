@@ -1,7 +1,6 @@
 {
-  "dataVersion": "20260911",
-  "generatedAt": "2026-09-14 03:23:42",
-  "sourceFile": "Total_20260911.xlsx",
+  "dataVersion": "20261109",
+  "sourceFile": "Total_20261109.xlsx",
   "chartId": "water-use",
   "chartType": "utility",
   "sheet": "用水量",
@@ -129,8 +128,8 @@
         },
         {
           "year": 2026,
-          "value": 477512.0,
-          "months": 7,
+          "value": 580191.0,
+          "months": 9,
           "monthsList": [
             1,
             2,
@@ -138,12 +137,14 @@
             4,
             5,
             6,
-            7
+            7,
+            8,
+            9
           ],
-          "maxMonth": 7,
+          "maxMonth": 9,
           "hasDecember": false,
           "start": "2026-01",
-          "end": "2026-07"
+          "end": "2026-09"
         }
       ],
       "monthly": [
@@ -421,6 +422,16 @@
           "year": 2026,
           "month": 7,
           "value": 74587.0
+        },
+        {
+          "year": 2026,
+          "month": 8,
+          "value": 48109.0
+        },
+        {
+          "year": 2026,
+          "month": 9,
+          "value": 54570.0
         }
       ]
     },
@@ -521,8 +532,8 @@
         },
         {
           "year": 2026,
-          "value": 6296303.0,
-          "months": 7,
+          "value": 7669884.0,
+          "months": 9,
           "monthsList": [
             1,
             2,
@@ -530,12 +541,14 @@
             4,
             5,
             6,
-            7
+            7,
+            8,
+            9
           ],
-          "maxMonth": 7,
+          "maxMonth": 9,
           "hasDecember": false,
           "start": "2026-01",
-          "end": "2026-07"
+          "end": "2026-09"
         }
       ],
       "monthly": [
@@ -813,9 +826,20 @@
           "year": 2026,
           "month": 7,
           "value": 981698.0
+        },
+        {
+          "year": 2026,
+          "month": 8,
+          "value": 639200.0
+        },
+        {
+          "year": 2026,
+          "month": 9,
+          "value": 734381.0
         }
       ]
     }
   },
-  "defaultYear": 2026
+  "defaultYear": 2026,
+  "batchId": "20261109_092354_784132"
 }

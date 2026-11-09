@@ -1,7 +1,6 @@
 {
-  "dataVersion": "20260911",
-  "generatedAt": "2026-09-14 03:23:42",
-  "sourceFile": "Total_20260911.xlsx",
+  "dataVersion": "20261109",
+  "sourceFile": "Total_20261109.xlsx",
   "chartId": "led-replacement",
   "chartType": "led_replacement",
   "sheet": "LED汰換 (2)",
@@ -118,8 +117,8 @@
         },
         {
           "year": 2026,
-          "value": 32425.9,
-          "months": 8,
+          "value": 33031.9,
+          "months": 9,
           "monthsList": [
             1,
             2,
@@ -128,12 +127,13 @@
             5,
             6,
             7,
-            8
+            8,
+            9
           ],
-          "maxMonth": 8,
+          "maxMonth": 9,
           "hasDecember": false,
           "start": "2026-01",
-          "end": "2026-08"
+          "end": "2026-09"
         }
       ],
       "monthly": [
@@ -276,6 +276,11 @@
           "year": 2026,
           "month": 8,
           "value": 108.0
+        },
+        {
+          "year": 2026,
+          "month": 9,
+          "value": 606.0
         }
       ]
     },
@@ -337,7 +342,7 @@
         },
         {
           "year": 2026,
-          "value": 3202.0,
+          "value": 3518.0,
           "months": 9,
           "monthsList": [
             1,
@@ -500,7 +505,7 @@
         {
           "year": 2026,
           "month": 9,
-          "value": 6.0
+          "value": 322.0
         }
       ]
     },
@@ -562,8 +567,8 @@
         },
         {
           "year": 2026,
-          "value": 10.245,
-          "months": 8,
+          "value": 9.489,
+          "months": 9,
           "monthsList": [
             1,
             2,
@@ -572,12 +577,13 @@
             5,
             6,
             7,
-            8
+            8,
+            9
           ],
-          "maxMonth": 8,
+          "maxMonth": 9,
           "hasDecember": false,
           "start": "2026-01",
-          "end": "2026-08"
+          "end": "2026-09"
         }
       ],
       "monthly": [
@@ -776,6 +782,13 @@
           "value": 6.0,
           "numerator": 108.0,
           "denominator": 18.0
+        },
+        {
+          "year": 2026,
+          "month": 9,
+          "value": 1.918,
+          "numerator": 606.0,
+          "denominator": 316.0
         }
       ]
     },
@@ -836,8 +849,8 @@
         },
         {
           "year": 2026,
-          "value": 46.181,
-          "months": 8,
+          "value": 42.142,
+          "months": 9,
           "monthsList": [
             1,
             2,
@@ -846,12 +859,13 @@
             5,
             6,
             7,
-            8
+            8,
+            9
           ],
-          "maxMonth": 8,
+          "maxMonth": 9,
           "hasDecember": false,
           "start": "2026-01",
-          "end": "2026-08"
+          "end": "2026-09"
         }
       ],
       "monthly": [
@@ -1043,6 +1057,13 @@
           "value": 33.333,
           "numerator": 10800.0,
           "denominator": 324.0
+        },
+        {
+          "year": 2026,
+          "month": 9,
+          "value": 7.419,
+          "numerator": 60600.0,
+          "denominator": 8168.0
         }
       ]
     },
@@ -1104,7 +1125,7 @@
         },
         {
           "year": 2026,
-          "value": 3067.0,
+          "value": 3375.0,
           "months": 9,
           "monthsList": [
             1,
@@ -1267,7 +1288,7 @@
         {
           "year": 2026,
           "month": 9,
-          "value": 6.0
+          "value": 314.0
         }
       ]
     }
@@ -1305,14 +1326,15 @@
     },
     {
       "year": 2026,
-      "qty": 3202.0,
-      "nonLedQty": 3067.0,
-      "nonLedShare": 95.78388507183011,
-      "saving": 32425.9,
-      "nonLedSaving": 32109.9,
+      "qty": 3518.0,
+      "nonLedQty": 3375.0,
+      "nonLedShare": 95.9351904491188,
+      "saving": 33031.9,
+      "nonLedSaving": 32715.9,
       "ledOriginSaving": 316.0,
-      "nonLedSavingShare": 99.02547038015908
+      "nonLedSavingShare": 99.04334900505269
     }
   ],
-  "defaultYear": 2026
+  "defaultYear": 2026,
+  "batchId": "20261109_092354_784132"
 }

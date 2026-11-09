@@ -1,3 +1,6 @@
+export function mount(scope, loadChart) {
+const {document, window, fetch, Plotly, ResizeObserver, MutationObserver, setTimeout, clearTimeout, requestAnimationFrame, cancelAnimationFrame} = scope;
+const escapeText = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 (function () {
   "use strict";
 
@@ -82,3 +85,5 @@
 
   window.OGA_NAV = { COMPACT_MAX_WIDTH, CUSTOM_ICONS, NAV_THEMES };
 })();
+
+}
