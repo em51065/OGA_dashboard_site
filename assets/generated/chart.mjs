@@ -2623,7 +2623,8 @@ function paintReplacementSavingShareBars({ sorted, labels, isSelected, hoverLeft
   const trend = document.getElementById("trendChart");
   trend?.removeAllListeners?.("plotly_click");
   sizeReplacementCompactChart("trendChart", sorted.length);
-  if (trend) Plotly.Plots.resize(trend);
+  // Let the compact layout become visible before resizing either plot.
+  schedulePlotResize();
   if (enableCampusClick) bindStreetlightCampusBarClicks("trendChart", sorted);
 }
 
